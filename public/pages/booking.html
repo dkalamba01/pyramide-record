@@ -36,9 +36,11 @@
   .deposit-card p { color:var(--sand); font-size:var(--fs-sm); line-height:1.6; }
   .pay-chips { display:flex; gap:var(--sp-2); flex-wrap:wrap; margin-top:var(--sp-3); }
 
-  /* Embed slot (medium mode) — hidden unless mode=medium */
-  .iris-embed { display:none; border:1px solid var(--hair-2); border-radius:var(--r-lg); overflow:hidden; min-height:760px; }
-  .iris-embed iframe { width:100%; height:760px; border:0; display:block; }
+  /* Embed slot (medium mode) — hidden unless mode=medium
+     NOTE: no fixed height here anymore — the auto-resize script now
+     controls iframe height dynamically based on the widget's own content. */
+  .iris-embed { display:none; border:1px solid var(--hair-2); border-radius:var(--r-lg); overflow:hidden; }
+  .iris-embed iframe { width:100%; border:0; display:block; overflow:hidden; }
 
   @media(max-width:860px){ .booking-layout{grid-template-columns:1fr; gap:var(--sp-6)} .grid-2{grid-template-columns:1fr} }
   @media(max-width:420px){ .formcard{padding:var(--sp-5)} .step{grid-template-columns:32px 1fr; gap:var(--sp-2)} .form-actions{flex-direction:column} }
@@ -142,7 +144,7 @@
 
         <!-- Medium mode: Iris booking widget embed (hidden unless mode=medium) -->
         <div class="iris-embed" id="iris-embed" aria-label="Espace de réservation">
-          <!-- iframe src injected by JS when bookingMode === 'medium' -->
+          <!-- iframe injected by JS when bookingMode === 'medium' -->
         </div>
       </div>
 
@@ -249,7 +251,12 @@ var BOOKING = {
     if (form) form.style.display = 'none';
     if (embed) {
       embed.style.display = 'block';
-      embed.innerHTML = '<iframe src="' + BOOKING.irisEmbedUrl + '" title="Réservation Pyramide Record" loading="lazy"></iframe>';
+      embed.innerHTML =
+        '<iframe id="iris-booking-widget" src="' + BOOKING.irisEmbedUrl + '" ' +
+        'title="Réservation Pyramide Record" loading="lazy" ' +
+        'style="width:100%;border:0;overflow:hidden;height:760px;"></iframe>';
+        // ^ height:760px above is just an initial fallback before the first
+        // resize message arrives — the listener below takes over immediately after.
     }
   }
   else if (BOOKING.mode === 'deep') {
@@ -261,6 +268,14 @@ var BOOKING = {
     });
   }
 })();
+
+/* Auto-resize listener (provided by Iris — matches the widget's postMessage) */
+window.addEventListener('message', function (e) {
+  if (e.data && e.data.type === 'iris-widget-resize') {
+    var f = document.getElementById('iris-booking-widget');
+    if (f && e.data.height) f.style.height = e.data.height + 'px';
+  }
+});
 </script>
 </body>
 </html>

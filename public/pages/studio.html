@@ -15,7 +15,8 @@
   .page-hero h1 { font-family:var(--font-display); font-weight:400; font-size:var(--fs-h1); line-height:var(--lh-tight); max-width:14ch; margin:var(--sp-3) 0 var(--sp-4); }
   .page-hero .lede { max-width:640px; }
   .rooms { display:grid; grid-template-columns:1fr 1fr; gap:var(--sp-4); }
-  .room__img { aspect-ratio:16/10; border-radius:var(--r-lg) var(--r-lg) 0 0; border-bottom:none; }
+  .room__img { aspect-ratio:16/10; border-radius:var(--r-lg) var(--r-lg) 0 0; border-bottom:none; overflow:hidden; }
+  .room__img img { width:100%; height:100%; object-fit:cover; display:block; }
   .room__body { background:var(--panel); border:1px solid var(--hair); border-top:none; border-radius:0 0 var(--r-lg) var(--r-lg); padding:var(--sp-4) var(--sp-5); }
   .room__body h3 { font-size:var(--fs-lg); margin-bottom:var(--sp-1); }
   .room__body p { color:var(--sand); font-size:var(--fs-sm); }
@@ -66,7 +67,7 @@
       <a class="nav__link" href="gallery.html">Galerie</a>
       <a class="nav__link" href="shop.html">Boutique</a>
       <a class="nav__link" href="about.html">À&nbsp;Propos</a>
-      <a class="nav__link" href="blog.html">Blog</a>
+      <a class="nav__link" href="journal.html">Journal</a>
       <a class="nav__cta" href="booking.html">Réserver</a>
     </div>
   </nav>
@@ -83,7 +84,7 @@
     <p class="eyebrow" style="margin-bottom:var(--sp-4)">Nos espaces</p>
     <div class="rooms">
       <div>
-        <div class="ph room__img"><svg class="icon" viewBox="0 0 24 24"><path d="M12 14a3 3 0 003-3V5a3 3 0 00-6 0v6a3 3 0 003 3zm5-3a5 5 0 01-10 0H5a7 7 0 006 6.9V21h2v-3.1A7 7 0 0019 11z"/></svg><small>Photo · Salle Live</small></div>
+        <div class="room__img"><img src="../assets/images/studio-salle-live.png" alt="Salle Live — Pyramide Record" loading="lazy" decoding="async"></div>
         <div class="room__body"><h3>Salle Live</h3><p>Prise de voix, instruments et sessions de groupe dans une cabine isolée et traitée acoustiquement.</p></div>
       </div>
       <div>

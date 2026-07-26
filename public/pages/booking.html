@@ -37,8 +37,8 @@
   .pay-chips { display:flex; gap:var(--sp-2); flex-wrap:wrap; margin-top:var(--sp-3); }
 
   /* Embed slot (medium mode) — hidden unless mode=medium */
-  .iris-embed { display:none; border:1px solid var(--hair-2); border-radius:var(--r-lg); overflow:hidden; min-height:520px; }
-  .iris-embed iframe { width:100%; height:520px; border:0; display:block; }
+  .iris-embed { display:none; border:1px solid var(--hair-2); border-radius:var(--r-lg); overflow:hidden; min-height:760px; }
+  .iris-embed iframe { width:100%; height:760px; border:0; display:block; }
 
   @media(max-width:860px){ .booking-layout{grid-template-columns:1fr; gap:var(--sp-6)} .grid-2{grid-template-columns:1fr} }
   @media(max-width:420px){ .formcard{padding:var(--sp-5)} .step{grid-template-columns:32px 1fr; gap:var(--sp-2)} .form-actions{flex-direction:column} }
@@ -205,17 +205,18 @@
    The website only READS the mode; the toggle lives in Iris.
 
    Modes:
-     'light'  — ACTIVE. On-site form; submit hands off to Iris booking URL.
-     'medium' — STUB. Embeds the Iris booking widget in an iframe on this page.
+     'light'  — STUB. On-site form; submit hands off to Iris booking URL.
+     'medium' — ACTIVE. Embeds the Iris booking widget in an iframe on this page.
      'deep'   — STUB. Site talks to Iris via API (availability + booking).
 
    To switch modes later: change BOOKING.mode (or have Iris inject it).
    ============================================================ */
 var BOOKING = {
-  mode: 'light',                 // 'light' | 'medium' | 'deep'  (only 'light' wired now)
-  // Point this at Pyramid's Studio Recording booking flow in Iris Financial:
-  irisBookingUrl: 'https://irisfinancial.tech/book/pyramid-record',   // TODO: replace with real URL
-  irisEmbedUrl:   'https://irisfinancial.tech/embed/pyramid-record'   // used only in 'medium'
+  mode: 'medium',                 // 'light' | 'medium' | 'deep'  (medium is wired now)
+  // Kept as fallback / unused in medium mode:
+  irisBookingUrl: 'https://irisfinancial.tech/book/pyramid-record',
+  // Real Studio Booking Widget embed URL for this org:
+  irisEmbedUrl:   'https://irisfinancial.tech/widget/booking?orgId=cmptnogcb0000v3v17tq2blhr'
 };
 
 (function(){

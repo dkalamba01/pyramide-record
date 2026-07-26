@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Réserver une session — Pyramide Record · Kinshasa</title>
+<meta name="description" content="Réservez votre session d'enregistrement, de mixage ou de mastering chez Pyramide Record à Kinshasa. Acompte sécurisé par mobile money.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;1,9..144,400&family=Archivo:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/tokens.css">
+<link rel="stylesheet" href="../css/components.css">
+<style>
+  .page-hero { padding: var(--sp-8) 0 var(--sp-6); }
+  .page-hero h1 { font-family:var(--font-display); font-weight:400; font-size:var(--fs-h1); line-height:var(--lh-tight); max-width:16ch; margin:var(--sp-3) 0 var(--sp-4); }
+  .page-hero .lede { max-width:620px; }
+
+  .booking-layout { display:grid; grid-template-columns:1.15fr 0.85fr; gap:var(--sp-7); align-items:start; }
+
+  .formcard { background:var(--panel); border:1px solid var(--hair-2); border-radius:var(--r-lg); padding:var(--sp-6); }
+  .grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:var(--sp-3); }
+  .form-actions { margin-top:var(--sp-4); display:flex; gap:var(--sp-3); }
+  .form-actions .btn { flex:1; }
+  .form-hint { color:var(--ash); font-size:var(--fs-xs); margin-top:var(--sp-3); text-align:center; }
+
+  /* Steps / how it works */
+  .steps { }
+  .step { display:grid; grid-template-columns:36px 1fr; gap:var(--sp-3); padding:var(--sp-4) 0; border-top:1px solid var(--hair); }
+  .step:first-child { border-top:none; }
+  .step__n { width:32px; height:32px; border-radius:50%; border:1px solid var(--gold-dim); display:flex; align-items:center; justify-content:center; font-family:var(--font-display); color:var(--gold); font-size:var(--fs-sm); }
+  .step__t { color:var(--bone); font-size:var(--fs-body); margin-bottom:2px; }
+  .step__d { color:var(--sand); font-size:var(--fs-sm); line-height:1.55; }
+
+  .deposit-card { background:var(--panel-2); border:1px solid var(--hair-2); border-radius:var(--r-lg); padding:var(--sp-5); margin-top:var(--sp-5); }
+  .deposit-card .k { font-size:var(--fs-eyebrow); letter-spacing:var(--ls-label); text-transform:uppercase; color:var(--ember); margin-bottom:var(--sp-2); }
+  .deposit-card p { color:var(--sand); font-size:var(--fs-sm); line-height:1.6; }
+  .pay-chips { display:flex; gap:var(--sp-2); flex-wrap:wrap; margin-top:var(--sp-3); }
+
+  /* Embed slot (medium mode) — hidden unless mode=medium */
+  .iris-embed { display:none; border:1px solid var(--hair-2); border-radius:var(--r-lg); overflow:hidden; min-height:520px; }
+  .iris-embed iframe { width:100%; height:520px; border:0; display:block; }
+
+  @media(max-width:860px){ .booking-layout{grid-template-columns:1fr; gap:var(--sp-6)} .grid-2{grid-template-columns:1fr} }
+  @media(max-width:420px){ .formcard{padding:var(--sp-5)} .step{grid-template-columns:32px 1fr; gap:var(--sp-2)} .form-actions{flex-direction:column} }
+</style>
+<link rel="icon" type="image/png" href="../assets/images/logo.png">
+<link rel="apple-touch-icon" href="../assets/images/logo.png">
+<link rel="canonical" href="https://pyramidrecord.com/pages/booking.html">
+<meta name="theme-color" content="#0D131C">
+<meta property="og:title" content="Réserver — Pyramide Record">
+<meta property="og:description" content="Réservez votre session d'enregistrement à Kinshasa. Acompte mobile money.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://pyramidrecord.com/pages/booking.html">
+<meta property="og:image" content="https://pyramidrecord.com/assets/images/logo.png">
+<meta property="og:locale" content="fr_FR">
+<meta property="og:site_name" content="Pyramide Record">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Réserver — Pyramide Record",
+  "description": "Réservez votre session d'enregistrement à Kinshasa. Acompte mobile money.",
+  "url": "https://pyramidrecord.com/pages/booking.html",
+  "isPartOf": { "@type": "WebSite", "name": "Pyramide Record", "url": "https://pyramidrecord.com" }
+}
+</script>
+</head>
+<body>
+<a href="#main" class="skip-link" style="position:absolute;left:-9999px;top:0;background:var(--crimson);color:#fff;padding:10px 16px;z-index:200;" onfocus="this.style.left='8px';this.style.top='8px'" onblur="this.style.left='-9999px'">Aller au contenu</a>
+
+<header class="header">
+  <nav class="nav wrap" aria-label="Navigation principale">
+    <a class="nav__logo" href="../index.html" aria-label="Pyramide Record — accueil"><img src="../assets/images/logo.png" alt="Pyramide Record"></a>
+    <button class="nav__burger" id="burger" aria-label="Ouvrir le menu" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
+    <div class="nav__menu" id="menu">
+      <a class="nav__link" href="studio.html">Studio</a>
+      <a class="nav__link" href="services.html">Services</a>
+      <a class="nav__link" href="discography.html">Discographie</a>
+      <a class="nav__link" href="academy.html">Academy</a>
+      <a class="nav__link" href="gallery.html">Galerie</a>
+      <a class="nav__link" href="shop.html">Boutique</a>
+      <a class="nav__link" href="about.html">À&nbsp;Propos</a>
+      <a class="nav__link" href="blog.html">Blog</a>
+      <a class="nav__cta" href="booking.html" aria-current="page">Réserver</a>
+    </div>
+  </nav>
+</header>
+
+<main id="main">
+  <section class="page-hero wrap">
+    <p class="eyebrow">Réservation</p>
+    <h1>Réservez votre session.</h1>
+    <p class="lede">Décrivez votre projet et vos dates souhaitées. Nous confirmons votre créneau après réception de l'acompte — sécurisé par carte ou mobile money.</p>
+  </section>
+
+  <section class="section-sm wrap">
+    <div class="booking-layout">
+
+      <!-- LEFT: the form (Light mode) + embed slot (medium mode) -->
+      <div class="reveal">
+        <!-- Light mode: on-site form that hands off to Iris on submit -->
+        <div class="formcard" id="booking-form">
+          <div class="grid-2">
+            <div class="field"><label class="field__label" for="b-prenom">Prénom</label><input class="input" id="b-prenom" type="text" placeholder="Prénom"></div>
+            <div class="field"><label class="field__label" for="b-nom">Nom</label><input class="input" id="b-nom" type="text" placeholder="Nom"></div>
+          </div>
+          <div class="grid-2">
+            <div class="field"><label class="field__label" for="b-email">E-mail</label><input class="input" id="b-email" type="email" placeholder="vous@exemple.com"></div>
+            <div class="field"><label class="field__label" for="b-tel">Téléphone</label><input class="input" id="b-tel" type="tel" placeholder="+243 …"></div>
+          </div>
+          <div class="field">
+            <label class="field__label" for="b-type">Type de projet</label>
+            <select class="select" id="b-type">
+              <option>Enregistrement studio</option>
+              <option>Mixage seulement</option>
+              <option>Mastering seulement</option>
+              <option>Production complète</option>
+              <option>Location de studio</option>
+              <option>Location d'instrument</option>
+              <option>Concert / Live recording</option>
+              <option>Formation</option>
+              <option>Autre</option>
+            </select>
+          </div>
+          <div class="grid-2">
+            <div class="field"><label class="field__label" for="b-date">Date &amp; heure souhaitées</label><input class="input" id="b-date" type="text" placeholder="Ex : 15 août, après-midi"></div>
+            <div class="field"><label class="field__label" for="b-titres">Nombre de titres</label><input class="input" id="b-titres" type="text" placeholder="Ex : 3"></div>
+          </div>
+          <div class="field">
+            <label class="field__label" for="b-budget">Budget approximatif <span style="color:var(--ash);text-transform:none;letter-spacing:0">(optionnel)</span></label>
+            <input class="input" id="b-budget" type="text" placeholder="Ex : 200–500 $">
+          </div>
+          <div class="field"><label class="field__label" for="b-msg">Détails du projet</label><textarea class="textarea" id="b-msg" placeholder="Décrivez vos besoins, vos références sonores, vos dates."></textarea></div>
+
+          <div class="form-actions">
+            <button class="btn" type="button" id="btn-reserve">Demander la réservation</button>
+            <a class="btn btn--whatsapp" href="https://wa.me/243819797568"><svg class="icon" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 00-8.6 15L2 22l5.2-1.4A10 10 0 1012 2z"/></svg>WhatsApp</a>
+          </div>
+          <p class="form-hint">Vous serez redirigé vers notre espace de réservation sécurisé pour confirmer et régler l'acompte.</p>
+        </div>
+
+        <!-- Medium mode: Iris booking widget embed (hidden unless mode=medium) -->
+        <div class="iris-embed" id="iris-embed" aria-label="Espace de réservation">
+          <!-- iframe src injected by JS when bookingMode === 'medium' -->
+        </div>
+      </div>
+
+      <!-- RIGHT: how it works + deposit -->
+      <aside class="reveal">
+        <p class="eyebrow" style="margin-bottom:var(--sp-4)">Comment ça marche</p>
+        <div class="steps">
+          <div class="step"><span class="step__n">1</span><div><div class="step__t">Décrivez votre projet</div><div class="step__d">Remplissez le formulaire — type de session, dates, détails.</div></div></div>
+          <div class="step"><span class="step__n">2</span><div><div class="step__t">Confirmation du créneau</div><div class="step__d">Nous vérifions la disponibilité et vous confirmons la date.</div></div></div>
+          <div class="step"><span class="step__n">3</span><div><div class="step__t">Acompte sécurisé</div><div class="step__d">Réglez l'acompte par carte ou mobile money pour bloquer le créneau.</div></div></div>
+          <div class="step"><span class="step__n">4</span><div><div class="step__t">Votre session</div><div class="step__d">Le solde est réglé le jour de la session. On s'occupe du reste.</div></div></div>
+        </div>
+
+        <div class="deposit-card">
+          <p class="k">Acompte &amp; paiement</p>
+          <p>Un acompte confirme votre réservation ; le solde est réglé le jour de la session. Paiement sécurisé accepté :</p>
+          <div class="pay-chips">
+            <span class="chip" style="color:#8FE3C0;border-color:#2d5a44">M-Pesa</span>
+            <span class="chip chip--gold">Orange Money</span>
+            <span class="chip" style="color:#85B7EB;border-color:#2a4560">Airtel Money</span>
+            <span class="chip">Carte bancaire</span>
+          </div>
+        </div>
+      </aside>
+
+    </div>
+  </section>
+
+  <div class="quote-band">
+    <div class="ripples" aria-hidden="true"><span></span><span></span><span></span></div>
+    <p class="quote-band__text">« Là où chaque note prend <span style="color:var(--ember)">vie.</span> »</p>
+  </div>
+</main>
+
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer__grid">
+      <div>
+        <div class="footer__logo"><img loading="lazy" decoding="async" src="../assets/images/logo.png" alt="Pyramide Record"></div>
+        <p class="footer__addr">13ème Rue Limete Industriel, Kinshasa, RD Congo<br>+243 819 797 568 · info@pyramidrecord.com</p>
+      </div>
+      <div class="footer__socials">
+        <a href="#" aria-label="Facebook"><svg viewBox="0 0 24 24"><path d="M13 3h4v4h-4a1 1 0 00-1 1v3h5l-1 4h-4v8h-4v-8H8v-4h4V7a4 4 0 014-4z"/></svg></a>
+        <a href="#" aria-label="Instagram"><svg viewBox="0 0 24 24"><path d="M12 7a5 5 0 100 10 5 5 0 000-10zm0 8a3 3 0 110-6 3 3 0 010 6zm5-9a1 1 0 100 2 1 1 0 000-2zM7 2h10a5 5 0 015 5v10a5 5 0 01-5 5H7a5 5 0 01-5-5V7a5 5 0 015-5zm0 2a3 3 0 00-3 3v10a3 3 0 003 3h10a3 3 0 003-3V7a3 3 0 00-3-3z"/></svg></a>
+        <a href="#" aria-label="LinkedIn"><svg viewBox="0 0 24 24"><path d="M6.94 5a2 2 0 11-4 0 2 2 0 014 0zM7 8.48H3V21h4zm6.32 0H9.34V21h3.94v-6.57c0-3.66 4.77-4 4.77 0V21H22v-7.93c0-6.17-7.06-5.94-8.72-2.91z"/></svg></a>
+        <a href="#" aria-label="YouTube"><svg viewBox="0 0 24 24"><path d="M23 12s0-3.5-.45-5.2a2.8 2.8 0 00-2-2C18.9 4.4 12 4.4 12 4.4s-6.9 0-8.55.4a2.8 2.8 0 00-2 2C1 8.5 1 12 1 12s0 3.5.45 5.2a2.8 2.8 0 002 2c1.65.4 8.55.4 8.55.4s6.9 0 8.55-.4a2.8 2.8 0 002-2C23 15.5 23 12 23 12zm-13 3.5v-7l6 3.5z"/></svg></a>
+      </div>
+    </div>
+    <div class="footer__note">© 2025 Pyramide Record — Tous droits réservés · Kinshasa, RD Congo</div>
+  </div>
+</footer>
+
+<script src="../js/main.js"></script>
+<script>
+/* ============================================================
+   BOOKING MODE — Iris Financial handoff
+   ------------------------------------------------------------
+   Controlled by ONE value. In production, this is set by what
+   Iris Financial's Super Admin has toggled active for this studio.
+   The website only READS the mode; the toggle lives in Iris.
+
+   Modes:
+     'light'  — ACTIVE. On-site form; submit hands off to Iris booking URL.
+     'medium' — STUB. Embeds the Iris booking widget in an iframe on this page.
+     'deep'   — STUB. Site talks to Iris via API (availability + booking).
+
+   To switch modes later: change BOOKING.mode (or have Iris inject it).
+   ============================================================ */
+var BOOKING = {
+  mode: 'light',                 // 'light' | 'medium' | 'deep'  (only 'light' wired now)
+  // Point this at Pyramid's Studio Recording booking flow in Iris Financial:
+  irisBookingUrl: 'https://irisfinancial.tech/book/pyramid-record',   // TODO: replace with real URL
+  irisEmbedUrl:   'https://irisfinancial.tech/embed/pyramid-record'   // used only in 'medium'
+};
+
+(function(){
+  var form  = document.getElementById('booking-form');
+  var embed = document.getElementById('iris-embed');
+  var btn   = document.getElementById('btn-reserve');
+
+  function collectParams(){
+    // pass the on-site inputs to Iris so the visitor doesn't retype
+    var ids = ['b-prenom','b-nom','b-email','b-tel','b-type','b-date','b-titres','b-budget','b-msg'];
+    var keys= ['prenom','nom','email','tel','type','date','titres','budget','message'];
+    var p = new URLSearchParams();
+    ids.forEach(function(id,i){
+      var el = document.getElementById(id);
+      if (el && el.value) p.set(keys[i], el.value);
+    });
+    p.set('source','website');
+    return p.toString();
+  }
+
+  if (BOOKING.mode === 'light') {
+    // form visible; submit hands off to Iris (carrying the entered details)
+    if (btn) btn.addEventListener('click', function(){
+      var q = collectParams();
+      window.location.href = BOOKING.irisBookingUrl + (q ? ('?' + q) : '');
+    });
+  }
+  else if (BOOKING.mode === 'medium') {
+    // hide the on-site form, show the embedded Iris widget instead
+    if (form) form.style.display = 'none';
+    if (embed) {
+      embed.style.display = 'block';
+      embed.innerHTML = '<iframe src="' + BOOKING.irisEmbedUrl + '" title="Réservation Pyramide Record" loading="lazy"></iframe>';
+    }
+  }
+  else if (BOOKING.mode === 'deep') {
+    // API mode — placeholder. When built, this fetches availability from Iris
+    // and posts the booking. For now, behaves like light so the page still works.
+    if (btn) btn.addEventListener('click', function(){
+      var q = collectParams();
+      window.location.href = BOOKING.irisBookingUrl + (q ? ('?' + q) : '');
+    });
+  }
+})();
+</script>
+</body>
+</html>

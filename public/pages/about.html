@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>À Propos — Pyramide Record · L'histoire de Leonhel Kabemba</title>
+<meta name="description" content="L'histoire de Pyramide Record et de son fondateur Leonhel Kabemba, diplômé avec mention du programme de la légende du mixage Tony Maserati.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;1,9..144,400;1,9..144,500&family=Archivo:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/tokens.css">
+<link rel="stylesheet" href="../css/components.css">
+<style>
+  .page-hero { padding: var(--sp-8) 0 var(--sp-6); }
+  .about-lede { font-family:var(--font-display); font-weight:400; font-size:clamp(24px,4vw,36px); line-height:1.35; max-width:22ch; margin-top:var(--sp-3); }
+
+  .story-layout { display:grid; grid-template-columns:1fr 340px; gap:var(--sp-8); align-items:start; }
+  .story p { color:var(--sand); font-size:var(--fs-body); line-height:1.85; margin-bottom:var(--sp-5); max-width:62ch; }
+  .story p strong { color:var(--bone); font-weight:500; }
+  .story .yr { color:var(--gold); font-family:var(--font-display); font-style:italic; }
+  .pull { border-left:3px solid var(--gold); padding:var(--sp-2) 0 var(--sp-2) var(--sp-5); margin:var(--sp-6) 0; font-family:var(--font-display); font-style:italic; font-size:var(--fs-h3); color:var(--bone); line-height:1.45; }
+  .closing { font-family:var(--font-display); font-size:var(--fs-lg); color:var(--bone); }
+  .closing strong { color:var(--ember); font-weight:400; font-style:italic; }
+
+  /* Founder aside card */
+  .founder { position:sticky; top:90px; background:var(--panel); border:1px solid var(--hair-2); border-radius:var(--r-lg); overflow:hidden; }
+  .founder__img { aspect-ratio:4/5; }
+  .founder__body { padding:var(--sp-5); }
+  .founder__name { font-family:var(--font-display); font-size:var(--fs-lg); }
+  .founder__role { font-size:var(--fs-xs); letter-spacing:var(--ls-wide); text-transform:uppercase; color:var(--ember); margin-top:2px; }
+  .founder__cred { color:var(--sand); font-size:var(--fs-sm); line-height:1.6; margin-top:var(--sp-3); padding-top:var(--sp-3); border-top:1px solid var(--hair); }
+  .founder__cred b { color:var(--bone); }
+
+  /* Timeline */
+  .timeline { display:grid; grid-template-columns:repeat(3,1fr); gap:var(--sp-5); }
+  .tl { padding-top:var(--sp-4); border-top:2px solid var(--gold); }
+  .tl__yr { font-family:var(--font-display); font-size:28px; color:var(--gold); }
+  .tl__label { font-size:var(--fs-eyebrow); letter-spacing:var(--ls-label); text-transform:uppercase; color:var(--ember); margin:var(--sp-2) 0 var(--sp-1); }
+  .tl__text { color:var(--sand); font-size:var(--fs-sm); line-height:1.6; }
+
+  /* Values */
+  .values { display:grid; grid-template-columns:repeat(3,1fr); gap:var(--sp-4); }
+  .value h3 { font-family:var(--font-display); font-size:var(--fs-h3); margin-bottom:var(--sp-2); }
+  .value p { color:var(--sand); font-size:var(--fs-sm); line-height:1.6; }
+
+  @media(max-width:820px){ .story-layout{grid-template-columns:1fr} .founder{position:static;max-width:340px} .timeline,.values{grid-template-columns:1fr} }
+</style>
+<link rel="icon" type="image/png" href="../assets/images/logo.png">
+<link rel="apple-touch-icon" href="../assets/images/logo.png">
+<link rel="canonical" href="https://pyramidrecord.com/pages/about.html">
+<meta name="theme-color" content="#0D131C">
+<meta property="og:title" content="À Propos — Pyramide Record">
+<meta property="og:description" content="L'histoire de Leonhel Kabemba, diplômé du programme de Tony Maserati.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://pyramidrecord.com/pages/about.html">
+<meta property="og:image" content="https://pyramidrecord.com/assets/images/logo.png">
+<meta property="og:locale" content="fr_FR">
+<meta property="og:site_name" content="Pyramide Record">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "À Propos — Pyramide Record",
+  "description": "L'histoire de Leonhel Kabemba, diplômé du programme de Tony Maserati.",
+  "url": "https://pyramidrecord.com/pages/about.html",
+  "isPartOf": { "@type": "WebSite", "name": "Pyramide Record", "url": "https://pyramidrecord.com" }
+}
+</script>
+</head>
+<body>
+<a href="#main" class="skip-link" style="position:absolute;left:-9999px;top:0;background:var(--crimson);color:#fff;padding:10px 16px;z-index:200;" onfocus="this.style.left='8px';this.style.top='8px'" onblur="this.style.left='-9999px'">Aller au contenu</a>
+
+<header class="header">
+  <nav class="nav wrap" aria-label="Navigation principale">
+    <a class="nav__logo" href="../index.html" aria-label="Pyramide Record — accueil"><img src="../assets/images/logo.png" alt="Pyramide Record"></a>
+    <button class="nav__burger" id="burger" aria-label="Ouvrir le menu" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
+    <div class="nav__menu" id="menu">
+      <a class="nav__link" href="studio.html">Studio</a>
+      <a class="nav__link" href="services.html">Services</a>
+      <a class="nav__link" href="discography.html">Discographie</a>
+      <a class="nav__link" href="academy.html">Academy</a>
+      <a class="nav__link" href="gallery.html">Galerie</a>
+      <a class="nav__link" href="shop.html">Boutique</a>
+      <a class="nav__link" href="about.html" aria-current="page">À&nbsp;Propos</a>
+      <a class="nav__link" href="blog.html">Blog</a>
+      <a class="nav__cta" href="booking.html">Réserver</a>
+    </div>
+  </nav>
+</header>
+
+<main id="main">
+  <section class="page-hero wrap">
+    <p class="eyebrow">À Propos — Notre histoire</p>
+    <p class="about-lede">Le son congolais mérite d'être produit au plus haut niveau international.</p>
+  </section>
+
+  <section class="section-sm wrap">
+    <div class="story-layout">
+      <div class="story reveal">
+        <p><strong>Pyramid Record</strong> est l'idée originale de son fondateur, <strong>Leonhel Kabemba</strong>, dont la vie a été transformée par son père, lui-même musicien, qui lui a appris le piano dès son plus jeune âge. Grâce à un processus d'apprentissage rigoureux, il a découvert tous les aspects de la musique, du solfège à la production musicale, élargissant ainsi ses connaissances et ses compétences.</p>
+
+        <p>En <span class="yr">2021</span>, il a obtenu son diplôme avec mention du programme de formation de la légende du mixage sonore, <strong>Tony Maserati</strong>. Fort d'un portefeuille musical déjà impressionnant, Leon a élargi sa gamme de compétences pour atteindre un niveau supérieur — un niveau que peu d'ingénieurs du son ont atteint.</p>
+
+        <div class="pull">« Après avoir acquis une maîtrise de la musique à un niveau international, c'est en 2022 que Leon est sorti de l'ombre. »</div>
+
+        <p>Il a étendu sa portée d'un public local et national à une échelle internationale. Il a méticuleusement choisi une équipe stratégique pour gérer les affaires et l'aspect technique de Pyramid Record, puis l'a formée intensivement à la maîtrise du métier d'ingénieur du son.</p>
+
+        <p>Chez Pyramid Record, nous embrassons et incarnons tous la vision de notre fondateur. Nous nous efforçons toujours d'obtenir le meilleur, et nous ne nous contentons de rien de moins. Nous sommes très enthousiastes quant à l'avenir qui nous attend.</p>
+
+        <p class="closing">Venez en faire partie — <strong>votre son ne sera plus jamais le même.</strong></p>
+      </div>
+
+      <aside class="founder reveal">
+        <div class="ph founder__img"><small>Portrait · Leonhel Kabemba</small></div>
+        <div class="founder__body">
+          <div class="founder__name">Leonhel Kabemba</div>
+          <div class="founder__role">Fondateur &amp; Ingénieur du son</div>
+          <p class="founder__cred">Diplômé avec mention du programme de <b>Tony Maserati</b> — ingénieur de mixage aux multiples récompenses, ayant travaillé avec les plus grands noms de la musique internationale.</p>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- TIMELINE -->
+  <section class="section wrap reveal">
+    <p class="eyebrow">Le parcours</p>
+    <h2 class="h2" style="margin:var(--sp-2) 0 var(--sp-6)">D'une passion à une vision.</h2>
+    <div class="timeline">
+      <div class="tl">
+        <div class="tl__yr">Origines</div>
+        <div class="tl__label">Le piano, très tôt</div>
+        <p class="tl__text">Formé au piano par son père musicien. Du solfège à la production, un apprentissage rigoureux de tous les aspects de la musique.</p>
+      </div>
+      <div class="tl">
+        <div class="tl__yr">2021</div>
+        <div class="tl__label">Diplôme Maserati</div>
+        <p class="tl__text">Diplômé avec mention du programme de la légende du mixage Tony Maserati — un niveau que peu d'ingénieurs atteignent.</p>
+      </div>
+      <div class="tl">
+        <div class="tl__yr">2022</div>
+        <div class="tl__label">À l'international</div>
+        <p class="tl__text">Extension d'une portée locale à une échelle internationale. Constitution et formation intensive d'une équipe stratégique.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- VALUES -->
+  <section class="section wrap reveal" style="padding-top:0">
+    <p class="eyebrow">Ce qui nous guide</p>
+    <div class="values" style="margin-top:var(--sp-5)">
+      <div class="value">
+        <h3>L'excellence</h3>
+        <p>Nous nous efforçons toujours d'obtenir le meilleur, et ne nous contentons de rien de moins.</p>
+      </div>
+      <div class="value">
+        <h3>Le niveau international</h3>
+        <p>Une expertise technique inspirée par la formation de légendes du mixage mondial.</p>
+      </div>
+      <div class="value">
+        <h3>L'âme du son</h3>
+        <p>Au-delà de la technique, nous capturons l'émotion, la nuance et l'identité de chaque artiste.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="quote-band">
+    <div class="ripples" aria-hidden="true"><span></span><span></span><span></span></div>
+    <p class="quote-band__text">« Venez en faire partie — votre son<br>ne sera plus jamais <span style="color:var(--ember)">le même.</span> »</p>
+  </div>
+
+  <section class="section wrap" style="text-align:center">
+    <a class="btn btn--lg" href="booking.html">Réserver une session</a>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer__grid">
+      <div>
+        <div class="footer__logo"><img loading="lazy" decoding="async" src="../assets/images/logo.png" alt="Pyramide Record"></div>
+        <p class="footer__addr">13ème Rue Limete Industriel, Kinshasa, RD Congo<br>+243 819 797 568 · info@pyramidrecord.com</p>
+      </div>
+      <div class="footer__socials">
+        <a href="#" aria-label="Facebook"><svg viewBox="0 0 24 24"><path d="M13 3h4v4h-4a1 1 0 00-1 1v3h5l-1 4h-4v8h-4v-8H8v-4h4V7a4 4 0 014-4z"/></svg></a>
+        <a href="#" aria-label="Instagram"><svg viewBox="0 0 24 24"><path d="M12 7a5 5 0 100 10 5 5 0 000-10zm0 8a3 3 0 110-6 3 3 0 010 6zm5-9a1 1 0 100 2 1 1 0 000-2zM7 2h10a5 5 0 015 5v10a5 5 0 01-5 5H7a5 5 0 01-5-5V7a5 5 0 015-5zm0 2a3 3 0 00-3 3v10a3 3 0 003 3h10a3 3 0 003-3V7a3 3 0 00-3-3z"/></svg></a>
+        <a href="#" aria-label="LinkedIn"><svg viewBox="0 0 24 24"><path d="M6.94 5a2 2 0 11-4 0 2 2 0 014 0zM7 8.48H3V21h4zm6.32 0H9.34V21h3.94v-6.57c0-3.66 4.77-4 4.77 0V21H22v-7.93c0-6.17-7.06-5.94-8.72-2.91z"/></svg></a>
+        <a href="#" aria-label="YouTube"><svg viewBox="0 0 24 24"><path d="M23 12s0-3.5-.45-5.2a2.8 2.8 0 00-2-2C18.9 4.4 12 4.4 12 4.4s-6.9 0-8.55.4a2.8 2.8 0 00-2 2C1 8.5 1 12 1 12s0 3.5.45 5.2a2.8 2.8 0 002 2c1.65.4 8.55.4 8.55.4s6.9 0 8.55-.4a2.8 2.8 0 002-2C23 15.5 23 12 23 12zm-13 3.5v-7l6 3.5z"/></svg></a>
+      </div>
+    </div>
+    <div class="footer__note">© 2025 Pyramide Record — Tous droits réservés · Kinshasa, RD Congo</div>
+  </div>
+</footer>
+
+<script src="../js/main.js"></script>
+</body>
+</html>

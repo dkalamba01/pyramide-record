@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Boutique — Pyramide Record · Matériel audio pro à Kinshasa</title>
+<meta name="description" content="La boutique de Pyramide Record : microphones, écoutes, consoles, instruments et matériel vidéo de référence. Achat et location à Kinshasa.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;1,9..144,400&family=Archivo:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/tokens.css">
+<link rel="stylesheet" href="../css/components.css">
+<style>
+  .page-hero { padding: var(--sp-8) 0 var(--sp-5); }
+  .page-hero h1 { font-family:var(--font-display); font-weight:400; font-size:var(--fs-h1); line-height:var(--lh-tight); max-width:15ch; margin:var(--sp-3) 0 var(--sp-4); }
+  .page-hero .lede { max-width:640px; }
+
+  .filters { display:flex; gap:var(--sp-2); flex-wrap:wrap; margin-bottom:var(--sp-6); }
+  .filter { font-size:var(--fs-xs); letter-spacing:var(--ls-wide); text-transform:uppercase; color:var(--sand); background:transparent; border:1px solid var(--hair-2); border-radius:20px; padding:8px 16px; cursor:pointer; transition:all var(--dur-fast) var(--ease); }
+  .filter:hover { border-color:var(--gold-dim); color:var(--bone); }
+  .filter.is-active { background:var(--gold); border-color:var(--gold); color:#0B1017; }
+
+  .shop { display:grid; grid-template-columns:repeat(3,1fr); gap:var(--sp-4); }
+  .product { background:var(--panel); border:1px solid var(--hair); border-radius:var(--r-lg); overflow:hidden; display:flex; flex-direction:column; transition:border-color var(--dur) var(--ease), transform var(--dur) var(--ease); }
+  .product:hover { border-color:var(--gold-dim); transform:translateY(-3px); }
+  .product__img { aspect-ratio:4/3; }
+  .product__body { padding:var(--sp-4) var(--sp-5) var(--sp-5); flex:1; display:flex; flex-direction:column; }
+  .product__brand { font-size:var(--fs-eyebrow); letter-spacing:var(--ls-label); color:var(--ember); text-transform:uppercase; margin-bottom:var(--sp-1); }
+  .product__name { font-size:var(--fs-body); color:var(--bone); line-height:1.35; margin-bottom:var(--sp-3); flex:1; }
+  .product__foot { display:flex; align-items:center; justify-content:space-between; gap:var(--sp-3); }
+  .product__tag { font-size:var(--fs-xs); color:var(--sand); }
+  .product__cta { font-size:var(--fs-eyebrow); letter-spacing:var(--ls-wide); text-transform:uppercase; color:var(--gold); border-bottom:1px solid var(--gold-dim); padding-bottom:2px; }
+  .product.is-hidden { display:none; }
+
+  .shop-note { background:var(--panel); border:1px solid var(--hair-2); border-radius:var(--r-lg); padding:var(--sp-5) var(--sp-6); margin-top:var(--sp-7); display:grid; grid-template-columns:1fr auto; gap:var(--sp-5); align-items:center; }
+  .shop-note h3 { font-family:var(--font-display); font-size:var(--fs-lg); margin-bottom:var(--sp-1); }
+  .shop-note p { color:var(--sand); font-size:var(--fs-sm); max-width:52ch; }
+
+  @media(max-width:900px){ .shop{grid-template-columns:1fr 1fr} }
+  @media(max-width:600px){ .shop{grid-template-columns:1fr} .shop-note{grid-template-columns:1fr} }
+</style>
+<link rel="icon" type="image/png" href="../assets/images/logo.png">
+<link rel="apple-touch-icon" href="../assets/images/logo.png">
+<link rel="canonical" href="https://pyramidrecord.com/pages/shop.html">
+<meta name="theme-color" content="#0D131C">
+<meta property="og:title" content="Boutique — Pyramide Record">
+<meta property="og:description" content="Matériel audio et vidéo de référence. Achat et location à Kinshasa.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://pyramidrecord.com/pages/shop.html">
+<meta property="og:image" content="https://pyramidrecord.com/assets/images/logo.png">
+<meta property="og:locale" content="fr_FR">
+<meta property="og:site_name" content="Pyramide Record">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Boutique — Pyramide Record",
+  "description": "Matériel audio et vidéo de référence. Achat et location à Kinshasa.",
+  "url": "https://pyramidrecord.com/pages/shop.html",
+  "isPartOf": { "@type": "WebSite", "name": "Pyramide Record", "url": "https://pyramidrecord.com" }
+}
+</script>
+</head>
+<body>
+<a href="#main" class="skip-link" style="position:absolute;left:-9999px;top:0;background:var(--crimson);color:#fff;padding:10px 16px;z-index:200;" onfocus="this.style.left='8px';this.style.top='8px'" onblur="this.style.left='-9999px'">Aller au contenu</a>
+
+<header class="header">
+  <nav class="nav wrap" aria-label="Navigation principale">
+    <a class="nav__logo" href="../index.html" aria-label="Pyramide Record — accueil"><img src="../assets/images/logo.png" alt="Pyramide Record"></a>
+    <button class="nav__burger" id="burger" aria-label="Ouvrir le menu" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
+    <div class="nav__menu" id="menu">
+      <a class="nav__link" href="studio.html">Studio</a>
+      <a class="nav__link" href="services.html">Services</a>
+      <a class="nav__link" href="discography.html">Discographie</a>
+      <a class="nav__link" href="academy.html">Academy</a>
+      <a class="nav__link" href="gallery.html">Galerie</a>
+      <a class="nav__link" href="shop.html" aria-current="page">Boutique</a>
+      <a class="nav__link" href="about.html">À&nbsp;Propos</a>
+      <a class="nav__link" href="blog.html">Blog</a>
+      <a class="nav__cta" href="booking.html">Réserver</a>
+    </div>
+  </nav>
+</header>
+
+<main id="main">
+  <section class="page-hero wrap">
+    <p class="eyebrow">Boutique</p>
+    <h1>Le matériel des professionnels.</h1>
+    <p class="lede">Une sélection d'équipement audio et vidéo de référence — les mêmes marques qui équipent notre studio. Disponible à l'achat ou à la location, avec les conseils de notre équipe.</p>
+  </section>
+
+  <section class="section-sm wrap reveal">
+    <div class="filters" role="tablist" aria-label="Filtrer la boutique">
+      <button class="filter is-active" data-filter="all">Tout</button>
+      <button class="filter" data-filter="micros">Microphones</button>
+      <button class="filter" data-filter="ecoutes">Écoutes &amp; casques</button>
+      <button class="filter" data-filter="consoles">Consoles</button>
+      <button class="filter" data-filter="claviers">Claviers</button>
+      <button class="filter" data-filter="batteries">Batteries</button>
+      <button class="filter" data-filter="video">Vidéo</button>
+    </div>
+
+    <div class="shop">
+      <!-- MICROS -->
+      <article class="product" data-cat="micros"><div class="ph product__img"><small>Photo produit</small></div><div class="product__body"><div class="product__brand">Neumann</div><div class="product__name">TLM 103 — Microphone à condensateur (Nickel)</div><div class="product__foot"><span class="product__tag">Achat · Location</span><span class="product__cta">Demander</span></div></div></article>
+      <article class="product" data-cat="micros"><div class="ph product__img"><small>Photo produit</small></div><div class="product__body"><div class="product__brand">Neumann</div><div class="product__name">KMS 104 — Microphone vocal à condensateur</div><div class="product__foot"><span class="product__tag">Achat · Location</span><span class="product__cta">Demander</span></div></div></article>
+      <article class="product" data-cat="micros"><div class="ph product__img"><small>Photo produit</small></div><div class="product__body"><div class="product__brand">Shure</div><div class="product__name">SM7B — Microphone voix de référence</div><div class="product__foot"><span class="product__tag">Achat · Location</span><span class="product__cta">Demander</span></div></div></article>
+      <article class="product" data-cat="micros"><div class="ph product__img"><small>Photo produit</small></div><div class="product__body"><div class="product__brand">Manley Labs</div><div class="product__name">Microphone à tube cardioïde de référence</div><div class="product__foot"><span class="product__tag">Achat · Location</span><span class="product__cta">Demander</span></div></div></article>
+      <article class="product" data-cat="micros"><div class="ph product__img"><small>Photo produit</small></div><div class="product__body"><div class="product__brand">Avantone Pro</div><div class="product__name">CV-12 — Condensateur multi-motifs à grande capsule</div><div class="product__foot"><span class="product__tag">Achat · Location</span><span class="product__cta">Demander</span></div></div></article>
+      <article class="product" data-cat="micros"><div class="ph product__img"><small>Photo produit</small></div><div class="product__body"><div class="product__brand">Shure</div><div class="product__name">Unidyne 55SH Série II — Dynamique cardioïde</div><div class="product__foot"><span class="product__tag">Achat · Location</span><span class="product__cta">Demander</span></div></div></article>
+
+      <!-- ECOUTES -->
+      <article class="product" data-cat="ecoutes"><div class="ph product__img"><small>Photo produit</small></div><div class="product__body"><div class="product__brand">Yamaha</div><div class="product__name">HS8 — Enceinte de monitoring amplifiée 8″</div><div class="product__foot"><span class="product__tag">Achat</span><span class="product__cta">Demander</span></div></div></article>
+      <article class="product" data-cat="ecoutes"><div class="ph product__img"><small>Photo produit</small></div><div class="product__body"><div class="product__brand">KRK</div><div class="product__name">ROKIT 5 / 7 / 8 / 10-3 G4 — Moniteurs de studio</div><div class="product__foot"><span class="product__tag">Achat</span><span class="product__cta">Demander</span></div></div></article>
+      <article class="product" data-cat="ecoutes"><div class="ph product__img"><small>Photo produit</small></div><div class="product__body"><div class="product__brand">ESI</div><div class="product__name">uniK 08+ — Moniteur actif de référence 8″</div><div class="product__foot"><span class="product__tag">Achat</span><span class="product__cta">Demander</span></div></div></article>
+      <article class="product" data-cat="ecoutes"><div class="ph product__img"><small>Photo produit</small></div><div class="product__body"><div class="product__brand">Beyerdynamic</div><div class="product__name">DT 1990 Pro — Casque de référence à dos ouvert</div><div class="product__foot"><span class="product__tag">Achat</span><span class="product__cta">Demander</span></div></div></article>
+      <article class="product" data-cat="ecoutes"><div class="ph product__img"><small>Photo produit</small></div><div class="product__body"><div class="product__brand">Shure</div><div class="product__name">SRH1540 — Casque fermé haut de gamme</div><div class="product__foot"><span class="product__tag">Achat</span><span class="product__cta">Demander</span></div></div></article>
+      <article class="product" data-cat="ecoutes"><div class="ph product__img"><small>Photo produit</small></div><div class="product__body"><div class="product__brand">Westone</div><div class="product__name">Pro X30 — Moniteurs intra-auriculaires</div><div class="product__foot"><span class="product__tag">Achat</span><span class="product__cta">Demander</span></div></div></article>
+
+      <!-- CONSOLES -->
+      <article class="product" data-cat="consoles"><div class="ph product__img"><small>Photo produit</small></div><div class="product__body"><div class="product__brand">AVID</div><div class="product__name">VENUE S6L-32D — Surface de contrôle</div><div class="product__foot"><span class="product__tag">Sur devis</span><span class="product__cta">Demander</span></div></div></article>
+      <article class="product" data-cat="consoles"><div class="ph product__img"><small>Photo produit</small></div><div class="product__body"><div class="product__brand">DiGiCo</div><div class="product__name">Quantum 338 — Console numérique</div><div class="product__foot"><span class="product__tag">Sur devis</span><span class="product__cta">Demander</span></div></div></article>
+      <article class="product" data-cat="consoles"><div class="ph product__img"><small>Photo produit</small></div><div class="product__body"><div class="product__brand">PreSonus</div><div class="product__name">StudioLive 64S — Console de mixage numérique</div><div class="product__foot"><span class="product__tag">Achat</span><span class="product__cta">Demander</span></div></div></article>
+      <article class="product" data-cat="consoles"><div class="ph product__img"><small>Photo produit</small></div><div class="product__body"><div class="product__brand">Steven Slate</div><div class="product__name">RAVEN MTI2 Core Station — Console tactile</div><div class="product__foot"><span class="product__tag">Achat</span><span class="product__cta">Demander</span></div></div></article>
+
+      <!-- CLAVIERS -->
+      <article class="product" data-cat="claviers"><div class="ph product__img"><small>Photo produit</small></div><div class="product__body"><div class="product__brand">Nord</div><div class="product__name">Stage 4 (73 / 88) — Clavier de scène</div><div class="product__foot"><span class="product__tag">Achat · Location</span><span class="product__cta">Demander</span></div></div></article>
+      <article class="product" data-cat="claviers"><div class="ph product__img"><small>Photo produit</small></div><div class="product__body"><div class="product__brand">Nord</div><div class="product__name">Wave 2 — Synthétiseur de performance 61 touches</div><div class="product__foot"><span class="product__tag">Achat · Location</span><span class="product__cta">Demander</span></div></div></article>
+      <article class="product" data-cat="claviers"><div class="ph product__img"><small>Photo produit</small></div><div class="product__body"><div class="product__brand">Korg</div><div class="product__name">Nautilus 88 — Station de travail synthétiseur</div><div class="product__foot"><span class="product__tag">Achat · Location</span><span class="product__cta">Demander</span></div></div></article>
+
+      <!-- BATTERIES / GUITARES -->
+      <article class="product" data-cat="batteries"><div class="ph product__img"><small>Photo produit</small></div><div class="product__body"><div class="product__brand">TAMA</div><div class="product__name">Starclassic Performer — Pack 5 fûts, grosse caisse 22″</div><div class="product__foot"><span class="product__tag">Achat</span><span class="product__cta">Demander</span></div></div></article>
+      <article class="product" data-cat="batteries"><div class="ph product__img"><small>Photo produit</small></div><div class="product__body"><div class="product__brand">EFNOTE</div><div class="product__name">PRO 707 — Kit de batterie électronique complet</div><div class="product__foot"><span class="product__tag">Achat</span><span class="product__cta">Demander</span></div></div></article>
+      <article class="product" data-cat="batteries"><div class="ph product__img"><small>Photo produit</small></div><div class="product__body"><div class="product__brand">Alesis</div><div class="product__name">Strike MultiPad — Tapis de percussion (Octapad)</div><div class="product__foot"><span class="product__tag">Achat</span><span class="product__cta">Demander</span></div></div></article>
+      <article class="product" data-cat="batteries"><div class="ph product__img"><small>Photo produit</small></div><div class="product__body"><div class="product__brand">Fender · Gretsch · Cordoba</div><div class="product__name">Guitares électro-acoustiques &amp; électriques</div><div class="product__foot"><span class="product__tag">Achat · Location</span><span class="product__cta">Demander</span></div></div></article>
+
+      <!-- VIDEO -->
+      <article class="product" data-cat="video"><div class="ph product__img"><small>Photo produit</small></div><div class="product__body"><div class="product__brand">Sony</div><div class="product__name">a7 III — Appareil photo hybride sans miroir</div><div class="product__foot"><span class="product__tag">Achat · Location</span><span class="product__cta">Demander</span></div></div></article>
+      <article class="product" data-cat="video"><div class="ph product__img"><small>Photo produit</small></div><div class="product__body"><div class="product__brand">Tamron</div><div class="product__name">70-300mm f/4.5-6.3 Di III RXD — Sony E</div><div class="product__foot"><span class="product__tag">Achat · Location</span><span class="product__cta">Demander</span></div></div></article>
+      <article class="product" data-cat="video"><div class="ph product__img"><small>Photo produit</small></div><div class="product__body"><div class="product__brand">PTZOptics</div><div class="product__name">Producer-SE — Ensemble caméra &amp; contrôleur</div><div class="product__foot"><span class="product__tag">Achat</span><span class="product__cta">Demander</span></div></div></article>
+    </div>
+
+    <div class="shop-note">
+      <div>
+        <h3>Achat ou location — parlons-en.</h3>
+        <p>Notre catalogue s'étend au-delà de cette sélection. Contactez-nous pour un devis, une disponibilité, ou un conseil sur l'équipement adapté à votre projet.</p>
+      </div>
+      <a class="btn btn--ghost" href="contact.html">Nous contacter</a>
+    </div>
+  </section>
+
+  <div class="quote-band">
+    <div class="ripples" aria-hidden="true"><span></span><span></span><span></span></div>
+    <p class="quote-band__text">« Le même équipement qui fait notre <span style="color:var(--ember)">son.</span> »</p>
+  </div>
+</main>
+
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer__grid">
+      <div>
+        <div class="footer__logo"><img loading="lazy" decoding="async" src="../assets/images/logo.png" alt="Pyramide Record"></div>
+        <p class="footer__addr">13ème Rue Limete Industriel, Kinshasa, RD Congo<br>+243 819 797 568 · info@pyramidrecord.com</p>
+      </div>
+      <div class="footer__socials">
+        <a href="#" aria-label="Facebook"><svg viewBox="0 0 24 24"><path d="M13 3h4v4h-4a1 1 0 00-1 1v3h5l-1 4h-4v8h-4v-8H8v-4h4V7a4 4 0 014-4z"/></svg></a>
+        <a href="#" aria-label="Instagram"><svg viewBox="0 0 24 24"><path d="M12 7a5 5 0 100 10 5 5 0 000-10zm0 8a3 3 0 110-6 3 3 0 010 6zm5-9a1 1 0 100 2 1 1 0 000-2zM7 2h10a5 5 0 015 5v10a5 5 0 01-5 5H7a5 5 0 01-5-5V7a5 5 0 015-5zm0 2a3 3 0 00-3 3v10a3 3 0 003 3h10a3 3 0 003-3V7a3 3 0 00-3-3z"/></svg></a>
+        <a href="#" aria-label="LinkedIn"><svg viewBox="0 0 24 24"><path d="M6.94 5a2 2 0 11-4 0 2 2 0 014 0zM7 8.48H3V21h4zm6.32 0H9.34V21h3.94v-6.57c0-3.66 4.77-4 4.77 0V21H22v-7.93c0-6.17-7.06-5.94-8.72-2.91z"/></svg></a>
+        <a href="#" aria-label="YouTube"><svg viewBox="0 0 24 24"><path d="M23 12s0-3.5-.45-5.2a2.8 2.8 0 00-2-2C18.9 4.4 12 4.4 12 4.4s-6.9 0-8.55.4a2.8 2.8 0 00-2 2C1 8.5 1 12 1 12s0 3.5.45 5.2a2.8 2.8 0 002 2c1.65.4 8.55.4 8.55.4s6.9 0 8.55-.4a2.8 2.8 0 002-2C23 15.5 23 12 23 12zm-13 3.5v-7l6 3.5z"/></svg></a>
+      </div>
+    </div>
+    <div class="footer__note">© 2025 Pyramide Record — Tous droits réservés · Kinshasa, RD Congo</div>
+  </div>
+</footer>
+
+<script src="../js/main.js"></script>
+<script>
+  (function(){
+    var filters = document.querySelectorAll('.filter');
+    var items = document.querySelectorAll('.product');
+    filters.forEach(function(btn){
+      btn.addEventListener('click', function(){
+        filters.forEach(function(f){ f.classList.remove('is-active'); });
+        btn.classList.add('is-active');
+        var cat = btn.getAttribute('data-filter');
+        items.forEach(function(item){
+          var show = cat === 'all' || item.getAttribute('data-cat') === cat;
+          item.classList.toggle('is-hidden', !show);
+        });
+      });
+    });
+  })();
+</script>
+</body>
+</html>

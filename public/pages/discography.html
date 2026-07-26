@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Discographie — Pyramide Record · Kinshasa</title>
+<meta name="description" content="Les productions de Pyramide Record : musique gospel, musique non-gospel, sessions live et podcasts. Enregistrés avec une expertise de niveau international à Kinshasa.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;1,9..144,400&family=Archivo:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/tokens.css">
+<link rel="stylesheet" href="../css/components.css">
+<style>
+  .page-hero { padding: var(--sp-8) 0 var(--sp-5); }
+  .page-hero h1 { font-family:var(--font-display); font-weight:400; font-size:var(--fs-h1); line-height:var(--lh-tight); max-width:14ch; margin:var(--sp-3) 0 var(--sp-4); }
+  .page-hero .lede { max-width:640px; }
+
+  /* A répertoire is a fully self-contained section — never mixed with the other */
+  .rep-section { padding: var(--sp-8) 0; border-top: 1px solid var(--hair); }
+  .rep-section__head { margin-bottom: var(--sp-5); }
+  .rep-section__eyebrow { color: var(--ember); }
+  .rep-section__title { font-family:var(--font-display); font-weight:400; font-size:var(--fs-h2); margin:var(--sp-2) 0 var(--sp-3); }
+  .rep-section__intro { color:var(--sand); font-size:var(--fs-body); line-height:var(--lh-body); max-width:64ch; }
+  .rep-section__intro strong { color:var(--bone); font-weight:500; }
+
+  .verset { background:var(--panel); border:1px solid var(--hair-2); border-left:3px solid var(--gold); border-radius:var(--r-md); padding:var(--sp-5); margin:var(--sp-5) 0; max-width:640px; }
+  .verset__label { font-size:var(--fs-eyebrow); letter-spacing:var(--ls-label); color:var(--ember); text-transform:uppercase; margin-bottom:var(--sp-2); }
+  .verset__text { font-family:var(--font-display); font-style:italic; font-size:var(--fs-lg); line-height:1.5; color:var(--bone); }
+  .verset__ref { color:var(--sand); font-size:var(--fs-sm); margin-top:var(--sp-2); }
+
+  .catalog { display:grid; grid-template-columns:repeat(4,1fr); gap:var(--sp-4); margin-top:var(--sp-5); }
+  .release { }
+  .release__art { aspect-ratio:1; border-radius:var(--r-md); margin-bottom:var(--sp-2); }
+  .release__title { font-size:var(--fs-sm); color:var(--bone); line-height:1.3; }
+  .release__artist { font-size:var(--fs-xs); color:var(--ash); margin-top:2px; }
+
+  .live-list { border-top:1px solid var(--hair); margin-top:var(--sp-4); }
+  .live-item { display:flex; align-items:center; gap:var(--sp-4); padding:var(--sp-3) 0; border-bottom:1px solid var(--hair); }
+  .live-item__play { width:34px; height:34px; border-radius:50%; border:1px solid var(--gold-dim); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+  .live-item__play svg { width:12px; height:12px; fill:var(--gold); }
+  .live-item__title { font-size:var(--fs-sm); color:var(--bone); }
+  .live-item__artist { font-size:var(--fs-xs); color:var(--ash); }
+
+  .streams { display:flex; gap:var(--sp-3); flex-wrap:wrap; margin-top:var(--sp-5); }
+  .stream-chip { display:inline-flex; align-items:center; gap:6px; font-size:var(--fs-xs); letter-spacing:var(--ls-wide); text-transform:uppercase; color:var(--sand); border:1px solid var(--hair-2); border-radius:20px; padding:6px 14px; transition:border-color var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease); }
+  .stream-chip:hover { border-color:var(--gold-dim); color:var(--bone); }
+
+  @media(max-width:820px){ .catalog{grid-template-columns:1fr 1fr} }
+</style>
+<link rel="icon" type="image/png" href="../assets/images/logo.png">
+<link rel="apple-touch-icon" href="../assets/images/logo.png">
+<link rel="canonical" href="https://pyramidrecord.com/pages/discography.html">
+<meta name="theme-color" content="#0D131C">
+<meta property="og:title" content="Discographie — Pyramide Record">
+<meta property="og:description" content="Nos productions gospel et non-gospel, sessions live et podcasts.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://pyramidrecord.com/pages/discography.html">
+<meta property="og:image" content="https://pyramidrecord.com/assets/images/logo.png">
+<meta property="og:locale" content="fr_FR">
+<meta property="og:site_name" content="Pyramide Record">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Discographie — Pyramide Record",
+  "description": "Nos productions gospel et non-gospel, sessions live et podcasts.",
+  "url": "https://pyramidrecord.com/pages/discography.html",
+  "isPartOf": { "@type": "WebSite", "name": "Pyramide Record", "url": "https://pyramidrecord.com" }
+}
+</script>
+</head>
+<body>
+<a href="#main" class="skip-link" style="position:absolute;left:-9999px;top:0;background:var(--crimson);color:#fff;padding:10px 16px;z-index:200;" onfocus="this.style.left='8px';this.style.top='8px'" onblur="this.style.left='-9999px'">Aller au contenu</a>
+
+<header class="header">
+  <nav class="nav wrap" aria-label="Navigation principale">
+    <a class="nav__logo" href="../index.html" aria-label="Pyramide Record — accueil"><img src="../assets/images/logo.png" alt="Pyramide Record"></a>
+    <button class="nav__burger" id="burger" aria-label="Ouvrir le menu" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
+    <div class="nav__menu" id="menu">
+      <a class="nav__link" href="studio.html">Studio</a>
+      <a class="nav__link" href="services.html">Services</a>
+      <a class="nav__link" href="discography.html" aria-current="page">Discographie</a>
+      <a class="nav__link" href="academy.html">Academy</a>
+      <a class="nav__link" href="gallery.html">Galerie</a>
+      <a class="nav__link" href="shop.html">Boutique</a>
+      <a class="nav__link" href="about.html">À&nbsp;Propos</a>
+      <a class="nav__link" href="blog.html">Blog</a>
+      <a class="nav__cta" href="booking.html">Réserver</a>
+    </div>
+  </nav>
+</header>
+
+<main id="main">
+  <section class="page-hero wrap">
+    <p class="eyebrow">Discographie</p>
+    <h1>Ils ont enregistré chez nous.</h1>
+    <p class="lede">Pyramid Record est fier de démontrer la gamme et la qualité des enregistrements produits pour nos clients. Notre portefeuille comprend de la musique gospel et non-gospel, ainsi que des sessions live et des podcasts.</p>
+    <div class="streams" aria-label="Plateformes d'écoute">
+      <span class="stream-chip">Spotify</span>
+      <span class="stream-chip">Apple Music</span>
+      <span class="stream-chip">YouTube</span>
+      <span class="stream-chip">Audiomack</span>
+      <span class="stream-chip">Deezer</span>
+    </div>
+  </section>
+
+  <!-- ============ RÉPERTOIRE GOSPEL (self-contained) ============ -->
+  <section class="rep-section wrap reveal">
+    <div class="rep-section__head">
+      <p class="eyebrow rep-section__eyebrow">Répertoire spirituel</p>
+      <h2 class="rep-section__title">Musique Gospel</h2>
+      <p class="rep-section__intro">Chez Pyramid Record, nous comprenons la signification profonde et l'importance spirituelle de la musique Gospel. Ce n'est pas seulement un genre ; c'est un <strong>message, un témoignage et une source d'élévation</strong>. Nous nous engageons à capturer la puissance des chœurs, la clarté des voix principales et l'impact émotionnel des arrangements — garantissant un mixage qui transmet fidèlement votre foi et inspire votre public.</p>
+    </div>
+
+    <div class="verset">
+      <p class="verset__label">Verset biblique</p>
+      <p class="verset__text">« Chantez à l'Éternel un cantique nouveau, car il a fait des choses merveilleuses. »</p>
+      <p class="verset__ref">Psaume 98:1</p>
+    </div>
+
+    <div class="catalog">
+      <div class="release"><div class="ph release__art"><small>Pochette</small></div><div class="release__title">Ciel sur Terre</div><div class="release__artist">Hatthie Kashoba</div></div>
+      <div class="release"><div class="ph release__art"><small>Pochette</small></div><div class="release__title">Natondi Nkolo</div><div class="release__artist">Seth Mulumba</div></div>
+      <div class="release"><div class="ph release__art"><small>Pochette</small></div><div class="release__title">Worship Time</div><div class="release__artist">Seth Mulumba</div></div>
+      <div class="release"><div class="ph release__art"><small>Pochette</small></div><div class="release__title">Culte des Chants</div><div class="release__artist">Enoch Mulopo</div></div>
+    </div>
+
+    <p class="eyebrow" style="margin:var(--sp-6) 0 0">Sessions live · Culte en direct</p>
+    <div class="live-list">
+      <div class="live-item"><span class="live-item__play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span><div><div class="live-item__title">Le Guide · Ciel-sur-Terre</div><div class="live-item__artist">Hatthie Kashoba</div></div></div>
+      <div class="live-item"><span class="live-item__play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span><div><div class="live-item__title">Natondi Nkolo · Concert Culte Live</div><div class="live-item__artist">Seth Mulumba</div></div></div>
+      <div class="live-item"><span class="live-item__play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span><div><div class="live-item__title">Culte des Chants</div><div class="live-item__artist">Enoch Mulopo</div></div></div>
+    </div>
+  </section>
+
+  <!-- ============ RÉPERTOIRE NON-GOSPEL (self-contained) ============ -->
+  <section class="rep-section wrap reveal">
+    <div class="rep-section__head">
+      <p class="eyebrow rep-section__eyebrow">Répertoire général</p>
+      <h2 class="rep-section__title">Musique Non Gospel</h2>
+      <p class="rep-section__intro">Pyramid Record est un studio où l'excellence technique rencontre la diversité créative. Notre studio est équipé pour sculpter le son parfait, quel que soit votre style — <strong>Pop, R&amp;B, Hip-Hop, Rock, Jazz</strong> ou musique expérimentale. Forts d'une expérience de niveau international, nous excellons à définir l'identité sonore unique de chaque artiste : clarté dynamique, impact percutant des basses, et cohérence professionnelle.</p>
+    </div>
+
+    <div class="catalog">
+      <div class="release"><div class="ph release__art"><small>Pochette</small></div><div class="release__title">Désolé (Clip officiel)</div><div class="release__artist">Héritier Wata</div></div>
+      <div class="release"><div class="ph release__art"><small>Pochette</small></div><div class="release__title">Amore (Clip officiel)</div><div class="release__artist">Fally Ipupa</div></div>
+      <div class="release"><div class="ph release__art"><small>Pochette</small></div><div class="release__title">Showbuzz · Concert</div><div class="release__artist">Enoch Mulopo</div></div>
+      <div class="release"><div class="ph release__art"><small>Pochette</small></div><div class="release__title">Podcasts &amp; créations orales</div><div class="release__artist">Divers</div></div>
+    </div>
+  </section>
+
+  <div class="quote-band">
+    <div class="ripples" aria-hidden="true"><span></span><span></span><span></span></div>
+    <p class="quote-band__text">« Votre son ne sera plus jamais <span style="color:var(--ember)">le même.</span> »</p>
+  </div>
+
+  <section class="section wrap" style="text-align:center">
+    <a class="btn btn--lg" href="booking.html">Réserver votre session</a>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer__grid">
+      <div>
+        <div class="footer__logo"><img loading="lazy" decoding="async" src="../assets/images/logo.png" alt="Pyramide Record"></div>
+        <p class="footer__addr">13ème Rue Limete Industriel, Kinshasa, RD Congo<br>+243 819 797 568 · info@pyramidrecord.com</p>
+      </div>
+      <div class="footer__socials">
+        <a href="#" aria-label="Facebook"><svg viewBox="0 0 24 24"><path d="M13 3h4v4h-4a1 1 0 00-1 1v3h5l-1 4h-4v8h-4v-8H8v-4h4V7a4 4 0 014-4z"/></svg></a>
+        <a href="#" aria-label="Instagram"><svg viewBox="0 0 24 24"><path d="M12 7a5 5 0 100 10 5 5 0 000-10zm0 8a3 3 0 110-6 3 3 0 010 6zm5-9a1 1 0 100 2 1 1 0 000-2zM7 2h10a5 5 0 015 5v10a5 5 0 01-5 5H7a5 5 0 01-5-5V7a5 5 0 015-5zm0 2a3 3 0 00-3 3v10a3 3 0 003 3h10a3 3 0 003-3V7a3 3 0 00-3-3z"/></svg></a>
+        <a href="#" aria-label="LinkedIn"><svg viewBox="0 0 24 24"><path d="M6.94 5a2 2 0 11-4 0 2 2 0 014 0zM7 8.48H3V21h4zm6.32 0H9.34V21h3.94v-6.57c0-3.66 4.77-4 4.77 0V21H22v-7.93c0-6.17-7.06-5.94-8.72-2.91z"/></svg></a>
+        <a href="#" aria-label="YouTube"><svg viewBox="0 0 24 24"><path d="M23 12s0-3.5-.45-5.2a2.8 2.8 0 00-2-2C18.9 4.4 12 4.4 12 4.4s-6.9 0-8.55.4a2.8 2.8 0 00-2 2C1 8.5 1 12 1 12s0 3.5.45 5.2a2.8 2.8 0 002 2c1.65.4 8.55.4 8.55.4s6.9 0 8.55-.4a2.8 2.8 0 002-2C23 15.5 23 12 23 12zm-13 3.5v-7l6 3.5z"/></svg></a>
+      </div>
+    </div>
+    <div class="footer__note">© 2025 Pyramide Record — Tous droits réservés · Kinshasa, RD Congo</div>
+  </div>
+</footer>
+
+<script src="../js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Academy — Pyramide Record · Formation audio à Kinshasa</title>
+<meta name="description" content="Pyramid Academy : formez-vous à la prise de son, au mixage et au mastering avec des ingénieurs de niveau international. Module 1 en ligne dès 300 $.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;1,9..144,400&family=Archivo:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/tokens.css">
+<link rel="stylesheet" href="../css/components.css">
+<style>
+  .page-hero { padding: var(--sp-8) 0 var(--sp-5); }
+  .page-hero h1 { font-family:var(--font-display); font-weight:400; font-size:var(--fs-h1); line-height:var(--lh-tight); max-width:15ch; margin:var(--sp-3) 0 var(--sp-4); }
+  .page-hero .lede { max-width:640px; }
+
+  /* Featured course card */
+  .course { display:grid; grid-template-columns:1.2fr 1fr; gap:0; background:var(--panel); border:1px solid var(--hair-2); border-radius:var(--r-lg); overflow:hidden; }
+  .course__body { padding:var(--sp-6); }
+  .course__tag { font-size:var(--fs-eyebrow); letter-spacing:var(--ls-label); color:var(--ember); text-transform:uppercase; }
+  .course__title { font-family:var(--font-display); font-weight:400; font-size:var(--fs-h2); margin:var(--sp-2) 0 var(--sp-3); }
+  .course__desc { color:var(--sand); font-size:var(--fs-body); line-height:var(--lh-body); margin-bottom:var(--sp-4); max-width:52ch; }
+  .course__meta { display:flex; gap:var(--sp-5); margin-bottom:var(--sp-5); }
+  .course__meta div span { display:block; }
+  .course__meta .k { font-size:var(--fs-eyebrow); letter-spacing:var(--ls-wide); color:var(--ash); text-transform:uppercase; }
+  .course__meta .v { font-family:var(--font-display); font-size:var(--fs-lg); color:var(--bone); margin-top:2px; }
+  .course__price { font-family:var(--font-display); color:var(--gold); }
+  .course__aside { background:var(--panel-2); border-left:1px solid var(--hair); padding:var(--sp-6); display:flex; flex-direction:column; justify-content:center; }
+  .course__aside .k { font-size:var(--fs-eyebrow); letter-spacing:var(--ls-label); color:var(--ember); text-transform:uppercase; margin-bottom:var(--sp-3); }
+  .course__aside ul li { color:var(--sand); font-size:var(--fs-sm); padding:6px 0 6px 20px; position:relative; }
+  .course__aside ul li::before { content:'✓'; position:absolute; left:0; color:var(--gold); }
+
+  /* Curriculum */
+  .curriculum { }
+  .mod { display:grid; grid-template-columns:56px 1fr; gap:var(--sp-4); padding:var(--sp-5) 0; border-top:1px solid var(--hair); }
+  .mod:last-child { border-bottom:1px solid var(--hair); }
+  .mod__num { font-family:var(--font-display); font-size:26px; color:var(--gold); }
+  .mod__title { font-size:var(--fs-lg); margin-bottom:4px; }
+  .mod__desc { color:var(--sand); font-size:var(--fs-sm); }
+
+  /* Learning paths (articles by topic) */
+  .paths { display:grid; grid-template-columns:repeat(3,1fr); gap:var(--sp-4); }
+  .path { background:var(--panel); border:1px solid var(--hair); border-radius:var(--r-lg); padding:var(--sp-5); }
+  .path__title { font-family:var(--font-display); font-size:var(--fs-h3); margin-bottom:var(--sp-3); }
+  .path__list li { padding:8px 0; border-top:1px solid var(--hair); }
+  .path__list li:first-child { border-top:none; }
+  .path__list a { color:var(--sand); font-size:var(--fs-sm); line-height:1.4; transition:color var(--dur-fast) var(--ease); display:block; }
+  .path__list a:hover { color:var(--bone); }
+  @media(max-width:820px){ .course{grid-template-columns:1fr} .course__aside{border-left:none;border-top:1px solid var(--hair)} .paths{grid-template-columns:1fr} }
+</style>
+<link rel="icon" type="image/png" href="../assets/images/logo.png">
+<link rel="apple-touch-icon" href="../assets/images/logo.png">
+<link rel="canonical" href="https://pyramidrecord.com/pages/academy.html">
+<meta name="theme-color" content="#0D131C">
+<meta property="og:title" content="Academy — Pyramide Record">
+<meta property="og:description" content="Formez-vous à la prise de son, au mixage et au mastering. Module 1 dès 300 $.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://pyramidrecord.com/pages/academy.html">
+<meta property="og:image" content="https://pyramidrecord.com/assets/images/logo.png">
+<meta property="og:locale" content="fr_FR">
+<meta property="og:site_name" content="Pyramide Record">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Academy — Pyramide Record",
+  "description": "Formez-vous à la prise de son, au mixage et au mastering. Module 1 dès 300 $.",
+  "url": "https://pyramidrecord.com/pages/academy.html",
+  "isPartOf": { "@type": "WebSite", "name": "Pyramide Record", "url": "https://pyramidrecord.com" }
+}
+</script>
+</head>
+<body>
+<a href="#main" class="skip-link" style="position:absolute;left:-9999px;top:0;background:var(--crimson);color:#fff;padding:10px 16px;z-index:200;" onfocus="this.style.left='8px';this.style.top='8px'" onblur="this.style.left='-9999px'">Aller au contenu</a>
+
+<header class="header">
+  <nav class="nav wrap" aria-label="Navigation principale">
+    <a class="nav__logo" href="../index.html" aria-label="Pyramide Record — accueil"><img src="../assets/images/logo.png" alt="Pyramide Record"></a>
+    <button class="nav__burger" id="burger" aria-label="Ouvrir le menu" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
+    <div class="nav__menu" id="menu">
+      <a class="nav__link" href="studio.html">Studio</a>
+      <a class="nav__link" href="services.html">Services</a>
+      <a class="nav__link" href="discography.html">Discographie</a>
+      <a class="nav__link" href="academy.html" aria-current="page">Academy</a>
+      <a class="nav__link" href="gallery.html">Galerie</a>
+      <a class="nav__link" href="shop.html">Boutique</a>
+      <a class="nav__link" href="about.html">À&nbsp;Propos</a>
+      <a class="nav__link" href="blog.html">Blog</a>
+      <a class="nav__cta" href="booking.html">Réserver</a>
+    </div>
+  </nav>
+</header>
+
+<main id="main">
+  <section class="page-hero wrap">
+    <p class="eyebrow">Pyramid Academy</p>
+    <h1>Investissez dans votre talent.</h1>
+    <p class="lede">Que vous soyez un débutant passionné ou un professionnel expérimenté cherchant à perfectionner ses compétences, Pyramid Record propose une formation conçue pour vous. Nos programmes couvrent l'intégralité du processus de création audio, de la capture initiale à la finalisation professionnelle — enseignés par des ingénieurs formés au plus haut niveau international.</p>
+  </section>
+
+  <!-- FEATURED COURSE -->
+  <section class="section-sm wrap reveal">
+    <p class="eyebrow" style="margin-bottom:var(--sp-4)">Formation vedette</p>
+    <div class="course">
+      <div class="course__body">
+        <span class="course__tag">Module 1 · En ligne</span>
+        <h2 class="course__title">Prise de son</h2>
+        <p class="course__desc">Maîtrisez l'art de capturer le son avec précision et qualité professionnelle. Êtes-vous passionné par l'audio et désireux d'apprendre les compétences essentielles pour capturer le son en studio ? Cette formation est conçue pour vous — ouverte à tous les niveaux.</p>
+        <div class="course__meta">
+          <div><span class="k">Format</span><span class="v">En ligne</span></div>
+          <div><span class="k">Niveau</span><span class="v">Tous niveaux</span></div>
+          <div><span class="k">Tarif</span><span class="v course__price">dès 300 $</span></div>
+        </div>
+        <a class="btn" href="booking.html">S'inscrire au Module 1</a>
+      </div>
+      <div class="course__aside">
+        <p class="k">Ce que vous apprendrez</p>
+        <ul>
+          <li>Fondamentaux de la prise de son</li>
+          <li>Choix et positionnement des microphones</li>
+          <li>Gestion du gain &amp; du signal</li>
+          <li>Équipement &amp; technologie de studio</li>
+          <li>Techniques avancées : stéréophonie, phase</li>
+          <li>Gestion et organisation d'une session</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- CURRICULUM -->
+  <section class="section wrap reveal">
+    <p class="eyebrow">Le cursus complet</p>
+    <h2 class="h2" style="margin:var(--sp-2) 0 var(--sp-5)">De la première prise au master final.</h2>
+    <div class="curriculum">
+      <div class="mod"><div class="mod__num">01</div><div><div class="mod__title">Introduction à l'enregistrement audio</div><div class="mod__desc">Les fondamentaux : comprendre le matériel et l'environnement de studio.</div></div></div>
+      <div class="mod"><div class="mod__num">02</div><div><div class="mod__title">Techniques de prise de son</div><div class="mod__desc">Placement de micros, gestion des sources sonores, capturer la performance parfaite.</div></div></div>
+      <div class="mod"><div class="mod__num">03</div><div><div class="mod__title">Mixage &amp; Mastering</div><div class="mod__desc">Sculpter le son, équilibrer les fréquences, préparer votre musique pour une diffusion optimale.</div></div></div>
+      <div class="mod"><div class="mod__num">04</div><div><div class="mod__title">Production musicale</div><div class="mod__desc">Développez votre créativité et structurez vos morceaux, de l'idée à l'arrangement final.</div></div></div>
+      <div class="mod"><div class="mod__num">05</div><div><div class="mod__title">MAO — Musique Assistée par Ordinateur</div><div class="mod__desc">Devenez expert dans l'utilisation des logiciels et outils numériques pour composer et produire.</div></div></div>
+    </div>
+  </section>
+
+  <!-- LEARNING PATHS (the 11 articles by topic) -->
+  <section class="section wrap reveal" style="padding-top:0">
+    <div class="sec-head" style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:var(--sp-5)">
+      <div>
+        <p class="eyebrow">Ressources gratuites</p>
+        <h2 class="h2" style="margin-top:var(--sp-2)">Parcours d'apprentissage</h2>
+      </div>
+      <a class="sec-more" href="blog.html" style="font-size:var(--fs-eyebrow);letter-spacing:var(--ls-wide);text-transform:uppercase;color:var(--sand)">Tout le Blog →</a>
+    </div>
+    <div class="paths">
+      <div class="path">
+        <h3 class="path__title">Prise de son</h3>
+        <ul class="path__list">
+          <li><a href="blog.html">Enregistrer la batterie en studio : le guide complet</a></li>
+          <li><a href="blog.html">Guide d'enregistrement de la guitare</a></li>
+          <li><a href="blog.html">Le secret du son : le placement de microphones</a></li>
+          <li><a href="blog.html">La prise de voix en studio : 5 étapes</a></li>
+          <li><a href="blog.html">L'acoustique studio : l'environnement parfait</a></li>
+        </ul>
+      </div>
+      <div class="path">
+        <h3 class="path__title">Mixage</h3>
+        <ul class="path__list">
+          <li><a href="blog.html">Le compresseur : l'arme secrète pour un mix pro</a></li>
+          <li><a href="blog.html">L'égalisation (EQ) : sculpter le son</a></li>
+          <li><a href="blog.html">La réverbération et le délai : la profondeur</a></li>
+          <li><a href="blog.html">Le doublage et le triple tracking : la largeur</a></li>
+          <li><a href="blog.html">Bus, auxiliaires et groupes : organiser le mix</a></li>
+        </ul>
+      </div>
+      <div class="path">
+        <h3 class="path__title">Mastering</h3>
+        <ul class="path__list">
+          <li><a href="blog.html">Le mastering : la touche finale</a></li>
+        </ul>
+        <p class="muted" style="font-size:var(--fs-sm);margin-top:var(--sp-4);line-height:1.6">Onze guides techniques rédigés par nos ingénieurs, en accès libre dans le Blog — pour apprendre entre deux sessions.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="quote-band">
+    <div class="ripples" aria-hidden="true"><span></span><span></span><span></span></div>
+    <p class="quote-band__text">« Transformez votre savoir-faire<br>et faites passer votre son au <span style="color:var(--ember)">niveau supérieur.</span> »</p>
+  </div>
+
+  <section class="section wrap" style="text-align:center">
+    <a class="btn btn--lg" href="booking.html">S'inscrire à la formation</a>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer__grid">
+      <div>
+        <div class="footer__logo"><img loading="lazy" decoding="async" src="../assets/images/logo.png" alt="Pyramide Record"></div>
+        <p class="footer__addr">13ème Rue Limete Industriel, Kinshasa, RD Congo<br>+243 819 797 568 · info@pyramidrecord.com</p>
+      </div>
+      <div class="footer__socials">
+        <a href="#" aria-label="Facebook"><svg viewBox="0 0 24 24"><path d="M13 3h4v4h-4a1 1 0 00-1 1v3h5l-1 4h-4v8h-4v-8H8v-4h4V7a4 4 0 014-4z"/></svg></a>
+        <a href="#" aria-label="Instagram"><svg viewBox="0 0 24 24"><path d="M12 7a5 5 0 100 10 5 5 0 000-10zm0 8a3 3 0 110-6 3 3 0 010 6zm5-9a1 1 0 100 2 1 1 0 000-2zM7 2h10a5 5 0 015 5v10a5 5 0 01-5 5H7a5 5 0 01-5-5V7a5 5 0 015-5zm0 2a3 3 0 00-3 3v10a3 3 0 003 3h10a3 3 0 003-3V7a3 3 0 00-3-3z"/></svg></a>
+        <a href="#" aria-label="LinkedIn"><svg viewBox="0 0 24 24"><path d="M6.94 5a2 2 0 11-4 0 2 2 0 014 0zM7 8.48H3V21h4zm6.32 0H9.34V21h3.94v-6.57c0-3.66 4.77-4 4.77 0V21H22v-7.93c0-6.17-7.06-5.94-8.72-2.91z"/></svg></a>
+        <a href="#" aria-label="YouTube"><svg viewBox="0 0 24 24"><path d="M23 12s0-3.5-.45-5.2a2.8 2.8 0 00-2-2C18.9 4.4 12 4.4 12 4.4s-6.9 0-8.55.4a2.8 2.8 0 00-2 2C1 8.5 1 12 1 12s0 3.5.45 5.2a2.8 2.8 0 002 2c1.65.4 8.55.4 8.55.4s6.9 0 8.55-.4a2.8 2.8 0 002-2C23 15.5 23 12 23 12zm-13 3.5v-7l6 3.5z"/></svg></a>
+      </div>
+    </div>
+    <div class="footer__note">© 2025 Pyramide Record — Tous droits réservés · Kinshasa, RD Congo</div>
+  </div>
+</footer>
+
+<script src="../js/main.js"></script>
+</body>
+</html>

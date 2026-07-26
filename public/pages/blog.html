@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Blog — Pyramide Record · Guides audio par nos ingénieurs</title>
+<meta name="description" content="Le Blog de Pyramide Record : onze guides techniques sur la prise de son, le mixage et le mastering, rédigés par nos ingénieurs à Kinshasa.">
+<link rel="icon" type="image/png" href="../assets/images/logo.png">
+<link rel="canonical" href="https://pyramidrecord.com/pages/blog.html">
+<meta name="theme-color" content="#0D131C">
+<meta property="og:title" content="Blog — Pyramide Record">
+<meta property="og:description" content="Onze guides techniques audio rédigés par nos ingénieurs.">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="fr_FR">
+<meta property="og:site_name" content="Pyramide Record">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;1,9..144,400&family=Archivo:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/tokens.css">
+<link rel="stylesheet" href="../css/components.css">
+<style>
+  .page-hero { padding: var(--sp-8) 0 var(--sp-5); }
+  .page-hero h1 { font-family:var(--font-display); font-weight:400; font-size:var(--fs-h1); line-height:var(--lh-tight); max-width:14ch; margin:var(--sp-3) 0 var(--sp-4); }
+  .page-hero .lede { max-width:620px; }
+
+  .filters { display:flex; gap:var(--sp-2); flex-wrap:wrap; margin-bottom:var(--sp-6); }
+  .filter { font-size:var(--fs-xs); letter-spacing:var(--ls-wide); text-transform:uppercase; color:var(--sand); background:transparent; border:1px solid var(--hair-2); border-radius:20px; padding:8px 16px; cursor:pointer; transition:all var(--dur-fast) var(--ease); }
+  .filter:hover { border-color:var(--gold-dim); color:var(--bone); }
+  .filter.is-active { background:var(--gold); border-color:var(--gold); color:#0B1017; }
+
+  .articles { display:grid; grid-template-columns:repeat(3,1fr); gap:var(--sp-5); }
+  .article-card { background:var(--panel); border:1px solid var(--hair); border-radius:var(--r-lg); overflow:hidden; display:flex; flex-direction:column; transition:border-color var(--dur) var(--ease), transform var(--dur) var(--ease); }
+  .article-card:hover { border-color:var(--gold-dim); transform:translateY(-3px); }
+  .article-card__img { aspect-ratio:16/10; }
+  .article-card__body { padding:var(--sp-4) var(--sp-5) var(--sp-5); flex:1; display:flex; flex-direction:column; }
+  .article-card__cat { font-size:var(--fs-eyebrow); letter-spacing:var(--ls-label); text-transform:uppercase; color:var(--ember); margin-bottom:var(--sp-2); }
+  .article-card__title { font-family:var(--font-display); font-size:var(--fs-lg); line-height:1.3; color:var(--bone); margin-bottom:var(--sp-2); flex:1; }
+  .article-card__meta { font-size:var(--fs-xs); color:var(--ash); }
+  .article-card.is-hidden { display:none; }
+
+  @media(max-width:900px){ .articles{grid-template-columns:1fr 1fr} }
+  @media(max-width:600px){ .articles{grid-template-columns:1fr} }
+</style>
+</head>
+<body>
+<a href="#main" class="skip-link" style="position:absolute;left:-9999px;top:0;background:var(--crimson);color:#fff;padding:10px 16px;z-index:200;" onfocus="this.style.left='8px';this.style.top='8px'" onblur="this.style.left='-9999px'">Aller au contenu</a>
+
+<header class="header">
+  <nav class="nav wrap" aria-label="Navigation principale">
+    <a class="nav__logo" href="../index.html" aria-label="Pyramide Record — accueil"><img src="../assets/images/logo.png" alt="Pyramide Record"></a>
+    <button class="nav__burger" id="burger" aria-label="Ouvrir le menu" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
+    <div class="nav__menu" id="menu">
+      <a class="nav__link" href="studio.html">Studio</a>
+      <a class="nav__link" href="services.html">Services</a>
+      <a class="nav__link" href="discography.html">Discographie</a>
+      <a class="nav__link" href="academy.html">Academy</a>
+      <a class="nav__link" href="gallery.html">Galerie</a>
+      <a class="nav__link" href="shop.html">Boutique</a>
+      <a class="nav__link" href="about.html">À&nbsp;Propos</a>
+      <a class="nav__link" href="blog.html" aria-current="page">Blog</a>
+      <a class="nav__cta" href="booking.html">Réserver</a>
+    </div>
+  </nav>
+</header>
+
+<main id="main">
+  <section class="page-hero wrap">
+    <p class="eyebrow">Le Blog</p>
+    <h1>Le savoir-faire, partagé.</h1>
+    <p class="lede">Onze guides techniques rédigés par nos ingénieurs — de la prise de son au mastering. Pour apprendre, progresser, et mieux comprendre l'art qui se joue en studio.</p>
+  </section>
+
+  <section class="section-sm wrap reveal">
+    <div class="filters" role="tablist" aria-label="Filtrer les articles">
+      <button class="filter is-active" data-filter="all">Tout</button>
+      <button class="filter" data-filter="prise">Prise de son</button>
+      <button class="filter" data-filter="mixage">Mixage</button>
+      <button class="filter" data-filter="mastering">Mastering</button>
+    </div>
+
+    <div class="articles">
+      <a class="article-card" data-cat="prise" href="article-octapad.html">
+        <div class="ph article-card__img"><small>Illustration</small></div>
+        <div class="article-card__body"><div class="article-card__cat">Prise de son</div><div class="article-card__title">Libérez le percussionniste qui sommeille en vous : Guide de l'Octapad</div><div class="article-card__meta">2 min de lecture</div></div>
+      </a>
+      <a class="article-card" data-cat="prise" href="#">
+        <div class="ph article-card__img"><small>Illustration</small></div>
+        <div class="article-card__body"><div class="article-card__cat">Prise de son</div><div class="article-card__title">Enregistrer la batterie en studio : le guide complet</div><div class="article-card__meta">Guide technique</div></div>
+      </a>
+      <a class="article-card" data-cat="prise" href="#">
+        <div class="ph article-card__img"><small>Illustration</small></div>
+        <div class="article-card__body"><div class="article-card__cat">Prise de son</div><div class="article-card__title">Guide d'enregistrement de la guitare</div><div class="article-card__meta">Guide technique</div></div>
+      </a>
+      <a class="article-card" data-cat="prise" href="#">
+        <div class="ph article-card__img"><small>Illustration</small></div>
+        <div class="article-card__body"><div class="article-card__cat">Prise de son</div><div class="article-card__title">La prise de voix en studio : les 5 étapes essentielles</div><div class="article-card__meta">Guide technique</div></div>
+      </a>
+      <a class="article-card" data-cat="prise" href="#">
+        <div class="ph article-card__img"><small>Illustration</small></div>
+        <div class="article-card__body"><div class="article-card__cat">Prise de son</div><div class="article-card__title">Le secret du son : le placement des microphones</div><div class="article-card__meta">Guide technique</div></div>
+      </a>
+      <a class="article-card" data-cat="prise" href="#">
+        <div class="ph article-card__img"><small>Illustration</small></div>
+        <div class="article-card__body"><div class="article-card__cat">Prise de son</div><div class="article-card__title">Acoustique studio : créer l'environnement sonore parfait</div><div class="article-card__meta">Guide technique</div></div>
+      </a>
+      <a class="article-card" data-cat="mixage" href="#">
+        <div class="ph article-card__img"><small>Illustration</small></div>
+        <div class="article-card__body"><div class="article-card__cat">Mixage</div><div class="article-card__title">Le compresseur : l'arme secrète pour un mix pro</div><div class="article-card__meta">Guide technique</div></div>
+      </a>
+      <a class="article-card" data-cat="mixage" href="#">
+        <div class="ph article-card__img"><small>Illustration</small></div>
+        <div class="article-card__body"><div class="article-card__cat">Mixage</div><div class="article-card__title">L'égalisation (EQ) : sculpter le son</div><div class="article-card__meta">Guide technique</div></div>
+      </a>
+      <a class="article-card" data-cat="mixage" href="#">
+        <div class="ph article-card__img"><small>Illustration</small></div>
+        <div class="article-card__body"><div class="article-card__cat">Mixage</div><div class="article-card__title">La réverbération et le délai : créer un espace</div><div class="article-card__meta">Guide technique</div></div>
+      </a>
+      <a class="article-card" data-cat="mixage" href="#">
+        <div class="ph article-card__img"><small>Illustration</small></div>
+        <div class="article-card__body"><div class="article-card__cat">Mixage</div><div class="article-card__title">Le doublage et le triple tracking : élargir le son</div><div class="article-card__meta">Guide technique</div></div>
+      </a>
+      <a class="article-card" data-cat="mastering" href="#">
+        <div class="ph article-card__img"><small>Illustration</small></div>
+        <div class="article-card__body"><div class="article-card__cat">Mastering</div><div class="article-card__title">Le mastering : la touche finale qui transforme votre mix</div><div class="article-card__meta">Guide technique</div></div>
+      </a>
+    </div>
+
+    <p class="muted" style="font-size:var(--fs-sm);margin-top:var(--sp-6);max-width:60ch;line-height:1.7">Le premier article ci-dessus (Octapad) est publié en entier comme modèle. Les dix autres existent déjà dans nos archives — leur contenu se coule dans le même gabarit d'article.</p>
+  </section>
+
+  <div class="form-band reveal" style="background:var(--panel);border-top:1px solid var(--hair)">
+    <div class="wrap" style="display:grid;grid-template-columns:1fr auto;gap:var(--sp-5);align-items:center;padding:var(--sp-6) 0">
+      <div>
+        <div style="font-family:var(--font-display);font-size:var(--fs-lg);margin-bottom:2px">Envie d'apprendre en studio ?</div>
+        <div style="color:var(--sand);font-size:var(--fs-sm)">La formation Prise de son, dès 300 $ — voir l'Academy.</div>
+      </div>
+      <a class="btn btn--ghost" href="academy.html">Découvrir l'Academy</a>
+    </div>
+  </div>
+</main>
+
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer__grid">
+      <div>
+        <div class="footer__logo"><img src="../assets/images/logo.png" alt="Pyramide Record" loading="lazy"></div>
+        <p class="footer__addr">13ème Rue Limete Industriel, Kinshasa, RD Congo<br>+243 819 797 568 · info@pyramidrecord.com</p>
+      </div>
+      <div class="footer__socials">
+        <a href="#" aria-label="Facebook"><svg viewBox="0 0 24 24"><path d="M13 3h4v4h-4a1 1 0 00-1 1v3h5l-1 4h-4v8h-4v-8H8v-4h4V7a4 4 0 014-4z"/></svg></a>
+        <a href="#" aria-label="Instagram"><svg viewBox="0 0 24 24"><path d="M12 7a5 5 0 100 10 5 5 0 000-10zm0 8a3 3 0 110-6 3 3 0 010 6zm5-9a1 1 0 100 2 1 1 0 000-2zM7 2h10a5 5 0 015 5v10a5 5 0 01-5 5H7a5 5 0 01-5-5V7a5 5 0 015-5zm0 2a3 3 0 00-3 3v10a3 3 0 003 3h10a3 3 0 003-3V7a3 3 0 00-3-3z"/></svg></a>
+        <a href="#" aria-label="LinkedIn"><svg viewBox="0 0 24 24"><path d="M6.94 5a2 2 0 11-4 0 2 2 0 014 0zM7 8.48H3V21h4zm6.32 0H9.34V21h3.94v-6.57c0-3.66 4.77-4 4.77 0V21H22v-7.93c0-6.17-7.06-5.94-8.72-2.91z"/></svg></a>
+        <a href="#" aria-label="YouTube"><svg viewBox="0 0 24 24"><path d="M23 12s0-3.5-.45-5.2a2.8 2.8 0 00-2-2C18.9 4.4 12 4.4 12 4.4s-6.9 0-8.55.4a2.8 2.8 0 00-2 2C1 8.5 1 12 1 12s0 3.5.45 5.2a2.8 2.8 0 002 2c1.65.4 8.55.4 8.55.4s6.9 0 8.55-.4a2.8 2.8 0 002-2C23 15.5 23 12 23 12zm-13 3.5v-7l6 3.5z"/></svg></a>
+      </div>
+    </div>
+    <div class="footer__note">© 2025 Pyramide Record — Tous droits réservés · Kinshasa, RD Congo</div>
+  </div>
+</footer>
+
+<script src="../js/main.js"></script>
+<script>
+  (function(){
+    var filters=document.querySelectorAll('.filter'); var items=document.querySelectorAll('.article-card');
+    filters.forEach(function(btn){ btn.addEventListener('click',function(){
+      filters.forEach(function(f){f.classList.remove('is-active');}); btn.classList.add('is-active');
+      var cat=btn.getAttribute('data-filter');
+      items.forEach(function(it){ it.classList.toggle('is-hidden', !(cat==='all'||it.getAttribute('data-cat')===cat)); });
+    });});
+  })();
+</script>
+</body>
+</html>

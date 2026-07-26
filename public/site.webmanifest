@@ -1,0 +1,11 @@
+{
+  "name": "Pyramide Record",
+  "short_name": "Pyramide",
+  "description": "Studio d'enregistrement à Kinshasa",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0D131C",
+  "theme_color": "#0D131C",
+  "lang": "fr",
+  "icons": [{ "src": "/assets/images/logo.png", "sizes": "512x512", "type": "image/png" }]
+}

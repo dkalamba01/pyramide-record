@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Galerie — Pyramide Record · Kinshasa</title>
+<meta name="description" content="La galerie de Pyramide Record : le studio, les sessions, les artistes et les événements live au cœur de Kinshasa.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;1,9..144,400&family=Archivo:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/tokens.css">
+<link rel="stylesheet" href="../css/components.css">
+<style>
+  .page-hero { padding: var(--sp-8) 0 var(--sp-5); }
+  .page-hero h1 { font-family:var(--font-display); font-weight:400; font-size:var(--fs-h1); line-height:var(--lh-tight); max-width:14ch; margin:var(--sp-3) 0 var(--sp-4); }
+  .page-hero .lede { max-width:620px; }
+
+  .filters { display:flex; gap:var(--sp-2); flex-wrap:wrap; margin-bottom:var(--sp-6); }
+  .filter { font-size:var(--fs-xs); letter-spacing:var(--ls-wide); text-transform:uppercase; color:var(--sand); background:transparent; border:1px solid var(--hair-2); border-radius:20px; padding:8px 16px; cursor:pointer; transition:all var(--dur-fast) var(--ease); }
+  .filter:hover { border-color:var(--gold-dim); color:var(--bone); }
+  .filter.is-active { background:var(--gold); border-color:var(--gold); color:#0B1017; }
+
+  /* Masonry-style grid via varied spans */
+  .gal { display:grid; grid-template-columns:repeat(4,1fr); grid-auto-rows:200px; gap:var(--sp-3); }
+  .gal__item { border-radius:var(--r-md); overflow:hidden; }
+  .gal__item.tall { grid-row:span 2; }
+  .gal__item.wide { grid-column:span 2; }
+  .gal__item .ph { width:100%; height:100%; }
+  .gal__item.is-hidden { display:none; }
+
+  @media(max-width:900px){ .gal{grid-template-columns:repeat(2,1fr); grid-auto-rows:160px} .gal__item.wide{grid-column:span 2} }
+  @media(max-width:520px){ .gal{grid-template-columns:1fr; grid-auto-rows:220px} .gal__item.wide,.gal__item.tall{grid-column:auto;grid-row:auto} }
+</style>
+<link rel="icon" type="image/png" href="../assets/images/logo.png">
+<link rel="apple-touch-icon" href="../assets/images/logo.png">
+<link rel="canonical" href="https://pyramidrecord.com/pages/gallery.html">
+<meta name="theme-color" content="#0D131C">
+<meta property="og:title" content="Galerie — Pyramide Record">
+<meta property="og:description" content="Le studio, les sessions, les artistes et le live à Kinshasa.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://pyramidrecord.com/pages/gallery.html">
+<meta property="og:image" content="https://pyramidrecord.com/assets/images/logo.png">
+<meta property="og:locale" content="fr_FR">
+<meta property="og:site_name" content="Pyramide Record">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Galerie — Pyramide Record",
+  "description": "Le studio, les sessions, les artistes et le live à Kinshasa.",
+  "url": "https://pyramidrecord.com/pages/gallery.html",
+  "isPartOf": { "@type": "WebSite", "name": "Pyramide Record", "url": "https://pyramidrecord.com" }
+}
+</script>
+</head>
+<body>
+<a href="#main" class="skip-link" style="position:absolute;left:-9999px;top:0;background:var(--crimson);color:#fff;padding:10px 16px;z-index:200;" onfocus="this.style.left='8px';this.style.top='8px'" onblur="this.style.left='-9999px'">Aller au contenu</a>
+
+<header class="header">
+  <nav class="nav wrap" aria-label="Navigation principale">
+    <a class="nav__logo" href="../index.html" aria-label="Pyramide Record — accueil"><img src="../assets/images/logo.png" alt="Pyramide Record"></a>
+    <button class="nav__burger" id="burger" aria-label="Ouvrir le menu" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
+    <div class="nav__menu" id="menu">
+      <a class="nav__link" href="studio.html">Studio</a>
+      <a class="nav__link" href="services.html">Services</a>
+      <a class="nav__link" href="discography.html">Discographie</a>
+      <a class="nav__link" href="academy.html">Academy</a>
+      <a class="nav__link" href="gallery.html" aria-current="page">Galerie</a>
+      <a class="nav__link" href="shop.html">Boutique</a>
+      <a class="nav__link" href="about.html">À&nbsp;Propos</a>
+      <a class="nav__link" href="blog.html">Blog</a>
+      <a class="nav__cta" href="booking.html">Réserver</a>
+    </div>
+  </nav>
+</header>
+
+<main id="main">
+  <section class="page-hero wrap">
+    <p class="eyebrow">Galerie</p>
+    <h1>Dans les coulisses.</h1>
+    <p class="lede">Le studio, les sessions, les artistes et l'énergie du live. Un aperçu de l'endroit où le son congolais prend vie.</p>
+  </section>
+
+  <section class="section-sm wrap reveal">
+    <div class="filters" role="tablist" aria-label="Filtrer la galerie">
+      <button class="filter is-active" data-filter="all">Tout</button>
+      <button class="filter" data-filter="studio">Le studio</button>
+      <button class="filter" data-filter="sessions">Sessions</button>
+      <button class="filter" data-filter="artistes">Artistes</button>
+      <button class="filter" data-filter="live">Live</button>
+    </div>
+
+    <div class="gal">
+      <div class="gal__item wide" data-cat="studio"><div class="ph"><small>Photo · Régie — vue large</small></div></div>
+      <div class="gal__item tall" data-cat="sessions"><div class="ph"><small>Photo · Session voix</small></div></div>
+      <div class="gal__item" data-cat="studio"><div class="ph"><small>Photo · Console</small></div></div>
+      <div class="gal__item" data-cat="artistes"><div class="ph"><small>Photo · Artiste</small></div></div>
+      <div class="gal__item tall" data-cat="live"><div class="ph"><small>Photo · Concert live</small></div></div>
+      <div class="gal__item" data-cat="studio"><div class="ph"><small>Photo · Cabine</small></div></div>
+      <div class="gal__item" data-cat="sessions"><div class="ph"><small>Photo · Ingénieur au mix</small></div></div>
+      <div class="gal__item wide" data-cat="artistes"><div class="ph"><small>Photo · Artiste en session</small></div></div>
+      <div class="gal__item" data-cat="live"><div class="ph"><small>Photo · Public</small></div></div>
+      <div class="gal__item" data-cat="studio"><div class="ph"><small>Photo · Micros</small></div></div>
+      <div class="gal__item tall" data-cat="sessions"><div class="ph"><small>Photo · Batterie en prise</small></div></div>
+      <div class="gal__item" data-cat="artistes"><div class="ph"><small>Photo · Portrait</small></div></div>
+      <div class="gal__item wide" data-cat="live"><div class="ph"><small>Photo · Scène — vue large</small></div></div>
+      <div class="gal__item" data-cat="studio"><div class="ph"><small>Photo · Détail matériel</small></div></div>
+    </div>
+
+    <p class="muted" style="font-size:var(--fs-sm);margin-top:var(--sp-6);max-width:56ch;line-height:1.7">La galerie sera remplie de photographies réelles du studio, des sessions et des événements. Les emplacements ci-dessus indiquent la composition prévue — chaque case attend une image.</p>
+  </section>
+
+  <div class="quote-band">
+    <div class="ripples" aria-hidden="true"><span></span><span></span><span></span></div>
+    <p class="quote-band__text">« Là où chaque note prend <span style="color:var(--ember)">vie.</span> »</p>
+  </div>
+
+  <section class="section wrap" style="text-align:center">
+    <a class="btn btn--lg" href="booking.html">Réserver une session</a>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer__grid">
+      <div>
+        <div class="footer__logo"><img loading="lazy" decoding="async" src="../assets/images/logo.png" alt="Pyramide Record"></div>
+        <p class="footer__addr">13ème Rue Limete Industriel, Kinshasa, RD Congo<br>+243 819 797 568 · info@pyramidrecord.com</p>
+      </div>
+      <div class="footer__socials">
+        <a href="#" aria-label="Facebook"><svg viewBox="0 0 24 24"><path d="M13 3h4v4h-4a1 1 0 00-1 1v3h5l-1 4h-4v8h-4v-8H8v-4h4V7a4 4 0 014-4z"/></svg></a>
+        <a href="#" aria-label="Instagram"><svg viewBox="0 0 24 24"><path d="M12 7a5 5 0 100 10 5 5 0 000-10zm0 8a3 3 0 110-6 3 3 0 010 6zm5-9a1 1 0 100 2 1 1 0 000-2zM7 2h10a5 5 0 015 5v10a5 5 0 01-5 5H7a5 5 0 01-5-5V7a5 5 0 015-5zm0 2a3 3 0 00-3 3v10a3 3 0 003 3h10a3 3 0 003-3V7a3 3 0 00-3-3z"/></svg></a>
+        <a href="#" aria-label="LinkedIn"><svg viewBox="0 0 24 24"><path d="M6.94 5a2 2 0 11-4 0 2 2 0 014 0zM7 8.48H3V21h4zm6.32 0H9.34V21h3.94v-6.57c0-3.66 4.77-4 4.77 0V21H22v-7.93c0-6.17-7.06-5.94-8.72-2.91z"/></svg></a>
+        <a href="#" aria-label="YouTube"><svg viewBox="0 0 24 24"><path d="M23 12s0-3.5-.45-5.2a2.8 2.8 0 00-2-2C18.9 4.4 12 4.4 12 4.4s-6.9 0-8.55.4a2.8 2.8 0 00-2 2C1 8.5 1 12 1 12s0 3.5.45 5.2a2.8 2.8 0 002 2c1.65.4 8.55.4 8.55.4s6.9 0 8.55-.4a2.8 2.8 0 002-2C23 15.5 23 12 23 12zm-13 3.5v-7l6 3.5z"/></svg></a>
+      </div>
+    </div>
+    <div class="footer__note">© 2025 Pyramide Record — Tous droits réservés · Kinshasa, RD Congo</div>
+  </div>
+</footer>
+
+<script src="../js/main.js"></script>
+<script>
+  // gallery filter
+  (function(){
+    var filters = document.querySelectorAll('.filter');
+    var items = document.querySelectorAll('.gal__item');
+    filters.forEach(function(btn){
+      btn.addEventListener('click', function(){
+        filters.forEach(function(f){ f.classList.remove('is-active'); });
+        btn.classList.add('is-active');
+        var cat = btn.getAttribute('data-filter');
+        items.forEach(function(item){
+          var show = cat === 'all' || item.getAttribute('data-cat') === cat;
+          item.classList.toggle('is-hidden', !show);
+        });
+      });
+    });
+  })();
+</script>
+</body>
+</html>

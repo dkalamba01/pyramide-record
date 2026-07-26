@@ -30,6 +30,7 @@
   .course__aside .k { font-size:var(--fs-eyebrow); letter-spacing:var(--ls-label); color:var(--ember); text-transform:uppercase; margin-bottom:var(--sp-3); }
   .course__aside ul li { color:var(--sand); font-size:var(--fs-sm); padding:6px 0 6px 20px; position:relative; }
   .course__aside ul li::before { content:'✓'; position:absolute; left:0; color:var(--gold); }
+  .course__external { font-size:var(--fs-xs); color:var(--ash); margin-top:var(--sp-2); }
 
   /* Curriculum */
   .curriculum { }
@@ -113,7 +114,8 @@
           <div><span class="k">Niveau</span><span class="v">Tous niveaux</span></div>
           <div><span class="k">Tarif</span><span class="v course__price">dès 300 $</span></div>
         </div>
-        <a class="btn" href="booking.html">S'inscrire au Module 1</a>
+        <a class="btn" id="btn-enroll-module1" href="https://ilearn.abacusai.app/cours" target="_blank" rel="noopener">S'inscrire au Module 1</a>
+        <p class="course__external">Ouvre SteLearn, notre plateforme de formation en ligne, dans un nouvel onglet.</p>
       </div>
       <div class="course__aside">
         <p class="k">Ce que vous apprendrez</p>
@@ -188,7 +190,7 @@
   </div>
 
   <section class="section wrap" style="text-align:center">
-    <a class="btn btn--lg" href="booking.html">S'inscrire à la formation</a>
+    <a class="btn btn--lg" id="btn-enroll-footer" href="https://ilearn.abacusai.app/cours" target="_blank" rel="noopener">S'inscrire à la formation</a>
   </section>
 </main>
 
@@ -211,5 +213,20 @@
 </footer>
 
 <script src="../js/main.js"></script>
+<script>
+/* ============================================================
+   ACADEMY — SteLearn enrollment link
+   ------------------------------------------------------------
+   Both enrollment buttons currently point to the SteLearn course
+   catalog (https://ilearn.abacusai.app/cours) as a safe default,
+   since the "Prise de son" course isn't published there yet.
+
+   ONCE THE COURSE IS LIVE ON STELEARN: replace COURSE_URL below
+   with the real course URL, then update both buttons' href in the
+   HTML above (or switch them to read from this variable via JS
+   if you prefer a single source of truth going forward).
+   ============================================================ */
+var COURSE_URL = 'https://ilearn.abacusai.app/cours'; // TODO: replace with real course URL once published
+</script>
 </body>
 </html>

@@ -26,6 +26,7 @@
   .gal__item.tall { grid-row:span 2; }
   .gal__item.wide { grid-column:span 2; }
   .gal__item .ph { width:100%; height:100%; }
+  .gal__item img { width:100%; height:100%; object-fit:cover; display:block; }
   .gal__item.is-hidden { display:none; }
 
   @media(max-width:900px){ .gal{grid-template-columns:repeat(2,1fr); grid-auto-rows:160px} .gal__item.wide{grid-column:span 2} }
@@ -69,7 +70,7 @@
       <a class="nav__link" href="gallery.html" aria-current="page">Galerie</a>
       <a class="nav__link" href="shop.html">Boutique</a>
       <a class="nav__link" href="about.html">À&nbsp;Propos</a>
-      <a class="nav__link" href="blog.html">Blog</a>
+      <a class="nav__link" href="journal.html">Journal</a>
       <a class="nav__cta" href="booking.html">Réserver</a>
     </div>
   </nav>
@@ -92,7 +93,7 @@
     </div>
 
     <div class="gal">
-      <div class="gal__item wide" data-cat="studio"><div class="ph"><small>Photo · Régie — vue large</small></div></div>
+      <div class="gal__item wide" data-cat="studio"><img src="../assets/images/studio-regie-large.png" alt="Régie — Pyramide Record" loading="lazy" decoding="async"></div>
       <div class="gal__item tall" data-cat="sessions"><div class="ph"><small>Photo · Session voix</small></div></div>
       <div class="gal__item" data-cat="studio"><div class="ph"><small>Photo · Console</small></div></div>
       <div class="gal__item" data-cat="artistes"><div class="ph"><small>Photo · Artiste</small></div></div>
@@ -101,7 +102,7 @@
       <div class="gal__item" data-cat="sessions"><div class="ph"><small>Photo · Ingénieur au mix</small></div></div>
       <div class="gal__item wide" data-cat="artistes"><div class="ph"><small>Photo · Artiste en session</small></div></div>
       <div class="gal__item" data-cat="live"><div class="ph"><small>Photo · Public</small></div></div>
-      <div class="gal__item" data-cat="studio"><div class="ph"><small>Photo · Micros</small></div></div>
+      <div class="gal__item" data-cat="studio"><img src="../assets/images/studio-micros.png" alt="Microphones — Pyramide Record" loading="lazy" decoding="async"></div>
       <div class="gal__item tall" data-cat="sessions"><div class="ph"><small>Photo · Batterie en prise</small></div></div>
       <div class="gal__item" data-cat="artistes"><div class="ph"><small>Photo · Portrait</small></div></div>
       <div class="gal__item wide" data-cat="live"><div class="ph"><small>Photo · Scène — vue large</small></div></div>

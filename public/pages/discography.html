@@ -47,6 +47,9 @@
   .release__title { font-size:var(--fs-sm); color:var(--bone); line-height:1.3; }
   .release__artist { font-size:var(--fs-xs); color:var(--ash); margin-top:2px; }
   .release__role { font-size:10px; color:var(--gold); text-transform:uppercase; letter-spacing:var(--ls-wide); margin-top:2px; }
+  .release__link { display:inline-flex; align-items:center; gap:4px; font-size:var(--fs-xs); color:var(--gold); margin-top:6px; text-decoration:none; transition:color var(--dur-fast) var(--ease); }
+  .release__link:hover { color:var(--gold-bright); }
+  .release__link svg { width:11px; height:11px; fill:currentColor; }
 
   .empty-note { color:var(--ash); font-size:var(--fs-sm); padding:var(--sp-6) 0; text-align:center; }
 
@@ -139,136 +142,9 @@
       </div>
     </div>
 
-    <!-- UNIFIED CATALOG — every release tagged with data-genre + data-type -->
+    <!-- UNIFIED CATALOG — populated from ../data/discography-data.json by the script below -->
     <div class="catalog" id="catalog">
-
-      <div class="release" data-genre="gospel" data-type="studio">
-        <div class="ph release__art">
-          <small>Pochette</small>
-          <div class="release__badge">
-            <span class="release__tag release__tag--genre-gospel">Gospel</span>
-          </div>
-        </div>
-        <div class="release__title">Ciel sur Terre</div>
-        <div class="release__artist">Hatthie Kashoba</div>
-        <div class="release__role">Enregistrement · Mixage</div>
-      </div>
-
-      <div class="release" data-genre="gospel" data-type="studio">
-        <div class="ph release__art">
-          <small>Pochette</small>
-          <div class="release__badge">
-            <span class="release__tag release__tag--genre-gospel">Gospel</span>
-          </div>
-        </div>
-        <div class="release__title">Natondi Nkolo</div>
-        <div class="release__artist">Seth Mulumba</div>
-        <div class="release__role">Enregistrement · Mixage</div>
-      </div>
-
-      <div class="release" data-genre="gospel" data-type="studio">
-        <div class="ph release__art">
-          <small>Pochette</small>
-          <div class="release__badge">
-            <span class="release__tag release__tag--genre-gospel">Gospel</span>
-          </div>
-        </div>
-        <div class="release__title">Worship Time</div>
-        <div class="release__artist">Seth Mulumba</div>
-        <div class="release__role">Enregistrement · Mixage</div>
-      </div>
-
-      <div class="release" data-genre="gospel" data-type="studio">
-        <div class="ph release__art">
-          <small>Pochette</small>
-          <div class="release__badge">
-            <span class="release__tag release__tag--genre-gospel">Gospel</span>
-          </div>
-        </div>
-        <div class="release__title">Culte des Chants</div>
-        <div class="release__artist">Enoch Mulopo</div>
-        <div class="release__role">Enregistrement · Mixage</div>
-      </div>
-
-      <div class="release" data-genre="gospel" data-type="live">
-        <div class="ph release__art">
-          <small>Session live</small>
-          <div class="release__badge">
-            <span class="release__tag release__tag--genre-gospel">Gospel</span>
-            <span class="release__tag release__tag--type-live">Live</span>
-          </div>
-          <span class="release__play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span>
-        </div>
-        <div class="release__title">Le Guide · Ciel-sur-Terre</div>
-        <div class="release__artist">Hatthie Kashoba</div>
-        <div class="release__role">Session live</div>
-      </div>
-
-      <div class="release" data-genre="gospel" data-type="live">
-        <div class="ph release__art">
-          <small>Session live</small>
-          <div class="release__badge">
-            <span class="release__tag release__tag--genre-gospel">Gospel</span>
-            <span class="release__tag release__tag--type-live">Live</span>
-          </div>
-          <span class="release__play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span>
-        </div>
-        <div class="release__title">Natondi Nkolo · Concert Culte Live</div>
-        <div class="release__artist">Seth Mulumba</div>
-        <div class="release__role">Session live</div>
-      </div>
-
-      <!-- CORRECTED: was miscategorized as a Non-Gospel studio release — Enoch Mulopo / Showbuzz is Gospel + Live -->
-      <div class="release" data-genre="gospel" data-type="live">
-        <div class="ph release__art">
-          <small>Session live</small>
-          <div class="release__badge">
-            <span class="release__tag release__tag--genre-gospel">Gospel</span>
-            <span class="release__tag release__tag--type-live">Live</span>
-          </div>
-          <span class="release__play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span>
-        </div>
-        <div class="release__title">Showbuzz · Concert</div>
-        <div class="release__artist">Enoch Mulopo</div>
-        <div class="release__role">Session live</div>
-      </div>
-
-      <div class="release" data-genre="non-gospel" data-type="studio">
-        <div class="ph release__art">
-          <small>Pochette</small>
-          <div class="release__badge">
-            <span class="release__tag release__tag--genre-non-gospel">Non Gospel</span>
-          </div>
-        </div>
-        <div class="release__title">Désolé (Clip officiel)</div>
-        <div class="release__artist">Héritier Wata</div>
-        <div class="release__role">Enregistrement · Mixage</div>
-      </div>
-
-      <div class="release" data-genre="non-gospel" data-type="studio">
-        <div class="ph release__art">
-          <small>Pochette</small>
-          <div class="release__badge">
-            <span class="release__tag release__tag--genre-non-gospel">Non Gospel</span>
-          </div>
-        </div>
-        <div class="release__title">Amore (Clip officiel)</div>
-        <div class="release__artist">Fally Ipupa</div>
-        <div class="release__role">Enregistrement · Mixage</div>
-      </div>
-
-      <div class="release" data-genre="non-gospel" data-type="studio">
-        <div class="ph release__art">
-          <small>Pochette</small>
-          <div class="release__badge">
-            <span class="release__tag release__tag--genre-non-gospel">Non Gospel</span>
-          </div>
-        </div>
-        <div class="release__title">Podcasts &amp; créations orales</div>
-        <div class="release__artist">Divers</div>
-        <div class="release__role">Production</div>
-      </div>
-
+      <p class="empty-note">Chargement…</p>
     </div>
 
     <p class="empty-note" id="empty-note" style="display:none">Aucune production ne correspond à ces filtres.</p>
@@ -305,45 +181,93 @@
 
 <script src="../js/main.js"></script>
 <script>
-  // Dual-axis filtering: type (studio/live) AND genre (gospel/non-gospel), combined
   (function(){
-    var typeFilters = document.querySelectorAll('[data-type-filter]');
-    var genreFilters = document.querySelectorAll('[data-genre-filter]');
-    var items = document.querySelectorAll('.release');
-    var emptyNote = document.getElementById('empty-note');
+    var GENRE_LABEL = { 'gospel': 'Gospel', 'non-gospel': 'Non Gospel' };
+    var GENRE_TAG_CLASS = { 'gospel': 'release__tag--genre-gospel', 'non-gospel': 'release__tag--genre-non-gospel' };
+    var PLAY_ICON = '<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>';
+    var LINK_ICON = '<svg viewBox="0 0 24 24"><path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14zm5 9v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h7v2H5v14h12v-7h2z"/></svg>';
 
-    var activeType = 'all';
-    var activeGenre = 'all';
+    function renderCard(item){
+      var isLive = item.type === 'live';
+      var badges = '<span class="release__tag ' + GENRE_TAG_CLASS[item.genre] + '">' + GENRE_LABEL[item.genre] + '</span>';
+      if (isLive) badges += '<span class="release__tag release__tag--type-live">Live</span>';
 
-    function applyFilters(){
-      var visibleCount = 0;
-      items.forEach(function(item){
-        var matchesType = activeType === 'all' || item.getAttribute('data-type') === activeType;
-        var matchesGenre = activeGenre === 'all' || item.getAttribute('data-genre') === activeGenre;
-        var show = matchesType && matchesGenre;
-        item.classList.toggle('is-hidden', !show);
-        if (show) visibleCount++;
-      });
-      emptyNote.style.display = visibleCount === 0 ? 'block' : 'none';
+      var art = '<div class="ph release__art">' +
+        '<small>' + (isLive ? 'Session live' : 'Pochette') + '</small>' +
+        '<div class="release__badge">' + badges + '</div>' +
+        (isLive ? '<span class="release__play">' + PLAY_ICON + '</span>' : '') +
+        '</div>';
+
+      var linkHtml = '';
+      if (item.link && item.link.trim() !== '') {
+        linkHtml = '<a class="release__link" href="' + item.link + '" target="_blank" rel="noopener">' + LINK_ICON + ' Écouter</a>';
+      }
+
+      var el = document.createElement('div');
+      el.className = 'release';
+      el.setAttribute('data-genre', item.genre);
+      el.setAttribute('data-type', item.type);
+      el.innerHTML = art +
+        '<div class="release__title">' + item.title + '</div>' +
+        '<div class="release__artist">' + item.artist + '</div>' +
+        '<div class="release__role">' + item.role + '</div>' +
+        linkHtml;
+      return el;
     }
 
-    typeFilters.forEach(function(btn){
-      btn.addEventListener('click', function(){
-        typeFilters.forEach(function(f){ f.classList.remove('is-active'); });
-        btn.classList.add('is-active');
-        activeType = btn.getAttribute('data-type-filter');
-        applyFilters();
+    fetch('../data/discography-data.json')
+      .then(function(r){ return r.json(); })
+      .then(function(data){
+        var catalog = document.getElementById('catalog');
+        catalog.innerHTML = '';
+        data.releases.forEach(function(item){
+          catalog.appendChild(renderCard(item));
+        });
+        setupFilters();
+      })
+      .catch(function(err){
+        document.getElementById('catalog').innerHTML = '<p class="empty-note">Impossible de charger la discographie pour le moment.</p>';
+        console.error('discography-data.json load failed:', err);
       });
-    });
 
-    genreFilters.forEach(function(btn){
-      btn.addEventListener('click', function(){
-        genreFilters.forEach(function(f){ f.classList.remove('is-active'); });
-        btn.classList.add('is-active');
-        activeGenre = btn.getAttribute('data-genre-filter');
-        applyFilters();
+    function setupFilters(){
+      var typeFilters = document.querySelectorAll('[data-type-filter]');
+      var genreFilters = document.querySelectorAll('[data-genre-filter]');
+      var emptyNote = document.getElementById('empty-note');
+      var activeType = 'all';
+      var activeGenre = 'all';
+
+      function applyFilters(){
+        var items = document.querySelectorAll('#catalog .release');
+        var visibleCount = 0;
+        items.forEach(function(item){
+          var matchesType = activeType === 'all' || item.getAttribute('data-type') === activeType;
+          var matchesGenre = activeGenre === 'all' || item.getAttribute('data-genre') === activeGenre;
+          var show = matchesType && matchesGenre;
+          item.classList.toggle('is-hidden', !show);
+          if (show) visibleCount++;
+        });
+        emptyNote.style.display = visibleCount === 0 ? 'block' : 'none';
+      }
+
+      typeFilters.forEach(function(btn){
+        btn.addEventListener('click', function(){
+          typeFilters.forEach(function(f){ f.classList.remove('is-active'); });
+          btn.classList.add('is-active');
+          activeType = btn.getAttribute('data-type-filter');
+          applyFilters();
+        });
       });
-    });
+
+      genreFilters.forEach(function(btn){
+        btn.addEventListener('click', function(){
+          genreFilters.forEach(function(f){ f.classList.remove('is-active'); });
+          btn.classList.add('is-active');
+          activeGenre = btn.getAttribute('data-genre-filter');
+          applyFilters();
+        });
+      });
+    }
   })();
 </script>
 </body>

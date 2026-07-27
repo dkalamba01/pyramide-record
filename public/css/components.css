@@ -319,3 +319,88 @@
   .grid--2, .grid--3, .grid--4 { grid-template-columns: 1fr; }
   .grid--4 { grid-template-columns: 1fr 1fr; }
 }
+
+
+/* ============================================================
+   HEADER REDESIGN — append to the END of css/components.css
+   ------------------------------------------------------------
+   Builds on the existing .header / .nav / .nav__logo / .nav__link
+   / .nav__cta classes already used across every page. Nothing
+   here renames or removes existing classes — these rules simply
+   layer on top (later in the cascade wins for equal specificity).
+   ============================================================ */
+ 
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(13, 19, 28, 0.72);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--hair);
+}
+ 
+.nav {
+  padding-top: var(--sp-3);
+  padding-bottom: var(--sp-3);
+}
+ 
+.nav__logo img {
+  height: 44px;
+  width: auto;
+  display: block;
+  transition: transform var(--dur-fast) var(--ease);
+}
+ 
+.nav__logo:hover img {
+  transform: scale(1.04);
+}
+ 
+.nav__link {
+  position: relative;
+  padding: 6px 2px;
+  transition: color var(--dur-fast) var(--ease);
+}
+ 
+.nav__link::after {
+  content: '';
+  position: absolute;
+  left: 2px;
+  right: 2px;
+  bottom: 0;
+  height: 1.5px;
+  background: var(--gold);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--dur-fast) var(--ease);
+}
+ 
+.nav__link:hover {
+  color: var(--bone);
+}
+ 
+.nav__link:hover::after,
+.nav__link[aria-current="page"]::after {
+  transform: scaleX(1);
+}
+ 
+.nav__cta {
+  border-radius: 999px;
+  padding: 9px 22px;
+  border: 1px solid var(--gold-dim);
+  transition: background var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease), transform var(--dur-fast) var(--ease);
+}
+ 
+.nav__cta:hover {
+  background: var(--gold);
+  border-color: var(--gold);
+  color: #0B1017;
+  transform: translateY(-1px);
+}
+ 
+@media (max-width: 860px) {
+  .nav__logo img {
+    height: 36px;
+  }
+}
+ 

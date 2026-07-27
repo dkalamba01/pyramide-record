@@ -54,3 +54,41 @@
     reveals.forEach(function (r) { r.classList.add('is-visible'); });
   }
 })();
+
+/* ============================================================
+   SITE-WIDE NAV FIXES — append to the END of js/main.js
+   ------------------------------------------------------------
+   1. Fixes any leftover "Journal" links pointing at the
+      non-existent journal.html — repoints them to blog.html
+      and relabels the text to "Blog", so every page is
+      consistent even if a stray Journal link was missed
+      during manual edits.
+   2. Adds a "← Retour à l'accueil" link to the nav, but ONLY
+      when the current page is NOT the homepage — so it never
+      appears on index.html itself.
+   ============================================================ */
+(function () {
+  // --- Fix 1: repoint any stray Journal links to Blog ---
+  document.querySelectorAll('a.nav__link').forEach(function (link) {
+    var href = link.getAttribute('href') || '';
+    if (href.indexOf('journal.html') !== -1) {
+      link.setAttribute('href', href.replace('journal.html', 'blog.html'));
+      link.textContent = 'Blog';
+    }
+  });
+ 
+  // --- Fix 2: conditional "back to home" link ---
+  var path = window.location.pathname;
+  var isHome = path === '/' || path.endsWith('/index.html') || path === '' ;
+ 
+  if (!isHome) {
+    var menu = document.querySelector('.nav__menu');
+    if (menu) {
+      var homeLink = document.createElement('a');
+      homeLink.className = 'nav__link nav__link--home';
+      homeLink.href = path.indexOf('/pages/') !== -1 ? '../index.html' : 'index.html';
+      homeLink.innerHTML = '&larr;&nbsp;Retour à l\u2019accueil';
+      menu.insertBefore(homeLink, menu.firstChild);
+    }
+  }
+})();

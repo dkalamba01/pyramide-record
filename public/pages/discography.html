@@ -15,37 +15,43 @@
   .page-hero h1 { font-family:var(--font-display); font-weight:400; font-size:var(--fs-h1); line-height:var(--lh-tight); max-width:14ch; margin:var(--sp-3) 0 var(--sp-4); }
   .page-hero .lede { max-width:640px; }
 
-  /* A répertoire is a fully self-contained section — never mixed with the other */
-  .rep-section { padding: var(--sp-8) 0; border-top: 1px solid var(--hair); }
-  .rep-section__head { margin-bottom: var(--sp-5); }
-  .rep-section__eyebrow { color: var(--ember); }
-  .rep-section__title { font-family:var(--font-display); font-weight:400; font-size:var(--fs-h2); margin:var(--sp-2) 0 var(--sp-3); }
-  .rep-section__intro { color:var(--sand); font-size:var(--fs-body); line-height:var(--lh-body); max-width:64ch; }
-  .rep-section__intro strong { color:var(--bone); font-weight:500; }
-
-  .verset { background:var(--panel); border:1px solid var(--hair-2); border-left:3px solid var(--gold); border-radius:var(--r-md); padding:var(--sp-5); margin:var(--sp-5) 0; max-width:640px; }
-  .verset__label { font-size:var(--fs-eyebrow); letter-spacing:var(--ls-label); color:var(--ember); text-transform:uppercase; margin-bottom:var(--sp-2); }
-  .verset__text { font-family:var(--font-display); font-style:italic; font-size:var(--fs-lg); line-height:1.5; color:var(--bone); }
-  .verset__ref { color:var(--sand); font-size:var(--fs-sm); margin-top:var(--sp-2); }
-
-  .catalog { display:grid; grid-template-columns:repeat(4,1fr); gap:var(--sp-4); margin-top:var(--sp-5); }
-  .release { }
-  .release__art { aspect-ratio:1; border-radius:var(--r-md); margin-bottom:var(--sp-2); }
-  .release__title { font-size:var(--fs-sm); color:var(--bone); line-height:1.3; }
-  .release__artist { font-size:var(--fs-xs); color:var(--ash); margin-top:2px; }
-
-  .live-list { border-top:1px solid var(--hair); margin-top:var(--sp-4); }
-  .live-item { display:flex; align-items:center; gap:var(--sp-4); padding:var(--sp-3) 0; border-bottom:1px solid var(--hair); }
-  .live-item__play { width:34px; height:34px; border-radius:50%; border:1px solid var(--gold-dim); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
-  .live-item__play svg { width:12px; height:12px; fill:var(--gold); }
-  .live-item__title { font-size:var(--fs-sm); color:var(--bone); }
-  .live-item__artist { font-size:var(--fs-xs); color:var(--ash); }
-
   .streams { display:flex; gap:var(--sp-3); flex-wrap:wrap; margin-top:var(--sp-5); }
   .stream-chip { display:inline-flex; align-items:center; gap:6px; font-size:var(--fs-xs); letter-spacing:var(--ls-wide); text-transform:uppercase; color:var(--sand); border:1px solid var(--hair-2); border-radius:20px; padding:6px 14px; transition:border-color var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease); }
   .stream-chip:hover { border-color:var(--gold-dim); color:var(--bone); }
 
+  .verset { background:var(--panel); border:1px solid var(--hair-2); border-left:3px solid var(--gold); border-radius:var(--r-md); padding:var(--sp-5); margin:var(--sp-6) 0; max-width:640px; }
+  .verset__label { font-size:var(--fs-eyebrow); letter-spacing:var(--ls-label); color:var(--ember); text-transform:uppercase; margin-bottom:var(--sp-2); }
+  .verset__text { font-family:var(--font-display); font-style:italic; font-size:var(--fs-lg); line-height:1.5; color:var(--bone); }
+  .verset__ref { color:var(--sand); font-size:var(--fs-sm); margin-top:var(--sp-2); }
+
+  /* Filters — same pattern as gallery.html, two independent filter rows */
+  .filter-group { margin-bottom: var(--sp-3); }
+  .filter-group__label { font-size:var(--fs-eyebrow); letter-spacing:var(--ls-wide); text-transform:uppercase; color:var(--ash); margin-bottom:var(--sp-2); display:block; }
+  .filters { display:flex; gap:var(--sp-2); flex-wrap:wrap; }
+  .filter { font-size:var(--fs-xs); letter-spacing:var(--ls-wide); text-transform:uppercase; color:var(--sand); background:transparent; border:1px solid var(--hair-2); border-radius:20px; padding:8px 16px; cursor:pointer; transition:all var(--dur-fast) var(--ease); }
+  .filter:hover { border-color:var(--gold-dim); color:var(--bone); }
+  .filter.is-active { background:var(--gold); border-color:var(--gold); color:#0B1017; }
+
+  /* Unified release grid — every item carries data-genre + data-type */
+  .catalog { display:grid; grid-template-columns:repeat(4,1fr); gap:var(--sp-4); margin-top:var(--sp-6); }
+  .release { position:relative; }
+  .release.is-hidden { display:none; }
+  .release__art { aspect-ratio:1; border-radius:var(--r-md); margin-bottom:var(--sp-2); position:relative; overflow:hidden; }
+  .release__badge { position:absolute; top:8px; left:8px; display:flex; gap:6px; flex-wrap:wrap; }
+  .release__tag { font-size:10px; letter-spacing:var(--ls-wide); text-transform:uppercase; padding:3px 8px; border-radius:12px; backdrop-filter:blur(4px); }
+  .release__tag--genre-gospel { background:rgba(232,165,82,0.85); color:#2b1a05; }
+  .release__tag--genre-non-gospel { background:rgba(58,120,166,0.85); color:#eaf3fb; }
+  .release__tag--type-live { background:rgba(206,68,54,0.85); color:#fbeceb; }
+  .release__play { position:absolute; bottom:8px; right:8px; width:30px; height:30px; border-radius:50%; background:rgba(13,19,28,0.75); border:1px solid var(--gold-dim); display:flex; align-items:center; justify-content:center; }
+  .release__play svg { width:11px; height:11px; fill:var(--gold); }
+  .release__title { font-size:var(--fs-sm); color:var(--bone); line-height:1.3; }
+  .release__artist { font-size:var(--fs-xs); color:var(--ash); margin-top:2px; }
+  .release__role { font-size:10px; color:var(--gold); text-transform:uppercase; letter-spacing:var(--ls-wide); margin-top:2px; }
+
+  .empty-note { color:var(--ash); font-size:var(--fs-sm); padding:var(--sp-6) 0; text-align:center; }
+
   @media(max-width:820px){ .catalog{grid-template-columns:1fr 1fr} }
+  @media(max-width:520px){ .catalog{grid-template-columns:1fr} }
 </style>
 <link rel="icon" type="image/png" href="../assets/images/logo.png">
 <link rel="apple-touch-icon" href="../assets/images/logo.png">
@@ -85,7 +91,7 @@
       <a class="nav__link" href="gallery.html">Galerie</a>
       <a class="nav__link" href="shop.html">Boutique</a>
       <a class="nav__link" href="about.html">À&nbsp;Propos</a>
-      <a class="nav__link" href="blog.html">Blog</a>
+      <a class="nav__link" href="journal.html">Journal</a>
       <a class="nav__cta" href="booking.html">Réserver</a>
     </div>
   </nav>
@@ -95,7 +101,7 @@
   <section class="page-hero wrap">
     <p class="eyebrow">Discographie</p>
     <h1>Ils ont enregistré chez nous.</h1>
-    <p class="lede">Pyramid Record est fier de démontrer la gamme et la qualité des enregistrements produits pour nos clients. Notre portefeuille comprend de la musique gospel et non-gospel, ainsi que des sessions live et des podcasts.</p>
+    <p class="lede">Pyramid Record est fier de démontrer la gamme et la qualité des enregistrements produits pour nos clients. Notre portefeuille comprend de la musique gospel et non-gospel, des productions studio et des sessions live.</p>
     <div class="streams" aria-label="Plateformes d'écoute">
       <span class="stream-chip">Spotify</span>
       <span class="stream-chip">Apple Music</span>
@@ -105,13 +111,7 @@
     </div>
   </section>
 
-  <!-- ============ RÉPERTOIRE GOSPEL (self-contained) ============ -->
-  <section class="rep-section wrap reveal">
-    <div class="rep-section__head">
-      <p class="eyebrow rep-section__eyebrow">Répertoire spirituel</p>
-      <h2 class="rep-section__title">Musique Gospel</h2>
-      <p class="rep-section__intro">Chez Pyramid Record, nous comprenons la signification profonde et l'importance spirituelle de la musique Gospel. Ce n'est pas seulement un genre ; c'est un <strong>message, un témoignage et une source d'élévation</strong>. Nous nous engageons à capturer la puissance des chœurs, la clarté des voix principales et l'impact émotionnel des arrangements — garantissant un mixage qui transmet fidèlement votre foi et inspire votre public.</p>
-    </div>
+  <section class="section-sm wrap reveal">
 
     <div class="verset">
       <p class="verset__label">Verset biblique</p>
@@ -119,35 +119,160 @@
       <p class="verset__ref">Psaume 98:1</p>
     </div>
 
-    <div class="catalog">
-      <div class="release"><div class="ph release__art"><small>Pochette</small></div><div class="release__title">Ciel sur Terre</div><div class="release__artist">Hatthie Kashoba</div></div>
-      <div class="release"><div class="ph release__art"><small>Pochette</small></div><div class="release__title">Natondi Nkolo</div><div class="release__artist">Seth Mulumba</div></div>
-      <div class="release"><div class="ph release__art"><small>Pochette</small></div><div class="release__title">Worship Time</div><div class="release__artist">Seth Mulumba</div></div>
-      <div class="release"><div class="ph release__art"><small>Pochette</small></div><div class="release__title">Culte des Chants</div><div class="release__artist">Enoch Mulopo</div></div>
+    <!-- FILTER ROW 1 — Type -->
+    <div class="filter-group">
+      <span class="filter-group__label">Type de production</span>
+      <div class="filters" role="tablist" aria-label="Filtrer par type">
+        <button class="filter is-active" data-type-filter="all">Tout</button>
+        <button class="filter" data-type-filter="studio">Productions studio</button>
+        <button class="filter" data-type-filter="live">Sessions live</button>
+      </div>
     </div>
 
-    <p class="eyebrow" style="margin:var(--sp-6) 0 0">Sessions live · Culte en direct</p>
-    <div class="live-list">
-      <div class="live-item"><span class="live-item__play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span><div><div class="live-item__title">Le Guide · Ciel-sur-Terre</div><div class="live-item__artist">Hatthie Kashoba</div></div></div>
-      <div class="live-item"><span class="live-item__play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span><div><div class="live-item__title">Natondi Nkolo · Concert Culte Live</div><div class="live-item__artist">Seth Mulumba</div></div></div>
-      <div class="live-item"><span class="live-item__play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span><div><div class="live-item__title">Culte des Chants</div><div class="live-item__artist">Enoch Mulopo</div></div></div>
-    </div>
-  </section>
-
-  <!-- ============ RÉPERTOIRE NON-GOSPEL (self-contained) ============ -->
-  <section class="rep-section wrap reveal">
-    <div class="rep-section__head">
-      <p class="eyebrow rep-section__eyebrow">Répertoire général</p>
-      <h2 class="rep-section__title">Musique Non Gospel</h2>
-      <p class="rep-section__intro">Pyramid Record est un studio où l'excellence technique rencontre la diversité créative. Notre studio est équipé pour sculpter le son parfait, quel que soit votre style — <strong>Pop, R&amp;B, Hip-Hop, Rock, Jazz</strong> ou musique expérimentale. Forts d'une expérience de niveau international, nous excellons à définir l'identité sonore unique de chaque artiste : clarté dynamique, impact percutant des basses, et cohérence professionnelle.</p>
+    <!-- FILTER ROW 2 — Genre -->
+    <div class="filter-group">
+      <span class="filter-group__label">Répertoire</span>
+      <div class="filters" role="tablist" aria-label="Filtrer par genre">
+        <button class="filter is-active" data-genre-filter="all">Tout</button>
+        <button class="filter" data-genre-filter="gospel">Gospel</button>
+        <button class="filter" data-genre-filter="non-gospel">Non Gospel</button>
+      </div>
     </div>
 
-    <div class="catalog">
-      <div class="release"><div class="ph release__art"><small>Pochette</small></div><div class="release__title">Désolé (Clip officiel)</div><div class="release__artist">Héritier Wata</div></div>
-      <div class="release"><div class="ph release__art"><small>Pochette</small></div><div class="release__title">Amore (Clip officiel)</div><div class="release__artist">Fally Ipupa</div></div>
-      <div class="release"><div class="ph release__art"><small>Pochette</small></div><div class="release__title">Showbuzz · Concert</div><div class="release__artist">Enoch Mulopo</div></div>
-      <div class="release"><div class="ph release__art"><small>Pochette</small></div><div class="release__title">Podcasts &amp; créations orales</div><div class="release__artist">Divers</div></div>
+    <!-- UNIFIED CATALOG — every release tagged with data-genre + data-type -->
+    <div class="catalog" id="catalog">
+
+      <div class="release" data-genre="gospel" data-type="studio">
+        <div class="ph release__art">
+          <small>Pochette</small>
+          <div class="release__badge">
+            <span class="release__tag release__tag--genre-gospel">Gospel</span>
+          </div>
+        </div>
+        <div class="release__title">Ciel sur Terre</div>
+        <div class="release__artist">Hatthie Kashoba</div>
+        <div class="release__role">Enregistrement · Mixage</div>
+      </div>
+
+      <div class="release" data-genre="gospel" data-type="studio">
+        <div class="ph release__art">
+          <small>Pochette</small>
+          <div class="release__badge">
+            <span class="release__tag release__tag--genre-gospel">Gospel</span>
+          </div>
+        </div>
+        <div class="release__title">Natondi Nkolo</div>
+        <div class="release__artist">Seth Mulumba</div>
+        <div class="release__role">Enregistrement · Mixage</div>
+      </div>
+
+      <div class="release" data-genre="gospel" data-type="studio">
+        <div class="ph release__art">
+          <small>Pochette</small>
+          <div class="release__badge">
+            <span class="release__tag release__tag--genre-gospel">Gospel</span>
+          </div>
+        </div>
+        <div class="release__title">Worship Time</div>
+        <div class="release__artist">Seth Mulumba</div>
+        <div class="release__role">Enregistrement · Mixage</div>
+      </div>
+
+      <div class="release" data-genre="gospel" data-type="studio">
+        <div class="ph release__art">
+          <small>Pochette</small>
+          <div class="release__badge">
+            <span class="release__tag release__tag--genre-gospel">Gospel</span>
+          </div>
+        </div>
+        <div class="release__title">Culte des Chants</div>
+        <div class="release__artist">Enoch Mulopo</div>
+        <div class="release__role">Enregistrement · Mixage</div>
+      </div>
+
+      <div class="release" data-genre="gospel" data-type="live">
+        <div class="ph release__art">
+          <small>Session live</small>
+          <div class="release__badge">
+            <span class="release__tag release__tag--genre-gospel">Gospel</span>
+            <span class="release__tag release__tag--type-live">Live</span>
+          </div>
+          <span class="release__play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span>
+        </div>
+        <div class="release__title">Le Guide · Ciel-sur-Terre</div>
+        <div class="release__artist">Hatthie Kashoba</div>
+        <div class="release__role">Session live</div>
+      </div>
+
+      <div class="release" data-genre="gospel" data-type="live">
+        <div class="ph release__art">
+          <small>Session live</small>
+          <div class="release__badge">
+            <span class="release__tag release__tag--genre-gospel">Gospel</span>
+            <span class="release__tag release__tag--type-live">Live</span>
+          </div>
+          <span class="release__play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span>
+        </div>
+        <div class="release__title">Natondi Nkolo · Concert Culte Live</div>
+        <div class="release__artist">Seth Mulumba</div>
+        <div class="release__role">Session live</div>
+      </div>
+
+      <!-- CORRECTED: was miscategorized as a Non-Gospel studio release — Enoch Mulopo / Showbuzz is Gospel + Live -->
+      <div class="release" data-genre="gospel" data-type="live">
+        <div class="ph release__art">
+          <small>Session live</small>
+          <div class="release__badge">
+            <span class="release__tag release__tag--genre-gospel">Gospel</span>
+            <span class="release__tag release__tag--type-live">Live</span>
+          </div>
+          <span class="release__play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span>
+        </div>
+        <div class="release__title">Showbuzz · Concert</div>
+        <div class="release__artist">Enoch Mulopo</div>
+        <div class="release__role">Session live</div>
+      </div>
+
+      <div class="release" data-genre="non-gospel" data-type="studio">
+        <div class="ph release__art">
+          <small>Pochette</small>
+          <div class="release__badge">
+            <span class="release__tag release__tag--genre-non-gospel">Non Gospel</span>
+          </div>
+        </div>
+        <div class="release__title">Désolé (Clip officiel)</div>
+        <div class="release__artist">Héritier Wata</div>
+        <div class="release__role">Enregistrement · Mixage</div>
+      </div>
+
+      <div class="release" data-genre="non-gospel" data-type="studio">
+        <div class="ph release__art">
+          <small>Pochette</small>
+          <div class="release__badge">
+            <span class="release__tag release__tag--genre-non-gospel">Non Gospel</span>
+          </div>
+        </div>
+        <div class="release__title">Amore (Clip officiel)</div>
+        <div class="release__artist">Fally Ipupa</div>
+        <div class="release__role">Enregistrement · Mixage</div>
+      </div>
+
+      <div class="release" data-genre="non-gospel" data-type="studio">
+        <div class="ph release__art">
+          <small>Pochette</small>
+          <div class="release__badge">
+            <span class="release__tag release__tag--genre-non-gospel">Non Gospel</span>
+          </div>
+        </div>
+        <div class="release__title">Podcasts &amp; créations orales</div>
+        <div class="release__artist">Divers</div>
+        <div class="release__role">Production</div>
+      </div>
+
     </div>
+
+    <p class="empty-note" id="empty-note" style="display:none">Aucune production ne correspond à ces filtres.</p>
+
   </section>
 
   <div class="quote-band">
@@ -179,5 +304,47 @@
 </footer>
 
 <script src="../js/main.js"></script>
+<script>
+  // Dual-axis filtering: type (studio/live) AND genre (gospel/non-gospel), combined
+  (function(){
+    var typeFilters = document.querySelectorAll('[data-type-filter]');
+    var genreFilters = document.querySelectorAll('[data-genre-filter]');
+    var items = document.querySelectorAll('.release');
+    var emptyNote = document.getElementById('empty-note');
+
+    var activeType = 'all';
+    var activeGenre = 'all';
+
+    function applyFilters(){
+      var visibleCount = 0;
+      items.forEach(function(item){
+        var matchesType = activeType === 'all' || item.getAttribute('data-type') === activeType;
+        var matchesGenre = activeGenre === 'all' || item.getAttribute('data-genre') === activeGenre;
+        var show = matchesType && matchesGenre;
+        item.classList.toggle('is-hidden', !show);
+        if (show) visibleCount++;
+      });
+      emptyNote.style.display = visibleCount === 0 ? 'block' : 'none';
+    }
+
+    typeFilters.forEach(function(btn){
+      btn.addEventListener('click', function(){
+        typeFilters.forEach(function(f){ f.classList.remove('is-active'); });
+        btn.classList.add('is-active');
+        activeType = btn.getAttribute('data-type-filter');
+        applyFilters();
+      });
+    });
+
+    genreFilters.forEach(function(btn){
+      btn.addEventListener('click', function(){
+        genreFilters.forEach(function(f){ f.classList.remove('is-active'); });
+        btn.classList.add('is-active');
+        activeGenre = btn.getAttribute('data-genre-filter');
+        applyFilters();
+      });
+    });
+  })();
+</script>
 </body>
 </html>

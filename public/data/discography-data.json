@@ -11,6 +11,7 @@
     { "title": "Showbuzz · Concert", "artist": "Enoch Mulopo", "genre": "gospel", "type": "live", "role": "Session live", "link": "" },
     { "title": "Désolé (Clip officiel)", "artist": "Héritier Wata", "genre": "non-gospel", "type": "studio", "role": "Enregistrement · Mixage", "link": "" },
     { "title": "Amore (Clip officiel)", "artist": "Fally Ipupa", "genre": "non-gospel", "type": "studio", "role": "Enregistrement · Mixage", "link": "" },
-    { "title": "Podcasts & créations orales", "artist": "Divers", "genre": "non-gospel", "type": "studio", "role": "Production", "link": "" }
+    { "title": "Podcasts & créations orales", "artist": "Divers", "genre": "non-gospel", "type": "studio", "role": "Production", "link": "" },
+    { "title": "ADORER MALGRE TOUT MINISTRIES", "artist": "Mike Flor Mulumba", "genre": "gospel", "type": "live", "role": "Session live", "link": "https://www.youtube.com/watch?v=XGMp5Jad6xs" }
   ]
 }

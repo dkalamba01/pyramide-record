@@ -19,6 +19,11 @@
   /* Widget mount + fallback login card, styled with design-system tokens only */
   .portal-mount { min-height: 420px; }
 
+  /* Real Iris Financial embed — matches booking.html / shop.html pattern.
+     Hidden by default; JS below shows it and hides the static fallback. */
+  .iris-embed { display:none; border:1px solid var(--hair-2); border-radius:var(--r-lg); overflow:hidden; }
+  .iris-embed iframe { width:100%; border:0; display:block; overflow:hidden; }
+
   .login-card { background:var(--panel); border:1px solid var(--hair); border-radius:var(--r-lg); padding:var(--sp-6); width:100%; max-width:380px; margin:0 auto; }
   .login-card h2 { font-family:var(--font-display); font-size:var(--fs-h3); font-weight:400; margin-bottom:var(--sp-1); }
   .login-card p.sub { color:var(--sand); font-size:var(--fs-sm); margin-bottom:var(--sp-5); }
@@ -71,39 +76,30 @@
 
   <section class="section-sm wrap reveal">
     <!--
-      WIDGET EMBED — Iris Financial Portal Widget
+      WIDGET EMBED — Iris Financial Portal Widget (LIVE)
       ------------------------------------------------------------
-      data-org scopes the widget to this org's account/booking/
-      invoice records. data-theme="auto" tells the widget to read
-      WidgetThemeConfig instead of using a hardcoded palette
-      (see components.css tokens — same source of truth this
-      page's fallback card below is built from).
-
-      The widget itself decides which login flow to run based on
-      the Client / Staff toggle inside it (Option B: two existing
-      Iris Financial auth systems called from one embedded UI,
-      no new unified auth layer).
+      Real widget, deployed at irisfinancial.tech. Same iframe +
+      postMessage resize pattern as booking.html / shop.html.
+      Option B: the widget's own login screen has a Client / Staff
+      toggle, each hitting its own existing auth system — no
+      unified auth layer.
     -->
-    <div id="iris-portal-widget"
-         class="portal-mount"
-         data-org="pyramide-record"
-         data-theme="auto"
-         aria-label="Portail client Pyramide Record">
+    <div class="iris-embed" id="iris-embed" aria-label="Portail client Pyramide Record">
+      <!-- iframe injected by JS below -->
+    </div>
 
-      <!-- STATIC FALLBACK — shown until js/main.js widget loader replaces this,
-           and for no-JS / slow-load states. Mirrors the approved mockup. -->
-      <div class="login-card">
-        <h2>Connexion</h2>
-        <p class="sub">Accédez à votre espace Pyramide Record.</p>
-        <div class="role-toggle" role="tablist" aria-label="Type de compte">
-          <button class="on" type="button" data-role="client">Client</button>
-          <button type="button" data-role="staff">Staff / Admin</button>
-        </div>
-        <div class="field"><label class="field__label">Email</label><input class="input" type="email" placeholder="vous@email.com"></div>
-        <div class="field"><label class="field__label">Mot de passe</label><input class="input" type="password" placeholder="••••••••"></div>
-        <button class="btn btn--block" type="button" disabled>Se connecter</button>
-        <div class="login-foot">Mot de passe oublié ? <a href="#">Réinitialiser</a></div>
+    <!-- STATIC FALLBACK — shown only if JS fails to load the iframe (e.g. no-JS). -->
+    <div class="login-card" id="portal-fallback">
+      <h2>Connexion</h2>
+      <p class="sub">Accédez à votre espace Pyramide Record.</p>
+      <div class="role-toggle" role="tablist" aria-label="Type de compte">
+        <button class="on" type="button" data-role="client">Client</button>
+        <button type="button" data-role="staff">Staff / Admin</button>
       </div>
+      <div class="field"><label class="field__label">Email</label><input class="input" type="email" placeholder="vous@email.com"></div>
+      <div class="field"><label class="field__label">Mot de passe</label><input class="input" type="password" placeholder="••••••••"></div>
+      <button class="btn btn--block" type="button" disabled>Se connecter</button>
+      <div class="login-foot">Mot de passe oublié ? <a href="#">Réinitialiser</a></div>
     </div>
   </section>
 
@@ -128,15 +124,36 @@
 </footer>
 
 <script>
-  // Temporary role-toggle behavior for the static fallback card above.
-  // Once the real Iris Financial widget script is added, it will take
-  // over the #iris-portal-widget mount and this block becomes dead code
-  // (safe to delete then).
-  document.querySelectorAll('.role-toggle button').forEach(function (btn) {
-    btn.addEventListener('click', function () {
-      document.querySelectorAll('.role-toggle button').forEach(function (b) { b.classList.remove('on'); });
-      btn.classList.add('on');
-    });
+  /* ============================================================
+     PORTAL WIDGET — Iris Financial embed (LIVE)
+     Same pattern as booking.html's BOOKING object / iris-embed.
+     ============================================================ */
+  var PORTAL = {
+    irisEmbedUrl: 'https://irisfinancial.tech/widget/portal?orgId=cmptnogcb0000v3v17tq2blhr'
+  };
+
+  (function () {
+    var embed = document.getElementById('iris-embed');
+    var fallback = document.getElementById('portal-fallback');
+    if (embed) {
+      embed.style.display = 'block';
+      embed.innerHTML =
+        '<iframe id="iris-portal-widget" src="' + PORTAL.irisEmbedUrl + '" ' +
+        'title="Espace Client Pyramide Record" loading="lazy" ' +
+        'style="width:100%;border:0;overflow:hidden;height:640px;"></iframe>';
+        // ^ 640px is just an initial fallback height before the first
+        // resize message arrives — the listener below takes over immediately after.
+      if (fallback) fallback.style.display = 'none';
+    }
+  })();
+
+  /* Auto-resize listener (matches the widget's postMessage contract,
+     same as booking.html / shop.html) */
+  window.addEventListener('message', function (e) {
+    if (e.data && e.data.type === 'iris-widget-resize') {
+      var f = document.getElementById('iris-portal-widget');
+      if (f && e.data.height) f.style.height = e.data.height + 'px';
+    }
   });
 </script>
 <script src="../js/main.js"></script>

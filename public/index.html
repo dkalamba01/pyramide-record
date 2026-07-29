@@ -45,6 +45,38 @@
   .zig-divider { height:14px; }
   .zig-divider svg { width:100%; height:100%; display:block; }
 
+  /* ------------------------------------------------------------
+     HERO LOGO WATERMARK
+     ------------------------------------------------------------
+     TO CONTROL VISIBILITY: change --hero-logo-opacity below.
+     0.10 = current subtle default. Try 0.15–0.20 for more visible,
+     0.05–0.08 for even quieter. That's the only number you need
+     to touch to adjust it.
+
+     Source logo is black linework on transparent — inverted here so
+     it reads as pale/light against the dark hero (the raw black
+     version would be nearly invisible on this background).
+
+     Hidden entirely below 768px (see media query at bottom of this
+     block) — on narrow screens the headline goes full-width and would
+     sit directly on top of the watermark instead of beside it, so it's
+     turned off rather than collide with the text.
+     ------------------------------------------------------------ */
+  :root { --hero-logo-opacity: 0.10; }
+  .hero__logo {
+    position:absolute; top:50%; right:-4%; width:60%; max-width:640px;
+    transform:translateY(-50%);
+    background-image:url('assets/images/hero-watermark.png');
+    background-size:contain; background-repeat:no-repeat; background-position:center;
+    aspect-ratio:2340/1272;
+    filter: invert(1) brightness(0.9);
+    opacity: var(--hero-logo-opacity);
+    pointer-events:none;
+  }
+  @media (max-width: 768px) {
+    .hero__logo { display:none; }
+  }
+
   .credit { background:var(--panel); border-top:1px solid var(--hair); border-bottom:1px solid var(--hair); }
   .credit__inner { display:flex; align-items:center; gap:var(--sp-3); padding: var(--sp-4) 0; }
   .credit svg { width:22px; height:22px; fill:var(--ember); flex-shrink:0; }
@@ -136,6 +168,7 @@
   <!-- HERO -->
   <section class="hero">
     <div class="hero__texture" aria-hidden="true"></div>
+    <div class="hero__logo" aria-hidden="true"></div>
     <div class="hero__inner wrap">
       <p class="eyebrow">Kinshasa — RD Congo</p>
       <h1>Le son congolais,<br>à la hauteur<br>du <span class="ital" style="color:var(--gold-bright)">monde.</span></h1>

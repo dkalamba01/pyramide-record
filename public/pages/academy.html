@@ -40,6 +40,17 @@
   .mod__title { font-size:var(--fs-lg); margin-bottom:4px; }
   .mod__desc { color:var(--sand); font-size:var(--fs-sm); }
 
+  /* Upcoming module cards — simpler than the featured .course card
+     (no aside, no enroll button) since these courses aren't built on
+     SteLearn yet. */
+  .modcards { display:grid; grid-template-columns:repeat(3,1fr); gap:var(--sp-4); margin-top:var(--sp-5); }
+  .modcard { background:var(--panel); border:1px solid var(--hair-2); border-radius:var(--r-lg); padding:var(--sp-5); }
+  .modcard__tag { font-size:var(--fs-eyebrow); letter-spacing:var(--ls-label); color:var(--ember); text-transform:uppercase; }
+  .modcard__title { font-family:var(--font-display); font-weight:400; font-size:var(--fs-h3); margin:var(--sp-2) 0 var(--sp-3); }
+  .modcard__desc { color:var(--sand); font-size:var(--fs-sm); line-height:1.6; margin-bottom:var(--sp-4); }
+  .modcard__soon { display:inline-block; font-size:var(--fs-xs); letter-spacing:var(--ls-wide); text-transform:uppercase; color:var(--ash); border:1px solid var(--hair-2); border-radius:20px; padding:6px 14px; }
+  @media(max-width:820px){ .modcards{grid-template-columns:1fr} }
+
   /* Learning paths (articles by topic) */
   .paths { display:grid; grid-template-columns:repeat(3,1fr); gap:var(--sp-4); }
   .path { background:var(--panel); border:1px solid var(--hair); border-radius:var(--r-lg); padding:var(--sp-5); }
@@ -136,12 +147,26 @@
   <section class="section wrap reveal">
     <p class="eyebrow">Le cursus complet</p>
     <h2 class="h2" style="margin:var(--sp-2) 0 var(--sp-5)">De la première prise au master final.</h2>
-    <div class="curriculum">
-      <div class="mod"><div class="mod__num">01</div><div><div class="mod__title">Introduction à l'enregistrement audio</div><div class="mod__desc">Les fondamentaux : comprendre le matériel et l'environnement de studio.</div></div></div>
-      <div class="mod"><div class="mod__num">02</div><div><div class="mod__title">Techniques de prise de son</div><div class="mod__desc">Placement de micros, gestion des sources sonores, capturer la performance parfaite.</div></div></div>
-      <div class="mod"><div class="mod__num">03</div><div><div class="mod__title">Mixage &amp; Mastering</div><div class="mod__desc">Sculpter le son, équilibrer les fréquences, préparer votre musique pour une diffusion optimale.</div></div></div>
-      <div class="mod"><div class="mod__num">04</div><div><div class="mod__title">Production musicale</div><div class="mod__desc">Développez votre créativité et structurez vos morceaux, de l'idée à l'arrangement final.</div></div></div>
-      <div class="mod"><div class="mod__num">05</div><div><div class="mod__title">MAO — Musique Assistée par Ordinateur</div><div class="mod__desc">Devenez expert dans l'utilisation des logiciels et outils numériques pour composer et produire.</div></div></div>
+    <p class="muted" style="max-width:60ch;margin-bottom:var(--sp-2)">Le Module 1 (Prise de son, ci-dessus) couvre déjà les fondamentaux de la capture audio. Les modules suivants prendront le relais, du mixage à la production musicale complète.</p>
+    <div class="modcards">
+      <div class="modcard">
+        <span class="modcard__tag">Module 2</span>
+        <h3 class="modcard__title">Mixage &amp; Mastering</h3>
+        <p class="modcard__desc">Sculpter le son, équilibrer les fréquences, préparer votre musique pour une diffusion optimale.</p>
+        <span class="modcard__soon">Bientôt disponible</span>
+      </div>
+      <div class="modcard">
+        <span class="modcard__tag">Module 3</span>
+        <h3 class="modcard__title">Production musicale</h3>
+        <p class="modcard__desc">Développez votre créativité et structurez vos morceaux, de l'idée à l'arrangement final.</p>
+        <span class="modcard__soon">Bientôt disponible</span>
+      </div>
+      <div class="modcard">
+        <span class="modcard__tag">Module 4</span>
+        <h3 class="modcard__title">MAO — Musique Assistée par Ordinateur</h3>
+        <p class="modcard__desc">Devenez expert dans l'utilisation des logiciels et outils numériques pour composer et produire.</p>
+        <span class="modcard__soon">Bientôt disponible</span>
+      </div>
     </div>
   </section>
 

@@ -162,7 +162,8 @@
 }
 .index-row:last-child { border-bottom: 1px solid var(--hair); }
 .index-row:hover { padding-left: var(--sp-2); }
-.index-row__num { font-family: var(--font-display); color: #40536A; font-size: var(--fs-sm); }
+.index-row__num { color: var(--ember); display: flex; align-items: center; }
+.index-row__num svg { width: 20px; height: 20px; stroke: currentColor; fill: none; stroke-width: 1.6; }
 .index-row__name { font-size: 21px; }
 .index-row__meta { font-size: var(--fs-xs); color: var(--ash); text-align: right; }
 

@@ -26,6 +26,12 @@
   .svc__list li { color:var(--sand); font-size:var(--fs-sm); padding:4px 0 4px 20px; position:relative; max-width:58ch; }
   .svc__list li::before { content:'—'; position:absolute; left:0; color:var(--gold); }
   .svc__kicker { color:var(--ember); font-style:italic; font-family:var(--font-display); font-size:var(--fs-lg); margin-top:var(--sp-2); }
+  .svc__price { display:inline-block; font-size:var(--fs-xs); letter-spacing:var(--ls-wide); text-transform:uppercase; color:var(--gold); border:1px solid var(--gold-dim); border-radius:20px; padding:4px 14px; margin-bottom:var(--sp-3); }
+  .svc__rentals { display:grid; grid-template-columns:1fr 1fr; gap:4px var(--sp-5); margin-top:var(--sp-4); }
+  .svc__rentals div { display:flex; justify-content:space-between; gap:var(--sp-3); padding:6px 0; border-bottom:1px solid var(--hair); font-size:var(--fs-sm); color:var(--sand); }
+  .svc__rentals b { color:var(--bone); font-weight:500; }
+  .svc__rentals span { color:var(--gold); white-space:nowrap; }
+  @media(max-width:600px){ .svc__rentals{grid-template-columns:1fr} }
   @media(max-width:820px){ .svc{grid-template-columns:1fr; gap:var(--sp-3); padding:var(--sp-6) 0} }
 </style>
 <link rel="icon" type="image/png" href="../assets/images/logo.png">
@@ -78,11 +84,10 @@
     <h1>Transformer votre vision en son.</h1>
     <p class="lede">Chez Pyramid Record, nous offrons une gamme complète de services conçus pour transformer votre vision créative en un produit audio de qualité professionnelle. Forts d'une expertise technique de niveau international, nous vous accompagnons à chaque étape — de la capture du son la plus pure au mastering final prêt pour la diffusion mondiale.</p>
     <div style="display:flex;gap:var(--sp-5);flex-wrap:wrap;margin-top:var(--sp-5);padding-top:var(--sp-5);border-top:1px solid var(--hair)">
-      <div><div style="font-family:var(--font-display);color:var(--gold);font-size:var(--fs-lg)">Sur devis</div><div style="font-size:var(--fs-eyebrow);letter-spacing:var(--ls-label);text-transform:uppercase;color:var(--ash)">Enregistrement / session</div></div>
-      <div><div style="font-family:var(--font-display);color:var(--gold);font-size:var(--fs-lg)">Sur devis</div><div style="font-size:var(--fs-eyebrow);letter-spacing:var(--ls-label);text-transform:uppercase;color:var(--ash)">Mixage / titre</div></div>
+      <div><div style="font-family:var(--font-display);color:var(--gold);font-size:var(--fs-lg)">15 $ / heure</div><div style="font-size:var(--fs-eyebrow);letter-spacing:var(--ls-label);text-transform:uppercase;color:var(--ash)">Enregistrement / session</div></div>
+      <div><div style="font-family:var(--font-display);color:var(--gold);font-size:var(--fs-lg)">100 $ / séance</div><div style="font-size:var(--fs-eyebrow);letter-spacing:var(--ls-label);text-transform:uppercase;color:var(--ash)">Mixage / titre</div></div>
       <div><div style="font-family:var(--font-display);color:var(--gold);font-size:var(--fs-lg)">dès 300 $</div><div style="font-size:var(--fs-eyebrow);letter-spacing:var(--ls-label);text-transform:uppercase;color:var(--ash)">Formation · Module 1</div></div>
     </div>
-    <p class="muted" style="font-size:var(--fs-xs);margin-top:var(--sp-3)">Astuce : remplacez « Sur devis » par vos vrais tarifs ou fourchettes de prix — la transparence convertit mieux.</p>
   </section>
 
   <section class="wrap">
@@ -91,6 +96,7 @@
       <div class="svc__num"><svg viewBox="0 0 24 24"><path d="M12 2a3 3 0 00-3 3v6a3 3 0 006 0V5a3 3 0 00-3-3z"/><path d="M19 10v1a7 7 0 01-14 0v-1M12 18v4M9 22h6"/></svg></div>
       <div class="svc__body">
         <h2 class="svc__title">Capture de son &amp; Voix Off</h2>
+        <span class="svc__price">15 $ / heure</span>
         <p>Au cœur de tout grand projet se trouve une capture audio impeccable. Que vous soyez un artiste enregistrant son prochain single ou un professionnel ayant besoin d'une voix off nette et percutante, Pyramid Record garantit un son de départ d'une clarté inégalée.</p>
         <p>Nous mettons à votre disposition un studio acoustiquement optimisé et un <strong>équipement de très haute qualité</strong> — micros haut de gamme, préamplis professionnels — pour immortaliser votre performance. Notre approche va au-delà de l'enregistrement : nous capturons l'émotion et la nuance. Que vous soyez débutant ou professionnel expérimenté, notre ingénieur est là pour vous guider et garantir le succès de votre session.</p>
       </div>
@@ -100,6 +106,7 @@
       <div class="svc__num"><svg viewBox="0 0 24 24"><path d="M4 6h2M8 6h2M12 6h2M16 6h2M20 6h0"/><path d="M6 6v6M10 6v10M14 6v3M18 6v8" stroke-linecap="round"/></svg></div>
       <div class="svc__body">
         <h2 class="svc__title">Mixage</h2>
+        <span class="svc__price">100 $ / séance</span>
         <p>Le mixage est l'art de fusionner toutes vos pistes enregistrées en un tout cohérent, dynamique et émotionnel. Pyramid Record vous offre un son <strong>doux, riche et extraordinaire</strong> qui fera vivre votre musique.</p>
         <p>Nous utilisons notre expertise, inspirée par la formation de légendes, pour créer la balance parfaite entre les instruments et les voix. Nous sculptons l'espace, gérons les fréquences et appliquons des effets subtils pour donner à votre morceau de la <strong>profondeur, de la clarté et du caractère</strong>. Le résultat ? Un son qui accroche instantanément l'auditeur.</p>
         <p class="svc__kicker">Essayez notre service de mixage ; vous ne serez jamais déçu.</p>
@@ -110,6 +117,7 @@
       <div class="svc__num"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3"/></svg></div>
       <div class="svc__body">
         <h2 class="svc__title">Mastering</h2>
+        <span class="svc__price">100 $ / séance</span>
         <p>Le mastering est l'étape finale et cruciale qui transforme votre mix en un produit fini, prêt à être diffusé sur toutes les plateformes — Spotify, Apple Music, radio, CD. Chez Pyramid Record, nous appliquons des <strong>techniques de mastering robustes et de niveau international</strong> pour :</p>
         <ul class="svc__list">
           <li>Maximiser la <strong>puissance sonore</strong> sans compromettre la qualité</li>
@@ -124,6 +132,7 @@
       <div class="svc__num"><svg viewBox="0 0 24 24"><path d="M22 10L12 4 2 10l10 6 10-6z"/><path d="M6 12v5c0 1.5 3 3 6 3s6-1.5 6-3v-5"/></svg></div>
       <div class="svc__body">
         <h2 class="svc__title">Formation</h2>
+        <span class="svc__price">dès 300 $ / module</span>
         <p>Investissez dans votre talent et perfectionnez votre art avec les formations de Pyramid Record. De l'introduction à l'enregistrement audio aux techniques avancées de mixage et de mastering, nos programmes couvrent l'intégralité du processus de création — dispensés par des ingénieurs formés au plus haut niveau.</p>
         <p><a class="link" href="academy.html">Découvrir l'Academy <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></p>
       </div>
@@ -135,6 +144,21 @@
         <h2 class="svc__title">Location d'instruments</h2>
         <p>Élargissez votre palette sonore sans l'investissement d'achat. Pyramid Record met à votre disposition une sélection d'<strong>instruments et de claviers de haute qualité</strong> pour enrichir vos compositions et vos sessions.</p>
         <p>Que vous ayez besoin d'un synthétiseur spécifique, d'un clavier maître professionnel ou d'un équipement studio rare pour une journée, notre catalogue vous offre la flexibilité. Louez l'instrument idéal, profitez de la qualité de notre équipement, et <strong>libérez de nouvelles possibilités créatives</strong> pour votre projet.</p>
+        <div class="svc__rentals">
+          <div><b>Piano Yamaha</b><span>150 $ / jour</span></div>
+          <div><b>Mixeur</b><span>200 $ / jour</span></div>
+          <div><b>Octapad Alesis</b><span>100 $ / jour</span></div>
+          <div><b>Octapad Yamaha</b><span>50 $ / jour</span></div>
+          <div><b>Carte son</b><span>100 $ / jour</span></div>
+          <div><b>Batterie (5 pièces)</b><span>150 $ / jour</span></div>
+          <div><b>Snare</b><span>60 $ / jour</span></div>
+          <div><b>Pédale Autotune</b><span>70 $ / jour</span></div>
+          <div><b>Autotune Tascam</b><span>70 $ / jour</span></div>
+          <div><b>Guitare acoustique</b><span>30 $ / jour</span></div>
+          <div><b>Guitare basse</b><span>30 $ / jour</span></div>
+          <div><b>Micro dynamique</b><span>5 $ / jour / pièce</span></div>
+          <div><b>Micro phantôme</b><span>10 $ / jour / pièce</span></div>
+        </div>
       </div>
     </article>
 
@@ -142,9 +166,27 @@
       <div class="svc__num"><svg viewBox="0 0 24 24"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg></div>
       <div class="svc__body">
         <h2 class="svc__title">Concert &amp; Live Recording</h2>
+        <span class="svc__price">à partir de 700 $</span>
         <p>Ne laissez pas l'énergie unique de votre performance live se perdre. Pyramid Record se spécialise dans la capture et l'enregistrement de <strong>concerts et d'événements live</strong> avec une clarté et une fidélité studio.</p>
         <p>Nous déployons une solution technique complète pour enregistrer chaque instrument et chaque ambiance directement depuis la salle. Que ce soit pour un album live, un enregistrement d'archives ou un podcast d'événement, nous garantissons un son doux, professionnel et dynamique.</p>
+        <div class="svc__rentals">
+          <div><b>Configuration sonore stéréo</b><span>50 $ / heure</span></div>
+          <div><b>Configuration sonore surround</b><span>à partir de 500 $</span></div>
+        </div>
         <p class="svc__kicker">Immortalisez l'impact de votre scène avec la qualité Pyramid Record.</p>
+      </div>
+    </article>
+
+    <article class="svc reveal">
+      <div class="svc__num"><svg viewBox="0 0 24 24"><path d="M12 8v4l3 3M12 2a10 10 0 100 20 10 10 0 000-20z"/></svg></div>
+      <div class="svc__body">
+        <h2 class="svc__title">Autres services</h2>
+        <div class="svc__rentals">
+          <div><b>Salle de répétition</b><span>15 $ / heure</span></div>
+          <div><b>Coaching vocal</b><span>150 $ / mois</span></div>
+          <div><b>Arrangement</b><span>100 $</span></div>
+          <div><b>Consultation</b><span>50 $</span></div>
+        </div>
       </div>
     </article>
 

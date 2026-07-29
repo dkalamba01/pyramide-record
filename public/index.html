@@ -80,11 +80,10 @@
      even fainter than on desktop). */
   @media (max-width: 768px) {
     .hero__logo {
-      /* Positioned in the gap above the waveform, not on top of it.
-         Percentages are estimated from typical mobile hero proportions —
-         may need a small manual nudge once viewed live (adjust the
-         `top` value below: bigger = lower, smaller = higher). */
-      top:58%; bottom:auto; right:-6%; left:auto;
+      /* Positioned in the empty gap beside the headline text, not near
+         the waveform/button area. Percentages estimated from screenshot —
+         nudge `top`/`right` below if it needs fine-tuning once live. */
+      top:34%; bottom:auto; right:18%; left:auto;
       transform:none;
       width:34%; max-width:140px;
       opacity: calc(var(--hero-logo-opacity) + 0.04);

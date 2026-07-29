@@ -64,7 +64,7 @@
      ------------------------------------------------------------ */
   :root { --hero-logo-opacity: 0.10; }
   .hero__logo {
-    position:absolute; top:50%; right:-4%; width:60%; max-width:640px;
+    position:absolute; top:42%; right:8%; width:52%; max-width:600px;
     transform:translateY(-50%);
     background-image:url('assets/images/hero-watermark.png');
     background-size:contain; background-repeat:no-repeat; background-position:center;
@@ -73,8 +73,18 @@
     opacity: var(--hero-logo-opacity);
     pointer-events:none;
   }
+  /* Mobile: repositioned rather than hidden — sits low in the hero,
+     behind the CTA/waveform gap, below the headline text so it never
+     sits underneath the words themselves. Smaller and slightly more
+     visible (mobile screens are smaller, so the same low opacity reads
+     even fainter than on desktop). */
   @media (max-width: 768px) {
-    .hero__logo { display:none; }
+    .hero__logo {
+      top:auto; bottom:8%; right:-8%; left:auto;
+      width:70%; max-width:320px;
+      transform:none;
+      opacity: calc(var(--hero-logo-opacity) + 0.04);
+    }
   }
 
   .credit { background:var(--panel); border-top:1px solid var(--hair); border-bottom:1px solid var(--hair); }

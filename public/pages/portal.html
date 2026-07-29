@@ -137,8 +137,16 @@
     var fallback = document.getElementById('portal-fallback');
     if (embed) {
       embed.style.display = 'block';
+
+      // Forward a ?tab= param from this page's own URL into the widget's
+      // src, so email deep-links (e.g. portal.html?tab=files) land the
+      // client directly on the right section after sign-in.
+      var widgetUrl = new URL(PORTAL.irisEmbedUrl);
+      var tab = new URLSearchParams(window.location.search).get('tab');
+      if (tab) { widgetUrl.searchParams.set('tab', tab); }
+
       embed.innerHTML =
-        '<iframe id="iris-portal-widget" src="' + PORTAL.irisEmbedUrl + '" ' +
+        '<iframe id="iris-portal-widget" src="' + widgetUrl.toString() + '" ' +
         'title="Espace Client Pyramide Record" loading="lazy" ' +
         'style="width:100%;border:0;overflow:hidden;height:640px;"></iframe>';
         // ^ 640px is just an initial fallback height before the first

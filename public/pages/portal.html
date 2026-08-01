@@ -158,9 +158,18 @@
   /* Auto-resize listener (matches the widget's postMessage contract,
      same as booking.html / shop.html) */
   window.addEventListener('message', function (e) {
-    if (e.data && e.data.type === 'iris-widget-resize') {
+    if (!e.data) return;
+    if (e.data.type === 'iris-widget-resize') {
       var f = document.getElementById('iris-portal-widget');
       if (f && e.data.height) f.style.height = e.data.height + 'px';
+    }
+    // Precise fix (per Iris Financial widget update): the widget now signals
+    // when an input inside it gains/loses focus, which is the exact moment
+    // iOS Safari can leave this outer page's viewport horizontally panned.
+    // Snap it back immediately on that signal, in addition to the generic
+    // scroll/resize/orientation guard already in js/main.js.
+    if (e.data.type === 'iris-widget-focus' || e.data.type === 'iris-widget-blur') {
+      requestAnimationFrame(function () { window.scrollTo(0, window.scrollY); });
     }
   });
 </script>

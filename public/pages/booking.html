@@ -39,8 +39,24 @@
   /* Embed slot (medium mode) — hidden unless mode=medium
      NOTE: no fixed height here anymore — the auto-resize script now
      controls iframe height dynamically based on the widget's own content. */
-  .iris-embed { display:none; border:1px solid var(--hair-2); border-radius:var(--r-lg); overflow:hidden; }
+  .iris-embed { display:none; position:relative; border:1px solid var(--hair-2); border-radius:var(--r-lg); overflow:hidden; }
   .iris-embed iframe { width:100%; border:0; display:block; overflow:hidden; }
+
+  /* Themed loading overlay — shown while the Iris widget boots, so visitors
+     never see the widget's own generic white "Loading..." skeleton flash
+     against our dark theme. Removed once the widget signals it's ready
+     (or after a safe fallback timeout if that signal never arrives). */
+  .iris-loading {
+    position:absolute; inset:0; z-index:2;
+    display:flex; flex-direction:column; align-items:center; justify-content:center; gap:var(--sp-3);
+    background:var(--panel); color:var(--sand);
+    min-height:320px;
+    transition:opacity var(--dur-slow) var(--ease-out);
+  }
+  .iris-loading .eq { height:28px; gap:4px; }
+  .iris-loading .eq b { width:5px; background:var(--gold); }
+  .iris-loading__label { font-size:var(--fs-xs); letter-spacing:var(--ls-wide); text-transform:uppercase; color:var(--sand); }
+  .iris-loading.is-hidden { opacity:0; pointer-events:none; }
 
   @media(max-width:860px){ .booking-layout{grid-template-columns:1fr; gap:var(--sp-6)} .grid-2{grid-template-columns:1fr} }
   @media(max-width:420px){ .formcard{padding:var(--sp-5)} .step{grid-template-columns:32px 1fr; gap:var(--sp-2)} .form-actions{flex-direction:column} }
@@ -258,6 +274,26 @@ var BOOKING = {
         'style="width:100%;border:0;overflow:hidden;height:760px;"></iframe>';
         // ^ height:760px above is just an initial fallback before the first
         // resize message arrives — the listener below takes over immediately after.
+
+      // Themed loading overlay — sits on top of the iframe until the widget
+      // is ready, so the visitor sees our own dark "Chargement…" instead of
+      // the widget's default light skeleton.
+      embed.insertAdjacentHTML('beforeend',
+        '<div class="iris-loading" id="iris-booking-loading">' +
+          '<span class="eq" aria-hidden="true"><b></b><b></b><b></b><b></b></span>' +
+          '<span class="iris-loading__label">Chargement…</span>' +
+        '</div>'
+      );
+      var hideBookingLoader = function () {
+        var el = document.getElementById('iris-booking-loading');
+        if (el) { el.classList.add('is-hidden'); setTimeout(function(){ el.remove(); }, 400); }
+      };
+      // Real signal if/when the widget sends it; safe fallback otherwise
+      // so the overlay never gets stuck if that signal doesn't arrive.
+      window.addEventListener('message', function (e) {
+        if (e.data && e.data.type === 'iris-widget-ready') hideBookingLoader();
+      });
+      setTimeout(hideBookingLoader, 2500);
     }
   }
   else if (BOOKING.mode === 'deep') {

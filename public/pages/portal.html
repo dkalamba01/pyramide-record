@@ -21,8 +21,20 @@
 
   /* Real Iris Financial embed — matches booking.html / shop.html pattern.
      Hidden by default; JS below shows it and hides the static fallback. */
-  .iris-embed { display:none; border:1px solid var(--hair-2); border-radius:var(--r-lg); overflow:hidden; }
+  .iris-embed { display:none; position:relative; border:1px solid var(--hair-2); border-radius:var(--r-lg); overflow:hidden; }
   .iris-embed iframe { width:100%; border:0; display:block; overflow:hidden; }
+
+  .iris-loading {
+    position:absolute; inset:0; z-index:2;
+    display:flex; flex-direction:column; align-items:center; justify-content:center; gap:var(--sp-3);
+    background:var(--panel); color:var(--sand);
+    min-height:320px;
+    transition:opacity var(--dur-slow) var(--ease-out);
+  }
+  .iris-loading .eq { height:28px; gap:4px; }
+  .iris-loading .eq b { width:5px; background:var(--gold); }
+  .iris-loading__label { font-size:var(--fs-xs); letter-spacing:var(--ls-wide); text-transform:uppercase; color:var(--sand); }
+  .iris-loading.is-hidden { opacity:0; pointer-events:none; }
 
   .login-card { background:var(--panel); border:1px solid var(--hair); border-radius:var(--r-lg); padding:var(--sp-6); width:100%; max-width:380px; margin:0 auto; }
   .login-card h2 { font-family:var(--font-display); font-size:var(--fs-h3); font-weight:400; margin-bottom:var(--sp-1); }
@@ -151,6 +163,18 @@
         'style="width:100%;border:0;overflow:hidden;height:640px;"></iframe>';
         // ^ 640px is just an initial fallback height before the first
         // resize message arrives — the listener below takes over immediately after.
+
+      embed.insertAdjacentHTML('beforeend',
+        '<div class="iris-loading" id="iris-portal-loading">' +
+          '<span class="eq" aria-hidden="true"><b></b><b></b><b></b><b></b></span>' +
+          '<span class="iris-loading__label">Chargement…</span>' +
+        '</div>'
+      );
+      var hidePortalLoader = function () {
+        var el = document.getElementById('iris-portal-loading');
+        if (el) { el.classList.add('is-hidden'); setTimeout(function(){ el.remove(); }, 400); }
+      };
+      setTimeout(hidePortalLoader, 2500);
       if (fallback) fallback.style.display = 'none';
     }
   })();
@@ -170,6 +194,12 @@
     // scroll/resize/orientation guard already in js/main.js.
     if (e.data.type === 'iris-widget-focus' || e.data.type === 'iris-widget-blur') {
       requestAnimationFrame(function () { window.scrollTo(0, window.scrollY); });
+    }
+    // Hide our themed loading overlay as soon as the widget signals it's
+    // actually ready, rather than waiting for the fallback timeout.
+    if (e.data.type === 'iris-widget-ready') {
+      var loader = document.getElementById('iris-portal-loading');
+      if (loader) { loader.classList.add('is-hidden'); setTimeout(function(){ loader.remove(); }, 400); }
     }
   });
 </script>

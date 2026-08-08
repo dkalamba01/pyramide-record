@@ -253,13 +253,20 @@
       // credits should still link to X's own page, not a combined slug.
       // Split "X feat Y" credits so each artist gets their own bio link,
       // rather than only the primary artist being reachable from the card.
-      var artistParts = item.artist.split(/\s+feat\.?\s+/i);
-      var bioHtml = '<div class="release__bio-row">' +
-        artistParts.map(function(name){
-          var label = artistParts.length > 1 ? name : 'Bio artiste';
-          return '<a class="release__bio" href="artists/' + slugify(name) + '.html">' + label + ' →</a>';
-        }).join('') +
-        '</div>';
+      // Split on "feat"/"feat." AND "&" so joint credits like
+      // "X & Y" get separate bio links too, not just "X feat Y".
+      var artistParts = item.artist.split(/\s+feat\.?\s+|\s+&\s+/i);
+      var bioHtml = '';
+      if (item.artist !== 'Divers') {
+        // "Divers" is a placeholder for non-artist entries (podcasts,
+        // compilations) — no bio page should be linked for it.
+        bioHtml = '<div class="release__bio-row">' +
+          artistParts.map(function(name){
+            var label = artistParts.length > 1 ? name : 'Bio artiste';
+            return '<a class="release__bio" href="artists/' + slugify(name) + '.html">' + label + ' →</a>';
+          }).join('') +
+          '</div>';
+      }
 
       var el = document.createElement('div');
       el.className = 'release';

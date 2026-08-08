@@ -34,6 +34,10 @@
 
   /* Unified release grid — every item carries data-genre + data-type */
   .catalog { display:grid; grid-template-columns:repeat(4,1fr); gap:var(--sp-4); margin-top:var(--sp-6); }
+  .catalog-section-header { grid-column: 1 / -1; padding-top: var(--sp-5); border-top: 1px solid var(--hair); margin-top: var(--sp-2); }
+  .catalog-section-header:first-child { padding-top: 0; border-top: 0; margin-top: 0; }
+  .catalog-section-header h2 { font-family: var(--font-display); font-weight: 400; font-size: var(--fs-h3); color: var(--bone); }
+  .catalog-section-header.is-hidden { display: none; }
   .release { position:relative; }
   .release.is-hidden { display:none; }
   .release__art { aspect-ratio:1; border-radius:var(--r-md); margin-bottom:var(--sp-2); position:relative; overflow:hidden; }
@@ -329,9 +333,34 @@
         allReleases = data.releases;
         var catalog = document.getElementById('catalog');
         catalog.innerHTML = '';
-        data.releases.forEach(function(item, i){
-          catalog.appendChild(renderCard(item, i));
-        });
+
+        // Group by genre rather than showing raw JSON order — keeps Gospel
+        // and Non Gospel visually separated even in the "Tout" view.
+        var gospelItems = data.releases.filter(function(r){ return r.genre === 'gospel'; });
+        var nonGospelItems = data.releases.filter(function(r){ return r.genre !== 'gospel'; });
+
+        function appendSectionHeader(label, genreKey){
+          var header = document.createElement('div');
+          header.className = 'catalog-section-header';
+          header.setAttribute('data-genre-section', genreKey);
+          header.innerHTML = '<h2>' + label + '</h2>';
+          catalog.appendChild(header);
+        }
+
+        if (gospelItems.length) {
+          appendSectionHeader('Gospel', 'gospel');
+          gospelItems.forEach(function(item){
+            var i = data.releases.indexOf(item);
+            catalog.appendChild(renderCard(item, i));
+          });
+        }
+        if (nonGospelItems.length) {
+          appendSectionHeader('Non Gospel', 'non-gospel');
+          nonGospelItems.forEach(function(item){
+            var i = data.releases.indexOf(item);
+            catalog.appendChild(renderCard(item, i));
+          });
+        }
 
         catalog.addEventListener('click', function(e){
           var playEl = e.target.closest('[data-play-index]');
@@ -366,6 +395,14 @@
           var show = matchesType && matchesGenre;
           item.classList.toggle('is-hidden', !show);
           if (show) visibleCount++;
+        });
+        // Section headers follow the genre filter — hidden entirely when
+        // the other genre is selected, shown (even if that section ends up
+        // empty from a type filter) when "Tout" or its own genre is active.
+        document.querySelectorAll('.catalog-section-header').forEach(function(header){
+          var section = header.getAttribute('data-genre-section');
+          var showHeader = activeGenre === 'all' || activeGenre === section;
+          header.classList.toggle('is-hidden', !showHeader);
         });
         emptyNote.style.display = visibleCount === 0 ? 'block' : 'none';
       }

@@ -52,6 +52,8 @@
   .release__link { display:inline-flex; align-items:center; gap:4px; font-size:var(--fs-xs); color:var(--gold); margin-top:6px; text-decoration:none; cursor:pointer; transition:color var(--dur-fast) var(--ease); }
   .release__link:hover { color:var(--gold-bright); }
   .release__link svg { width:11px; height:11px; fill:currentColor; }
+  .release__bio { display:inline-block; font-size:10px; color:var(--sand); text-decoration:underline; text-decoration-color:var(--hair-2); text-underline-offset:2px; margin-top:2px; transition:color var(--dur-fast) var(--ease); }
+  .release__bio:hover { color:var(--gold-bright); }
 
   /* Media overlay */
   .media-overlay { position:fixed; inset:0; z-index:500; background:rgba(13,19,28,0.92); backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px); display:none; align-items:center; justify-content:center; padding:24px; }
@@ -110,7 +112,6 @@
       <a class="nav__link" href="shop.html">Boutique</a>
       <a class="nav__link" href="about.html">À&nbsp;Propos</a>
       <a class="nav__link" href="journal.html">Journal</a>
-      <a class="nav__link" href="portal.html">Espace&nbsp;Client</a>
       <a class="nav__cta" href="booking.html">Réserver</a>
     </div>
   </nav>
@@ -243,6 +244,9 @@
         linkHtml = '<span class="release__link" data-play-index="' + index + '" role="button">' + LINK_ICON + ' Écouter</span>';
       }
 
+      var artistSlug = slugify(item.artist);
+      var bioHtml = '<a class="release__bio" href="artists/' + artistSlug + '.html">Bio artiste →</a>';
+
       var el = document.createElement('div');
       el.className = 'release';
       el.setAttribute('data-genre', item.genre);
@@ -250,9 +254,20 @@
       el.innerHTML = art +
         '<div class="release__title">' + item.title + '</div>' +
         '<div class="release__artist">' + item.artist + '</div>' +
+        bioHtml +
         '<div class="release__role">' + item.role + '</div>' +
         linkHtml;
       return el;
+    }
+
+    // Matches the site's existing filename convention (assets/images/discography):
+    // lowercase, accents stripped, spaces/punctuation to hyphens.
+    function slugify(str){
+      return str
+        .normalize('NFD').replace(/[\u0300-\u036f]/g, '') // strip accents
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/^-+|-+$/g, '');
     }
 
     function getYouTubeId(url){

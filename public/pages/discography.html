@@ -56,7 +56,8 @@
   .release__link { display:inline-flex; align-items:center; gap:4px; font-size:var(--fs-xs); color:var(--gold); margin-top:6px; text-decoration:none; cursor:pointer; transition:color var(--dur-fast) var(--ease); }
   .release__link:hover { color:var(--gold-bright); }
   .release__link svg { width:11px; height:11px; fill:currentColor; }
-  .release__bio { display:inline-block; font-size:10px; color:var(--sand); text-decoration:underline; text-decoration-color:var(--hair-2); text-underline-offset:2px; margin-top:2px; transition:color var(--dur-fast) var(--ease); }
+  .release__bio-row { display:flex; gap:10px; flex-wrap:wrap; margin-top:2px; }
+  .release__bio { display:inline-block; font-size:10px; color:var(--sand); text-decoration:underline; text-decoration-color:var(--hair-2); text-underline-offset:2px; transition:color var(--dur-fast) var(--ease); }
   .release__bio:hover { color:var(--gold-bright); }
 
   /* Media overlay */
@@ -250,9 +251,15 @@
 
       // Use only the primary artist for the Bio link — "X feat Y" style
       // credits should still link to X's own page, not a combined slug.
-      var primaryArtist = item.artist.split(/\s+feat\.?\s+/i)[0];
-      var artistSlug = slugify(primaryArtist);
-      var bioHtml = '<a class="release__bio" href="artists/' + artistSlug + '.html">Bio artiste →</a>';
+      // Split "X feat Y" credits so each artist gets their own bio link,
+      // rather than only the primary artist being reachable from the card.
+      var artistParts = item.artist.split(/\s+feat\.?\s+/i);
+      var bioHtml = '<div class="release__bio-row">' +
+        artistParts.map(function(name){
+          var label = artistParts.length > 1 ? name : 'Bio artiste';
+          return '<a class="release__bio" href="artists/' + slugify(name) + '.html">' + label + ' →</a>';
+        }).join('') +
+        '</div>';
 
       var el = document.createElement('div');
       el.className = 'release';

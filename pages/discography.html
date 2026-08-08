@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Discographie — Pyramide Record · Kinshasa</title>
+<meta name="description" content="Les productions de Pyramide Record : musique gospel, musique non-gospel, sessions live et podcasts. Enregistrés avec une expertise de niveau international à Kinshasa.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;1,9..144,400&family=Archivo:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/tokens.css">
+<link rel="stylesheet" href="../css/components.css">
+<style>
+  .page-hero { padding: var(--sp-8) 0 var(--sp-5); }
+  .page-hero h1 { font-family:var(--font-display); font-weight:400; font-size:var(--fs-h1); line-height:var(--lh-tight); max-width:14ch; margin:var(--sp-3) 0 var(--sp-4); }
+  .page-hero .lede { max-width:640px; }
+
+  .streams { display:flex; gap:var(--sp-3); flex-wrap:wrap; margin-top:var(--sp-5); }
+  .stream-chip { display:inline-flex; align-items:center; gap:6px; font-size:var(--fs-xs); letter-spacing:var(--ls-wide); text-transform:uppercase; color:var(--sand); border:1px solid var(--hair-2); border-radius:20px; padding:6px 14px; transition:border-color var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease); }
+  .stream-chip:hover { border-color:var(--gold-dim); color:var(--bone); }
+
+  .verset { background:var(--panel); border:1px solid var(--hair-2); border-left:3px solid var(--gold); border-radius:var(--r-md); padding:var(--sp-5); margin:var(--sp-6) 0; max-width:640px; }
+  .verset__label { font-size:var(--fs-eyebrow); letter-spacing:var(--ls-label); color:var(--ember); text-transform:uppercase; margin-bottom:var(--sp-2); }
+  .verset__text { font-family:var(--font-display); font-style:italic; font-size:var(--fs-lg); line-height:1.5; color:var(--bone); }
+  .verset__ref { color:var(--sand); font-size:var(--fs-sm); margin-top:var(--sp-2); }
+
+  /* Filters — same pattern as gallery.html, two independent filter rows */
+  .filter-group { margin-bottom: var(--sp-3); }
+  .filter-group__label { font-size:var(--fs-eyebrow); letter-spacing:var(--ls-wide); text-transform:uppercase; color:var(--ash); margin-bottom:var(--sp-2); display:block; }
+  .filters { display:flex; gap:var(--sp-2); flex-wrap:wrap; }
+  .filter { font-size:var(--fs-xs); letter-spacing:var(--ls-wide); text-transform:uppercase; color:var(--sand); background:transparent; border:1px solid var(--hair-2); border-radius:20px; padding:8px 16px; cursor:pointer; transition:all var(--dur-fast) var(--ease); }
+  .filter:hover { border-color:var(--gold-dim); color:var(--bone); }
+  .filter.is-active { background:var(--gold); border-color:var(--gold); color:#0B1017; }
+
+  /* Unified release grid — every item carries data-genre + data-type */
+  .catalog { display:grid; grid-template-columns:repeat(4,1fr); gap:var(--sp-4); margin-top:var(--sp-6); }
+  .release { position:relative; }
+  .release.is-hidden { display:none; }
+  .release__art { aspect-ratio:1; border-radius:var(--r-md); margin-bottom:var(--sp-2); position:relative; overflow:hidden; }
+  .release__art img { width:100%; height:100%; object-fit:cover; display:block; }
+  .release__badge { position:absolute; top:8px; left:8px; display:flex; gap:6px; flex-wrap:wrap; }
+  .release__tag { font-size:10px; letter-spacing:var(--ls-wide); text-transform:uppercase; padding:3px 8px; border-radius:12px; backdrop-filter:blur(4px); }
+  .release__tag--genre-gospel { background:rgba(232,165,82,0.85); color:#2b1a05; }
+  .release__tag--genre-non-gospel { background:rgba(58,120,166,0.85); color:#eaf3fb; }
+  .release__tag--type-live { background:rgba(206,68,54,0.85); color:#fbeceb; }
+  .release__play { position:absolute; bottom:8px; right:8px; width:30px; height:30px; border-radius:50%; background:rgba(13,19,28,0.75); border:1px solid var(--gold-dim); display:flex; align-items:center; justify-content:center; cursor:pointer; transition:background var(--dur-fast) var(--ease), transform var(--dur-fast) var(--ease); }
+  .release__play:hover { background:rgba(232,165,82,0.3); transform:scale(1.1); }
+  .release__play svg { width:11px; height:11px; fill:var(--gold); }
+  .release__title { font-size:var(--fs-sm); color:var(--bone); line-height:1.3; }
+  .release__artist { font-size:var(--fs-xs); color:var(--ash); margin-top:2px; }
+  .release__role { font-size:10px; color:var(--gold); text-transform:uppercase; letter-spacing:var(--ls-wide); margin-top:2px; }
+  .release__link { display:inline-flex; align-items:center; gap:4px; font-size:var(--fs-xs); color:var(--gold); margin-top:6px; text-decoration:none; cursor:pointer; transition:color var(--dur-fast) var(--ease); }
+  .release__link:hover { color:var(--gold-bright); }
+  .release__link svg { width:11px; height:11px; fill:currentColor; }
+  .release__bio { display:inline-block; font-size:10px; color:var(--sand); text-decoration:underline; text-decoration-color:var(--hair-2); text-underline-offset:2px; margin-top:2px; transition:color var(--dur-fast) var(--ease); }
+  .release__bio:hover { color:var(--gold-bright); }
+
+  /* Media overlay */
+  .media-overlay { position:fixed; inset:0; z-index:500; background:rgba(13,19,28,0.92); backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px); display:none; align-items:center; justify-content:center; padding:24px; }
+  .media-overlay.is-open { display:flex; }
+  .media-overlay__inner { position:relative; width:100%; max-width:800px; background:var(--panel); border:1px solid var(--hair-2); border-radius:var(--r-lg); overflow:hidden; }
+  .media-overlay__close { position:absolute; top:12px; right:12px; z-index:10; width:36px; height:36px; border-radius:50%; background:rgba(13,19,28,0.8); border:1px solid var(--hair-2); display:flex; align-items:center; justify-content:center; cursor:pointer; transition:background var(--dur-fast) var(--ease); }
+  .media-overlay__close:hover { background:rgba(206,68,54,0.4); }
+  .media-overlay__close svg { width:16px; height:16px; stroke:var(--bone); stroke-width:2; fill:none; }
+  .media-overlay__player { aspect-ratio:16/9; width:100%; }
+  .media-overlay__player iframe { width:100%; height:100%; border:0; }
+  .media-overlay__info { padding:var(--sp-4) var(--sp-5); }
+  .media-overlay__title { font-size:var(--fs-lg); color:var(--bone); margin-bottom:4px; }
+  .media-overlay__artist { font-size:var(--fs-sm); color:var(--sand); }
+
+  .empty-note { color:var(--ash); font-size:var(--fs-sm); padding:var(--sp-6) 0; text-align:center; }
+
+  @media(max-width:820px){ .catalog{grid-template-columns:1fr 1fr} }
+  @media(max-width:520px){ .catalog{grid-template-columns:1fr} }
+</style>
+<link rel="icon" type="image/png" href="../assets/images/logo.png">
+<link rel="apple-touch-icon" href="../assets/images/logo.png">
+<link rel="canonical" href="https://pyramidrecord.com/pages/discography.html">
+<meta name="theme-color" content="#0D131C">
+<meta property="og:title" content="Discographie — Pyramide Record">
+<meta property="og:description" content="Nos productions gospel et non-gospel, sessions live et podcasts.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://pyramidrecord.com/pages/discography.html">
+<meta property="og:image" content="https://pyramidrecord.com/assets/images/logo.png">
+<meta property="og:locale" content="fr_FR">
+<meta property="og:site_name" content="Pyramide Record">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Discographie — Pyramide Record",
+  "description": "Nos productions gospel et non-gospel, sessions live et podcasts.",
+  "url": "https://pyramidrecord.com/pages/discography.html",
+  "isPartOf": { "@type": "WebSite", "name": "Pyramide Record", "url": "https://pyramidrecord.com" }
+}
+</script>
+</head>
+<body>
+<a href="#main" class="skip-link" style="position:absolute;left:-9999px;top:0;background:var(--crimson);color:#fff;padding:10px 16px;z-index:200;" onfocus="this.style.left='8px';this.style.top='8px'" onblur="this.style.left='-9999px'">Aller au contenu</a>
+
+<header class="header">
+  <nav class="nav wrap" aria-label="Navigation principale">
+    <a class="nav__logo" href="../index.html" aria-label="Pyramide Record — accueil"><img src="../assets/images/logo.png" alt="Pyramide Record"></a>
+    <button class="nav__burger" id="burger" aria-label="Ouvrir le menu" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
+    <div class="nav__menu" id="menu">
+      <a class="nav__link" href="studio.html">Studio</a>
+      <a class="nav__link" href="services.html">Services</a>
+      <a class="nav__link" href="discography.html" aria-current="page">Discographie</a>
+      <a class="nav__link" href="academy.html">Academy</a>
+      <a class="nav__link" href="gallery.html">Galerie</a>
+      <a class="nav__link" href="shop.html">Boutique</a>
+      <a class="nav__link" href="about.html">À&nbsp;Propos</a>
+      <a class="nav__link" href="journal.html">Journal</a>
+      <a class="nav__cta" href="booking.html">Réserver</a>
+    </div>
+  </nav>
+</header>
+
+<main id="main">
+  <section class="page-hero wrap">
+    <p class="eyebrow">Discographie</p>
+    <h1>Ils ont enregistré chez nous.</h1>
+    <p class="lede">Pyramid Record est fier de démontrer la gamme et la qualité des enregistrements produits pour nos clients. Notre portefeuille comprend de la musique gospel et non-gospel, des productions studio et des sessions live.</p>
+    <div class="streams" aria-label="Plateformes d'écoute">
+      <span class="stream-chip">Spotify</span>
+      <span class="stream-chip">Apple Music</span>
+      <span class="stream-chip">YouTube</span>
+      <span class="stream-chip">Audiomack</span>
+      <span class="stream-chip">Deezer</span>
+    </div>
+  </section>
+
+  <section class="section-sm wrap reveal">
+
+    <div class="verset">
+      <p class="verset__label">Verset biblique</p>
+      <p class="verset__text">« Chantez à l'Éternel un cantique nouveau, car il a fait des choses merveilleuses. »</p>
+      <p class="verset__ref">Psaume 98:1</p>
+    </div>
+
+    <!-- FILTER ROW 1 — Type -->
+    <div class="filter-group">
+      <span class="filter-group__label">Type de production</span>
+      <div class="filters" role="tablist" aria-label="Filtrer par type">
+        <button class="filter is-active" data-type-filter="all">Tout</button>
+        <button class="filter" data-type-filter="studio">Productions studio</button>
+        <button class="filter" data-type-filter="live">Sessions live</button>
+      </div>
+    </div>
+
+    <!-- FILTER ROW 2 — Genre -->
+    <div class="filter-group">
+      <span class="filter-group__label">Répertoire</span>
+      <div class="filters" role="tablist" aria-label="Filtrer par genre">
+        <button class="filter is-active" data-genre-filter="all">Tout</button>
+        <button class="filter" data-genre-filter="gospel">Gospel</button>
+        <button class="filter" data-genre-filter="non-gospel">Non Gospel</button>
+      </div>
+    </div>
+
+    <!-- UNIFIED CATALOG — populated from ../data/discography-data.json by the script below -->
+    <div class="catalog" id="catalog">
+      <p class="empty-note">Chargement…</p>
+    </div>
+
+    <p class="empty-note" id="empty-note" style="display:none">Aucune production ne correspond à ces filtres.</p>
+
+  </section>
+
+  <div class="quote-band">
+    <div class="ripples" aria-hidden="true"><span></span><span></span><span></span></div>
+    <p class="quote-band__text">« Votre son ne sera plus jamais <span style="color:var(--ember)">le même.</span>»</p>
+  </div>
+
+  <section class="section wrap" style="text-align:center">
+    <a class="btn btn--lg" href="booking.html">Réserver votre session</a>
+  </section>
+
+  <!-- Media player overlay -->
+  <div class="media-overlay" id="media-overlay">
+    <div class="media-overlay__inner">
+      <button class="media-overlay__close" id="media-close" aria-label="Fermer le lecteur">
+        <svg viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
+      <div class="media-overlay__player" id="media-player"></div>
+      <div class="media-overlay__info">
+        <div class="media-overlay__title" id="media-title"></div>
+        <div class="media-overlay__artist" id="media-artist"></div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer__grid">
+      <div>
+        <div class="footer__logo"><img loading="lazy" decoding="async" src="../assets/images/logo.png" alt="Pyramide Record"></div>
+        <p class="footer__addr">13ème Rue Limete Industriel, Kinshasa, RD Congo<br>+243 819 797 568 · info@pyramidrecord.com</p>
+      </div>
+      <div class="footer__socials">
+        <a href="#" aria-label="Facebook"><svg viewBox="0 0 24 24"><path d="M13 3h4v4h-4a1 1 0 00-1 1v3h5l-1 4h-4v8h-4v-8H8v-4h4V7a4 4 0 014-4z"/></svg></a>
+        <a href="#" aria-label="Instagram"><svg viewBox="0 0 24 24"><path d="M12 7a5 5 0 100 10 5 5 0 000-10zm0 8a3 3 0 110-6 3 3 0 010 6zm5-9a1 1 0 100 2 1 1 0 000-2zM7 2h10a5 5 0 015 5v10a5 5 0 01-5 5H7a5 5 0 01-5-5V7a5 5 0 015-5zm0 2a3 3 0 00-3 3v10a3 3 0 003 3h10a3 3 0 003-3V7a3 3 0 00-3-3z"/></svg></a>
+        <a href="#" aria-label="LinkedIn"><svg viewBox="0 0 24 24"><path d="M6.94 5a2 2 0 11-4 0 2 2 0 014 0zM7 8.48H3V21h4zm6.32 0H9.34V21h3.94v-6.57c0-3.66 4.77-4 4.77 0V21H22v-7.93c0-6.17-7.06-5.94-8.72-2.91z"/></svg></a>
+        <a href="#" aria-label="YouTube"><svg viewBox="0 0 24 24"><path d="M23 12s0-3.5-.45-5.2a2.8 2.8 0 00-2-2C18.9 4.4 12 4.4 12 4.4s-6.9 0-8.55.4a2.8 2.8 0 00-2 2C1 8.5 1 12 1 12s0 3.5.45 5.2a2.8 2.8 0 002 2c1.65.4 8.55.4 8.55.4s6.9 0 8.55-.4a2.8 2.8 0 002-2C23 15.5 23 12 23 12zm-13 3.5v-7l6 3.5z"/></svg></a>
+      </div>
+    </div>
+    <div class="footer__note">© 2025 Pyramide Record — Tous droits réservés · Kinshasa, RD Congo</div>
+  </div>
+</footer>
+
+<script src="../js/main.js"></script>
+<script>
+  (function(){
+    var GENRE_LABEL = { 'gospel': 'Gospel', 'non-gospel': 'Non Gospel' };
+    var GENRE_TAG_CLASS = { 'gospel': 'release__tag--genre-gospel', 'non-gospel': 'release__tag--genre-non-gospel' };
+    var PLAY_ICON = '<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>';
+    var LINK_ICON = '<svg viewBox="0 0 24 24"><path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14zm5 9v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h7v2H5v14h12v-7h2z"/></svg>';
+
+    function renderCard(item, index){
+      var isLive = item.type === 'live';
+      var badges = '<span class="release__tag ' + GENRE_TAG_CLASS[item.genre] + '">' + GENRE_LABEL[item.genre] + '</span>';
+      if (isLive) badges += '<span class="release__tag release__tag--type-live">Live</span>';
+
+      var hasImage = item.image && item.image.trim() !== '';
+      var hasLink = item.link && item.link.trim() !== '';
+
+      var playBtn = '';
+      if (hasLink) {
+        playBtn = '<span class="release__play" data-play-index="' + index + '" role="button" aria-label="Écouter ' + item.title + '">' + PLAY_ICON + '</span>';
+      }
+
+      var art = '<div class="' + (hasImage ? '' : 'ph ') + 'release__art">' +
+        (hasImage
+          ? '<img src="../assets/images/discography/' + item.image + '" alt="' + item.title + ' — ' + item.artist + '" loading="lazy" decoding="async">'
+          : '<small>' + (isLive ? 'Session live' : 'Pochette') + '</small>') +
+        '<div class="release__badge">' + badges + '</div>' +
+        playBtn +
+        '</div>';
+
+      var linkHtml = '';
+      if (hasLink) {
+        linkHtml = '<span class="release__link" data-play-index="' + index + '" role="button">' + LINK_ICON + ' Écouter</span>';
+      }
+
+      var artistSlug = slugify(item.artist);
+      var bioHtml = '<a class="release__bio" href="artists/' + artistSlug + '.html">Bio artiste →</a>';
+
+      var el = document.createElement('div');
+      el.className = 'release';
+      el.setAttribute('data-genre', item.genre);
+      el.setAttribute('data-type', item.type);
+      el.innerHTML = art +
+        '<div class="release__title">' + item.title + '</div>' +
+        '<div class="release__artist">' + item.artist + '</div>' +
+        '<div class="release__role">' + item.role + '</div>' +
+        bioHtml +
+        linkHtml;
+      return el;
+    }
+
+    // Matches the site's existing filename convention (assets/images/discography):
+    // lowercase, accents stripped, spaces/punctuation to hyphens.
+    function slugify(str){
+      return str
+        .normalize('NFD').replace(/[\u0300-\u036f]/g, '') // strip accents
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/^-+|-+$/g, '');
+    }
+
+    function getYouTubeId(url){
+      var match = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([a-zA-Z0-9_-]{11})/);
+      return match ? match[1] : null;
+    }
+
+    function getSoundCloudEmbed(url){
+      return 'https://w.soundcloud.com/player/?url=' + encodeURIComponent(url) + '&color=%23E8A552&auto_play=true';
+    }
+
+    function openMediaOverlay(item){
+      var overlay = document.getElementById('media-overlay');
+      var player = document.getElementById('media-player');
+      var title = document.getElementById('media-title');
+      var artist = document.getElementById('media-artist');
+
+      title.textContent = item.title;
+      artist.textContent = item.artist + ' · ' + item.role;
+
+      var ytId = getYouTubeId(item.link);
+      if (ytId) {
+        player.innerHTML = '<iframe src="https://www.youtube.com/embed/' + ytId + '?autoplay=1&rel=0" allow="autoplay; encrypted-media" allowfullscreen></iframe>';
+      } else if (item.link.indexOf('soundcloud.com') !== -1) {
+        player.innerHTML = '<iframe src="' + getSoundCloudEmbed(item.link) + '" allow="autoplay"></iframe>';
+      } else {
+        window.open(item.link, '_blank');
+        return;
+      }
+
+      overlay.classList.add('is-open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeMediaOverlay(){
+      var overlay = document.getElementById('media-overlay');
+      var player = document.getElementById('media-player');
+      overlay.classList.remove('is-open');
+      player.innerHTML = '';
+      document.body.style.overflow = '';
+    }
+
+    document.getElementById('media-close').addEventListener('click', closeMediaOverlay);
+    document.getElementById('media-overlay').addEventListener('click', function(e){
+      if (e.target === this) closeMediaOverlay();
+    });
+    document.addEventListener('keydown', function(e){
+      if (e.key === 'Escape') closeMediaOverlay();
+    });
+
+    var allReleases = [];
+
+    fetch('../data/discography-data.json')
+      .then(function(r){ return r.json(); })
+      .then(function(data){
+        allReleases = data.releases;
+        var catalog = document.getElementById('catalog');
+        catalog.innerHTML = '';
+        data.releases.forEach(function(item, i){
+          catalog.appendChild(renderCard(item, i));
+        });
+
+        catalog.addEventListener('click', function(e){
+          var playEl = e.target.closest('[data-play-index]');
+          if (playEl) {
+            var idx = parseInt(playEl.getAttribute('data-play-index'), 10);
+            if (allReleases[idx] && allReleases[idx].link) {
+              openMediaOverlay(allReleases[idx]);
+            }
+          }
+        });
+
+        setupFilters();
+      })
+      .catch(function(err){
+        document.getElementById('catalog').innerHTML = '<p class="empty-note">Impossible de charger la discographie pour le moment.</p>';
+        console.error('discography-data.json load failed:', err);
+      });
+
+    function setupFilters(){
+      var typeFilters = document.querySelectorAll('[data-type-filter]');
+      var genreFilters = document.querySelectorAll('[data-genre-filter]');
+      var emptyNote = document.getElementById('empty-note');
+      var activeType = 'all';
+      var activeGenre = 'all';
+
+      function applyFilters(){
+        var items = document.querySelectorAll('#catalog .release');
+        var visibleCount = 0;
+        items.forEach(function(item){
+          var matchesType = activeType === 'all' || item.getAttribute('data-type') === activeType;
+          var matchesGenre = activeGenre === 'all' || item.getAttribute('data-genre') === activeGenre;
+          var show = matchesType && matchesGenre;
+          item.classList.toggle('is-hidden', !show);
+          if (show) visibleCount++;
+        });
+        emptyNote.style.display = visibleCount === 0 ? 'block' : 'none';
+      }
+
+      typeFilters.forEach(function(btn){
+        btn.addEventListener('click', function(){
+          typeFilters.forEach(function(f){ f.classList.remove('is-active'); });
+          btn.classList.add('is-active');
+          activeType = btn.getAttribute('data-type-filter');
+          applyFilters();
+        });
+      });
+
+      genreFilters.forEach(function(btn){
+        btn.addEventListener('click', function(){
+          genreFilters.forEach(function(f){ f.classList.remove('is-active'); });
+          btn.classList.add('is-active');
+          activeGenre = btn.getAttribute('data-genre-filter');
+          applyFilters();
+        });
+      });
+    }
+  })();
+</script>
+</body>
+</html>

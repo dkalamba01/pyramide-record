@@ -244,7 +244,10 @@
         linkHtml = '<span class="release__link" data-play-index="' + index + '" role="button">' + LINK_ICON + ' Écouter</span>';
       }
 
-      var artistSlug = slugify(item.artist);
+      // Use only the primary artist for the Bio link — "X feat Y" style
+      // credits should still link to X's own page, not a combined slug.
+      var primaryArtist = item.artist.split(/\s+feat\.?\s+/i)[0];
+      var artistSlug = slugify(primaryArtist);
       var bioHtml = '<a class="release__bio" href="artists/' + artistSlug + '.html">Bio artiste →</a>';
 
       var el = document.createElement('div');

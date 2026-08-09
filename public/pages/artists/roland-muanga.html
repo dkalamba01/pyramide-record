@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Roland Muanga — Pyramide Record</title>
+<meta name="description" content="Découvrez Roland Muanga, artiste gospel ayant enregistré chez Pyramide Record.">
+<!-- Artist bio page — built from artists/_template.html -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;1,9..144,400;1,9..144,500&family=Archivo:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../css/tokens.css">
+<link rel="stylesheet" href="../../css/components.css">
+<style>
+  .page-hero { padding: var(--sp-8) 0 var(--sp-6); }
+  .bio-layout { display:grid; grid-template-columns:320px 1fr; gap:var(--sp-8); align-items:start; }
+  .bio-photo { aspect-ratio:4/5; border-radius:var(--r-lg); overflow:hidden; border:1px solid var(--hair-2); position:sticky; top:90px; }
+  .bio-photo img { width:100%; height:100%; object-fit:cover; display:block; }
+  .bio-tags { display:flex; gap:var(--sp-2); margin-bottom:var(--sp-4); }
+  .bio-name { font-family:var(--font-display); font-weight:400; font-size:clamp(28px,4vw,42px); margin-bottom:var(--sp-4); }
+  .bio-text p { color:var(--sand); font-size:var(--fs-body); line-height:1.85; margin-bottom:var(--sp-4); max-width:62ch; }
+  .bio-text p strong { color:var(--bone); font-weight:500; }
+  .bio-releases { margin-top:var(--sp-6); padding-top:var(--sp-5); border-top:1px solid var(--hair); }
+  .bio-releases h2 { font-family:var(--font-display); font-weight:400; font-size:var(--fs-h3); margin-bottom:var(--sp-4); }
+  .bio-release-listen { color:var(--gold-bright); text-decoration:none; margin-left:8px; white-space:nowrap; }
+  .bio-release-listen:hover { text-decoration:underline; }
+  .bio-spotify { margin-top:var(--sp-6); padding-top:var(--sp-5); border-top:1px solid var(--hair); }
+  .bio-spotify h2 { font-family:var(--font-display); font-weight:400; font-size:var(--fs-h3); margin-bottom:var(--sp-4); }
+  .bio-spotify iframe { border-radius:var(--r-lg); margin-bottom:var(--sp-3); }
+  /* To add a Spotify player: copy the .bio-spotify block pattern from
+     any already-built artist page (e.g. hatthie-kashoba.html) below
+     the .bio-releases div in the body. */
+  .bio-release-item { display:flex; justify-content:space-between; align-items:center; padding:var(--sp-3) 0; border-bottom:1px solid var(--hair); font-size:var(--fs-sm); }
+  .bio-release-item .role { color:var(--ash); font-size:var(--fs-xs); text-transform:uppercase; letter-spacing:var(--ls-wide); }
+  @media(max-width:820px){ .bio-layout{grid-template-columns:1fr} .bio-photo{position:static;max-width:340px} }
+</style>
+<link rel="icon" type="image/png" href="../../assets/images/logo.png">
+<link rel="apple-touch-icon" href="../../assets/images/logo.png">
+<meta name="theme-color" content="#0D131C">
+</head>
+<body>
+<a href="#main" class="skip-link" style="position:absolute;left:-9999px;top:0;background:var(--crimson);color:#fff;padding:10px 16px;z-index:200;" onfocus="this.style.left='8px';this.style.top='8px'" onblur="this.style.left='-9999px'">Aller au contenu</a>
+
+<header class="header">
+  <nav class="nav wrap" aria-label="Navigation principale">
+    <a class="nav__logo" href="../../index.html" aria-label="Pyramide Record — accueil"><img src="../../assets/images/logo.png" alt="Pyramide Record"></a>
+    <button class="nav__burger" id="burger" aria-label="Ouvrir le menu" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
+    <div class="nav__menu" id="menu">
+      <a class="nav__link" href="../studio.html">Studio</a>
+      <a class="nav__link" href="../services.html">Services</a>
+      <a class="nav__link" href="../discography.html" aria-current="page">Discographie</a>
+      <a class="nav__link" href="../academy.html">Academy</a>
+      <a class="nav__link" href="../gallery.html">Galerie</a>
+      <a class="nav__link" href="../shop.html">Boutique</a>
+      <a class="nav__link" href="../about.html">À&nbsp;Propos</a>
+      <a class="nav__link" href="../blog.html">Blog</a>
+      <a class="nav__link" href="../portal.html">Espace&nbsp;Client</a>
+      <a class="nav__cta" href="../booking.html">Réserver</a>
+    </div>
+  </nav>
+</header>
+
+<main id="main">
+  <section class="page-hero wrap">
+    <a class="link" href="../discography.html" style="margin-bottom:var(--sp-4);display:inline-flex">← Retour à la discographie</a>
+
+    <div class="bio-layout" style="margin-top:var(--sp-5)">
+
+      <aside class="bio-photo">
+        <img src="../../assets/images/discography/roland-muanga_lifoko-du-ciel-notre-fierte.png" alt="Roland Muanga" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;object-position:center 20%">
+      </aside>
+
+      <div>
+        <div class="bio-tags">
+          <span class="chip chip--gold">Gospel</span>
+        </div>
+        <h1 class="bio-name">Roland Muanga</h1>
+
+        <div class="bio-text">
+          <p><strong>Roland Muanga</strong> est un chanteur, auteur-compositeur et conducteur de louange gospel congolais, reconnu pour son rôle particulier d'archiviste musical au sein du mouvement gospel congolais : il reprend et modernise d'anciens hymnes classiques avec une instrumentation acoustique actuelle, préservant ainsi le patrimoine musical des pionniers du mouvement pour la nouvelle génération. Sa production technique est étroitement liée à Pyramide Music / <strong>Pyramide Record</strong>, à Limete, Kinshasa.</p>
+
+          <p>Son medley live « Lifoko du Ciel Notre Fierté », un hommage aux plus grands titres de la carrière du pasteur et icône du gospel congolais Simon-Pierre Lifoko du Ciel, ainsi que son titre « Bobele Yo », ont tous deux été produits chez Pyramide Record.</p>
+        </div>
+
+        <div class="bio-releases">
+          <h2>Productions chez Pyramide Record</h2>
+          <div class="bio-release-item"><span>Lifoko du Ciel Notre Fierté</span><span class="role">Enregistrement · Mixage<a class="bio-release-listen" href="https://youtu.be/athoEPb11zM" target="_blank" rel="noopener">Écouter →</a></span></div>
+          <div class="bio-release-item"><span>Bobele Yo</span><span class="role">Enregistrement · Mixage<a class="bio-release-listen" href="https://youtu.be/gLFdGEEK4XU" target="_blank" rel="noopener">Écouter →</a></span></div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer__grid">
+      <div>
+        <div class="footer__logo"><img loading="lazy" decoding="async" src="../../assets/images/logo.png" alt="Pyramide Record"></div>
+        <p class="footer__addr">13ème Rue Limete Industriel, Kinshasa, RD Congo<br>+243 819 797 568 · info@pyramidrecord.com</p>
+      </div>
+    </div>
+    <div class="footer__note">© 2025 Pyramide Record — Tous droits réservés · Kinshasa, RD Congo</div>
+  </div>
+</footer>
+
+<script src="../../js/main.js"></script>
+</body>
+</html>

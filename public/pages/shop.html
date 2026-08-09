@@ -15,8 +15,19 @@
   .page-hero h1 { font-family:var(--font-display); font-weight:400; font-size:var(--fs-h1); line-height:var(--lh-tight); max-width:16ch; margin:var(--sp-3) 0 var(--sp-4); }
   .page-hero .lede { max-width:640px; }
 
-  .store-embed { border:1px solid var(--hair-2); border-radius:var(--r-lg); overflow:hidden; background:var(--panel); }
+  .store-embed { position:relative; border:1px solid var(--hair-2); border-radius:var(--r-lg); overflow:hidden; background:var(--panel); }
   .store-embed iframe { width:100%; height:600px; border:0; display:block; overflow:hidden; }
+
+  .iris-loading {
+    position:absolute; inset:0; z-index:2;
+    display:flex; flex-direction:column; align-items:center; justify-content:center; gap:var(--sp-3);
+    background:var(--panel); color:var(--sand);
+    transition:opacity var(--dur-slow) var(--ease-out);
+  }
+  .iris-loading .eq { height:28px; gap:4px; }
+  .iris-loading .eq b { width:5px; background:var(--gold); }
+  .iris-loading__label { font-size:var(--fs-xs); letter-spacing:var(--ls-wide); text-transform:uppercase; color:var(--sand); }
+  .iris-loading.is-hidden { opacity:0; pointer-events:none; }
 </style>
 <link rel="icon" type="image/png" href="../assets/images/logo.png">
 <link rel="apple-touch-icon" href="../assets/images/logo.png">
@@ -57,6 +68,7 @@
       <a class="nav__link" href="shop.html" aria-current="page">Boutique</a>
       <a class="nav__link" href="about.html">À&nbsp;Propos</a>
       <a class="nav__link" href="journal.html">Journal</a>
+      <a class="nav__link" href="portal.html">Espace&nbsp;Client</a>
       <a class="nav__cta" href="booking.html">Réserver</a>
     </div>
   </nav>
@@ -72,6 +84,10 @@
   <section class="section-sm wrap reveal">
     <div class="store-embed">
       <iframe src="https://irisfinancial.tech/widget/store?orgId=cmptnogcb0000v3v17tq2blhr" style="width:100%;height:600px;border:none;overflow:hidden;" scrolling="no" allow="payment" title="Boutique Pyramide Record"></iframe>
+      <div class="iris-loading" id="iris-shop-loading">
+        <span class="eq" aria-hidden="true"><b></b><b></b><b></b><b></b></span>
+        <span class="iris-loading__label">Chargement…</span>
+      </div>
     </div>
   </section>
 
@@ -102,11 +118,29 @@
 <script src="../js/main.js"></script>
 <script>
   window.addEventListener('message', function(e){
-    if (e.data && e.data.type === 'iris-widget-resize') {
+    if (!e.data) return;
+    if (e.data.type === 'iris-widget-resize') {
       var f = document.querySelector('iframe[src*="/widget/store"]');
       if (f) f.style.height = e.data.height + 'px';
     }
+    // Precise fix (per Iris Financial widget update): the widget now signals
+    // when an input inside it gains/loses focus, which is the exact moment
+    // iOS Safari can leave this outer page's viewport horizontally panned.
+    // Snap it back immediately on that signal, in addition to the generic
+    // scroll/resize/orientation guard already in js/main.js.
+    if (e.data.type === 'iris-widget-focus' || e.data.type === 'iris-widget-blur') {
+      requestAnimationFrame(function () { window.scrollTo(0, window.scrollY); });
+    }
+    if (e.data.type === 'iris-widget-ready') {
+      var loader = document.getElementById('iris-shop-loading');
+      if (loader) { loader.classList.add('is-hidden'); setTimeout(function(){ loader.remove(); }, 400); }
+    }
   });
+  // Safe fallback in case the widget never sends 'iris-widget-ready'.
+  setTimeout(function () {
+    var loader = document.getElementById('iris-shop-loading');
+    if (loader) { loader.classList.add('is-hidden'); setTimeout(function(){ loader.remove(); }, 400); }
+  }, 2500);
 </script>
 </body>
 </html>

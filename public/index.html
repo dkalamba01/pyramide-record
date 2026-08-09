@@ -18,10 +18,77 @@
   .hero { position: relative; padding: var(--sp-9) 0 0; overflow: hidden; }
   .hero::before { content:''; position:absolute; top:-8%; left:14%; width:56%; height:78%; background:radial-gradient(closest-side, rgba(232,165,82,0.10), transparent 70%); pointer-events:none; }
   .hero::after  { content:''; position:absolute; top:8%; right:-6%; width:44%; height:70%; background:radial-gradient(closest-side, rgba(58,120,166,0.16), transparent 72%); pointer-events:none; }
+  /* Restrained woven-line texture — echoes textile pattern language (diagonal
+     step motifs) at very low opacity, tied to the existing ember/steel palette.
+     Sits behind the radial glows, faded toward the hero's edges. */
+  .hero__texture { content:''; position:absolute; inset:0; pointer-events:none;
+    background-image:
+      repeating-linear-gradient(115deg, rgba(232,165,82,0.05) 0px, rgba(232,165,82,0.05) 2px, transparent 2px, transparent 34px),
+      repeating-linear-gradient(65deg, rgba(58,120,166,0.05) 0px, rgba(58,120,166,0.05) 2px, transparent 2px, transparent 34px);
+    -webkit-mask-image: radial-gradient(ellipse 70% 60% at 70% 20%, black 20%, transparent 75%);
+    mask-image: radial-gradient(ellipse 70% 60% at 70% 20%, black 20%, transparent 75%);
+  }
   .hero__inner { position: relative; }
   .hero h1 { font-family:var(--font-display); font-weight:400; font-size:var(--fs-hero); line-height:var(--lh-tight); letter-spacing:-0.01em; margin-bottom:var(--sp-5); }
   .hero .lede { max-width: 440px; margin-bottom: var(--sp-6); }
   .hero__cta { display:flex; align-items:center; gap:var(--sp-5); flex-wrap:wrap; }
+  /* Ambient waveform variant — taller, gradient-filled, alternating ember/steel
+     bars, edges faded rather than cut off. Additive on top of the base
+     .waveform class in components.css (which is unaffected). */
+  .waveform--ambient { height:150px; margin:var(--sp-7) -32px 0; padding:0 32px;
+    -webkit-mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+    mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent); }
+  .waveform--ambient .waveform__bar { background:linear-gradient(to top, var(--gold), var(--gold-bright)); border-radius:2px 2px 0 0; }
+  .waveform--ambient .waveform__bar:nth-child(odd) { background:linear-gradient(to top, var(--ember-deep), var(--ember)); opacity:.9; }
+  /* Zigzag divider — the waveform motif reinterpreted as a woven-line
+     section border, used between hero and the next band. */
+  .zig-divider { height:14px; }
+  .zig-divider svg { width:100%; height:100%; display:block; }
+
+  /* ------------------------------------------------------------
+     HERO LOGO WATERMARK
+     ------------------------------------------------------------
+     TO CONTROL VISIBILITY: change --hero-logo-opacity below.
+     0.10 = current subtle default. Try 0.15–0.20 for more visible,
+     0.05–0.08 for even quieter. That's the only number you need
+     to touch to adjust it.
+
+     Source logo is black linework on transparent — inverted here so
+     it reads as pale/light against the dark hero (the raw black
+     version would be nearly invisible on this background).
+
+     Hidden entirely below 768px (see media query at bottom of this
+     block) — on narrow screens the headline goes full-width and would
+     sit directly on top of the watermark instead of beside it, so it's
+     turned off rather than collide with the text.
+     ------------------------------------------------------------ */
+  :root { --hero-logo-opacity: 0.10; }
+  .hero__logo {
+    position:absolute; top:44%; right:22%; width:46%; max-width:520px;
+    transform:translateY(-50%);
+    background-image:url('assets/images/hero-watermark.png');
+    background-size:contain; background-repeat:no-repeat; background-position:center;
+    aspect-ratio:2340/1272;
+    filter: invert(1) brightness(0.9);
+    opacity: var(--hero-logo-opacity);
+    pointer-events:none;
+  }
+  /* Mobile: repositioned rather than hidden — sits low in the hero,
+     behind the CTA/waveform gap, below the headline text so it never
+     sits underneath the words themselves. Smaller and slightly more
+     visible (mobile screens are smaller, so the same low opacity reads
+     even fainter than on desktop). */
+  @media (max-width: 768px) {
+    .hero__logo {
+      /* Positioned in the empty gap beside the headline text, not near
+         the waveform/button area. Percentages estimated from screenshot —
+         nudge `top`/`right` below if it needs fine-tuning once live. */
+      top:21%; bottom:auto; right:2%; left:auto;
+      transform:none;
+      width:34%; max-width:140px;
+      opacity: calc(var(--hero-logo-opacity) + 0.04);
+    }
+  }
 
   .credit { background:var(--panel); border-top:1px solid var(--hair); border-bottom:1px solid var(--hair); }
   .credit__inner { display:flex; align-items:center; gap:var(--sp-3); padding: var(--sp-4) 0; }
@@ -113,6 +180,8 @@
 
   <!-- HERO -->
   <section class="hero">
+    <div class="hero__texture" aria-hidden="true"></div>
+    <div class="hero__logo" aria-hidden="true"></div>
     <div class="hero__inner wrap">
       <p class="eyebrow">Kinshasa — RD Congo</p>
       <h1>Le son congolais,<br>à la hauteur<br>du <span class="ital" style="color:var(--gold-bright)">monde.</span></h1>
@@ -121,9 +190,15 @@
         <a class="btn btn--lg" href="pages/booking.html">Réserver une session</a>
         <a class="link" href="pages/discography.html"><svg class="icon" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>Écouter nos productions</a>
       </div>
+      <div class="waveform waveform--ambient" id="hero-wave" data-bars="80" aria-hidden="true"></div>
     </div>
-    <div class="waveform" id="hero-wave" data-bars="64" aria-hidden="true" style="margin-top:var(--sp-6)"></div>
   </section>
+
+  <div class="zig-divider" aria-hidden="true">
+    <svg viewBox="0 0 400 14" preserveAspectRatio="none">
+      <polyline points="0,7 20,0 40,14 60,0 80,14 100,0 120,14 140,0 160,14 180,0 200,14 220,0 240,14 260,0 280,14 300,0 320,14 340,0 360,14 380,0 400,7" fill="none" stroke="#2E5578" stroke-width="1"/>
+    </svg>
+  </div>
 
   <!-- MASERATI CREDIT -->
   <div class="credit">
@@ -146,12 +221,12 @@
   <!-- SERVICES -->
   <section class="section wrap reveal">
     <p class="eyebrow">Ce que nous faisons</p>
-    <a class="index-row" href="pages/services.html"><span class="index-row__num">01</span><span class="index-row__name">Capture de son &amp; Voix Off</span><span class="index-row__meta">Studio acoustiquement optimisé</span></a>
-    <a class="index-row" href="pages/services.html"><span class="index-row__num">02</span><span class="index-row__name">Mixage</span><span class="index-row__meta">Profondeur, clarté, caractère</span></a>
-    <a class="index-row" href="pages/services.html"><span class="index-row__num">03</span><span class="index-row__name">Mastering</span><span class="index-row__meta">Prêt pour la diffusion mondiale</span></a>
-    <a class="index-row" href="pages/academy.html"><span class="index-row__num">04</span><span class="index-row__name">Formation</span><span class="index-row__meta">Perfectionnez votre art</span></a>
-    <a class="index-row" href="pages/services.html"><span class="index-row__num">05</span><span class="index-row__name">Concert &amp; Live Recording</span><span class="index-row__meta">Fidélité studio en direct</span></a>
-    <a class="index-row" href="pages/shop.html"><span class="index-row__num">06</span><span class="index-row__name">Boutique &amp; Location</span><span class="index-row__meta">Équipement de référence</span></a>
+    <a class="index-row" href="pages/services.html"><span class="index-row__num"><svg viewBox="0 0 24 24"><path d="M12 2a3 3 0 00-3 3v6a3 3 0 006 0V5a3 3 0 00-3-3z"/><path d="M19 10v1a7 7 0 01-14 0v-1M12 18v4M9 22h6"/></svg></span><span class="index-row__name">Capture de son &amp; Voix Off</span><span class="index-row__meta">Studio acoustiquement optimisé</span></a>
+    <a class="index-row" href="pages/services.html"><span class="index-row__num"><svg viewBox="0 0 24 24"><path d="M4 6h2M8 6h2M12 6h2M16 6h2M20 6h0"/><path d="M6 6v6M10 6v10M14 6v3M18 6v8" stroke-linecap="round"/></svg></span><span class="index-row__name">Mixage</span><span class="index-row__meta">Profondeur, clarté, caractère</span></a>
+    <a class="index-row" href="pages/services.html"><span class="index-row__num"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3"/></svg></span><span class="index-row__name">Mastering</span><span class="index-row__meta">Prêt pour la diffusion mondiale</span></a>
+    <a class="index-row" href="pages/academy.html"><span class="index-row__num"><svg viewBox="0 0 24 24"><path d="M22 10L12 4 2 10l10 6 10-6z"/><path d="M6 12v5c0 1.5 3 3 6 3s6-1.5 6-3v-5"/></svg></span><span class="index-row__name">Formation</span><span class="index-row__meta">Perfectionnez votre art</span></a>
+    <a class="index-row" href="pages/services.html"><span class="index-row__num"><svg viewBox="0 0 24 24"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg></span><span class="index-row__name">Concert &amp; Live Recording</span><span class="index-row__meta">Fidélité studio en direct</span></a>
+    <a class="index-row" href="pages/shop.html"><span class="index-row__num"><svg viewBox="0 0 24 24"><rect x="3" y="8" width="18" height="10" rx="1"/><path d="M7 8V6a2 2 0 012-2h6a2 2 0 012 2v2"/></svg></span><span class="index-row__name">Boutique &amp; Location</span><span class="index-row__meta">Équipement de référence</span></a>
   </section>
 
   <!-- REPERTOIRES (separated) -->
@@ -228,7 +303,7 @@
     <div class="form-band__inner wrap">
       <div>
         <div class="form-band__title">Formation en prise de son</div>
-        <div class="form-band__sub">Module 1 · en ligne · dès 300 $ — maîtrisez l'art de capturer le son.</div>
+        <div class="form-band__sub">Module 1 · en ligne · à partir de 300 $ — maîtrisez l'art de capturer le son.</div>
       </div>
       <a class="btn btn--ghost" href="pages/academy.html">S'inscrire</a>
     </div>

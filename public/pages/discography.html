@@ -34,6 +34,10 @@
 
   /* Unified release grid — every item carries data-genre + data-type */
   .catalog { display:grid; grid-template-columns:repeat(4,1fr); gap:var(--sp-4); margin-top:var(--sp-6); }
+  .catalog-section-header { grid-column: 1 / -1; padding-top: var(--sp-5); border-top: 1px solid var(--hair); margin-top: var(--sp-2); }
+  .catalog-section-header:first-child { padding-top: 0; border-top: 0; margin-top: 0; }
+  .catalog-section-header h2 { font-family: var(--font-display); font-weight: 400; font-size: var(--fs-h3); color: var(--bone); }
+  .catalog-section-header.is-hidden { display: none; }
   .release { position:relative; }
   .release.is-hidden { display:none; }
   .release__art { aspect-ratio:1; border-radius:var(--r-md); margin-bottom:var(--sp-2); position:relative; overflow:hidden; }
@@ -42,6 +46,7 @@
   .release__tag { font-size:10px; letter-spacing:var(--ls-wide); text-transform:uppercase; padding:3px 8px; border-radius:12px; backdrop-filter:blur(4px); }
   .release__tag--genre-gospel { background:rgba(232,165,82,0.85); color:#2b1a05; }
   .release__tag--genre-non-gospel { background:rgba(58,120,166,0.85); color:#eaf3fb; }
+  .release__tag--genre-divers { background:rgba(94,163,208,0.5); color:#eaf3fb; }
   .release__tag--type-live { background:rgba(206,68,54,0.85); color:#fbeceb; }
   .release__play { position:absolute; bottom:8px; right:8px; width:30px; height:30px; border-radius:50%; background:rgba(13,19,28,0.75); border:1px solid var(--gold-dim); display:flex; align-items:center; justify-content:center; cursor:pointer; transition:background var(--dur-fast) var(--ease), transform var(--dur-fast) var(--ease); }
   .release__play:hover { background:rgba(232,165,82,0.3); transform:scale(1.1); }
@@ -52,6 +57,9 @@
   .release__link { display:inline-flex; align-items:center; gap:4px; font-size:var(--fs-xs); color:var(--gold); margin-top:6px; text-decoration:none; cursor:pointer; transition:color var(--dur-fast) var(--ease); }
   .release__link:hover { color:var(--gold-bright); }
   .release__link svg { width:11px; height:11px; fill:currentColor; }
+  .release__bio-row { display:flex; gap:10px; flex-wrap:wrap; margin-top:2px; }
+  .release__bio { display:inline-block; font-size:10px; color:var(--sand); text-decoration:underline; text-decoration-color:var(--hair-2); text-underline-offset:2px; transition:color var(--dur-fast) var(--ease); }
+  .release__bio:hover { color:var(--gold-bright); }
 
   /* Media overlay */
   .media-overlay { position:fixed; inset:0; z-index:500; background:rgba(13,19,28,0.92); backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px); display:none; align-items:center; justify-content:center; padding:24px; }
@@ -154,6 +162,7 @@
         <button class="filter is-active" data-genre-filter="all">Tout</button>
         <button class="filter" data-genre-filter="gospel">Gospel</button>
         <button class="filter" data-genre-filter="non-gospel">Non Gospel</button>
+        <button class="filter" data-genre-filter="divers">Divers</button>
       </div>
     </div>
 
@@ -211,8 +220,8 @@
 <script src="../js/main.js"></script>
 <script>
   (function(){
-    var GENRE_LABEL = { 'gospel': 'Gospel', 'non-gospel': 'Non Gospel' };
-    var GENRE_TAG_CLASS = { 'gospel': 'release__tag--genre-gospel', 'non-gospel': 'release__tag--genre-non-gospel' };
+    var GENRE_LABEL = { 'gospel': 'Gospel', 'non-gospel': 'Non Gospel', 'divers': 'Divers' };
+    var GENRE_TAG_CLASS = { 'gospel': 'release__tag--genre-gospel', 'non-gospel': 'release__tag--genre-non-gospel', 'divers': 'release__tag--genre-divers' };
     var PLAY_ICON = '<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>';
     var LINK_ICON = '<svg viewBox="0 0 24 24"><path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14zm5 9v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h7v2H5v14h12v-7h2z"/></svg>';
 
@@ -223,6 +232,7 @@
 
       var hasImage = item.image && item.image.trim() !== '';
       var hasLink = item.link && item.link.trim() !== '';
+      var imgPos = (item.imagePosition && item.imagePosition.trim()) || 'center';
 
       var playBtn = '';
       if (hasLink) {
@@ -231,7 +241,7 @@
 
       var art = '<div class="' + (hasImage ? '' : 'ph ') + 'release__art">' +
         (hasImage
-          ? '<img src="../assets/images/discography/' + item.image + '" alt="' + item.title + ' — ' + item.artist + '" loading="lazy" decoding="async">'
+          ? '<img src="../assets/images/discography/' + item.image + '" alt="' + item.title + ' — ' + item.artist + '" loading="lazy" decoding="async" style="object-position:' + imgPos + '">'
           : '<small>' + (isLive ? 'Session live' : 'Pochette') + '</small>') +
         '<div class="release__badge">' + badges + '</div>' +
         playBtn +
@@ -242,6 +252,25 @@
         linkHtml = '<span class="release__link" data-play-index="' + index + '" role="button">' + LINK_ICON + ' Écouter</span>';
       }
 
+      // Use only the primary artist for the Bio link — "X feat Y" style
+      // credits should still link to X's own page, not a combined slug.
+      // Split "X feat Y" credits so each artist gets their own bio link,
+      // rather than only the primary artist being reachable from the card.
+      // Split on "feat"/"feat." AND "&" so joint credits like
+      // "X & Y" get separate bio links too, not just "X feat Y".
+      var artistParts = item.artist.split(/\s+feat\.?\s+|\s+&\s+/i);
+      var bioHtml = '';
+      if (item.artist !== 'Divers' && item.artist !== 'Collectif des artistes Pyramide') {
+        // "Divers" is a placeholder for non-artist entries (podcasts,
+        // compilations) — no bio page should be linked for it.
+        bioHtml = '<div class="release__bio-row">' +
+          artistParts.map(function(name){
+            var label = artistParts.length > 1 ? name : 'Bio artiste';
+            return '<a class="release__bio" href="artists/' + slugify(name) + '.html">' + label + ' →</a>';
+          }).join('') +
+          '</div>';
+      }
+
       var el = document.createElement('div');
       el.className = 'release';
       el.setAttribute('data-genre', item.genre);
@@ -249,9 +278,20 @@
       el.innerHTML = art +
         '<div class="release__title">' + item.title + '</div>' +
         '<div class="release__artist">' + item.artist + '</div>' +
+        bioHtml +
         '<div class="release__role">' + item.role + '</div>' +
         linkHtml;
       return el;
+    }
+
+    // Matches the site's existing filename convention (assets/images/discography):
+    // lowercase, accents stripped, spaces/punctuation to hyphens.
+    function slugify(str){
+      return str
+        .normalize('NFD').replace(/[\u0300-\u036f]/g, '') // strip accents
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/^-+|-+$/g, '');
     }
 
     function getYouTubeId(url){
@@ -310,9 +350,42 @@
         allReleases = data.releases;
         var catalog = document.getElementById('catalog');
         catalog.innerHTML = '';
-        data.releases.forEach(function(item, i){
-          catalog.appendChild(renderCard(item, i));
-        });
+
+        // Group by genre rather than showing raw JSON order — keeps Gospel,
+        // Non Gospel, and Divers visually separated even in the "Tout" view.
+        var gospelItems = data.releases.filter(function(r){ return r.genre === 'gospel'; });
+        var nonGospelItems = data.releases.filter(function(r){ return r.genre === 'non-gospel'; });
+        var diversItems = data.releases.filter(function(r){ return r.genre === 'divers'; });
+
+        function appendSectionHeader(label, genreKey){
+          var header = document.createElement('div');
+          header.className = 'catalog-section-header';
+          header.setAttribute('data-genre-section', genreKey);
+          header.innerHTML = '<h2>' + label + '</h2>';
+          catalog.appendChild(header);
+        }
+
+        if (gospelItems.length) {
+          appendSectionHeader('Gospel', 'gospel');
+          gospelItems.forEach(function(item){
+            var i = data.releases.indexOf(item);
+            catalog.appendChild(renderCard(item, i));
+          });
+        }
+        if (nonGospelItems.length) {
+          appendSectionHeader('Non Gospel', 'non-gospel');
+          nonGospelItems.forEach(function(item){
+            var i = data.releases.indexOf(item);
+            catalog.appendChild(renderCard(item, i));
+          });
+        }
+        if (diversItems.length) {
+          appendSectionHeader('Divers', 'divers');
+          diversItems.forEach(function(item){
+            var i = data.releases.indexOf(item);
+            catalog.appendChild(renderCard(item, i));
+          });
+        }
 
         catalog.addEventListener('click', function(e){
           var playEl = e.target.closest('[data-play-index]');
@@ -347,6 +420,14 @@
           var show = matchesType && matchesGenre;
           item.classList.toggle('is-hidden', !show);
           if (show) visibleCount++;
+        });
+        // Section headers follow the genre filter — hidden entirely when
+        // the other genre is selected, shown (even if that section ends up
+        // empty from a type filter) when "Tout" or its own genre is active.
+        document.querySelectorAll('.catalog-section-header').forEach(function(header){
+          var section = header.getAttribute('data-genre-section');
+          var showHeader = activeGenre === 'all' || activeGenre === section;
+          header.classList.toggle('is-hidden', !showHeader);
         });
         emptyNote.style.display = visibleCount === 0 ? 'block' : 'none';
       }

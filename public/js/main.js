@@ -92,3 +92,47 @@
     }
   }
 })();
+
+/* ============================================================
+   HORIZONTAL VIEWPORT DRIFT GUARD — append to the END of js/main.js
+   ------------------------------------------------------------
+   MITIGATION, not a root-cause fix. On some mobile browsers
+   (observed on iOS Safari), focusing a text input inside a
+   cross-origin iframe — like the Iris Financial booking/portal/
+   shop widgets embedded via <iframe> on booking.html, portal.html
+   and shop.html — can leave the OUTER page's visual viewport
+   horizontally offset even after the input loses focus. This
+   clips the site's own header/logo and hero text at the left
+   edge until the page is reloaded or manually scrolled back.
+
+   html/body already have overflow-x:hidden (tokens.css), which
+   stops normal horizontal *scrolling*, but does not stop this
+   specific visual-viewport *offset* quirk, since that's a
+   browser-level pan, not a body scroll position.
+
+   This listens for any horizontal drift and snaps it back to 0
+   automatically — cheap, harmless on pages with no iframe, and
+   runs continuously so it self-heals regardless of what triggered
+   the drift. The actual root cause (why the offset happens at
+   all) lives inside the Iris Financial widget's own iframe content
+   and needs to be fixed on that side — this is a client-side
+   safety net for our own pages in the meantime.
+   ============================================================ */
+(function () {
+  function snapHorizontalScroll() {
+    if (window.scrollX !== 0 || window.pageXOffset !== 0) {
+      window.scrollTo(0, window.scrollY || window.pageYOffset || 0);
+    }
+  }
+  window.addEventListener('scroll', snapHorizontalScroll, { passive: true });
+  window.addEventListener('resize', snapHorizontalScroll);
+  window.addEventListener('orientationchange', snapHorizontalScroll);
+  if (window.visualViewport) {
+    window.visualViewport.addEventListener('scroll', snapHorizontalScroll);
+    window.visualViewport.addEventListener('resize', snapHorizontalScroll);
+  }
+  // Also catch it right after any iframe on the page gains/loses focus,
+  // since that's the specific trigger observed (booking/portal/shop widgets).
+  window.addEventListener('blur', function () { setTimeout(snapHorizontalScroll, 50); });
+  window.addEventListener('focus', function () { setTimeout(snapHorizontalScroll, 50); });
+})();

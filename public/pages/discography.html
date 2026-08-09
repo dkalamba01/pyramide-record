@@ -46,6 +46,7 @@
   .release__tag { font-size:10px; letter-spacing:var(--ls-wide); text-transform:uppercase; padding:3px 8px; border-radius:12px; backdrop-filter:blur(4px); }
   .release__tag--genre-gospel { background:rgba(232,165,82,0.85); color:#2b1a05; }
   .release__tag--genre-non-gospel { background:rgba(58,120,166,0.85); color:#eaf3fb; }
+  .release__tag--genre-divers { background:rgba(94,163,208,0.5); color:#eaf3fb; }
   .release__tag--type-live { background:rgba(206,68,54,0.85); color:#fbeceb; }
   .release__play { position:absolute; bottom:8px; right:8px; width:30px; height:30px; border-radius:50%; background:rgba(13,19,28,0.75); border:1px solid var(--gold-dim); display:flex; align-items:center; justify-content:center; cursor:pointer; transition:background var(--dur-fast) var(--ease), transform var(--dur-fast) var(--ease); }
   .release__play:hover { background:rgba(232,165,82,0.3); transform:scale(1.1); }
@@ -161,6 +162,7 @@
         <button class="filter is-active" data-genre-filter="all">Tout</button>
         <button class="filter" data-genre-filter="gospel">Gospel</button>
         <button class="filter" data-genre-filter="non-gospel">Non Gospel</button>
+        <button class="filter" data-genre-filter="divers">Divers</button>
       </div>
     </div>
 
@@ -218,8 +220,8 @@
 <script src="../js/main.js"></script>
 <script>
   (function(){
-    var GENRE_LABEL = { 'gospel': 'Gospel', 'non-gospel': 'Non Gospel' };
-    var GENRE_TAG_CLASS = { 'gospel': 'release__tag--genre-gospel', 'non-gospel': 'release__tag--genre-non-gospel' };
+    var GENRE_LABEL = { 'gospel': 'Gospel', 'non-gospel': 'Non Gospel', 'divers': 'Divers' };
+    var GENRE_TAG_CLASS = { 'gospel': 'release__tag--genre-gospel', 'non-gospel': 'release__tag--genre-non-gospel', 'divers': 'release__tag--genre-divers' };
     var PLAY_ICON = '<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>';
     var LINK_ICON = '<svg viewBox="0 0 24 24"><path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14zm5 9v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h7v2H5v14h12v-7h2z"/></svg>';
 
@@ -348,10 +350,11 @@
         var catalog = document.getElementById('catalog');
         catalog.innerHTML = '';
 
-        // Group by genre rather than showing raw JSON order — keeps Gospel
-        // and Non Gospel visually separated even in the "Tout" view.
+        // Group by genre rather than showing raw JSON order — keeps Gospel,
+        // Non Gospel, and Divers visually separated even in the "Tout" view.
         var gospelItems = data.releases.filter(function(r){ return r.genre === 'gospel'; });
-        var nonGospelItems = data.releases.filter(function(r){ return r.genre !== 'gospel'; });
+        var nonGospelItems = data.releases.filter(function(r){ return r.genre === 'non-gospel'; });
+        var diversItems = data.releases.filter(function(r){ return r.genre === 'divers'; });
 
         function appendSectionHeader(label, genreKey){
           var header = document.createElement('div');
@@ -371,6 +374,13 @@
         if (nonGospelItems.length) {
           appendSectionHeader('Non Gospel', 'non-gospel');
           nonGospelItems.forEach(function(item){
+            var i = data.releases.indexOf(item);
+            catalog.appendChild(renderCard(item, i));
+          });
+        }
+        if (diversItems.length) {
+          appendSectionHeader('Divers', 'divers');
+          diversItems.forEach(function(item){
             var i = data.releases.indexOf(item);
             catalog.appendChild(renderCard(item, i));
           });

@@ -13,7 +13,7 @@
     { "title": "Showbuzz · Concert", "artist": "Enoch Mulopo", "genre": "gospel", "type": "live", "role": "Session live", "link": "https://www.youtube.com/watch?v=2M4sedp722Y", "image": "enoch-mulopo_showbuzz-concert.jpg" },
     { "title": "Désolé (Clip officiel)", "artist": "Héritier Wata", "genre": "non-gospel", "type": "studio", "role": "Enregistrement · Mixage", "link": "https://www.youtube.com/watch?v=m_VnQmPYEE4", "image": "heritier-wata_desole-clip-officiel.png" },
     { "title": "Amore (Clip officiel)", "artist": "Fally Ipupa", "genre": "non-gospel", "type": "studio", "role": "Enregistrement · Mixage", "link": "https://www.youtube.com/watch?v=T37nO9uJNp0", "image": "fally-ipupa_amore-clip-officiel.jpg" },
-    { "title": "Podcasts & créations orales", "artist": "Divers", "genre": "non-gospel", "type": "studio", "role": "Production", "link": "", "image": "" },
+    { "title": "Podcasts & créations orales", "artist": "Divers", "genre": "divers", "type": "studio", "role": "Production", "link": "", "image": "" },
     { "title": "La Lumière Paraîtra", "artist": "Thethe Makabi M. feat Billy Nuée", "genre": "gospel", "type": "studio", "role": "Enregistrement · Mixage", "link": "https://www.youtube.com/watch?v=0Y1uUXmH_vE", "image": "thethe-makabi-m_la-lumiere-paraitra.jpg" },
     { "title": "Mobongisi", "artist": "Onesime Kalala", "genre": "gospel", "type": "studio", "role": "Enregistrement · Mixage", "link": "https://youtu.be/OF4en9dXIi0", "image": "onesime-kalala_mobongisi.png" },
     { "title": "Concert", "artist": "Onesime Kalala & Paul Bakenda", "genre": "gospel", "type": "live", "role": "Session live", "link": "https://youtu.be/upIf3PEKKh0", "image": "onesime-kalala_concert.png" },

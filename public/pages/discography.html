@@ -257,7 +257,7 @@
       // "X & Y" get separate bio links too, not just "X feat Y".
       var artistParts = item.artist.split(/\s+feat\.?\s+|\s+&\s+/i);
       var bioHtml = '';
-      if (item.artist !== 'Divers') {
+      if (item.artist !== 'Divers' && item.artist !== 'Collectif des artistes Pyramide') {
         // "Divers" is a placeholder for non-artist entries (podcasts,
         // compilations) — no bio page should be linked for it.
         bioHtml = '<div class="release__bio-row">' +

@@ -29,9 +29,9 @@
     { "title": "Fidèle", "artist": "Pasteur Moïse Mbiye", "genre": "gospel", "type": "studio", "role": "Enregistrement · Mixage", "link": "https://youtu.be/V0FhZllI6sY", "image": "pasteur-moise-mbiye_fidele.png" },
     { "title": "Adorons-Le", "artist": "Abigaël Bonheur Lwanzo", "genre": "gospel", "type": "studio", "role": "Enregistrement · Mixage", "link": "https://youtu.be/kc7Lfsrk8mI", "image": "abigael-bonheur-lwanzo_adorons-le.png" },
     { "title": "Prisonnier de son amour", "artist": "Deborah Situ PM", "genre": "gospel", "type": "studio", "role": "Enregistrement · Mixage", "link": "https://youtu.be/nVMDAp5ZDTI", "image": "deborah-situ-pm_prisonnier-de-son-amour.png" },
-    { "title": "Lifoko du Ciel Notre Fierté", "artist": "Roland Muanga", "genre": "gospel", "type": "studio", "role": "Enregistrement · Mixage", "link": "https://youtu.be/athoEPb11zM", "image": "roland-muanga_lifoko-du-ciel-notre-fierte.png" },
+    { "title": "Lifoko du Ciel Notre Fierté", "artist": "Roland Muanga", "genre": "gospel", "type": "studio", "role": "Enregistrement · Mixage", "link": "https://youtu.be/athoEPb11zM", "image": "roland-muanga_lifoko-du-ciel-notre-fierte.png", "imagePosition": "center top" },
     { "title": "Bobele Yo", "artist": "Roland Muanga", "genre": "gospel", "type": "studio", "role": "Enregistrement · Mixage", "link": "https://youtu.be/gLFdGEEK4XU", "image": "roland-muanga_bobele-yo.png" },
-    { "title": "Isha", "artist": "Mélodie Omas", "genre": "gospel", "type": "studio", "role": "Enregistrement · Mixage", "link": "https://youtu.be/4t5U7yV3Tz4", "image": "melodie-omas_isha.png" },
+    { "title": "Isha", "artist": "Mélodie Omas", "genre": "gospel", "type": "studio", "role": "Enregistrement · Mixage", "link": "https://youtu.be/4t5U7yV3Tz4", "image": "melodie-omas_isha.png", "imagePosition": "right center" },
     { "title": "Chant de Noël - Douce Nuit", "artist": "Collectif des artistes Pyramide", "genre": "gospel", "type": "studio", "role": "Enregistrement · Mixage", "link": "https://youtu.be/WdRndr7iQPM", "image": "divers_chant-de-noel-douce-nuit.jpeg" },
     { "title": "ADORER MALGRE TOUT MINISTRIES", "artist": "Mike Flor Mulumba", "genre": "gospel", "type": "live", "role": "Session live", "link": "https://www.youtube.com/watch?v=XGMp5Jad6xs", "image": "mike-flor-mulumba_adorer-malgre-tout-ministries.jpg" }
   ]

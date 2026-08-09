@@ -232,6 +232,7 @@
 
       var hasImage = item.image && item.image.trim() !== '';
       var hasLink = item.link && item.link.trim() !== '';
+      var imgPos = (item.imagePosition && item.imagePosition.trim()) || 'center';
 
       var playBtn = '';
       if (hasLink) {
@@ -240,7 +241,7 @@
 
       var art = '<div class="' + (hasImage ? '' : 'ph ') + 'release__art">' +
         (hasImage
-          ? '<img src="../assets/images/discography/' + item.image + '" alt="' + item.title + ' — ' + item.artist + '" loading="lazy" decoding="async">'
+          ? '<img src="../assets/images/discography/' + item.image + '" alt="' + item.title + ' — ' + item.artist + '" loading="lazy" decoding="async" style="object-position:' + imgPos + '">'
           : '<small>' + (isLive ? 'Session live' : 'Pochette') + '</small>') +
         '<div class="release__badge">' + badges + '</div>' +
         playBtn +

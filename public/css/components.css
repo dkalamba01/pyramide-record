@@ -405,3 +405,36 @@
     height: 36px;
   }
 }
+
+/* ============================================================
+   ARTIST BIO PAGES — shared rules for pages/artists/*.html
+   ------------------------------------------------------------
+   Previously each bio page duplicated these rules in its own
+   inline <style> block, copy-pasted from _template.html. That
+   caused drift: a fix applied on one artist's page (like the
+   .bio-release-listen gap fix below) never propagated to pages
+   built earlier from the template.
+
+   Going forward, bio pages should NOT redefine these classes in
+   their own <style> block — they inherit them from here since
+   components.css is already linked on every page. Only page-
+   specific one-offs (if any) belong in a page's local <style>.
+   ============================================================ */
+.page-hero { padding: var(--sp-8) 0 var(--sp-6); }
+.bio-layout { display:grid; grid-template-columns:320px 1fr; gap:var(--sp-8); align-items:start; }
+.bio-photo { aspect-ratio:4/5; border-radius:var(--r-lg); overflow:hidden; border:1px solid var(--hair-2); position:sticky; top:90px; }
+.bio-photo img { width:100%; height:100%; object-fit:cover; display:block; }
+.bio-tags { display:flex; gap:var(--sp-2); margin-bottom:var(--sp-4); }
+.bio-name { font-family:var(--font-display); font-weight:400; font-size:clamp(28px,4vw,42px); margin-bottom:var(--sp-4); }
+.bio-text p { color:var(--sand); font-size:var(--fs-body); line-height:1.85; margin-bottom:var(--sp-4); max-width:62ch; }
+.bio-text p strong { color:var(--bone); font-weight:500; }
+.bio-releases { margin-top:var(--sp-6); padding-top:var(--sp-5); border-top:1px solid var(--hair); }
+.bio-releases h2 { font-family:var(--font-display); font-weight:400; font-size:var(--fs-h3); margin-bottom:var(--sp-4); }
+.bio-release-item { display:flex; justify-content:space-between; align-items:center; padding:var(--sp-3) 0; border-bottom:1px solid var(--hair); font-size:var(--fs-sm); }
+.bio-release-item .role { color:var(--ash); font-size:var(--fs-xs); text-transform:uppercase; letter-spacing:var(--ls-wide); }
+.bio-release-listen { color:var(--gold-bright); text-decoration:none; margin-left:8px; white-space:nowrap; }
+.bio-release-listen:hover { text-decoration:underline; }
+.bio-spotify { margin-top:var(--sp-6); padding-top:var(--sp-5); border-top:1px solid var(--hair); }
+.bio-spotify h2 { font-family:var(--font-display); font-weight:400; font-size:var(--fs-h3); margin-bottom:var(--sp-4); }
+.bio-spotify iframe { border-radius:var(--r-lg); margin-bottom:var(--sp-3); }
+@media(max-width:820px){ .bio-layout{grid-template-columns:1fr} .bio-photo{position:static;max-width:340px} }

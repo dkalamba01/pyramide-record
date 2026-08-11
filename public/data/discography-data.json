@@ -1,86 +1,716 @@
 {
   "_instructions": "Add the real link for each release below, between the quotes after \"link\" — and the image filename after \"image\". Leave either as an empty string \"\" if you don't have it yet (the site will show a placeholder box for missing images, and hide the 'Écouter' button for missing links). Image files go in public/assets/images/discography/ — see naming convention notes at the bottom. Don't touch title/artist/genre/type unless correcting a mistake. Save the file after editing.",
-
   "_image_naming_convention": "Filename = artist-slug_title-slug.jpg (lowercase, spaces to hyphens, no accents/special characters). Example: for 'ADORER MALGRE TOUT MINISTRIES' by Mike Flor Mulumba, use: mike-flor-mulumba_adorer-malgre-tout-ministries.jpg — square images work best (they get cropped to a 1:1 square automatically).",
-
   "releases": [
-    { "title": "Ciel sur Terre", "artist": "Hatthie Kashoba", "genre": "gospel", "type": "studio", "role": "Enregistrement · Mixage", "link": "", "image": "hatthie-kashoba_ciel-sur-terre.png" },
-    { "title": "Natondi Nkolo", "artist": "Seth Mulumba", "genre": "gospel", "type": "studio", "role": "Enregistrement · Mixage", "link": "", "image": "seth-mulumba_natondi-nkolo.jpg" },
-    { "title": "Worship Time", "artist": "Seth Mulumba", "genre": "gospel", "type": "studio", "role": "Enregistrement · Mixage", "link": "", "image": "seth-mulumba_worship-time.jpg" },
-    { "title": "Culte des Chants", "artist": "Enoch Mulopo", "genre": "gospel", "type": "studio", "role": "Enregistrement · Mixage", "link": "https://www.youtube.com/watch?v=p65DV7s3_tw", "image": "enoch-mulopo_culte-des-chants.png" },
-    { "title": "Le Guide · Ciel-sur-Terre", "artist": "Hatthie Kashoba", "genre": "gospel", "type": "live", "role": "Session live", "link": "https://www.youtube.com/watch?v=tOm6vVYfil8", "image": "hatthie-kashoba_le-guide-ciel-sur-terre.jpg" },
-    { "title": "Natondi Nkolo · Concert Culte Live", "artist": "Seth Mulumba", "genre": "gospel", "type": "live", "role": "Session live", "link": "https://youtu.be/vrRYrouBXt0", "image": "seth-mulumba_natondi-nkolo-concert-culte-live.jpg" },
-    { "title": "Showbuzz · Concert", "artist": "Enoch Mulopo", "genre": "gospel", "type": "live", "role": "Session live", "link": "https://www.youtube.com/watch?v=2M4sedp722Y", "image": "enoch-mulopo_showbuzz-concert.jpg" },
-    { "title": "Désolé (Clip officiel)", "artist": "Héritier Wata", "genre": "non-gospel", "type": "studio", "role": "Enregistrement · Mixage", "link": "https://www.youtube.com/watch?v=m_VnQmPYEE4", "image": "heritier-wata_desole-clip-officiel.png" },
-    { "title": "Amore (Clip officiel)", "artist": "Fally Ipupa", "genre": "non-gospel", "type": "studio", "role": "Enregistrement · Mixage", "link": "https://www.youtube.com/watch?v=T37nO9uJNp0", "image": "fally-ipupa_amore-clip-officiel.jpg" },
-    { "title": "Podcasts & créations orales", "artist": "Divers", "genre": "divers", "type": "studio", "role": "Production", "link": "", "image": "" },
-    { "title": "Instrumental Adoration Chrétienne pour Prier - Dieu Tout Puissant (Guitare)", "artist": "Divers", "genre": "divers", "type": "studio", "role": "Production", "link": "https://youtu.be/InOi7mOcHak", "image": "divers_instrumental-adoration-guitare.jpg" },
-    { "title": "La Lumière Paraîtra", "artist": "Thethe Makabi M. feat Billy Nuée", "genre": "gospel", "type": "studio", "role": "Enregistrement · Mixage", "link": "https://www.youtube.com/watch?v=0Y1uUXmH_vE", "image": "thethe-makabi-m_la-lumiere-paraitra.jpg" },
-    { "title": "Mobongisi", "artist": "Onesime Kalala", "genre": "gospel", "type": "studio", "role": "Enregistrement · Mixage", "link": "https://youtu.be/OF4en9dXIi0", "image": "onesime-kalala_mobongisi.png" },
-    { "title": "Concert", "artist": "Onesime Kalala & Paul Bakenda", "genre": "gospel", "type": "live", "role": "Session live", "link": "https://youtu.be/upIf3PEKKh0", "image": "onesime-kalala_concert.png" },
-    { "title": "Bakoyeba Ndenge Nini", "artist": "Thethe Makabi M.", "genre": "gospel", "type": "studio", "role": "Enregistrement · Mixage", "link": "https://youtu.be/bgrUinPL9xc", "image": "thethe-makabi-m_bakoyeba-ndenge-nini.jpg" },
-    { "title": "Viens nous visiter", "artist": "Acsa Olangi Kaseya", "genre": "gospel", "type": "studio", "role": "Enregistrement · Mixage", "link": "https://youtu.be/ljvfUWXESg8", "image": "acsa-olangi-kaseya_viens-nous-visiter.png" },
-    { "title": "Louons Jésus", "artist": "Ruth Obweng feat Mom Génerose Wamudjulu", "genre": "gospel", "type": "studio", "role": "Enregistrement · Mixage", "link": "https://youtu.be/nLXzx75otzA", "image": "ruth-obweng-mom-generose-wamudjulu_louons-jesus.png" },
-    { "title": "Ma coupe déborde", "artist": "Isaac Bukasa", "genre": "gospel", "type": "studio", "role": "Enregistrement · Mixage", "link": "https://youtu.be/sJuxwKc-AAk", "image": "isaac-bukasa_ma-coupe-deborde.png" },
-    { "title": "Garantie", "artist": "Billy Bilomba", "genre": "gospel", "type": "studio", "role": "Enregistrement · Mixage", "link": "https://youtu.be/poJG3YHFWZM", "image": "billy-bilomba_garanti.png" },
-    { "title": "Je te dis Merci", "artist": "Deborah Luvi feat Billy Kabongo", "genre": "gospel", "type": "studio", "role": "Enregistrement · Mixage", "link": "https://youtu.be/MoFntbFaW88", "image": "deborah-luvi_je-te-dis-merci.png" },
-    { "title": "Mbanzi Ya Lisiko", "artist": "Junior Kabongo", "genre": "gospel", "type": "studio", "role": "Enregistrement · Mixage", "link": "https://youtu.be/DZeWah_6P9k", "image": "junior-kabongo_mbanzi-ya-lisiko.png" },
-    { "title": "Laodicée", "artist": "Stevie Wonderson", "genre": "gospel", "type": "studio", "role": "Enregistrement · Mixage", "link": "https://youtu.be/-AJpuxY8Ebc", "image": "stevie-wonderson_laodicee.png" },
-    { "title": "Conduis mes pas", "artist": "Josue et Caleb Bitha feat Hatthie Kashoba", "genre": "gospel", "type": "studio", "role": "Enregistrement · Mixage", "link": "https://youtu.be/0nctdbZnOHY", "image": "josue-et-caleb-bitha_conduis-mes-pas.png" },
-    { "title": "Fidèle", "artist": "Pasteur Moïse Mbiye", "genre": "gospel", "type": "studio", "role": "Enregistrement · Mixage", "link": "https://youtu.be/V0FhZllI6sY", "image": "pasteur-moise-mbiye_fidele.png" },
-    { "title": "Adorons-Le", "artist": "Abigaël Bonheur Lwanzo", "genre": "gospel", "type": "studio", "role": "Enregistrement · Mixage", "link": "https://youtu.be/hJdbH9BGSBc", "image": "abigael-bonheur-lwanzo_adorons-le.png" },
-    { "title": "Prisonnier de son amour", "artist": "Deborah Situ PM", "genre": "gospel", "type": "studio", "role": "Enregistrement · Mixage", "link": "https://youtu.be/nVMDAp5ZDTI", "image": "deborah-situ-pm_prisonnier-de-son-amour.png" },
-    { "title": "Lifoko du Ciel Notre Fierté", "artist": "Roland Muanga", "genre": "gospel", "type": "studio", "role": "Enregistrement · Mixage", "link": "https://youtu.be/athoEPb11zM", "image": "roland-muanga_lifoko-du-ciel-notre-fierte.png", "imagePosition": "20% center" },
-    { "title": "Bobele Yo", "artist": "Roland Muanga", "genre": "gospel", "type": "studio", "role": "Enregistrement · Mixage", "link": "https://youtu.be/gLFdGEEK4XU", "image": "roland-muanga_bobele-yo.png", "imagePosition": "20% center" },
-    { "title": "Petite Fontaine (Live acoustique)", "artist": "Hatthie Kashoba", "genre": "gospel", "type": "live", "role": "Session live", "link": "https://youtu.be/7XGS2IseboA", "image": "hatthie-kashoba_petite-fontaine.png" },
-    { "title": "Nkolo Naye", "artist": "Béthel Lopema M.", "genre": "gospel", "type": "studio", "role": "Enregistrement · Mixage", "link": "https://youtu.be/BxgQQcZKyfk", "image": "bethel-lopema-m_nkolo-naye.png" },
-    { "title": "Litono: Point Final", "artist": "Thethe Makabi M.", "genre": "gospel", "type": "studio", "role": "Enregistrement · Mixage", "link": "https://youtu.be/0WqsTuE4B8Q", "image": "thethe-makabi-m_litono-point-final.png" },
-    { "title": "Jésus m'a fait du bien", "artist": "Thethe Makabi M.", "genre": "gospel", "type": "studio", "role": "Enregistrement · Mixage", "link": "https://youtu.be/4q8YV3nPEKo", "image": "" },
-    { "title": "Se Na Ngolu Na Yo (cover)", "artist": "Thethe Makabi M. feat Deborah Luvi", "genre": "gospel", "type": "studio", "role": "Enregistrement · Mixage", "link": "https://youtu.be/N5bNsQ8T3bY", "image": "thethe-makabi-m_se-na-ngolu-na-yo.png" },
-    { "title": "Emma", "artist": "Henoch Junior Yamba & Onesime Kalala", "genre": "gospel", "type": "studio", "role": "Enregistrement · Mixage", "link": "https://youtu.be/Z7HevcQP8PQ", "image": "henoch-junior-yamba_emma_with_Onesim.png" },
-    { "title": "Adoration et Louange - Ton Disciple / Entends Mon Cœur / Attire-moi à Toi", "artist": "John Lusala", "genre": "gospel", "type": "live", "role": "Session live", "link": "https://youtu.be/nU2JvEVUZKI", "image": "john-lusala.png" },
-    { "title": "Fais de mon cœur - Le pays de nuages - Ne crains rien", "artist": "Isaac Bukasa", "genre": "gospel", "type": "studio", "role": "Enregistrement · Mixage", "link": "https://youtu.be/cy-vbtNwU-8", "image": "isaac-bukasa_ma-coupe-deborde.png" },
-    { "title": "Tu as payé cher - Jésus ma bénédiction", "artist": "Isaac Bukasa", "genre": "gospel", "type": "studio", "role": "Enregistrement · Mixage", "link": "https://youtu.be/Xa7d5lLqqpQ", "image": "isaac-bukasa_ma-coupe-deborde.png" },
-    { "title": "Aide Moi", "artist": "Hatthie Kashoba", "genre": "gospel", "type": "studio", "role": "Enregistrement · Mixage", "link": "https://youtu.be/-o1iU3SeMGs", "image": "hatthie-kashoba_ciel-sur-terre.png" },
-    { "title": "Il m'a cherché", "artist": "Hatthie Kashoba", "genre": "gospel", "type": "studio", "role": "Enregistrement · Mixage", "link": "https://youtu.be/gzeMZCpAt34", "image": "hatthie-kashoba_le-guide-ciel-sur-terre.jpg" },
-    { "title": "Besoin de Toi", "artist": "Roland Muanga", "genre": "gospel", "type": "studio", "role": "Enregistrement · Mixage", "link": "https://youtu.be/WNXaDWmoABE", "image": "roland-muanga_bobele-yo.png", "imagePosition": "20% center" },
-    { "title": "Yo nde Pole", "artist": "Roland Muanga", "genre": "gospel", "type": "studio", "role": "Enregistrement · Mixage", "link": "https://youtu.be/z0hx7HubtBo", "image": "roland-muanga_lifoko-du-ciel-notre-fierte.png", "imagePosition": "20% center" },
-    { "title": "Dispose Assoiffé", "artist": "Roland Muanga", "genre": "gospel", "type": "studio", "role": "Enregistrement · Mixage", "link": "https://youtu.be/DUB5mkCITjM", "image": "roland-muanga_bobele-yo.png", "imagePosition": "20% center" },
-    { "title": "Tu Connais Mon Cœur", "artist": "Roland Muanga", "genre": "gospel", "type": "studio", "role": "Enregistrement · Mixage", "link": "https://youtu.be/56Jj6GfAKEg", "image": "roland-muanga_lifoko-du-ciel-notre-fierte.png", "imagePosition": "20% center" },
-    { "title": "Au revoir Pasteur Baruti Kasongo", "artist": "Roland Muanga feat Trésor Lianza", "genre": "gospel", "type": "studio", "role": "Enregistrement · Mixage", "link": "https://youtu.be/ZsOWaIKEa_g", "image": "roland-muanga_bobele-yo.png", "imagePosition": "20% center" },
-    { "title": "Plus haut comme un aigle", "artist": "John Lusala", "genre": "gospel", "type": "studio", "role": "Enregistrement · Mixage", "link": "https://youtu.be/-To8-IwYadc", "image": "john-lusala.png" },
-    { "title": "Bozali na Yo", "artist": "John Lusala", "genre": "gospel", "type": "studio", "role": "Enregistrement · Mixage", "link": "https://youtu.be/HhjkmcvUU9g", "image": "john-lusala_bozali-na-yo.jpg" },
-    { "title": "Rester plus haut", "artist": "John Lusala", "genre": "gospel", "type": "studio", "role": "Enregistrement · Mixage", "link": "https://youtu.be/FdDWM8EWhIQ", "image": "john-lusala.png" },
-    { "title": "Éclaire Mon Chemin", "artist": "John Lusala feat Josué et Caleb Bitha", "genre": "gospel", "type": "studio", "role": "Enregistrement · Mixage", "link": "https://youtu.be/dK8hw3uiUgU", "image": "john-lusala-josue-caleb-bitha_eclaire-mon-chemin.jpg" },
-    { "title": "Concert Live Village Chez Ntemba Part 1", "artist": "Onesime Kalala & Paul Bakenda", "genre": "gospel", "type": "live", "role": "Session live", "link": "https://youtu.be/_x9oY4xPmaE", "image": "onesime-kalala_concert.png" },
-    { "title": "Compilation Adoration", "artist": "Thethe Makabi M.", "genre": "gospel", "type": "studio", "role": "Enregistrement · Mixage", "link": "https://youtu.be/75FIVttKLoo", "image": "thethe-makabi-m_compilation-adoration.png" },
-    { "title": "Congo Belge", "artist": "Elvie Pambu", "genre": "gospel", "type": "studio", "role": "Enregistrement · Mixage", "link": "https://youtu.be/r4k6fYyroqM", "image": "elvie-pambu_congo-belge.jpg" },
-    { "title": "Thank You Lord (cover, \"Matondi\")", "artist": "Elvie Pambu", "genre": "gospel", "type": "studio", "role": "Enregistrement · Mixage", "link": "https://youtu.be/tRkp8ttGIlI", "image": "elvie-pambu_thank-you-lord.jpg" },
-    { "title": "Posa na Yo (J'ai soif de Toi)", "artist": "Elvie Pambu", "genre": "gospel", "type": "studio", "role": "Enregistrement · Mixage", "link": "https://youtu.be/Rp6v53_M50M", "image": "elvie-pambu_posa-na-yo.jpg" },
-    { "title": "Compilation Louange et Adoration | Obongi na Lokumu", "artist": "Elvie Pambu", "genre": "gospel", "type": "studio", "role": "Enregistrement · Mixage", "link": "https://youtu.be/wlr_cAfiGuo", "image": "elvie-pambu_obongi-na-lokumu.jpg" },
-    { "title": "Toye Kotombola (cover)", "artist": "Elvie Pambu", "genre": "gospel", "type": "studio", "role": "Enregistrement · Mixage", "link": "https://youtu.be/9obbfvVgg3s", "image": "elvie-pambu_toye-kotombola.jpg" },
-    { "title": "Asikoli nga (Il m'a racheté)", "artist": "Elvie Pambu", "genre": "gospel", "type": "studio", "role": "Enregistrement · Mixage", "link": "https://youtu.be/hMX1gwqf6M4", "image": "elvie-pambu.png" },
-    { "title": "Et si c'était l'amour ?", "artist": "Agenors Kabongo", "genre": "gospel", "type": "studio", "role": "Enregistrement · Mixage", "link": "https://youtu.be/RsXWexTIVGE", "image": "agenors-kabongo_et-si-cetait-lamour.png" },
-    { "title": "Louange et adoration", "artist": "Fabrice Mulaja & Billy Bilomba feat Onésime Kalala", "genre": "gospel", "type": "studio", "role": "Cover · Enregistrement · Mixage", "link": "https://youtu.be/se2q2v2E2yM", "image": "fabrice-mulaja-billy-bilomba_louange-et-adoration.jpeg" },
-    { "title": "Bozali na Yo (Ciel sur Terre)", "artist": "Elvie Pambu feat Stevie Wonderson feat Billy Kabongo", "genre": "gospel", "type": "studio", "role": "Enregistrement · Mixage", "link": "https://youtu.be/g-QsOWM-Bco", "image": "elvie-pambu_bozali-na-yo-ciel-sur-terre.jpeg" },
-    { "title": "Ciel sur Terre (Compilation)", "artist": "Elvie Pambu & Salem Mosengo & Andrine Musansi", "genre": "gospel", "type": "studio", "role": "Enregistrement · Mixage", "link": "https://youtu.be/j03-1uPwbWw", "image": "elvie-pambu-salem-mosengo-andrine-musansi_ciel-sur-terre.jpeg" },
-    { "title": "Ciel sur Terre (Compilation)", "artist": "Salem Mosengo & Elvie Pambu & Andrine Musansi & John Lusala", "genre": "gospel", "type": "studio", "role": "Enregistrement · Mixage", "link": "https://youtu.be/mHLYgaN6Q7Y", "image": "salem-mosengo-elvie-pambu-andrine-musansi-john-lusala_ciel-sur-terre.png" },
-    { "title": "Isha", "artist": "Mélodie Omas", "genre": "gospel", "type": "studio", "role": "Enregistrement · Mixage", "link": "https://youtu.be/4t5U7yV3Tz4", "image": "melodie-omas_isha.png", "imagePosition": "right center" },
-    { "title": "Mwadi Wanyi - Yepowa - Kumpala Kuaba", "artist": "Sr Bena (cover de Kabongo Mbaya)", "genre": "gospel", "type": "studio", "role": "Cover · Enregistrement · Mixage", "link": "https://youtu.be/DZ2iGu9Jnbg", "image": "sr-bena_mwadi-wanyi-yepowa-kumpala-kuaba.jpg" },
-    { "title": "Busambi", "artist": "Sr Bena (cover de Kabongo Mbaya)", "genre": "gospel", "type": "studio", "role": "Cover · Enregistrement · Mixage", "link": "https://youtu.be/OF9oFqydKpk", "image": "sr-bena_busambi.jpg" },
-    { "title": "Adoration et Louange - Masiya alingi ngai", "artist": "Jérémie Dex M", "genre": "gospel", "type": "studio", "role": "Enregistrement · Mixage", "link": "https://youtu.be/focDnmMsxzw", "image": "jeremie-dex-m_adoration-et-louange-masiya-alingi-ngai.jpg" },
-    { "title": "Le Sang Qui Parle", "artist": "Jérémie Vase", "genre": "gospel", "type": "studio", "role": "Enregistrement · Mixage", "link": "https://www.youtube.com/watch?v=QVJ_qwmtaSo", "image": "jeremie-vase_le-sang-qui-parle.jpg" },
-    { "title": "L'Ange du Seigneur (Akobundela nga)", "artist": "Jérémie Vase", "genre": "gospel", "type": "studio", "role": "Enregistrement · Mixage", "link": "https://www.youtube.com/watch?v=CvJ7haAL0mg", "image": "jeremie-vase_lange-du-seigneur-akobundela-nga.jpg" },
-    { "title": "Ciel sur Terre Part 2", "artist": "Jérémie Vase", "genre": "gospel", "type": "studio", "role": "Enregistrement · Mixage", "link": "https://www.youtube.com/watch?v=AnOhsAakvGA", "image": "jeremie-vase_ciel-sur-terre-part-2.jpg" },
-    { "title": "Ciel sur Terre Part 1", "artist": "Jérémie Vase", "genre": "gospel", "type": "studio", "role": "Enregistrement · Mixage", "link": "https://www.youtube.com/watch?v=AMoZB5viQj4", "image": "jeremie-vase_ciel-sur-terre-part-1.jpg" },
-    { "title": "Kimbangi", "artist": "Henri Papa Mulaja feat Giresse Mafuta", "genre": "gospel", "type": "studio", "role": "Enregistrement · Mixage", "link": "https://www.youtube.com/watch?v=89a3p-SgxGA", "image": "henri-papa-mulaja_kimbangi.jpg" },
-    { "title": "Adoration et louange", "artist": "El Beryith", "genre": "gospel", "type": "studio", "role": "Enregistrement · Mixage", "link": "https://youtu.be/cBboYr1BGD4", "image": "el-beryith_adoration-et-louange.jpg" },
-    { "title": "Heureusement", "artist": "Dan Ngoy", "genre": "gospel", "type": "studio", "role": "Enregistrement · Mixage", "link": "https://www.youtube.com/watch?v=xLXpV_9AZPU", "image": "dan-ngoy_heureusement.jpg" },
-    { "title": "Un cœur d'adorateur (cover, original par Gwen Dressaire)", "artist": "Elvie Pambu", "genre": "gospel", "type": "studio", "role": "Cover · Enregistrement · Mixage", "link": "https://www.youtube.com/watch?v=U-4M2bN-p6w", "image": "elvie-pambu.png" },
-    { "title": "Percé de mains", "artist": "Pasteur Billy Tshilenge", "genre": "gospel", "type": "studio", "role": "Enregistrement · Mixage", "link": "https://youtu.be/1KocTZLGs9w", "image": "pasteur-billy-tshilenge_perce-de-mains.jpg" },
-    { "title": "Ngolu", "artist": "Enoch Amisi ft Grace Mutombo", "genre": "gospel", "type": "studio", "role": "Enregistrement · Mixage", "link": "https://www.youtube.com/watch?v=Gq3d8_rs_ys", "image": "enoch-amisi_ngolu.jpg" },
-    { "title": "Mawa na Yo", "artist": "Nelson Kikem feat Maman Hélène Dikoka", "genre": "gospel", "type": "studio", "role": "Enregistrement · Mixage", "link": "https://www.youtube.com/watch?v=_KfoLlrudrk", "image": "nelson-kikem_mawa-na-yo.jpg" },
-    { "title": "Chant de Noël - Douce Nuit", "artist": "Collectif des artistes Pyramide", "genre": "gospel", "type": "studio", "role": "Enregistrement · Mixage", "link": "https://youtu.be/WdRndr7iQPM", "image": "divers_chant-de-noel-douce-nuit.jpeg" },
-    { "title": "ADORER MALGRE TOUT MINISTRIES", "artist": "Mike Flor Mulumba", "genre": "gospel", "type": "live", "role": "Session live", "link": "https://www.youtube.com/watch?v=XGMp5Jad6xs", "image": "mike-flor-mulumba_adorer-malgre-tout-ministries.jpg" }
+    {
+      "title": "Ciel sur Terre",
+      "artist": "Hatthie Kashoba",
+      "genre": "gospel",
+      "type": "studio",
+      "role": "Enregistrement · Mixage",
+      "link": "",
+      "image": "hatthie-kashoba_ciel-sur-terre.png"
+    },
+    {
+      "title": "Natondi Nkolo",
+      "artist": "Seth Mulumba",
+      "genre": "gospel",
+      "type": "studio",
+      "role": "Enregistrement · Mixage",
+      "link": "",
+      "image": "seth-mulumba_natondi-nkolo.jpg"
+    },
+    {
+      "title": "Worship Time",
+      "artist": "Seth Mulumba",
+      "genre": "gospel",
+      "type": "studio",
+      "role": "Enregistrement · Mixage",
+      "link": "",
+      "image": "seth-mulumba_worship-time.jpg"
+    },
+    {
+      "title": "Culte des Chants",
+      "artist": "Enoch Mulopo",
+      "genre": "gospel",
+      "type": "studio",
+      "role": "Enregistrement · Mixage",
+      "link": "https://www.youtube.com/watch?v=p65DV7s3_tw",
+      "image": "enoch-mulopo_culte-des-chants.png"
+    },
+    {
+      "title": "Le Guide · Ciel-sur-Terre",
+      "artist": "Hatthie Kashoba",
+      "genre": "gospel",
+      "type": "live",
+      "role": "Session live",
+      "link": "https://www.youtube.com/watch?v=tOm6vVYfil8",
+      "image": "hatthie-kashoba_le-guide-ciel-sur-terre.jpg"
+    },
+    {
+      "title": "Natondi Nkolo · Concert Culte Live",
+      "artist": "Seth Mulumba",
+      "genre": "gospel",
+      "type": "live",
+      "role": "Session live",
+      "link": "https://youtu.be/vrRYrouBXt0",
+      "image": "seth-mulumba_natondi-nkolo-concert-culte-live.jpg"
+    },
+    {
+      "title": "Showbuzz · Concert",
+      "artist": "Enoch Mulopo",
+      "genre": "gospel",
+      "type": "live",
+      "role": "Session live",
+      "link": "https://www.youtube.com/watch?v=2M4sedp722Y",
+      "image": "enoch-mulopo_showbuzz-concert.jpg"
+    },
+    {
+      "title": "Désolé (Clip officiel)",
+      "artist": "Héritier Wata",
+      "genre": "non-gospel",
+      "type": "studio",
+      "role": "Enregistrement · Mixage",
+      "link": "https://www.youtube.com/watch?v=m_VnQmPYEE4",
+      "image": "heritier-wata_desole-clip-officiel.png"
+    },
+    {
+      "title": "Amore (Clip officiel)",
+      "artist": "Fally Ipupa",
+      "genre": "non-gospel",
+      "type": "studio",
+      "role": "Enregistrement · Mixage",
+      "link": "https://www.youtube.com/watch?v=T37nO9uJNp0",
+      "image": "fally-ipupa_amore-clip-officiel.jpg"
+    },
+    {
+      "title": "Podcasts & créations orales",
+      "artist": "Divers",
+      "genre": "divers",
+      "type": "studio",
+      "role": "Production",
+      "link": "",
+      "image": ""
+    },
+    {
+      "title": "Instrumental Adoration Chrétienne pour Prier - Dieu Tout Puissant (Guitare)",
+      "artist": "Divers",
+      "genre": "divers",
+      "type": "studio",
+      "role": "Production",
+      "link": "https://youtu.be/InOi7mOcHak",
+      "image": "divers_instrumental-adoration-guitare.jpg"
+    },
+    {
+      "title": "La Lumière Paraîtra",
+      "artist": "Thethe Makabi M. feat Billy Nuée",
+      "genre": "gospel",
+      "type": "studio",
+      "role": "Enregistrement · Mixage",
+      "link": "https://www.youtube.com/watch?v=0Y1uUXmH_vE",
+      "image": "thethe-makabi-m_la-lumiere-paraitra.jpg"
+    },
+    {
+      "title": "Mobongisi",
+      "artist": "Onesime Kalala",
+      "genre": "gospel",
+      "type": "studio",
+      "role": "Enregistrement · Mixage",
+      "link": "https://youtu.be/OF4en9dXIi0",
+      "image": "onesime-kalala_mobongisi.png"
+    },
+    {
+      "title": "Concert",
+      "artist": "Onesime Kalala & Paul Bakenda",
+      "genre": "gospel",
+      "type": "live",
+      "role": "Session live",
+      "link": "https://youtu.be/upIf3PEKKh0",
+      "image": "onesime-kalala_concert.png"
+    },
+    {
+      "title": "Bakoyeba Ndenge Nini",
+      "artist": "Thethe Makabi M.",
+      "genre": "gospel",
+      "type": "studio",
+      "role": "Enregistrement · Mixage",
+      "link": "https://youtu.be/bgrUinPL9xc",
+      "image": "thethe-makabi-m_bakoyeba-ndenge-nini.jpg"
+    },
+    {
+      "title": "Viens nous visiter",
+      "artist": "Acsa Olangi Kaseya",
+      "genre": "gospel",
+      "type": "studio",
+      "role": "Enregistrement · Mixage",
+      "link": "https://youtu.be/ljvfUWXESg8",
+      "image": "acsa-olangi-kaseya_viens-nous-visiter.png"
+    },
+    {
+      "title": "Louons Jésus",
+      "artist": "Ruth Obweng feat Mom Génerose Wamudjulu",
+      "genre": "gospel",
+      "type": "studio",
+      "role": "Enregistrement · Mixage",
+      "link": "https://youtu.be/nLXzx75otzA",
+      "image": "ruth-obweng-mom-generose-wamudjulu_louons-jesus.png"
+    },
+    {
+      "title": "Ma coupe déborde",
+      "artist": "Isaac Bukasa",
+      "genre": "gospel",
+      "type": "studio",
+      "role": "Enregistrement · Mixage",
+      "link": "https://youtu.be/sJuxwKc-AAk",
+      "image": "isaac-bukasa_ma-coupe-deborde.png"
+    },
+    {
+      "title": "Garantie",
+      "artist": "Billy Bilomba",
+      "genre": "gospel",
+      "type": "studio",
+      "role": "Enregistrement · Mixage",
+      "link": "https://youtu.be/poJG3YHFWZM",
+      "image": "billy-bilomba_garanti.png"
+    },
+    {
+      "title": "Je te dis Merci",
+      "artist": "Deborah Luvi feat Billy Kabongo",
+      "genre": "gospel",
+      "type": "studio",
+      "role": "Enregistrement · Mixage",
+      "link": "https://youtu.be/MoFntbFaW88",
+      "image": "deborah-luvi_je-te-dis-merci.png"
+    },
+    {
+      "title": "Mbanzi Ya Lisiko",
+      "artist": "Junior Kabongo",
+      "genre": "gospel",
+      "type": "studio",
+      "role": "Enregistrement · Mixage",
+      "link": "https://youtu.be/DZeWah_6P9k",
+      "image": "junior-kabongo_mbanzi-ya-lisiko.png"
+    },
+    {
+      "title": "Laodicée",
+      "artist": "Stevie Wonderson",
+      "genre": "gospel",
+      "type": "studio",
+      "role": "Enregistrement · Mixage",
+      "link": "https://youtu.be/-AJpuxY8Ebc",
+      "image": "stevie-wonderson_laodicee.png"
+    },
+    {
+      "title": "Conduis mes pas",
+      "artist": "Josue et Caleb Bitha feat Hatthie Kashoba",
+      "genre": "gospel",
+      "type": "studio",
+      "role": "Enregistrement · Mixage",
+      "link": "https://youtu.be/0nctdbZnOHY",
+      "image": "josue-et-caleb-bitha_conduis-mes-pas.png"
+    },
+    {
+      "title": "Fidèle",
+      "artist": "Pasteur Moïse Mbiye",
+      "genre": "gospel",
+      "type": "studio",
+      "role": "Enregistrement · Mixage",
+      "link": "https://youtu.be/V0FhZllI6sY",
+      "image": "pasteur-moise-mbiye_fidele.png"
+    },
+    {
+      "title": "Adorons-Le",
+      "artist": "Abigaël Bonheur Lwanzo",
+      "genre": "gospel",
+      "type": "studio",
+      "role": "Enregistrement · Mixage",
+      "link": "https://youtu.be/hJdbH9BGSBc",
+      "image": "abigael-bonheur-lwanzo_adorons-le.png"
+    },
+    {
+      "title": "Prisonnier de son amour",
+      "artist": "Deborah Situ PM",
+      "genre": "gospel",
+      "type": "studio",
+      "role": "Enregistrement · Mixage",
+      "link": "https://youtu.be/nVMDAp5ZDTI",
+      "image": "deborah-situ-pm_prisonnier-de-son-amour.png"
+    },
+    {
+      "title": "Lifoko du Ciel Notre Fierté",
+      "artist": "Roland Muanga",
+      "genre": "gospel",
+      "type": "studio",
+      "role": "Enregistrement · Mixage",
+      "link": "https://youtu.be/athoEPb11zM",
+      "image": "roland-muanga_lifoko-du-ciel-notre-fierte.png",
+      "imagePosition": "center top"
+    },
+    {
+      "title": "Bobele Yo",
+      "artist": "Roland Muanga",
+      "genre": "gospel",
+      "type": "studio",
+      "role": "Enregistrement · Mixage",
+      "link": "https://youtu.be/gLFdGEEK4XU",
+      "image": "roland-muanga_bobele-yo.png",
+      "imagePosition": "20% center"
+    },
+    {
+      "title": "Petite Fontaine (Live acoustique)",
+      "artist": "Hatthie Kashoba",
+      "genre": "gospel",
+      "type": "live",
+      "role": "Session live",
+      "link": "https://youtu.be/7XGS2IseboA",
+      "image": "hatthie-kashoba_petite-fontaine.png"
+    },
+    {
+      "title": "Nkolo Naye",
+      "artist": "Béthel Lopema M.",
+      "genre": "gospel",
+      "type": "studio",
+      "role": "Enregistrement · Mixage",
+      "link": "https://youtu.be/BxgQQcZKyfk",
+      "image": "bethel-lopema-m_nkolo-naye.png"
+    },
+    {
+      "title": "Litono: Point Final",
+      "artist": "Thethe Makabi M.",
+      "genre": "gospel",
+      "type": "studio",
+      "role": "Enregistrement · Mixage",
+      "link": "https://youtu.be/0WqsTuE4B8Q",
+      "image": "thethe-makabi-m_litono-point-final.png"
+    },
+    {
+      "title": "Jésus m'a fait du bien",
+      "artist": "Thethe Makabi M.",
+      "genre": "gospel",
+      "type": "studio",
+      "role": "Enregistrement · Mixage",
+      "link": "https://youtu.be/4q8YV3nPEKo",
+      "image": ""
+    },
+    {
+      "title": "Se Na Ngolu Na Yo (cover)",
+      "artist": "Thethe Makabi M. feat Deborah Luvi",
+      "genre": "gospel",
+      "type": "studio",
+      "role": "Enregistrement · Mixage",
+      "link": "https://youtu.be/N5bNsQ8T3bY",
+      "image": "thethe-makabi-m_se-na-ngolu-na-yo.png"
+    },
+    {
+      "title": "Emma",
+      "artist": "Henoch Junior Yamba & Onesime Kalala",
+      "genre": "gospel",
+      "type": "studio",
+      "role": "Enregistrement · Mixage",
+      "link": "https://youtu.be/Z7HevcQP8PQ",
+      "image": "henoch-junior-yamba_emma_with_Onesim.png"
+    },
+    {
+      "title": "Adoration et Louange - Ton Disciple / Entends Mon Cœur / Attire-moi à Toi",
+      "artist": "John Lusala",
+      "genre": "gospel",
+      "type": "live",
+      "role": "Session live",
+      "link": "https://youtu.be/nU2JvEVUZKI",
+      "image": "john-lusala.png"
+    },
+    {
+      "title": "Fais de mon cœur - Le pays de nuages - Ne crains rien",
+      "artist": "Isaac Bukasa",
+      "genre": "gospel",
+      "type": "studio",
+      "role": "Enregistrement · Mixage",
+      "link": "https://youtu.be/cy-vbtNwU-8",
+      "image": "isaac-bukasa_ma-coupe-deborde.png"
+    },
+    {
+      "title": "Tu as payé cher - Jésus ma bénédiction",
+      "artist": "Isaac Bukasa",
+      "genre": "gospel",
+      "type": "studio",
+      "role": "Enregistrement · Mixage",
+      "link": "https://youtu.be/Xa7d5lLqqpQ",
+      "image": "isaac-bukasa_ma-coupe-deborde.png"
+    },
+    {
+      "title": "Aide Moi",
+      "artist": "Hatthie Kashoba",
+      "genre": "gospel",
+      "type": "studio",
+      "role": "Enregistrement · Mixage",
+      "link": "https://youtu.be/-o1iU3SeMGs",
+      "image": "hatthie-kashoba_ciel-sur-terre.png"
+    },
+    {
+      "title": "Il m'a cherché",
+      "artist": "Hatthie Kashoba",
+      "genre": "gospel",
+      "type": "studio",
+      "role": "Enregistrement · Mixage",
+      "link": "https://youtu.be/gzeMZCpAt34",
+      "image": "hatthie-kashoba_le-guide-ciel-sur-terre.jpg"
+    },
+    {
+      "title": "Besoin de Toi",
+      "artist": "Roland Muanga",
+      "genre": "gospel",
+      "type": "studio",
+      "role": "Enregistrement · Mixage",
+      "link": "https://youtu.be/WNXaDWmoABE",
+      "image": "roland-muanga_bobele-yo.png",
+      "imagePosition": "20% center"
+    },
+    {
+      "title": "Yo nde Pole",
+      "artist": "Roland Muanga",
+      "genre": "gospel",
+      "type": "studio",
+      "role": "Enregistrement · Mixage",
+      "link": "https://youtu.be/z0hx7HubtBo",
+      "image": "roland-muanga_lifoko-du-ciel-notre-fierte.png",
+      "imagePosition": "center top"
+    },
+    {
+      "title": "Dispose Assoiffé",
+      "artist": "Roland Muanga",
+      "genre": "gospel",
+      "type": "studio",
+      "role": "Enregistrement · Mixage",
+      "link": "https://youtu.be/DUB5mkCITjM",
+      "image": "roland-muanga_bobele-yo.png",
+      "imagePosition": "20% center"
+    },
+    {
+      "title": "Tu Connais Mon Cœur",
+      "artist": "Roland Muanga",
+      "genre": "gospel",
+      "type": "studio",
+      "role": "Enregistrement · Mixage",
+      "link": "https://youtu.be/56Jj6GfAKEg",
+      "image": "roland-muanga_lifoko-du-ciel-notre-fierte.png",
+      "imagePosition": "center top"
+    },
+    {
+      "title": "Au revoir Pasteur Baruti Kasongo",
+      "artist": "Roland Muanga feat Trésor Lianza",
+      "genre": "gospel",
+      "type": "studio",
+      "role": "Enregistrement · Mixage",
+      "link": "https://youtu.be/ZsOWaIKEa_g",
+      "image": "roland-muanga_bobele-yo.png",
+      "imagePosition": "20% center"
+    },
+    {
+      "title": "Plus haut comme un aigle",
+      "artist": "John Lusala",
+      "genre": "gospel",
+      "type": "studio",
+      "role": "Enregistrement · Mixage",
+      "link": "https://youtu.be/-To8-IwYadc",
+      "image": "john-lusala.png"
+    },
+    {
+      "title": "Bozali na Yo",
+      "artist": "John Lusala",
+      "genre": "gospel",
+      "type": "studio",
+      "role": "Enregistrement · Mixage",
+      "link": "https://youtu.be/HhjkmcvUU9g",
+      "image": "john-lusala_bozali-na-yo.jpg"
+    },
+    {
+      "title": "Rester plus haut",
+      "artist": "John Lusala",
+      "genre": "gospel",
+      "type": "studio",
+      "role": "Enregistrement · Mixage",
+      "link": "https://youtu.be/FdDWM8EWhIQ",
+      "image": "john-lusala.png"
+    },
+    {
+      "title": "Éclaire Mon Chemin",
+      "artist": "John Lusala feat Josué et Caleb Bitha",
+      "genre": "gospel",
+      "type": "studio",
+      "role": "Enregistrement · Mixage",
+      "link": "https://youtu.be/dK8hw3uiUgU",
+      "image": "john-lusala-josue-caleb-bitha_eclaire-mon-chemin.jpg"
+    },
+    {
+      "title": "Concert Live Village Chez Ntemba Part 1",
+      "artist": "Onesime Kalala & Paul Bakenda",
+      "genre": "gospel",
+      "type": "live",
+      "role": "Session live",
+      "link": "https://youtu.be/_x9oY4xPmaE",
+      "image": "onesime-kalala_concert.png"
+    },
+    {
+      "title": "Compilation Adoration",
+      "artist": "Thethe Makabi M.",
+      "genre": "gospel",
+      "type": "studio",
+      "role": "Enregistrement · Mixage",
+      "link": "https://youtu.be/75FIVttKLoo",
+      "image": "thethe-makabi-m_compilation-adoration.png"
+    },
+    {
+      "title": "Congo Belge",
+      "artist": "Elvie Pambu",
+      "genre": "gospel",
+      "type": "studio",
+      "role": "Enregistrement · Mixage",
+      "link": "https://youtu.be/r4k6fYyroqM",
+      "image": "elvie-pambu_congo-belge.jpg"
+    },
+    {
+      "title": "Thank You Lord (cover, \"Matondi\")",
+      "artist": "Elvie Pambu",
+      "genre": "gospel",
+      "type": "studio",
+      "role": "Enregistrement · Mixage",
+      "link": "https://youtu.be/tRkp8ttGIlI",
+      "image": "elvie-pambu_thank-you-lord.jpg"
+    },
+    {
+      "title": "Posa na Yo (J'ai soif de Toi)",
+      "artist": "Elvie Pambu",
+      "genre": "gospel",
+      "type": "studio",
+      "role": "Enregistrement · Mixage",
+      "link": "https://youtu.be/Rp6v53_M50M",
+      "image": "elvie-pambu_posa-na-yo.jpg"
+    },
+    {
+      "title": "Compilation Louange et Adoration | Obongi na Lokumu",
+      "artist": "Elvie Pambu",
+      "genre": "gospel",
+      "type": "studio",
+      "role": "Enregistrement · Mixage",
+      "link": "https://youtu.be/wlr_cAfiGuo",
+      "image": "elvie-pambu_obongi-na-lokumu.jpg"
+    },
+    {
+      "title": "Toye Kotombola (cover)",
+      "artist": "Elvie Pambu",
+      "genre": "gospel",
+      "type": "studio",
+      "role": "Enregistrement · Mixage",
+      "link": "https://youtu.be/9obbfvVgg3s",
+      "image": "elvie-pambu_toye-kotombola.jpg"
+    },
+    {
+      "title": "Asikoli nga (Il m'a racheté)",
+      "artist": "Elvie Pambu",
+      "genre": "gospel",
+      "type": "studio",
+      "role": "Enregistrement · Mixage",
+      "link": "https://youtu.be/hMX1gwqf6M4",
+      "image": "elvie-pambu.png"
+    },
+    {
+      "title": "Et si c'était l'amour ?",
+      "artist": "Agenors Kabongo",
+      "genre": "gospel",
+      "type": "studio",
+      "role": "Enregistrement · Mixage",
+      "link": "https://youtu.be/RsXWexTIVGE",
+      "image": "agenors-kabongo_et-si-cetait-lamour.png"
+    },
+    {
+      "title": "Louange et adoration",
+      "artist": "Fabrice Mulaja & Billy Bilomba feat Onésime Kalala",
+      "genre": "gospel",
+      "type": "studio",
+      "role": "Cover · Enregistrement · Mixage",
+      "link": "https://youtu.be/se2q2v2E2yM",
+      "image": "fabrice-mulaja-billy-bilomba_louange-et-adoration.jpeg"
+    },
+    {
+      "title": "Bozali na Yo (Ciel sur Terre)",
+      "artist": "Elvie Pambu feat Stevie Wonderson feat Billy Kabongo",
+      "genre": "gospel",
+      "type": "studio",
+      "role": "Enregistrement · Mixage",
+      "link": "https://youtu.be/g-QsOWM-Bco",
+      "image": "elvie-pambu_bozali-na-yo-ciel-sur-terre.jpeg"
+    },
+    {
+      "title": "Ciel sur Terre (Compilation)",
+      "artist": "Elvie Pambu & Salem Mosengo & Andrine Musansi",
+      "genre": "gospel",
+      "type": "studio",
+      "role": "Enregistrement · Mixage",
+      "link": "https://youtu.be/j03-1uPwbWw",
+      "image": "elvie-pambu-salem-mosengo-andrine-musansi_ciel-sur-terre.jpeg"
+    },
+    {
+      "title": "Ciel sur Terre (Compilation)",
+      "artist": "Salem Mosengo & Elvie Pambu & Andrine Musansi & John Lusala",
+      "genre": "gospel",
+      "type": "studio",
+      "role": "Enregistrement · Mixage",
+      "link": "https://youtu.be/mHLYgaN6Q7Y",
+      "image": "salem-mosengo-elvie-pambu-andrine-musansi-john-lusala_ciel-sur-terre.png"
+    },
+    {
+      "title": "Isha",
+      "artist": "Mélodie Omas",
+      "genre": "gospel",
+      "type": "studio",
+      "role": "Enregistrement · Mixage",
+      "link": "https://youtu.be/4t5U7yV3Tz4",
+      "image": "melodie-omas_isha.png",
+      "imagePosition": "right center"
+    },
+    {
+      "title": "Mwadi Wanyi - Yepowa - Kumpala Kuaba",
+      "artist": "Sr Bena (cover de Kabongo Mbaya)",
+      "genre": "gospel",
+      "type": "studio",
+      "role": "Cover · Enregistrement · Mixage",
+      "link": "https://youtu.be/DZ2iGu9Jnbg",
+      "image": "sr-bena_mwadi-wanyi-yepowa-kumpala-kuaba.jpg"
+    },
+    {
+      "title": "Busambi",
+      "artist": "Sr Bena (cover de Kabongo Mbaya)",
+      "genre": "gospel",
+      "type": "studio",
+      "role": "Cover · Enregistrement · Mixage",
+      "link": "https://youtu.be/OF9oFqydKpk",
+      "image": "sr-bena_busambi.jpg"
+    },
+    {
+      "title": "Adoration et Louange - Masiya alingi ngai",
+      "artist": "Jérémie Dex M",
+      "genre": "gospel",
+      "type": "studio",
+      "role": "Enregistrement · Mixage",
+      "link": "https://youtu.be/focDnmMsxzw",
+      "image": "jeremie-dex-m_adoration-et-louange-masiya-alingi-ngai.jpg"
+    },
+    {
+      "title": "Le Sang Qui Parle",
+      "artist": "Jérémie Vase",
+      "genre": "gospel",
+      "type": "studio",
+      "role": "Enregistrement · Mixage",
+      "link": "https://www.youtube.com/watch?v=QVJ_qwmtaSo",
+      "image": "jeremie-vase_le-sang-qui-parle.jpg"
+    },
+    {
+      "title": "L'Ange du Seigneur (Akobundela nga)",
+      "artist": "Jérémie Vase",
+      "genre": "gospel",
+      "type": "studio",
+      "role": "Enregistrement · Mixage",
+      "link": "https://www.youtube.com/watch?v=CvJ7haAL0mg",
+      "image": "jeremie-vase_lange-du-seigneur-akobundela-nga.jpg"
+    },
+    {
+      "title": "Ciel sur Terre Part 2",
+      "artist": "Jérémie Vase",
+      "genre": "gospel",
+      "type": "studio",
+      "role": "Enregistrement · Mixage",
+      "link": "https://www.youtube.com/watch?v=AnOhsAakvGA",
+      "image": "jeremie-vase_ciel-sur-terre-part-2.jpg"
+    },
+    {
+      "title": "Ciel sur Terre Part 1",
+      "artist": "Jérémie Vase",
+      "genre": "gospel",
+      "type": "studio",
+      "role": "Enregistrement · Mixage",
+      "link": "https://www.youtube.com/watch?v=AMoZB5viQj4",
+      "image": "jeremie-vase_ciel-sur-terre-part-1.jpg"
+    },
+    {
+      "title": "Kimbangi",
+      "artist": "Henri Papa Mulaja feat Giresse Mafuta",
+      "genre": "gospel",
+      "type": "studio",
+      "role": "Enregistrement · Mixage",
+      "link": "https://www.youtube.com/watch?v=89a3p-SgxGA",
+      "image": "henri-papa-mulaja_kimbangi.jpg"
+    },
+    {
+      "title": "Adoration et louange",
+      "artist": "El Beryith",
+      "genre": "gospel",
+      "type": "studio",
+      "role": "Enregistrement · Mixage",
+      "link": "https://youtu.be/cBboYr1BGD4",
+      "image": "el-beryith_adoration-et-louange.jpg"
+    },
+    {
+      "title": "Heureusement",
+      "artist": "Dan Ngoy",
+      "genre": "gospel",
+      "type": "studio",
+      "role": "Enregistrement · Mixage",
+      "link": "https://www.youtube.com/watch?v=xLXpV_9AZPU",
+      "image": "dan-ngoy_heureusement.jpg"
+    },
+    {
+      "title": "Un cœur d'adorateur (cover, original par Gwen Dressaire)",
+      "artist": "Elvie Pambu",
+      "genre": "gospel",
+      "type": "studio",
+      "role": "Cover · Enregistrement · Mixage",
+      "link": "https://www.youtube.com/watch?v=U-4M2bN-p6w",
+      "image": "elvie-pambu.png"
+    },
+    {
+      "title": "Percé de mains",
+      "artist": "Pasteur Billy Tshilenge",
+      "genre": "gospel",
+      "type": "studio",
+      "role": "Enregistrement · Mixage",
+      "link": "https://youtu.be/1KocTZLGs9w",
+      "image": "pasteur-billy-tshilenge_perce-de-mains.jpg"
+    },
+    {
+      "title": "Ngolu",
+      "artist": "Enoch Amisi ft Grace Mutombo",
+      "genre": "gospel",
+      "type": "studio",
+      "role": "Enregistrement · Mixage",
+      "link": "https://www.youtube.com/watch?v=Gq3d8_rs_ys",
+      "image": "enoch-amisi_ngolu.jpg"
+    },
+    {
+      "title": "Mawa na Yo",
+      "artist": "Nelson Kikem feat Maman Hélène Dikoka",
+      "genre": "gospel",
+      "type": "studio",
+      "role": "Enregistrement · Mixage",
+      "link": "https://www.youtube.com/watch?v=_KfoLlrudrk",
+      "image": "nelson-kikem_mawa-na-yo.jpg"
+    },
+    {
+      "title": "Chant de Noël - Douce Nuit",
+      "artist": "Collectif des artistes Pyramide",
+      "genre": "gospel",
+      "type": "studio",
+      "role": "Enregistrement · Mixage",
+      "link": "https://youtu.be/WdRndr7iQPM",
+      "image": "divers_chant-de-noel-douce-nuit.jpeg"
+    },
+    {
+      "title": "ADORER MALGRE TOUT MINISTRIES",
+      "artist": "Mike Flor Mulumba",
+      "genre": "gospel",
+      "type": "live",
+      "role": "Session live",
+      "link": "https://www.youtube.com/watch?v=XGMp5Jad6xs",
+      "image": "mike-flor-mulumba_adorer-malgre-tout-ministries.jpg"
+    }
   ]
 }

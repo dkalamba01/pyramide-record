@@ -29,6 +29,8 @@
   .gal__item img { width:100%; height:100%; object-fit:cover; display:block; }
   .gal__item.is-hidden { display:none; }
 
+  .gal--video { grid-template-columns:repeat(3,1fr); }
+
   @media(max-width:900px){ .gal{grid-template-columns:repeat(2,1fr); grid-auto-rows:160px} .gal__item.wide{grid-column:span 2} }
   @media(max-width:520px){ .gal{grid-template-columns:1fr; grid-auto-rows:220px} .gal__item.wide,.gal__item.tall{grid-column:auto;grid-row:auto} }
 
@@ -127,7 +129,7 @@
 
     <div class="gal gal--video">
       <!-- FULL SESSION VIDEOS — replace data-video with a real YouTube URL for each, and the .ph placeholder with a real thumbnail image once available. -->
-      <div class="gal__item wide gal__item--video" data-video="https://youtu.be/T0JEVZ2Z9mc">
+      <div class="gal__item gal__item--video" data-video="https://youtu.be/T0JEVZ2Z9mc">
         <img src="https://img.youtube.com/vi/T0JEVZ2Z9mc/hqdefault.jpg" alt="Séance studio 1 — Pyramide Record" loading="lazy" decoding="async">
         <span class="gal__play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span>
         <span class="gal__caption">Séance studio 1 (Live Studio Session)</span>
@@ -137,7 +139,7 @@
         <span class="gal__play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span>
         <span class="gal__caption">Séance studio 2 (Live Studio Session)</span>
       </div>
-      <div class="gal__item tall gal__item--video" data-video="https://youtu.be/ghiiFm-933E">
+      <div class="gal__item gal__item--video" data-video="https://youtu.be/ghiiFm-933E">
         <img src="https://img.youtube.com/vi/ghiiFm-933E/hqdefault.jpg" alt="Séance studio 3 — Pyramide Record" loading="lazy" decoding="async">
         <span class="gal__play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span>
         <span class="gal__caption">Séance studio 3 (Live Studio Session)</span>

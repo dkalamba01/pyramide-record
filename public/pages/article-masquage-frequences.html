@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Le masquage de fréquences — Blog · Pyramide Record</title>
+<meta name="description" content="Pourquoi votre mix sonne boueux : comprendre le masquage de fréquences et les quatre façons de lui redonner de la clarté. Par Pyramide Record, Kinshasa.">
+<link rel="icon" type="image/png" href="../assets/images/logo.png">
+<link rel="canonical" href="https://pyramidrecord.com/pages/article-masquage-frequences.html">
+<meta name="theme-color" content="#0D131C">
+<meta property="og:title" content="Le masquage de fréquences — Pyramide Record">
+<meta property="og:description" content="Pourquoi deux sons qui se battent pour la même fréquence détruisent la clarté de votre mix.">
+<meta property="og:type" content="article">
+<meta property="og:locale" content="fr_FR">
+<meta property="og:site_name" content="Pyramide Record">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;1,9..144,400&family=Archivo:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/tokens.css">
+<link rel="stylesheet" href="../css/components.css">
+<style>
+  .article { max-width: 720px; margin: 0 auto; padding: var(--sp-7) 0; }
+  .article__back { font-size:var(--fs-xs); letter-spacing:var(--ls-wide); text-transform:uppercase; color:var(--sand); margin-bottom:var(--sp-5); display:inline-block; }
+  .article__back:hover { color:var(--ember); }
+  .article__cat { font-size:var(--fs-eyebrow); letter-spacing:var(--ls-label); text-transform:uppercase; color:var(--ember); }
+  .article__title { font-family:var(--font-display); font-weight:400; font-size:clamp(28px,4.5vw,42px); line-height:1.12; letter-spacing:-0.01em; margin:var(--sp-3) 0 var(--sp-4); }
+  .article__byline { display:flex; align-items:center; gap:var(--sp-3); padding-bottom:var(--sp-5); border-bottom:1px solid var(--hair); color:var(--sand); font-size:var(--fs-sm); }
+  .article__byline b { color:var(--bone); font-weight:500; }
+  .article__hero { aspect-ratio:16/9; border-radius:var(--r-lg); margin:var(--sp-6) 0; }
+  .article__body { }
+  .article__body p { color:var(--bone); font-size:17px; line-height:1.85; margin-bottom:var(--sp-4); }
+  .article__body h2 { font-family:var(--font-display); font-weight:400; font-size:var(--fs-h3); margin:var(--sp-6) 0 var(--sp-3); }
+  .article__body ul { margin:0 0 var(--sp-4); }
+  .article__body li { color:var(--bone); font-size:16px; line-height:1.7; padding:8px 0 8px 22px; position:relative; }
+  .article__body li::before { content:'—'; position:absolute; left:0; color:var(--gold); }
+  .article__body li b { color:var(--bone); font-weight:600; }
+  .article__body .lead { font-family:var(--font-display); font-style:italic; font-size:20px; line-height:1.5; color:var(--sand); margin-bottom:var(--sp-5); }
+  .article__cta { margin-top:var(--sp-6); padding-top:var(--sp-5); border-top:1px solid var(--hair); display:flex; gap:var(--sp-3); align-items:center; flex-wrap:wrap; }
+</style>
+</head>
+<body>
+<a href="#main" class="skip-link" style="position:absolute;left:-9999px;top:0;background:var(--crimson);color:#fff;padding:10px 16px;z-index:200;" onfocus="this.style.left='8px';this.style.top='8px'" onblur="this.style.left='-9999px'">Aller au contenu</a>
+
+<header class="header">
+  <nav class="nav wrap" aria-label="Navigation principale">
+    <a class="nav__logo" href="../index.html" aria-label="Pyramide Record — accueil"><img src="../assets/images/logo.png" alt="Pyramide Record"></a>
+    <button class="nav__burger" id="burger" aria-label="Ouvrir le menu" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
+    <div class="nav__menu" id="menu">
+      <a class="nav__link" href="studio.html">Studio</a>
+      <a class="nav__link" href="services.html">Services</a>
+      <a class="nav__link" href="discography.html">Discographie</a>
+      <a class="nav__link" href="promo.html">Nos Artistes</a>
+      <a class="nav__link" href="academy.html">Academy</a>
+      <a class="nav__link" href="gallery.html">Galerie</a>
+      <a class="nav__link" href="shop.html">Boutique</a>
+      <a class="nav__link" href="about.html">À&nbsp;Propos</a>
+      <a class="nav__link" href="blog.html" aria-current="page">Blog</a>
+      <a class="nav__link" href="portal.html">Espace&nbsp;Client</a>
+      <a class="nav__cta" href="booking.html">Réserver</a>
+    </div>
+  </nav>
+</header>
+
+<main id="main" class="wrap">
+  <article class="article">
+    <a class="article__back" href="blog.html">← Retour au Blog</a>
+    <p class="article__cat">Mixage</p>
+    <h1 class="article__title">Le masquage de fréquences : pourquoi votre mix devient boueux</h1>
+    <div class="article__byline">
+      <span class="eq" aria-hidden="true"><b></b><b></b><b></b><b></b></span>
+      Par <b>Pyramide Record</b> · Kinshasa · 4 min de lecture
+    </div>
+
+    <div class="ph article__hero"><small>Illustration · Masquage de fréquences</small></div>
+
+    <div class="article__body">
+      <p class="lead">Un mix boueux n'est presque jamais un problème de volume. C'est un problème d'espace : deux sons qui réclament la même fréquence au même moment, et dont l'oreille ne peut plus séparer les contours.</p>
+
+      <p>C'est l'un des phénomènes les plus mal compris en mixage. On entend un instrument disparaître dans le mix et le réflexe est de monter son volume. Mais si un autre son occupe exactement la même zone de fréquences au même instant, l'augmenter ne fait qu'augmenter la compétition — les deux sons montent ensemble, et rien ne se démasque. Comprendre le masquage, c'est comprendre pourquoi certains mix « respirent » et d'autres non.</p>
+
+      <h2>Qu'est-ce que le masquage de fréquences ?</h2>
+      <p>Le masquage se produit quand deux sources sonores occupent la même plage de fréquences en même temps. L'oreille humaine peine à distinguer deux signaux qui se chevauchent exactement — elle entend une masse confuse plutôt que deux éléments séparés. Une voix et une guitare rythmique qui vivent toutes les deux autour de 2 à 4 kHz vont se disputer cette zone ; un kick et une basse qui occupent tous les deux le grave entre 50 et 100 Hz vont perdre leur définition mutuelle. Le résultat : un mix qui sonne « épais » à l'écoute isolée de chaque piste, mais confus dès qu'elles jouent ensemble.</p>
+
+      <h2>Les zones de conflit les plus fréquentes</h2>
+      <p>Certaines paires d'instruments se battent presque systématiquement pour le même espace :</p>
+      <ul>
+        <li><b>Voix et guitare :</b> les paroles deviennent difficiles à comprendre. La solution classique consiste à creuser légèrement la guitare autour de 2 kHz, là où l'intelligibilité vocale est la plus sensible.</li>
+        <li><b>Kick et basse :</b> le bas du spectre perd sa définition et le mix sonne « bouillie ». Donner à chacun sa propre zone dominante — au lieu de laisser les deux revendiquer le même grave — redonne du punch et du poids sans rien ajouter en volume.</li>
+        <li><b>Piano et nappes (pads) :</b> le mix sonne étouffé et sans direction claire. Il faut souvent choisir lequel des deux porte réellement le rôle harmonique et alléger l'autre.</li>
+        <li><b>Guitare et synthé :</b> une mauvaise séparation stéréo aggrave le conflit. Les écarter dans le panoramique aide déjà énormément avant même de toucher l'égalisation.</li>
+      </ul>
+
+      <h2>Quatre façons de résoudre un conflit de fréquences</h2>
+      <p>Il n'existe pas un seul bon outil pour le masquage — le bon choix dépend du problème :</p>
+      <ul>
+        <li><b>L'égalisation :</b> créer de l'espace en coupant une fréquence sur un instrument plutôt qu'en boostant l'autre. Couper, ne pas booster, est presque toujours la meilleure première réaction.</li>
+        <li><b>L'équilibre de niveau :</b> parfois, un simple ajustement de volume relatif suffit à résoudre la compétition — pas besoin de toucher l'égalisation du tout.</li>
+        <li><b>Le panoramique :</b> écarter deux sources dans le champ stéréo améliore la séparation perçue, même si les deux occupent toujours la même bande de fréquences en mono.</li>
+        <li><b>L'arrangement :</b> la solution la plus élégante, et souvent la plus négligée. Faire alterner deux instruments dans le temps plutôt que de les faire jouer en continu au même endroit règle le conflit avant même que le mixage ne commence.</li>
+      </ul>
+
+      <h2>Écouter les signes</h2>
+      <p>Quelques signaux indiquent presque toujours un problème de masquage plutôt qu'un problème de volume : la voix disparaît dès que la musique monte en intensité ; le kick perd son impact dès que la basse entre ; le mix reste boueux même après avoir boosté l'égalisation ; et monter le volume général ne rend jamais le mix plus clair, seulement plus fort. Si l'un de ces signes vous est familier, la solution n'est presque jamais « plus fort » — c'est « plus d'espace ».</p>
+
+      <p>La clarté d'un mix ne vient pas du fait de rendre chaque instrument plus gros. Elle vient du fait de donner à chaque instrument sa propre place pour exister — en fréquence, en temps, ou dans le champ stéréo. Une fois cette place trouvée, chaque son reprend naturellement sa présence, sans qu'on ait besoin de forcer quoi que ce soit.</p>
+    </div>
+
+    <div class="article__cta">
+      <a class="btn" href="booking.html">Réserver une session de mixage</a>
+      <a class="link" href="academy.html">Se former en studio →</a>
+    </div>
+  </article>
+</main>
+
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer__grid">
+      <div>
+        <div class="footer__logo"><img src="../assets/images/logo.png" alt="Pyramide Record" loading="lazy"></div>
+        <p class="footer__addr">13ème Rue Limete Industriel, Kinshasa, RD Congo<br>+243 819 797 568 · info@pyramidrecord.com</p>
+      </div>
+      <div class="footer__socials">
+        <a href="#" aria-label="Facebook"><svg viewBox="0 0 24 24"><path d="M13 3h4v4h-4a1 1 0 00-1 1v3h5l-1 4h-4v8h-4v-8H8v-4h4V7a4 4 0 014-4z"/></svg></a>
+        <a href="#" aria-label="Instagram"><svg viewBox="0 0 24 24"><path d="M12 7a5 5 0 100 10 5 5 0 000-10zm0 8a3 3 0 110-6 3 3 0 010 6zm5-9a1 1 0 100 2 1 1 0 000-2zM7 2h10a5 5 0 015 5v10a5 5 0 01-5 5H7a5 5 0 01-5-5V7a5 5 0 015-5zm0 2a3 3 0 00-3 3v10a3 3 0 003 3h10a3 3 0 003-3V7a3 3 0 00-3-3z"/></svg></a>
+        <a href="#" aria-label="LinkedIn"><svg viewBox="0 0 24 24"><path d="M6.94 5a2 2 0 11-4 0 2 2 0 014 0zM7 8.48H3V21h4zm6.32 0H9.34V21h3.94v-6.57c0-3.66 4.77-4 4.77 0V21H22v-7.93c0-6.17-7.06-5.94-8.72-2.91z"/></svg></a>
+        <a href="#" aria-label="YouTube"><svg viewBox="0 0 24 24"><path d="M23 12s0-3.5-.45-5.2a2.8 2.8 0 00-2-2C18.9 4.4 12 4.4 12 4.4s-6.9 0-8.55.4a2.8 2.8 0 00-2 2C1 8.5 1 12 1 12s0 3.5.45 5.2a2.8 2.8 0 002 2c1.65.4 8.55.4 8.55.4s6.9 0 8.55-.4a2.8 2.8 0 002-2C23 15.5 23 12 23 12zm-13 3.5v-7l6 3.5z"/></svg></a>
+      </div>
+    </div>
+    <div class="footer__note">© 2025 Pyramide Record — Tous droits réservés · Kinshasa, RD Congo</div>
+  </div>
+</footer>
+
+<script src="../js/main.js"></script>
+</body>
+</html>

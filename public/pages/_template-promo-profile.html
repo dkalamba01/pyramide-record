@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>[Nom de l'artiste] — Promo · Pyramide Record</title>
+<meta name="description" content="[Nom de l'artiste] — nouveautés et prochaines sorties.">
+<meta name="robots" content="noindex">
+<!--
+  ============================================================
+  ARTIST PROMO PROFILE — SAMPLE / TEMPLATE
+  ------------------------------------------------------------
+  Persistent, evergreen profile artists can link to from their
+  own social bios. Complements (does not replace) the catalog
+  bio page — this one is forward-looking: current highlight +
+  upcoming releases, kept fresh over time.
+
+  TO CREATE A REAL PAGE:
+  1. Copy this file, rename to the artist's slug: e.g.
+     promo/agenors-kabongo.html
+  2. Replace every [bracketed] placeholder
+  3. Set the badge to --inhouse or --partner (see components.css)
+  4. Remove <meta name="robots" content="noindex"> once live
+  5. Link to it from the artist's bio page and from their own
+     release (smart link) pages under "Plus de [Nom]"
+  ============================================================
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;1,9..144,400;1,9..144,500&family=Archivo:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../css/tokens.css">
+<link rel="stylesheet" href="../../css/components.css">
+<link rel="icon" type="image/png" href="../../assets/images/logo.png">
+<link rel="apple-touch-icon" href="../../assets/images/logo.png">
+<meta name="theme-color" content="#0D131C">
+<meta property="og:title" content="[Nom de l'artiste] — Pyramide Record">
+<meta property="og:description" content="Nouveautés et prochaines sorties.">
+<meta property="og:type" content="profile">
+<meta property="og:image" content="https://pyramidrecord.com/assets/images/discography/[photo].jpg">
+<meta property="og:locale" content="fr_FR">
+</head>
+<body>
+<a href="#main" class="skip-link" style="position:absolute;left:-9999px;top:0;background:var(--crimson);color:#fff;padding:10px 16px;z-index:200;" onfocus="this.style.left='8px';this.style.top='8px'" onblur="this.style.left='-9999px'">Aller au contenu</a>
+
+<header class="header">
+  <nav class="nav wrap" aria-label="Navigation principale">
+    <a class="nav__logo" href="../../index.html" aria-label="Pyramide Record — accueil"><img src="../../assets/images/logo.png" alt="Pyramide Record"></a>
+    <button class="nav__burger" id="burger" aria-label="Ouvrir le menu" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
+    <div class="nav__menu" id="menu">
+      <a class="nav__link" href="../studio.html">Studio</a>
+      <a class="nav__link" href="../services.html">Services</a>
+      <a class="nav__link" href="../discography.html">Discographie</a>
+      <a class="nav__link" href="../academy.html">Academy</a>
+      <a class="nav__link" href="../gallery.html">Galerie</a>
+      <a class="nav__link" href="../shop.html">Boutique</a>
+      <a class="nav__link" href="../about.html">À&nbsp;Propos</a>
+      <a class="nav__link" href="../blog.html">Blog</a>
+      <a class="nav__link" href="../portal.html">Espace&nbsp;Client</a>
+      <a class="nav__cta" href="../booking.html">Réserver</a>
+    </div>
+  </nav>
+</header>
+
+<main id="main">
+  <section class="page-hero wrap">
+    <div class="bio-layout" style="margin-top:var(--sp-5)">
+
+      <aside class="bio-photo">
+        <!-- REPLACE with a real photo of the artist -->
+        <div class="ph" style="width:100%;height:100%"><small>Photo · [Nom de l'artiste]</small></div>
+      </aside>
+
+      <div>
+        <div class="bio-tags" style="justify-content:space-between;align-items:center">
+          <span class="chip chip--gold">[Gospel / Non Gospel]</span>
+          <!-- Set ONE of the two badges below, delete the other -->
+          <span class="promo-badge promo-badge--inhouse"><span class="dot"></span>Produit par Pyramide Record</span>
+          <!-- <span class="promo-badge promo-badge--partner"><span class="dot"></span>Partenaire — distribué via Pyramide Record</span> -->
+        </div>
+        <h1 class="bio-name">[Nom de l'artiste]</h1>
+
+        <!-- CURRENT HIGHLIGHT — the one thing to feature right now -->
+        <div class="promo-upcoming">
+          <div style="flex:1">
+            <div class="promo-upcoming__label">Nouveauté</div>
+            <div style="font-family:var(--font-display);font-size:var(--fs-lg);margin-top:2px">[Titre du morceau]</div>
+          </div>
+          <a class="btn btn--lg" href="release-[slug].html">Écouter →</a>
+        </div>
+
+        <div class="bio-text">
+          <p>[Une ou deux phrases courtes sur l'artiste — orientées vers ce qu'il/elle fait en ce moment, pas un historique complet. Le bio complet reste sur sa page discographie.]</p>
+        </div>
+
+        <!-- À VENIR — optional, remove the block if nothing upcoming -->
+        <div class="promo-section">
+          <h2>À venir</h2>
+          <p style="color:var(--sand);font-size:var(--fs-sm)">[Titre du prochain projet] — sortie prévue le [date].</p>
+        </div>
+
+        <!-- BILLETTERIE — Signature plan only. Delete this whole block for
+             Essentiel/Complet artists, or if there's no upcoming event.
+             Ticket sales are handled by Iris Events, not built here. -->
+        <div class="promo-upcoming" style="border-color:var(--blue)">
+          <div style="flex:1">
+            <div class="promo-upcoming__label" style="color:var(--blue)">Concert à venir</div>
+            <div style="font-family:var(--font-display);font-size:var(--fs-lg);margin-top:2px">[Nom de l'événement] — [date]</div>
+          </div>
+          <a class="btn btn--steel" href="[lien billetterie Iris Events]" target="_blank" rel="noopener">Réserver vos billets</a>
+        </div>
+
+        <div class="promo-share">
+          <a class="btn btn--ghost" href="https://wa.me/?text=Découvrez%20[Nom]%20sur%20Pyramide%20Record" target="_blank" rel="noopener">Partager sur WhatsApp</a>
+          <button class="btn btn--quiet" onclick="navigator.clipboard.writeText(window.location.href)">Copier le lien</button>
+        </div>
+
+        <div class="bio-releases">
+          <h2>Discographie complète</h2>
+          <p style="color:var(--sand);font-size:var(--fs-sm)"><a class="link" href="[artiste-slug].html">Voir toutes les productions →</a></p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer__grid">
+      <div>
+        <div class="footer__logo"><img loading="lazy" decoding="async" src="../../assets/images/logo.png" alt="Pyramide Record"></div>
+        <p class="footer__addr">13ème Rue Limete Industriel, Kinshasa, RD Congo<br>+243 819 797 568 · info@pyramidrecord.com</p>
+      </div>
+    </div>
+    <div class="footer__note">© 2025 Pyramide Record — Tous droits réservés · Kinshasa, RD Congo<br><a class="link" href="../promo-service.html" style="margin-top:var(--sp-2);display:inline-flex">Vous voulez votre propre page promo ? →</a></div>
+  </div>
+</footer>
+
+<script src="../../js/main.js"></script>
+</body>
+</html>

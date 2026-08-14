@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>[Titre du morceau] — [Nom de l'artiste]</title>
+<meta name="description" content="Écoutez [Titre du morceau] par [Nom de l'artiste] sur toutes les plateformes.">
+<meta name="robots" content="noindex">
+<!--
+  ============================================================
+  RELEASE / SMART LINK PAGE — SAMPLE / TEMPLATE
+  ------------------------------------------------------------
+  One page per release. Built to be posted as a link in a
+  WhatsApp Status, Instagram bio/Story, or shared directly.
+  Single purpose: get someone from "saw a post" to "listening"
+  in one tap, on whichever platform they already use.
+
+  TO CREATE A REAL PAGE:
+  1. Copy this file, rename: promo/release-[artist]-[titre].html
+  2. Replace every [bracketed] placeholder
+  3. Delete any streaming platform rows that don't apply
+  4. If unreleased: keep the countdown block, set the date
+     If released: delete the countdown block entirely
+  5. Set the badge (inhouse vs partner) same as the artist's
+     promo profile page
+  6. Remove <meta name="robots" content="noindex"> once live
+  ============================================================
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;1,9..144,400;1,9..144,500&family=Archivo:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../css/tokens.css">
+<link rel="stylesheet" href="../../css/components.css">
+<link rel="icon" type="image/png" href="../../assets/images/logo.png">
+<link rel="apple-touch-icon" href="../../assets/images/logo.png">
+<meta name="theme-color" content="#0D131C">
+<meta property="og:title" content="[Titre du morceau] — [Nom de l'artiste]">
+<meta property="og:description" content="Écoutez maintenant sur toutes les plateformes.">
+<meta property="og:type" content="music.song">
+<meta property="og:image" content="https://pyramidrecord.com/assets/images/discography/[pochette].jpg">
+<meta property="og:locale" content="fr_FR">
+</head>
+<body>
+<header class="header">
+  <nav class="nav wrap" aria-label="Navigation principale" style="justify-content:center">
+    <a class="nav__logo" href="../../index.html" aria-label="Pyramide Record — accueil"><img src="../../assets/images/logo.png" alt="Pyramide Record"></a>
+  </nav>
+</header>
+
+<main>
+  <div class="release-page">
+
+    <div style="display:flex;justify-content:center;margin-bottom:var(--sp-4)">
+      <!-- Set ONE of the two badges below, delete the other -->
+      <span class="promo-badge promo-badge--inhouse"><span class="dot"></span>Produit par Pyramide Record</span>
+      <!-- <span class="promo-badge promo-badge--partner"><span class="dot"></span>Partenaire — distribué via Pyramide Record</span> -->
+    </div>
+
+    <div class="release-art">
+      <!-- REPLACE with the real release artwork -->
+      <div class="ph" style="width:100%;height:100%"><small>Pochette · [Titre]</small></div>
+    </div>
+
+    <h1 class="release-title">[Titre du morceau]</h1>
+    <p class="release-artist">[Nom de l'artiste]</p>
+
+    <!-- COUNTDOWN — delete this whole block once the track is released -->
+    <p class="release-countdown">Disponible le [date]</p>
+
+    <div class="release-links">
+      <a class="release-link" href="[lien Spotify]" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 100 20 10 10 0 000-20zm4.6 14.4a.6.6 0 01-.83.2c-2.28-1.4-5.15-1.7-8.53-.93a.6.6 0 11-.27-1.17c3.7-.85 6.87-.48 9.43 1.08a.6.6 0 01.2.82zm1.22-2.72a.75.75 0 01-1.03.25c-2.6-1.6-6.57-2.06-9.65-1.13a.75.75 0 01-.43-1.44c3.52-1.06 7.9-.55 10.86 1.28a.75.75 0 01.25 1.04zm.1-2.83C14.98 9 8.98 8.8 5.85 9.76a.9.9 0 11-.53-1.72c3.6-1.1 10.15-.87 14.05 1.44a.9.9 0 01-.9 1.56z"/></svg>
+        Écouter sur Spotify
+      </a>
+      <a class="release-link" href="[lien Apple Music]" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 100 20 10 10 0 000-20zm3 6.5v6.2a1.8 1.8 0 11-1.2-1.7V9.9l-4.6 1v5.4a1.8 1.8 0 11-1.2-1.7V8.2l7-1.7z"/></svg>
+        Écouter sur Apple Music
+      </a>
+      <a class="release-link" href="[lien Boomplay]" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 100 20 10 10 0 000-20zM9.5 8l6 4-6 4V8z"/></svg>
+        Écouter sur Boomplay
+      </a>
+      <a class="release-link" href="[lien YouTube]" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24"><path d="M23 12s0-3.5-.45-5.2a2.8 2.8 0 00-2-2C18.9 4.4 12 4.4 12 4.4s-6.9 0-8.55.4a2.8 2.8 0 00-2 2C1 8.5 1 12 1 12s0 3.5.45 5.2a2.8 2.8 0 002 2c1.65.4 8.55.4 8.55.4s6.9 0 8.55-.4a2.8 2.8 0 002-2C23 15.5 23 12 23 12zm-13 3.5v-7l6 3.5z"/></svg>
+        Regarder sur YouTube
+      </a>
+    </div>
+
+    <div class="release-share">
+      <a class="btn btn--ghost" href="https://wa.me/?text=Écoutez%20[Titre]%20par%20[Artiste]" target="_blank" rel="noopener">Partager sur WhatsApp</a>
+      <button class="btn btn--quiet" onclick="navigator.clipboard.writeText(window.location.href)">Copier le lien</button>
+    </div>
+
+    <div class="release-cta">
+      Produit chez <strong style="color:var(--gold)">Pyramide Record</strong>, Kinshasa.
+      <br>
+      <a class="link" href="../booking.html" style="margin-top:var(--sp-2)">Réserver une session en studio →</a>
+      &nbsp;·&nbsp;
+      <a class="link" href="[nom-artiste].html">Plus de [Nom de l'artiste] →</a>
+    </div>
+
+  </div>
+</main>
+
+<footer class="footer" style="padding-top:var(--sp-5)">
+  <div class="wrap" style="text-align:center">
+    <div class="footer__note">© 2025 Pyramide Record — Kinshasa, RD Congo<br><a class="link" href="../promo-service.html" style="margin-top:var(--sp-2);display:inline-flex">Créer votre page promo →</a></div>
+  </div>
+</footer>
+
+<script src="../../js/main.js"></script>
+</body>
+</html>

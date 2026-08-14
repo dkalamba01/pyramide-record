@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Page Promo Artiste — Pyramide Record</title>
+<meta name="description" content="Faites la promotion de votre musique avec une page professionnelle et partageable. Service Pyramide Record, ouvert à tous les artistes.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;1,9..144,400;1,9..144,500&family=Archivo:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/tokens.css">
+<link rel="stylesheet" href="../css/components.css">
+<style>
+  .page-hero { padding: var(--sp-8) 0 var(--sp-6); }
+  .page-hero h1 { font-family:var(--font-display); font-weight:400; font-size:clamp(30px,4.5vw,44px); line-height:1.15; max-width:18ch; margin:var(--sp-3) 0 var(--sp-4); }
+  .page-hero .lede { color:var(--sand); font-size:var(--fs-body); max-width:56ch; line-height:1.8; }
+
+  .example-strip { display:grid; grid-template-columns:1fr 1fr; gap:var(--sp-6); align-items:center; margin:var(--sp-6) 0; }
+  .example-strip .ph { aspect-ratio:9/16; max-width:260px; }
+
+  .plans { display:grid; grid-template-columns:repeat(2,1fr); gap:var(--sp-5); align-items:stretch; }
+  .plan { background:var(--panel); border:1px solid var(--hair); border-radius:var(--r-lg); padding:var(--sp-5); display:flex; flex-direction:column; }
+  .plan--featured { border-color:var(--gold-dim); position:relative; }
+  .plan__tag { position:absolute; top:-12px; left:var(--sp-5); background:var(--gold); color:#0B1017; font-size:var(--fs-eyebrow); letter-spacing:var(--ls-label); text-transform:uppercase; padding:4px 12px; border-radius:20px; font-weight:600; }
+  .plan__name { font-family:var(--font-display); font-size:var(--fs-h3); margin-bottom:var(--sp-1); }
+  .plan__price { font-family:var(--font-display); font-size:32px; color:var(--gold); margin-bottom:2px; }
+  .plan__price small { font-size:var(--fs-sm); color:var(--ash); font-family:var(--font-body); }
+  .plan__setup { font-size:var(--fs-xs); color:var(--ash); margin-bottom:var(--sp-4); }
+  .plan__features { list-style:none; margin:0 0 var(--sp-5); flex:1; }
+  .plan__features li { color:var(--sand); font-size:var(--fs-sm); line-height:1.7; padding:6px 0 6px 22px; position:relative; }
+  .plan__features li::before { content:'✓'; position:absolute; left:0; color:var(--gold); }
+
+  .how { display:grid; grid-template-columns:repeat(3,1fr); gap:var(--sp-5); }
+  .how__step { padding-top:var(--sp-4); border-top:2px solid var(--gold); }
+  .how__n { font-family:var(--font-display); font-size:26px; color:var(--gold); }
+  .how__label { font-size:var(--fs-eyebrow); letter-spacing:var(--ls-label); text-transform:uppercase; color:var(--ember); margin:var(--sp-2) 0 var(--sp-1); }
+  .how__text { color:var(--sand); font-size:var(--fs-sm); line-height:1.6; }
+
+  @media(max-width:1000px){ .plans{grid-template-columns:1fr !important} }
+  @media(max-width:820px){ .example-strip,.how{grid-template-columns:1fr} }
+  @media(max-width:700px){ .section > div[style*="grid-template-columns:1fr auto"]{grid-template-columns:1fr !important; text-align:left} }
+</style>
+<link rel="icon" type="image/png" href="../assets/images/logo.png">
+<link rel="apple-touch-icon" href="../assets/images/logo.png">
+<link rel="canonical" href="https://pyramidrecord.com/pages/promo-service.html">
+<meta name="theme-color" content="#0D131C">
+<meta property="og:title" content="Page Promo Artiste — Pyramide Record">
+<meta property="og:description" content="Une page professionnelle et partageable pour vos sorties musicales.">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="fr_FR">
+<meta property="og:site_name" content="Pyramide Record">
+</head>
+<body>
+<a href="#main" class="skip-link" style="position:absolute;left:-9999px;top:0;background:var(--crimson);color:#fff;padding:10px 16px;z-index:200;" onfocus="this.style.left='8px';this.style.top='8px'" onblur="this.style.left='-9999px'">Aller au contenu</a>
+
+<header class="header">
+  <nav class="nav wrap" aria-label="Navigation principale">
+    <a class="nav__logo" href="../index.html" aria-label="Pyramide Record — accueil"><img src="../assets/images/logo.png" alt="Pyramide Record"></a>
+    <button class="nav__burger" id="burger" aria-label="Ouvrir le menu" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
+    <div class="nav__menu" id="menu">
+      <a class="nav__link" href="studio.html">Studio</a>
+      <a class="nav__link" href="services.html">Services</a>
+      <a class="nav__link" href="discography.html">Discographie</a>
+      <a class="nav__link" href="academy.html">Academy</a>
+      <a class="nav__link" href="gallery.html">Galerie</a>
+      <a class="nav__link" href="shop.html">Boutique</a>
+      <a class="nav__link" href="about.html">À&nbsp;Propos</a>
+      <a class="nav__link" href="blog.html">Blog</a>
+      <a class="nav__link" href="portal.html">Espace&nbsp;Client</a>
+      <a class="nav__cta" href="booking.html">Réserver</a>
+    </div>
+  </nav>
+</header>
+
+<main id="main">
+  <section class="page-hero wrap">
+    <p class="eyebrow">Nouveau service</p>
+    <h1>Une page promo professionnelle pour votre musique.</h1>
+    <p class="lede">Une page à votre nom pour votre musique — facile à partager sur WhatsApp Status, Instagram, ou n'importe où ailleurs. La personne qui la reçoit clique une seule fois, et arrive directement sur votre chanson, sur Spotify, Apple Music, Boomplay ou YouTube — selon ce qu'elle utilise déjà. Ouvert à tous les artistes, que vous ayez enregistré chez Pyramide Record ou non.</p>
+  </section>
+
+  <section class="section-sm wrap reveal">
+    <div class="example-strip">
+      <div class="ph"><small>Aperçu · Votre page principale</small></div>
+      <div class="ph"><small>Aperçu · Une page par chanson</small></div>
+    </div>
+    <p style="color:var(--sand);font-size:var(--fs-sm);max-width:60ch;line-height:1.7">Deux types de pages sont inclus dans chaque formule. La première est <strong>votre page principale</strong> : une adresse permanente que vous gardez toute votre carrière, avec votre photo, votre dernière sortie, et ce qui s'en vient. La seconde est <strong>une page pour chaque chanson</strong> — créée à chaque nouvelle sortie — avec des boutons pour l'écouter directement sur Spotify, Apple Music, Boomplay ou YouTube.</p>
+  </section>
+
+  <section class="section wrap reveal">
+    <p class="eyebrow">Tarifs</p>
+    <h2 class="h2" style="margin:var(--sp-2) 0 var(--sp-6)">Un abonnement mensuel, simple et transparent.</h2>
+
+    <div class="plans" style="grid-template-columns:repeat(3,1fr)">
+      <div class="plan">
+        <div class="plan__name">Essentiel</div>
+        <div class="plan__price">[Prix] <small>/ mois</small></div>
+        <div class="plan__setup">+ [Prix] paiement unique, pour la création</div>
+        <ul class="plan__features">
+          <li>Votre page principale, en ligne en permanence</li>
+          <li>Jusqu'à 2 mises à jour par mois</li>
+          <li>1 page incluse pour votre prochaine chanson</li>
+          <li>Boutons de partage WhatsApp et Instagram</li>
+        </ul>
+        <a class="btn btn--block" href="#demande">Choisir Essentiel</a>
+      </div>
+
+      <div class="plan plan--featured">
+        <div class="plan__tag">Recommandé</div>
+        <div class="plan__name">Complet</div>
+        <div class="plan__price">[Prix] <small>/ mois</small></div>
+        <div class="plan__setup">+ [Prix] paiement unique, pour la création</div>
+        <ul class="plan__features">
+          <li>Votre page principale, en ligne en permanence</li>
+          <li>Mises à jour illimitées, à chaque fois que vous en avez besoin</li>
+          <li>Une nouvelle page pour chaque chanson, sans limite</li>
+          <li>Compte à rebours pour annoncer vos sorties à l'avance</li>
+          <li>Boutons de partage WhatsApp et Instagram</li>
+          <li>Vos demandes sont traitées en priorité</li>
+        </ul>
+        <a class="btn btn--block" href="#demande">Choisir Complet</a>
+      </div>
+
+      <div class="plan">
+        <div class="plan__name">Signature</div>
+        <div class="plan__price">[Prix] <small>/ mois</small></div>
+        <div class="plan__setup">+ [Prix] paiement unique, pour la création</div>
+        <ul class="plan__features">
+          <li>Tout ce qui est inclus dans Complet</li>
+          <li><strong>Votre propre adresse web</strong> — par exemple, <em>votrenom.com</em> — au lieu d'une page sur le site de Pyramide Record</li>
+          <li>Un habillage visuel personnalisé, adapté à votre image</li>
+          <li>Mise en avant sur la page d'accueil de Pyramide Record lors d'une sortie</li>
+          <li><strong>Vente de billets pour vos concerts</strong>, directement depuis votre page, grâce à Iris Events</li>
+          <li>Réponse garantie sous 24h</li>
+        </ul>
+        <a class="btn btn--block" href="#demande">Choisir Signature</a>
+      </div>
+    </div>
+    <p style="color:var(--sand);font-size:var(--fs-sm);margin-top:var(--sp-4);max-width:60ch;line-height:1.7"><strong style="color:var(--bone)">C'est quoi une « adresse web personnalisée » ?</strong> Normalement, votre page se trouve à une adresse comme <em>pyramidrecord.com/promo/votre-nom</em>. Avec la formule Signature, elle se trouve directement à <em>votrenom.com</em> — plus courte, plus facile à retenir, et entièrement à votre nom. L'achat de cette adresse (appelée un « nom de domaine ») est renouvelable chaque année ; les détails vous seront expliqués simplement lors de votre demande.</p>
+
+    <p style="color:var(--sand);font-size:var(--fs-sm);margin-top:var(--sp-3);max-width:60ch;line-height:1.7"><strong style="color:var(--bone)">Et la vente de billets ?</strong> Si vous organisez un concert ou une soirée d'adoration, un bouton « Réserver vos billets » apparaît directement sur votre page. Vos fans achètent leur billet en quelques clics — par carte ou par mobile money — grâce à <strong style="color:var(--bone)">Iris Events</strong>, un autre service Pyramide Record. Vous n'avez rien à installer ni à configurer vous-même.</p>
+    <p style="color:var(--ash);font-size:var(--fs-xs);margin-top:var(--sp-4)">Tarifs indicatifs — à confirmer selon votre profil. Résiliable à tout moment.</p>
+    <p style="color:var(--sand);font-size:var(--fs-sm);margin-top:var(--sp-3);display:flex;align-items:center;gap:8px">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" style="flex-shrink:0"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>
+      Paiement sécurisé via <strong style="color:var(--bone)">Iris Pay</strong>.
+    </p>
+  </section>
+
+  <section class="section wrap reveal" style="background:var(--panel);border-top:1px solid var(--hair);border-bottom:1px solid var(--hair);padding-top:var(--sp-6);padding-bottom:var(--sp-6)">
+    <div style="display:grid;grid-template-columns:1fr auto;gap:var(--sp-5);align-items:center">
+      <div>
+        <p class="eyebrow" style="color:var(--blue)">Pas besoin d'abonnement</p>
+        <h2 class="h2" style="margin:var(--sp-2) 0 var(--sp-3)">Vous organisez un concert ou une soirée d'adoration ?</h2>
+        <p style="color:var(--sand);max-width:56ch;line-height:1.7">Pas besoin d'une Page Promo pour ça. Vendez vos billets en ligne — par carte ou par mobile money — grâce à <strong style="color:var(--bone)">Iris Events</strong>, à tarif réduit via Pyramide Record. Ouvert à tout organisateur, que vous soyez déjà client Pyramide Record ou non.</p>
+      </div>
+      <a class="btn btn--steel btn--lg" href="[lien Iris Events]" target="_blank" rel="noopener" style="white-space:nowrap">Configurer ma billetterie</a>
+    </div>
+  </section>
+
+  <section class="section wrap reveal">
+    <p class="eyebrow">Comment ça marche</p>
+    <h2 class="h2" style="margin:var(--sp-2) 0 var(--sp-6)">De la demande à la page en ligne.</h2>
+    <div class="how">
+      <div class="how__step">
+        <div class="how__n">1</div>
+        <div class="how__label">Vous demandez</div>
+        <p class="how__text">Remplissez le formulaire ci-dessous ou écrivez-nous directement sur WhatsApp avec vos informations et votre photo. Un lien de paiement <strong style="color:var(--bone)">Iris Pay</strong> vous sera envoyé pour confirmer votre formule.</p>
+      </div>
+      <div class="how__step">
+        <div class="how__n">2</div>
+        <div class="how__label">Nous créons</div>
+        <p class="how__text">Votre page principale et la page de votre première chanson sont mises en ligne, dans le style Pyramide Record.</p>
+      </div>
+      <div class="how__step">
+        <div class="how__n">3</div>
+        <div class="how__label">Vous mettez à jour</div>
+        <p class="how__text">À chaque nouvelle sortie ou changement, envoyez-nous l'info sur WhatsApp — on met à jour votre page selon votre formule.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="demande" class="section wrap reveal" style="text-align:center">
+    <p class="eyebrow">Demander votre page</p>
+    <h2 class="h2" style="margin:var(--sp-2) 0 var(--sp-4)">Prêt à commencer ?</h2>
+    <p style="color:var(--sand);max-width:50ch;margin:0 auto var(--sp-5)">Écrivez-nous directement — dites-nous simplement votre nom d'artiste, le genre de musique que vous faites, et si vous préférez Essentiel, Complet ou Signature. On s'occupe du reste.</p>
+    <div style="display:flex;gap:var(--sp-3);justify-content:center;flex-wrap:wrap">
+      <a class="btn btn--lg btn--whatsapp" href="https://wa.me/243819797568?text=Bonjour%2C%20je%20souhaite%20demander%20une%20Page%20Promo%20Artiste." target="_blank" rel="noopener">Demander sur WhatsApp</a>
+      <a class="btn btn--lg btn--ghost" href="mailto:info@pyramidrecord.com?subject=Demande%20de%20Page%20Promo%20Artiste">Écrire par e-mail</a>
+    </div>
+  </section>
+
+  <div class="quote-band">
+    <div class="ripples" aria-hidden="true"><span></span><span></span><span></span></div>
+    <p class="quote-band__text">« Votre musique mérite d'être<br>facile à <span style="color:var(--ember)">découvrir.</span> »</p>
+  </div>
+</main>
+
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer__grid">
+      <div>
+        <div class="footer__logo"><img loading="lazy" decoding="async" src="../assets/images/logo.png" alt="Pyramide Record"></div>
+        <p class="footer__addr">13ème Rue Limete Industriel, Kinshasa, RD Congo<br>+243 819 797 568 · info@pyramidrecord.com</p>
+      </div>
+    </div>
+    <div class="footer__note">© 2025 Pyramide Record — Tous droits réservés · Kinshasa, RD Congo</div>
+  </div>
+</footer>
+
+<script src="../js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Giresse Mafuta — Pyramide Record</title>
+<meta name="description" content="Découvrez Giresse Mafuta, artiste gospel ayant enregistré chez Pyramide Record.">
+<!--
+  Artist bio page — built from artists/_template.html
+  Personal/family details (early life hardship, displacement,
+  spouse, children) intentionally excluded — same conservative
+  default applied across every artist page on this site, regardless
+  of public availability elsewhere. Career facts only.
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;1,9..144,400;1,9..144,500&family=Archivo:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../css/tokens.css">
+<link rel="stylesheet" href="../../css/components.css">
+<link rel="icon" type="image/png" href="../../assets/images/logo.png">
+<link rel="apple-touch-icon" href="../../assets/images/logo.png">
+<meta name="theme-color" content="#0D131C">
+</head>
+<body>
+<a href="#main" class="skip-link" style="position:absolute;left:-9999px;top:0;background:var(--crimson);color:#fff;padding:10px 16px;z-index:200;" onfocus="this.style.left='8px';this.style.top='8px'" onblur="this.style.left='-9999px'">Aller au contenu</a>
+
+<header class="header">
+  <nav class="nav wrap" aria-label="Navigation principale">
+    <a class="nav__logo" href="../../index.html" aria-label="Pyramide Record — accueil"><img src="../../assets/images/logo.png" alt="Pyramide Record"></a>
+    <button class="nav__burger" id="burger" aria-label="Ouvrir le menu" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
+    <div class="nav__menu" id="menu">
+      <a class="nav__link" href="../studio.html">Studio</a>
+      <a class="nav__link" href="../services.html">Services</a>
+      <a class="nav__link" href="../discography.html" aria-current="page">Discographie</a>
+      <a class="nav__link" href="../promo.html">Nos Artistes</a>
+      <a class="nav__link" href="../academy.html">Academy</a>
+      <a class="nav__link" href="../gallery.html">Galerie</a>
+      <a class="nav__link" href="../shop.html">Boutique</a>
+      <a class="nav__link" href="../about.html">À&nbsp;Propos</a>
+      <a class="nav__link" href="../blog.html">Blog</a>
+      <a class="nav__link" href="../portal.html">Espace&nbsp;Client</a>
+      <a class="nav__cta" href="../booking.html">Réserver</a>
+    </div>
+  </nav>
+</header>
+
+<main id="main">
+  <section class="page-hero wrap">
+    <a class="link" href="../discography.html" style="margin-bottom:var(--sp-4);display:inline-flex">← Retour à la discographie</a>
+
+    <div class="bio-layout" style="margin-top:var(--sp-5)">
+
+      <aside class="bio-photo">
+        <img src="../../assets/images/discography/giresse-mafuta.jpeg" alt="Giresse Mafuta" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover">
+      </aside>
+
+      <div>
+        <div class="bio-tags">
+          <span class="chip chip--gold">Gospel</span>
+        </div>
+        <h1 class="bio-name">Giresse Mafuta</h1>
+
+        <div class="bio-text">
+          <p><strong>Giresse Mafuta</strong> est un chanteur et auteur-compositeur gospel congolais, connu pour sa musique chrétienne inspirationnelle et ses titres d'adoration. Il s'est fait connaître avec son EP <em>Monene ya nzambe</em> (2020, 4 titres), qui comprend les morceaux « Elonga » (feat. Steve Bakambo), « Nkolo ya bomoyi » (feat. Angel Mbondu) et « Monene ya nzambe » (feat. Kunda Sisters).</p>
+
+          <p>Sa collaboration avec <a class="link" href="henri-papa-mulaja.html">Henri Papa Mulaja</a> sur le titre « Kimbangi » a été produite chez <strong>Pyramide Record</strong>.</p>
+        </div>
+
+        <div class="bio-releases">
+          <h2>Productions chez Pyramide Record</h2>
+          <div class="bio-release-item"><span>Kimbangi <span style="color:var(--ash)">(avec <a class="link" href="henri-papa-mulaja.html">Henri Papa Mulaja</a>)</span></span><span class="role">Enregistrement · Mixage<a class="bio-release-listen" href="https://www.youtube.com/watch?v=89a3p-SgxGA" target="_blank" rel="noopener">Écouter →</a></span></div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer__grid">
+      <div>
+        <div class="footer__logo"><img loading="lazy" decoding="async" src="../../assets/images/logo.png" alt="Pyramide Record"></div>
+        <p class="footer__addr">13ème Rue Limete Industriel, Kinshasa, RD Congo<br>+243 819 797 568 · info@pyramidrecord.com</p>
+      </div>
+    </div>
+    <div class="footer__note">© 2025 Pyramide Record — Tous droits réservés · Kinshasa, RD Congo</div>
+  </div>
+</footer>
+
+<script src="../../js/main.js"></script>
+
+<!-- Inline media player overlay — clicking "Écouter" plays the video
+     here instead of navigating away. Same pattern as discography.html. -->
+<div class="media-overlay" id="media-overlay">
+  <div class="media-overlay__inner">
+    <button class="media-overlay__close" id="media-close" aria-label="Fermer le lecteur">
+      <svg viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg>
+    </button>
+    <div class="media-overlay__player" id="media-player"></div>
+  </div>
+</div>
+<style>
+  .media-overlay { position:fixed; inset:0; z-index:500; background:rgba(13,19,28,0.92); backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px); display:none; align-items:center; justify-content:center; padding:24px; }
+  .media-overlay.is-open { display:flex; }
+  .media-overlay__inner { position:relative; width:100%; max-width:800px; background:var(--panel); border:1px solid var(--hair-2); border-radius:var(--r-lg); overflow:hidden; }
+  .media-overlay__close { position:absolute; top:12px; right:12px; z-index:10; width:36px; height:36px; border-radius:50%; background:rgba(13,19,28,0.8); border:1px solid var(--hair-2); display:flex; align-items:center; justify-content:center; cursor:pointer; }
+  .media-overlay__close:hover { background:rgba(206,68,54,0.4); }
+  .media-overlay__close svg { width:16px; height:16px; stroke:var(--bone); stroke-width:2; fill:none; }
+  .media-overlay__player { aspect-ratio:16/9; width:100%; }
+  .media-overlay__player iframe { width:100%; height:100%; border:0; }
+</style>
+<script>
+(function(){
+  function getYouTubeId(url){
+    var match = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([a-zA-Z0-9_-]{11})/);
+    return match ? match[1] : null;
+  }
+  function openOverlay(url){
+    var overlay = document.getElementById('media-overlay');
+    var player = document.getElementById('media-player');
+    var ytId = getYouTubeId(url);
+    if (ytId) {
+      player.innerHTML = '<iframe src="https://www.youtube.com/embed/' + ytId + '?autoplay=1&rel=0" allow="autoplay; encrypted-media" allowfullscreen></iframe>';
+    } else {
+      window.open(url, '_blank');
+      return;
+    }
+    overlay.classList.add('is-open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeOverlay(){
+    var overlay = document.getElementById('media-overlay');
+    document.getElementById('media-player').innerHTML = '';
+    overlay.classList.remove('is-open');
+    document.body.style.overflow = '';
+  }
+  document.getElementById('media-close').addEventListener('click', closeOverlay);
+  document.getElementById('media-overlay').addEventListener('click', function(e){
+    if (e.target === this) closeOverlay();
+  });
+  document.querySelectorAll('.bio-release-listen').forEach(function(link){
+    link.addEventListener('click', function(e){
+      e.preventDefault();
+      openOverlay(this.getAttribute('href'));
+    });
+  });
+})();
+</script>
+
+</body>
+</html>

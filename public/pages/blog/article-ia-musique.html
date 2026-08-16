@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>L'IA peut esquisser une chanson. Elle ne peut pas la finir — Blog · Pyramide Record</title>
+<meta name="description" content="Plus de la moitié des titres mis en ligne chaque jour sont désormais générés par IA — mais l'écoute, elle, reste humaine. Ce que ça change pour les artistes. Par Pyramide Record, Kinshasa.">
+<link rel="icon" type="image/png" href="../../assets/images/logo.png">
+<link rel="canonical" href="https://pyramidrecord.com/pages/blog/article-ia-musique.html">
+<meta name="theme-color" content="#0D131C">
+<meta property="og:title" content="L'IA peut esquisser une chanson. Elle ne peut pas la finir — Pyramide Record">
+<meta property="og:description" content="Ce que les chiffres sur l'IA musicale changent vraiment pour les artistes.">
+<meta property="og:type" content="article">
+<meta property="og:locale" content="fr_FR">
+<meta property="og:site_name" content="Pyramide Record">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;1,9..144,400&family=Archivo:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../css/tokens.css">
+<link rel="stylesheet" href="../../css/components.css">
+<style>
+  .article { max-width: 720px; margin: 0 auto; padding: var(--sp-7) 0; }
+  .article__back { font-size:var(--fs-xs); letter-spacing:var(--ls-wide); text-transform:uppercase; color:var(--sand); margin-bottom:var(--sp-5); display:inline-block; }
+  .article__back:hover { color:var(--ember); }
+  .article__cat { font-size:var(--fs-eyebrow); letter-spacing:var(--ls-label); text-transform:uppercase; color:var(--ember); }
+  .article__title { font-family:var(--font-display); font-weight:400; font-size:clamp(28px,4.5vw,42px); line-height:1.12; letter-spacing:-0.01em; margin:var(--sp-3) 0 var(--sp-4); }
+  .article__byline { display:flex; align-items:center; gap:var(--sp-3); padding-bottom:var(--sp-5); border-bottom:1px solid var(--hair); color:var(--sand); font-size:var(--fs-sm); }
+  .article__byline b { color:var(--bone); font-weight:500; }
+  .article__hero { aspect-ratio:16/9; border-radius:var(--r-lg); margin:var(--sp-6) 0; }
+  .article__body { }
+  .article__body p { color:var(--bone); font-size:17px; line-height:1.85; margin-bottom:var(--sp-4); }
+  .article__body h2 { font-family:var(--font-display); font-weight:400; font-size:var(--fs-h3); margin:var(--sp-6) 0 var(--sp-3); }
+  .article__body ul { margin:0 0 var(--sp-4); }
+  .article__body li { color:var(--bone); font-size:16px; line-height:1.7; padding:8px 0 8px 22px; position:relative; }
+  .article__body li::before { content:'—'; position:absolute; left:0; color:var(--gold); }
+  .article__body li b { color:var(--bone); font-weight:600; }
+  .article__body .lead { font-family:var(--font-display); font-style:italic; font-size:20px; line-height:1.5; color:var(--sand); margin-bottom:var(--sp-5); }
+  .article__body .stat-row { display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--hair); border:1px solid var(--hair); border-radius:var(--r-lg); overflow:hidden; margin:var(--sp-5) 0; }
+  .article__body .stat { background:var(--panel); padding:var(--sp-4); text-align:center; }
+  .article__body .stat .n { font-family:var(--font-display); font-size:28px; color:var(--gold); }
+  .article__body .stat .l { font-size:var(--fs-xs); color:var(--sand); margin-top:4px; }
+  .article__cta { margin-top:var(--sp-6); padding-top:var(--sp-5); border-top:1px solid var(--hair); display:flex; gap:var(--sp-3); align-items:center; flex-wrap:wrap; }
+</style>
+</head>
+<body>
+<a href="#main" class="skip-link" style="position:absolute;left:-9999px;top:0;background:var(--crimson);color:#fff;padding:10px 16px;z-index:200;" onfocus="this.style.left='8px';this.style.top='8px'" onblur="this.style.left='-9999px'">Aller au contenu</a>
+
+<header class="header">
+  <nav class="nav wrap" aria-label="Navigation principale">
+    <a class="nav__logo" href="../../index.html" aria-label="Pyramide Record — accueil"><img src="../../assets/images/logo.png" alt="Pyramide Record"></a>
+    <button class="nav__burger" id="burger" aria-label="Ouvrir le menu" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
+    <div class="nav__menu" id="menu">
+      <a class="nav__link" href="../studio.html">Studio</a>
+      <a class="nav__link" href="../services.html">Services</a>
+      <a class="nav__link" href="../discography.html">Discographie</a>
+      <a class="nav__link" href="../academy.html">Academy</a>
+      <a class="nav__link" href="../gallery.html">Galerie</a>
+      <a class="nav__link" href="../shop.html">Boutique</a>
+      <a class="nav__link" href="../about.html">À&nbsp;Propos</a>
+      <a class="nav__link" href="../blog.html" aria-current="page">Blog</a>
+      <a class="nav__link" href="../portal.html">Espace&nbsp;Client</a>
+      <a class="nav__cta" href="../booking.html">Réserver</a>
+    </div>
+  </nav>
+</header>
+
+<main id="main" class="wrap">
+  <article class="article">
+    <a class="article__back" href="../blog.html">← Retour au Blog</a>
+    <p class="article__cat">Industrie</p>
+    <h1 class="article__title">L'IA peut esquisser une chanson. Elle ne peut pas la finir.</h1>
+    <div class="article__byline">
+      <span class="eq" aria-hidden="true"><b></b><b></b><b></b><b></b></span>
+      Par <b>Pyramide Record</b> · Kinshasa · 4 min de lecture
+    </div>
+
+    <div class="ph article__hero"><small>Illustration · IA musicale</small></div>
+
+    <div class="article__body">
+      <p class="lead">Aujourd'hui, plus de la moitié des titres mis en ligne chaque jour sur les plateformes de streaming sont entièrement générés par intelligence artificielle. Et pourtant, ces mêmes titres ne représentent qu'une fraction infime de ce que les gens écoutent réellement.</p>
+
+      <p>C'est le chiffre qui change tout dans la conversation sur l'IA et la musique. Depuis début 2025, Deezer suit le volume de titres générés par IA déposés chaque jour sur sa plateforme. La courbe n'a fait que grimper : environ 10 000 titres par jour début 2025, puis 30 000, puis 50 000, jusqu'à atteindre un pic de 90 000 titres IA par jour en juin 2026 — plus de la moitié de tous les dépôts quotidiens.</p>
+
+      <div class="stat-row">
+        <div class="stat"><div class="n">&gt;50%</div><div class="l">des dépôts quotidiens sont générés par IA</div></div>
+        <div class="stat"><div class="n">1–3%</div><div class="l">des écoutes réelles</div></div>
+        <div class="stat"><div class="n">85%</div><div class="l">de ces écoutes IA jugées frauduleuses</div></div>
+      </div>
+
+      <p>Le volume de production explose. L'écoute, elle, ne suit pas. Malgré ce déferlement de contenu généré, la consommation réelle de musique IA reste comprise entre 1 et 3% du total des écoutes sur la plateforme — et Deezer estime qu'une large majorité de ces écoutes-là proviennent elles-mêmes de trafic frauduleux plutôt que de vrais auditeurs. Autrement dit : le public continue, de très loin, à écouter de la musique faite par des humains.</p>
+
+      <h2>Ce que ça veut dire pour un studio comme le nôtre</h2>
+      <p>N'importe qui peut aujourd'hui taper une description dans un outil comme Suno ou Udio et obtenir une ébauche de chanson en quelques secondes. Ce n'est plus une nouveauté. La vraie question n'est plus « est-ce que l'IA peut faire de la musique ? » — la réponse est oui — mais « qu'est-ce que les gens ont encore envie d'écouter, une fois l'esquisse posée ? »</p>
+      <p>Une enquête Deezer menée avec Ipsos auprès de 9 000 personnes dans huit pays a montré que la quasi-totalité des auditeurs ne parvenaient pas à distinguer un titre entièrement généré par IA d'un titre humain lors d'un test à l'aveugle — et pourtant, la grande majorité d'entre eux souhaitaient que ces titres soient clairement étiquetés comme tels. Les gens veulent savoir ce qu'ils écoutent, même quand ils ne peuvent pas l'entendre à l'oreille.</p>
+
+      <h2>L'esquisse n'est pas la chanson</h2>
+      <p>Ce que l'IA produit en quelques secondes reste, dans l'immense majorité des cas, une esquisse : une mélodie, une ambiance, une idée de départ. Ce qui manque, c'est presque toujours la même chose — une vraie voix, un arrangement pensé pour ce morceau précis, et l'oreille d'un ingénieur qui sait quand un mix respire et quand il étouffe.</p>
+      <ul>
+        <li><b>La voix :</b> une voix de synthèse peut imiter un timbre, mais elle ne porte pas encore l'histoire, l'accent, la fatigue ou la joie d'un vrai interprète en studio.</li>
+        <li><b>L'arrangement :</b> une esquisse IA propose souvent une structure générique. Un arrangeur, lui, écrit pour cette chanson précise — pas pour la moyenne statistique de mille chansons similaires.</li>
+        <li><b>Le mixage et le mastering :</b> c'est l'étape où une idée devient un master prêt pour la diffusion — la même étape qu'un ingénieur applique à n'importe quelle production, IA ou non.</li>
+      </ul>
+
+      <p>C'est exactement pour cette raison que nous avons ouvert un service de <b>Finition IA</b> chez Pyramide Record : amenez votre esquisse — IA, mémo vocal, ou simple idée en tête — et nous la transformons en véritable production, avec de vrais musiciens, une vraie voix enregistrée en studio, et un mixage et mastering complets.</p>
+
+      <p>La musique générée par IA n'est pas près de disparaître, et ce n'est pas le sujet. Le sujet, c'est que la finition — celle qui donne à une chanson son grain, sa présence, et son émotion — reste, pour l'instant et pour longtemps, un travail humain.</p>
+    </div>
+
+    <div class="article__cta">
+      <a class="btn" href="../services.html">Découvrir la Finition IA</a>
+      <a class="link" href="../booking.html">Réserver une session →</a>
+    </div>
+  </article>
+</main>
+
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer__grid">
+      <div>
+        <div class="footer__logo"><img src="../../assets/images/logo.png" alt="Pyramide Record" loading="lazy"></div>
+        <p class="footer__addr">13ème Rue Limete Industriel, Kinshasa, RD Congo<br>+243 819 797 568 · info@pyramidrecord.com</p>
+      </div>
+      <div class="footer__socials">
+        <a href="#" aria-label="Facebook"><svg viewBox="0 0 24 24"><path d="M13 3h4v4h-4a1 1 0 00-1 1v3h5l-1 4h-4v8h-4v-8H8v-4h4V7a4 4 0 014-4z"/></svg></a>
+        <a href="#" aria-label="Instagram"><svg viewBox="0 0 24 24"><path d="M12 7a5 5 0 100 10 5 5 0 000-10zm0 8a3 3 0 110-6 3 3 0 010 6zm5-9a1 1 0 100 2 1 1 0 000-2zM7 2h10a5 5 0 015 5v10a5 5 0 01-5 5H7a5 5 0 01-5-5V7a5 5 0 015-5zm0 2a3 3 0 00-3 3v10a3 3 0 003 3h10a3 3 0 003-3V7a3 3 0 00-3-3z"/></svg></a>
+        <a href="#" aria-label="LinkedIn"><svg viewBox="0 0 24 24"><path d="M6.94 5a2 2 0 11-4 0 2 2 0 014 0zM7 8.48H3V21h4zm6.32 0H9.34V21h3.94v-6.57c0-3.66 4.77-4 4.77 0V21H22v-7.93c0-6.17-7.06-5.94-8.72-2.91z"/></svg></a>
+        <a href="#" aria-label="YouTube"><svg viewBox="0 0 24 24"><path d="M23 12s0-3.5-.45-5.2a2.8 2.8 0 00-2-2C18.9 4.4 12 4.4 12 4.4s-6.9 0-8.55.4a2.8 2.8 0 00-2 2C1 8.5 1 12 1 12s0 3.5.45 5.2a2.8 2.8 0 002 2c1.65.4 8.55.4 8.55.4s6.9 0 8.55-.4a2.8 2.8 0 002-2C23 15.5 23 12 23 12zm-13 3.5v-7l6 3.5z"/></svg></a>
+      </div>
+    </div>
+    <div class="footer__note">© 2025 Pyramide Record — Tous droits réservés · Kinshasa, RD Congo</div>
+  </div>
+</footer>
+
+<script src="../../js/main.js"></script>
+</body>
+</html>

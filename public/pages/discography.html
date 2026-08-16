@@ -31,6 +31,9 @@
   .filter { font-size:var(--fs-xs); letter-spacing:var(--ls-wide); text-transform:uppercase; color:var(--sand); background:transparent; border:1px solid var(--hair-2); border-radius:20px; padding:8px 16px; cursor:pointer; transition:all var(--dur-fast) var(--ease); }
   .filter:hover { border-color:var(--gold-dim); color:var(--bone); }
   .filter.is-active { background:var(--gold); border-color:var(--gold); color:#0B1017; }
+  .artist-select { font-size:var(--fs-sm); color:var(--bone); background:var(--panel); border:1px solid var(--hair-2); border-radius:var(--r-md); padding:10px 14px; cursor:pointer; max-width:320px; }
+  .artist-select:hover { border-color:var(--gold-dim); }
+  .artist-select:focus { outline:none; border-color:var(--gold); }
 
   /* Unified release grid — every item carries data-genre + data-type */
   .catalog { display:grid; grid-template-columns:repeat(4,1fr); gap:var(--sp-4); margin-top:var(--sp-6); }
@@ -113,11 +116,12 @@
       <a class="nav__link" href="studio.html">Studio</a>
       <a class="nav__link" href="services.html">Services</a>
       <a class="nav__link" href="discography.html" aria-current="page">Discographie</a>
+      <a class="nav__link" href="promo.html">Nos Artistes</a>
       <a class="nav__link" href="academy.html">Academy</a>
       <a class="nav__link" href="gallery.html">Galerie</a>
       <a class="nav__link" href="shop.html">Boutique</a>
       <a class="nav__link" href="about.html">À&nbsp;Propos</a>
-      <a class="nav__link" href="journal.html">Journal</a>
+      <a class="nav__link" href="blog.html">Blog</a>
       <a class="nav__cta" href="booking.html">Réserver</a>
     </div>
   </nav>
@@ -164,6 +168,15 @@
         <button class="filter" data-genre-filter="non-gospel">Non Gospel</button>
         <button class="filter" data-genre-filter="divers">Divers</button>
       </div>
+    </div>
+
+    <!-- FILTER ROW 3 — Artist (dropdown, built dynamically from the JSON
+         so it stays in sync automatically as artists are added) -->
+    <div class="filter-group">
+      <span class="filter-group__label">Artiste</span>
+      <select class="artist-select" id="artist-filter" aria-label="Filtrer par artiste">
+        <option value="all">Tous les artistes</option>
+      </select>
     </div>
 
     <!-- UNIFIED CATALOG — populated from ../data/discography-data.json by the script below -->
@@ -275,6 +288,10 @@
       el.className = 'release';
       el.setAttribute('data-genre', item.genre);
       el.setAttribute('data-type', item.type);
+      // Store every individual artist name on this card (split the same
+      // way as the bio links) so the artist dropdown can match a card
+      // whether the person is credited as primary or featured.
+      el.setAttribute('data-artists', item.artist.split(/\s+feat\.?\s+|\s+&\s+/i).map(function(n){ return n.trim(); }).join('|'));
       el.innerHTML = art +
         '<div class="release__title">' + item.title + '</div>' +
         '<div class="release__artist">' + item.artist + '</div>' +
@@ -407,9 +424,29 @@
     function setupFilters(){
       var typeFilters = document.querySelectorAll('[data-type-filter]');
       var genreFilters = document.querySelectorAll('[data-genre-filter]');
+      var artistSelect = document.getElementById('artist-filter');
       var emptyNote = document.getElementById('empty-note');
       var activeType = 'all';
       var activeGenre = 'all';
+      var activeArtist = 'all';
+
+      // Build the artist dropdown from every unique individual name across
+      // the catalog (splitting "feat"/"&" credits, same as the bio links),
+      // sorted alphabetically. Stays in sync automatically as artists are added.
+      var allNames = [];
+      allReleases.forEach(function(item){
+        item.artist.split(/\s+feat\.?\s+|\s+&\s+/i).forEach(function(n){
+          var name = n.trim();
+          if (name && allNames.indexOf(name) === -1) allNames.push(name);
+        });
+      });
+      allNames.sort(function(a, b){ return a.localeCompare(b, 'fr'); });
+      allNames.forEach(function(name){
+        var opt = document.createElement('option');
+        opt.value = name;
+        opt.textContent = name;
+        artistSelect.appendChild(opt);
+      });
 
       function applyFilters(){
         var items = document.querySelectorAll('#catalog .release');
@@ -417,7 +454,9 @@
         items.forEach(function(item){
           var matchesType = activeType === 'all' || item.getAttribute('data-type') === activeType;
           var matchesGenre = activeGenre === 'all' || item.getAttribute('data-genre') === activeGenre;
-          var show = matchesType && matchesGenre;
+          var cardArtists = (item.getAttribute('data-artists') || '').split('|');
+          var matchesArtist = activeArtist === 'all' || cardArtists.indexOf(activeArtist) !== -1;
+          var show = matchesType && matchesGenre && matchesArtist;
           item.classList.toggle('is-hidden', !show);
           if (show) visibleCount++;
         });
@@ -431,6 +470,11 @@
         });
         emptyNote.style.display = visibleCount === 0 ? 'block' : 'none';
       }
+
+      artistSelect.addEventListener('change', function(){
+        activeArtist = this.value;
+        applyFilters();
+      });
 
       typeFilters.forEach(function(btn){
         btn.addEventListener('click', function(){

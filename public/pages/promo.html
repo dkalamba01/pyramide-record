@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nos Artistes — Pyramide Record</title>
+<meta name="description" content="Découvrez les artistes de Pyramide Record et nos partenaires — leurs dernières sorties, en un coup d'œil.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;1,9..144,400;1,9..144,500&family=Archivo:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/tokens.css">
+<link rel="stylesheet" href="../css/components.css">
+<style>
+  .page-hero { padding: var(--sp-8) 0 var(--sp-6); }
+  .page-hero h1 { font-family:var(--font-display); font-weight:400; font-size:clamp(30px,4.5vw,44px); line-height:1.15; max-width:20ch; margin:var(--sp-3) 0 var(--sp-4); }
+  .page-hero .lede { color:var(--sand); font-size:var(--fs-body); max-width:56ch; line-height:1.8; }
+
+  .filters { display:flex; gap:var(--sp-2); flex-wrap:wrap; margin-bottom:var(--sp-6); }
+  .filter { font-size:var(--fs-xs); letter-spacing:var(--ls-wide); text-transform:uppercase; color:var(--sand); background:transparent; border:1px solid var(--hair-2); border-radius:20px; padding:8px 16px; cursor:pointer; transition:all var(--dur-fast) var(--ease); }
+  .filter:hover { border-color:var(--gold-dim); color:var(--bone); }
+  .filter.is-active { background:var(--gold); border-color:var(--gold); color:#0B1017; }
+
+  .artists-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:var(--sp-5); }
+  .artist-card { background:var(--panel); border:1px solid var(--hair); border-radius:var(--r-lg); overflow:hidden; display:flex; flex-direction:column; transition:border-color var(--dur) var(--ease), transform var(--dur) var(--ease); }
+  .artist-card:hover { border-color:var(--gold-dim); transform:translateY(-3px); }
+  .artist-card__img { aspect-ratio:4/5; }
+  .artist-card__img img { width:100%; height:100%; object-fit:cover; display:block; }
+  .artist-card__body { padding:var(--sp-4) var(--sp-5) var(--sp-5); flex:1; display:flex; flex-direction:column; gap:var(--sp-2); }
+  .artist-card__top { display:flex; justify-content:space-between; align-items:flex-start; gap:var(--sp-2); }
+  .artist-card__name { font-family:var(--font-display); font-size:var(--fs-lg); color:var(--bone); }
+  .artist-card__highlight { font-size:var(--fs-sm); color:var(--sand); }
+  .artist-card__highlight b { color:var(--bone); font-weight:500; }
+  .artist-card.is-hidden { display:none; }
+
+  .promo-cta-band { background:var(--panel); border-top:1px solid var(--hair); margin-top:var(--sp-7); }
+
+  @media(max-width:900px){ .artists-grid{grid-template-columns:1fr 1fr} }
+  @media(max-width:600px){ .artists-grid{grid-template-columns:1fr} }
+</style>
+<link rel="icon" type="image/png" href="../assets/images/logo.png">
+<link rel="apple-touch-icon" href="../assets/images/logo.png">
+<link rel="canonical" href="https://pyramidrecord.com/pages/promo.html">
+<meta name="theme-color" content="#0D131C">
+<meta property="og:title" content="Nos Artistes — Pyramide Record">
+<meta property="og:description" content="Découvrez les artistes de Pyramide Record et nos partenaires.">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="fr_FR">
+<meta property="og:site_name" content="Pyramide Record">
+</head>
+<body>
+<a href="#main" class="skip-link" style="position:absolute;left:-9999px;top:0;background:var(--crimson);color:#fff;padding:10px 16px;z-index:200;" onfocus="this.style.left='8px';this.style.top='8px'" onblur="this.style.left='-9999px'">Aller au contenu</a>
+
+<header class="header">
+  <nav class="nav wrap" aria-label="Navigation principale">
+    <a class="nav__logo" href="../index.html" aria-label="Pyramide Record — accueil"><img src="../assets/images/logo.png" alt="Pyramide Record"></a>
+    <button class="nav__burger" id="burger" aria-label="Ouvrir le menu" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
+    <div class="nav__menu" id="menu">
+      <a class="nav__link" href="studio.html">Studio</a>
+      <a class="nav__link" href="services.html">Services</a>
+      <a class="nav__link" href="discography.html">Discographie</a>
+      <a class="nav__link" href="promo.html" aria-current="page">Nos Artistes</a>
+      <a class="nav__link" href="academy.html">Academy</a>
+      <a class="nav__link" href="gallery.html">Galerie</a>
+      <a class="nav__link" href="shop.html">Boutique</a>
+      <a class="nav__link" href="about.html">À&nbsp;Propos</a>
+      <a class="nav__link" href="blog.html">Blog</a>
+      <a class="nav__link" href="portal.html">Espace&nbsp;Client</a>
+      <a class="nav__cta" href="booking.html">Réserver</a>
+    </div>
+  </nav>
+</header>
+
+<main id="main">
+  <section class="page-hero wrap">
+    <p class="eyebrow">Nos artistes</p>
+    <h1>Les voix derrière la musique.</h1>
+    <p class="lede">Découvrez les artistes qui enregistrent avec Pyramide Record et nos partenaires — leurs dernières sorties, en un coup d'œil, prêtes à écouter.</p>
+  </section>
+
+  <section class="section-sm wrap reveal">
+    <div class="filters" role="tablist" aria-label="Filtrer les artistes">
+      <button class="filter is-active" data-filter="all">Tout</button>
+      <button class="filter" data-filter="inhouse">Produits par Pyramide Record</button>
+      <button class="filter" data-filter="partner">Partenaires</button>
+    </div>
+
+    <div class="artists-grid">
+      <a class="artist-card" data-cat="inhouse" href="promo/agenors-kabongo.html">
+        <div class="artist-card__img">
+          <img src="../assets/images/discography/agenors-kabongo.jpeg" alt="Agenors Kabongo" loading="lazy" decoding="async">
+        </div>
+        <div class="artist-card__body">
+          <div class="artist-card__top">
+            <div class="artist-card__name">Agenors Kabongo</div>
+            <span class="promo-badge promo-badge--inhouse"><span class="dot"></span>Pyramide</span>
+          </div>
+          <div class="artist-card__highlight">Nouveauté — <b>Et si c'était l'amour ?</b></div>
+        </div>
+      </a>
+
+      <a class="artist-card" data-cat="inhouse" href="promo/roland-muanga.html">
+        <div class="artist-card__img">
+          <img src="../assets/images/discography/roland-muanga_bobele-yo.jpg" alt="Roland Muanga" loading="lazy" decoding="async">
+        </div>
+        <div class="artist-card__body">
+          <div class="artist-card__top">
+            <div class="artist-card__name">Roland Muanga</div>
+            <span class="promo-badge promo-badge--inhouse"><span class="dot"></span>Pyramide</span>
+          </div>
+          <div class="artist-card__highlight">En vedette — <b>Tu Connais Mon Cœur</b></div>
+        </div>
+      </a>
+
+      <!-- Add more artist cards here as new Promo Pages go live —
+           copy one of the two blocks above, update the image, name,
+           badge (--inhouse or --partner), href, and highlight text. -->
+    </div>
+
+    <p class="muted" style="font-size:var(--fs-sm);margin-top:var(--sp-6);max-width:60ch;line-height:1.7">Vous êtes artiste et vous souhaitez apparaître ici ? Découvrez notre service de Page Promo ci-dessous.</p>
+  </section>
+
+  <div class="promo-cta-band">
+    <div class="wrap" style="display:grid;grid-template-columns:1fr auto;gap:var(--sp-5);align-items:center;padding:var(--sp-6) 0">
+      <div>
+        <div style="font-family:var(--font-display);font-size:var(--fs-lg);margin-bottom:2px">Vous êtes artiste ?</div>
+        <div style="color:var(--sand);font-size:var(--fs-sm)">Créez votre propre page promo, partageable partout — à partir de 10 $/mois.</div>
+      </div>
+      <a class="btn btn--lg" href="promo-service.html">Créer ma page</a>
+    </div>
+  </div>
+</main>
+
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer__grid">
+      <div>
+        <div class="footer__logo"><img loading="lazy" decoding="async" src="../assets/images/logo.png" alt="Pyramide Record"></div>
+        <p class="footer__addr">13ème Rue Limete Industriel, Kinshasa, RD Congo<br>+243 819 797 568 · info@pyramidrecord.com</p>
+      </div>
+    </div>
+    <div class="footer__note">© 2025 Pyramide Record — Tous droits réservés · Kinshasa, RD Congo</div>
+  </div>
+</footer>
+
+<script src="../js/main.js"></script>
+<script>
+  (function(){
+    var filters=document.querySelectorAll('.filter'); var items=document.querySelectorAll('.artist-card');
+    filters.forEach(function(btn){ btn.addEventListener('click',function(){
+      filters.forEach(function(f){f.classList.remove('is-active');}); btn.classList.add('is-active');
+      var cat=btn.getAttribute('data-filter');
+      items.forEach(function(it){ it.classList.toggle('is-hidden', !(cat==='all'||it.getAttribute('data-cat')===cat)); });
+    });});
+  })();
+</script>
+</body>
+</html>

@@ -29,8 +29,27 @@
   .gal__item img { width:100%; height:100%; object-fit:cover; display:block; }
   .gal__item.is-hidden { display:none; }
 
+  .gal--video { grid-template-columns:repeat(3,1fr); }
+
   @media(max-width:900px){ .gal{grid-template-columns:repeat(2,1fr); grid-auto-rows:160px} .gal__item.wide{grid-column:span 2} }
   @media(max-width:520px){ .gal{grid-template-columns:1fr; grid-auto-rows:220px} .gal__item.wide,.gal__item.tall{grid-column:auto;grid-row:auto} }
+
+  /* Video session cards */
+  .gal__item--video { position:relative; cursor:pointer; }
+  .gal__play { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:56px; height:56px; border-radius:50%; background:rgba(13,19,28,0.75); border:1px solid var(--hair-2); display:flex; align-items:center; justify-content:center; transition:background var(--dur-fast) var(--ease), transform var(--dur-fast) var(--ease); }
+  .gal__item--video:hover .gal__play { background:var(--gold); transform:translate(-50%,-50%) scale(1.08); }
+  .gal__play svg { width:22px; height:22px; fill:var(--bone); }
+  .gal__item--video:hover .gal__play svg { fill:#0B1017; }
+  .gal__caption { position:absolute; left:0; right:0; bottom:0; padding:var(--sp-3); font-size:var(--fs-xs); color:var(--bone); background:linear-gradient(to top, rgba(13,19,28,0.85), transparent); }
+
+  .media-overlay { position:fixed; inset:0; z-index:500; background:rgba(13,19,28,0.92); backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px); display:none; align-items:center; justify-content:center; padding:24px; }
+  .media-overlay.is-open { display:flex; }
+  .media-overlay__inner { position:relative; width:100%; max-width:800px; background:var(--panel); border:1px solid var(--hair-2); border-radius:var(--r-lg); overflow:hidden; }
+  .media-overlay__close { position:absolute; top:12px; right:12px; z-index:10; width:36px; height:36px; border-radius:50%; background:rgba(13,19,28,0.8); border:1px solid var(--hair-2); display:flex; align-items:center; justify-content:center; cursor:pointer; }
+  .media-overlay__close:hover { background:rgba(206,68,54,0.4); }
+  .media-overlay__close svg { width:16px; height:16px; stroke:var(--bone); stroke-width:2; fill:none; }
+  .media-overlay__player { aspect-ratio:16/9; width:100%; }
+  .media-overlay__player iframe { width:100%; height:100%; border:0; }
 </style>
 <link rel="icon" type="image/png" href="../assets/images/logo.png">
 <link rel="apple-touch-icon" href="../assets/images/logo.png">
@@ -66,11 +85,12 @@
       <a class="nav__link" href="studio.html">Studio</a>
       <a class="nav__link" href="services.html">Services</a>
       <a class="nav__link" href="discography.html">Discographie</a>
+      <a class="nav__link" href="promo.html">Nos Artistes</a>
       <a class="nav__link" href="academy.html">Academy</a>
       <a class="nav__link" href="gallery.html" aria-current="page">Galerie</a>
       <a class="nav__link" href="shop.html">Boutique</a>
       <a class="nav__link" href="about.html">À&nbsp;Propos</a>
-      <a class="nav__link" href="journal.html">Journal</a>
+      <a class="nav__link" href="blog.html">Blog</a>
       <a class="nav__cta" href="booking.html">Réserver</a>
     </div>
   </nav>
@@ -92,7 +112,7 @@
       <button class="filter" data-filter="live">Live</button>
     </div>
 
-    <div class="gal">
+    <div class="gal gal--photos">
       <div class="gal__item wide" data-cat="studio"><img src="../assets/images/studio-regie-large.png" alt="Régie — Pyramide Record" loading="lazy" decoding="async"></div>
       <div class="gal__item tall" data-cat="sessions"><img src="../assets/images/gallery/session-voix.jpg" alt="Session voix — Pyramide Record" loading="lazy" decoding="async"></div>
       <div class="gal__item" data-cat="studio"><img src="../assets/images/gallery/studio-console.jpg" alt="Console — Pyramide Record" loading="lazy" decoding="async"></div>
@@ -100,6 +120,31 @@
       <div class="gal__item" data-cat="sessions"><img src="../assets/images/gallery/ingenieur-mix.jpg" alt="Ingénieur au mix — Pyramide Record" loading="lazy" decoding="async"></div>
       <div class="gal__item" data-cat="studio"><img src="../assets/images/studio-micros.png" alt="Microphones — Pyramide Record" loading="lazy" decoding="async"></div>
       <div class="gal__item" data-cat="studio"><img src="../assets/images/gallery/detail-materiel.jpg" alt="Détail matériel — Pyramide Record" loading="lazy" decoding="async"></div>
+    </div>
+  </section>
+
+  <section class="section-sm wrap reveal">
+    <p class="eyebrow" style="margin-bottom:var(--sp-4)">Vidéos de session</p>
+    <h2 class="h2" style="margin-bottom:var(--sp-2)">La séance, du début à la fin.</h2>
+    <p class="muted" style="max-width:560px;margin-bottom:var(--sp-6)">Pas d'extraits coupés — des enregistrements de session complets, tels qu'ils se sont déroulés en studio.</p>
+
+    <div class="gal gal--video">
+      <!-- FULL SESSION VIDEOS — replace data-video with a real YouTube URL for each, and the .ph placeholder with a real thumbnail image once available. -->
+      <div class="gal__item gal__item--video" data-video="https://youtu.be/T0JEVZ2Z9mc">
+        <img src="https://img.youtube.com/vi/T0JEVZ2Z9mc/hqdefault.jpg" alt="Séance studio 1 — Pyramide Record" loading="lazy" decoding="async">
+        <span class="gal__play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span>
+        <span class="gal__caption">Séance studio 1 (Live Studio Session)</span>
+      </div>
+      <div class="gal__item gal__item--video" data-video="https://youtu.be/odL9Vr2dLYY">
+        <img src="https://img.youtube.com/vi/odL9Vr2dLYY/hqdefault.jpg" alt="Séance studio 2 — Pyramide Record" loading="lazy" decoding="async">
+        <span class="gal__play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span>
+        <span class="gal__caption">Séance studio 2 (Live Studio Session)</span>
+      </div>
+      <div class="gal__item gal__item--video" data-video="https://youtu.be/ghiiFm-933E">
+        <img src="https://img.youtube.com/vi/ghiiFm-933E/hqdefault.jpg" alt="Séance studio 3 — Pyramide Record" loading="lazy" decoding="async">
+        <span class="gal__play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span>
+        <span class="gal__caption">Séance studio 3 (Live Studio Session)</span>
+      </div>
     </div>
   </section>
 
@@ -136,7 +181,7 @@
   // gallery filter
   (function(){
     var filters = document.querySelectorAll('.filter');
-    var items = document.querySelectorAll('.gal__item');
+    var items = document.querySelectorAll('.gal--photos .gal__item');
     filters.forEach(function(btn){
       btn.addEventListener('click', function(){
         filters.forEach(function(f){ f.classList.remove('is-active'); });
@@ -148,7 +193,54 @@
         });
       });
     });
-  })();
+</script>
+
+<!-- Inline media player overlay -- same pattern as discography.html / article pages -->
+<div class="media-overlay" id="media-overlay">
+  <div class="media-overlay__inner">
+    <button class="media-overlay__close" id="media-close" aria-label="Fermer le lecteur">
+      <svg viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg>
+    </button>
+    <div class="media-overlay__player" id="media-player"></div>
+  </div>
+</div>
+<script>
+(function(){
+  function getYouTubeId(url){
+    var match = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([a-zA-Z0-9_-]{11})/);
+    return match ? match[1] : null;
+  }
+  function openOverlay(url){
+    var overlay = document.getElementById('media-overlay');
+    var player = document.getElementById('media-player');
+    var ytId = getYouTubeId(url);
+    if (ytId) {
+      player.innerHTML = '<iframe src="https://www.youtube.com/embed/' + ytId + '?autoplay=1&rel=0" allow="autoplay; encrypted-media" allowfullscreen></iframe>';
+    } else {
+      window.open(url, '_blank');
+      return;
+    }
+    overlay.classList.add('is-open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeOverlay(){
+    var overlay = document.getElementById('media-overlay');
+    document.getElementById('media-player').innerHTML = '';
+    overlay.classList.remove('is-open');
+    document.body.style.overflow = '';
+  }
+  document.getElementById('media-close').addEventListener('click', closeOverlay);
+  document.getElementById('media-overlay').addEventListener('click', function(e){
+    if (e.target === this) closeOverlay();
+  });
+  document.querySelectorAll('.gal__item--video').forEach(function(card){
+    card.addEventListener('click', function(){
+      var url = this.getAttribute('data-video');
+      if (!url || url.indexOf('REPLACE_WITH') === 0) return;
+      openOverlay(url);
+    });
+  });
+})();
 </script>
 </body>
 </html>

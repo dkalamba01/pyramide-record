@@ -127,10 +127,10 @@
     .jgrid { grid-template-columns:1fr !important; gap:var(--sp-5) !important; }
   }
 
-  .artist-scroll { display:flex; gap:var(--sp-4); overflow-x:auto; scroll-snap-type:x mandatory; padding-bottom:var(--sp-3); -webkit-overflow-scrolling:touch; }
+  .artist-scroll { display:flex; gap:var(--sp-4); overflow-x:auto; padding-bottom:var(--sp-3); -webkit-overflow-scrolling:touch; }
   .artist-scroll::-webkit-scrollbar { height:6px; }
   .artist-scroll::-webkit-scrollbar-thumb { background:var(--hair-2); border-radius:3px; }
-  .artist-scroll-card { flex:0 0 200px; scroll-snap-align:start; background:var(--panel); border:1px solid var(--hair); border-radius:var(--r-lg); overflow:hidden; transition:border-color var(--dur) var(--ease), transform var(--dur) var(--ease); }
+  .artist-scroll-card { flex:0 0 200px; background:var(--panel); border:1px solid var(--hair); border-radius:var(--r-lg); overflow:hidden; transition:border-color var(--dur) var(--ease), transform var(--dur) var(--ease); }
   .artist-scroll-card:hover { border-color:var(--gold-dim); transform:translateY(-3px); }
   .artist-scroll-card img { width:100%; aspect-ratio:4/5; object-fit:cover; display:block; }
   .artist-scroll-card__name { padding:var(--sp-3); font-family:var(--font-display); font-size:var(--fs-body); color:var(--bone); }
@@ -283,40 +283,7 @@
   <!-- ARTISTES -->
   <section class="section wrap reveal">
     <div class="sec-head"><h2 class="h2">Nos artistes</h2><a class="sec-more" href="pages/discography.html">Voir tous les artistes →</a></div>
-    <div class="artist-scroll">
-      <a class="artist-scroll-card" href="pages/artists/agenors-kabongo.html">
-        <img src="assets/images/discography/agenors-kabongo.jpeg" alt="Agenors Kabongo" loading="lazy" decoding="async">
-        <div class="artist-scroll-card__name">Agenors Kabongo</div>
-      </a>
-      <a class="artist-scroll-card" href="pages/artists/roland-muanga.html">
-        <img src="assets/images/discography/roland-muanga_lifoko-du-ciel-notre-fierte.jpg" alt="Roland Muanga" loading="lazy" decoding="async">
-        <div class="artist-scroll-card__name">Roland Muanga</div>
-      </a>
-      <a class="artist-scroll-card" href="pages/artists/elvie-pambu.html">
-        <img src="assets/images/discography/elvie-pambu.png" alt="Elvie Pambu" loading="lazy" decoding="async">
-        <div class="artist-scroll-card__name">Elvie Pambu</div>
-      </a>
-      <a class="artist-scroll-card" href="pages/artists/john-lusala.html">
-        <img src="assets/images/discography/john-lusala.png" alt="John Lusala" loading="lazy" decoding="async">
-        <div class="artist-scroll-card__name">John Lusala</div>
-      </a>
-      <a class="artist-scroll-card" href="pages/artists/grace-mutombo.html">
-        <img src="assets/images/discography/grace-mutombo.jpg" alt="Pasteur Grâce Mutombo" loading="lazy" decoding="async">
-        <div class="artist-scroll-card__name">Pasteur Grâce Mutombo</div>
-      </a>
-      <a class="artist-scroll-card" href="pages/artists/henri-papa-mulaja.html">
-        <img src="assets/images/discography/henri-papa-mulaja.png" alt="Henri Papa Mulaja" loading="lazy" decoding="async">
-        <div class="artist-scroll-card__name">Henri Papa Mulaja</div>
-      </a>
-      <a class="artist-scroll-card" href="pages/artists/pasteur-lifoko-du-ciel.html">
-        <img src="assets/images/discography/pasteur-lifoko-du-ciel.jpg" alt="Pasteur Lifoko du Ciel" loading="lazy" decoding="async">
-        <div class="artist-scroll-card__name">Pasteur Lifoko du Ciel</div>
-      </a>
-      <a class="artist-scroll-card" href="pages/artists/billy-kabongo.html">
-        <img src="assets/images/discography/billy-kabongo.jpg" alt="Billy Kabongo" loading="lazy" decoding="async">
-        <div class="artist-scroll-card__name">Billy Kabongo</div>
-      </a>
-    </div>
+    <div class="artist-scroll" id="artist-scroll"></div>
   </section>
 
   <!-- JOURNAL -->
@@ -363,18 +330,79 @@
 <script src="js/main.js"></script>
 <script>
 (function(){
-  var track = document.querySelector('.artist-scroll');
-  if (!track || window.matchMedia('(max-width: 820px)').matches) return;
+  var track = document.getElementById('artist-scroll');
+  if (!track) return;
+
+  // Full pool of artists with confirmed real photos. A random subset is
+  // picked and rendered fresh on every page load — see "Nos artistes".
+  var artists = [
+    { name:"Agenors Kabongo", img:"agenors-kabongo.jpeg", href:"pages/artists/agenors-kabongo.html" },
+    { name:"Roland Muanga", img:"roland-muanga_lifoko-du-ciel-notre-fierte.jpg", href:"pages/artists/roland-muanga.html" },
+    { name:"Elvie Pambu", img:"elvie-pambu.png", href:"pages/artists/elvie-pambu.html" },
+    { name:"John Lusala", img:"john-lusala.png", href:"pages/artists/john-lusala.html" },
+    { name:"Pasteur Grâce Mutombo", img:"grace-mutombo.jpg", href:"pages/artists/grace-mutombo.html" },
+    { name:"Henri Papa Mulaja", img:"henri-papa-mulaja.png", href:"pages/artists/henri-papa-mulaja.html" },
+    { name:"Pasteur Lifoko du Ciel", img:"pasteur-lifoko-du-ciel.jpg", href:"pages/artists/pasteur-lifoko-du-ciel.html" },
+    { name:"Billy Kabongo", img:"billy-kabongo.jpg", href:"pages/artists/billy-kabongo.html" },
+    { name:"Dan Ngoy", img:"dan-ngoy.png", href:"pages/artists/dan-ngoy.html" },
+    { name:"Enoch Amisi", img:"enoch-amisi.jpg", href:"pages/artists/enoch-amisi.html" },
+    { name:"Maman Hélène Dikoka", img:"maman-helene-dikoka.png", href:"pages/artists/maman-helene-dikoka.html" },
+    { name:"Nelson Kikem", img:"nelson-kikem.png", href:"pages/artists/nelson-kikem.html" },
+    { name:"Pasteur Billy Tshilenge", img:"pasteur-billy-tshilenge.jpg", href:"pages/artists/pasteur-billy-tshilenge.html" },
+    { name:"Fabrice Mulaja", img:"fabrice-mulaja.jpg", href:"pages/artists/fabrice-mulaja.html" },
+    { name:"Giresse Mafuta", img:"giresse-mafuta.jpeg", href:"pages/artists/giresse-mafuta.html" },
+    { name:"Groupe Pyramide", img:"groupe-pyramide.png", href:"pages/artists/groupe-pyramide.html" },
+    { name:"Trésor Lianza", img:"tresor-lianza.jpg", href:"pages/artists/tresor-lianza.html" },
+    { name:"Jérémie Vase", img:"jeremie-vase.png", href:"pages/artists/jeremie-vase.html" },
+    { name:"Jérémie Dex M", img:"jeremie-dex-m.jpg", href:"pages/artists/jeremie-dex-m.html" },
+    { name:"Sr Bena", img:"sr-bena.jpeg", href:"pages/artists/sr-bena.html" }
+  ];
+
+  // Fisher-Yates shuffle
+  for (var i = artists.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var tmp = artists[i]; artists[i] = artists[j]; artists[j] = tmp;
+  }
+  var picked = artists.slice(0, 8);
+
+  var html = picked.map(function(a){
+    return '<a class="artist-scroll-card" href="' + a.href + '">' +
+      '<img src="assets/images/discography/' + a.img + '" alt="' + a.name + '" loading="lazy" decoding="async">' +
+      '<div class="artist-scroll-card__name">' + a.name + '</div></a>';
+  }).join('');
+  track.innerHTML = html;
+
+  // Clone the rendered set once for a seamless infinite loop.
+  var originalCards = Array.prototype.slice.call(track.children);
+  originalCards.forEach(function(card){
+    var clone = card.cloneNode(true);
+    clone.setAttribute('aria-hidden', 'true');
+    clone.setAttribute('tabindex', '-1');
+    track.appendChild(clone);
+  });
+
   var paused = false;
-  var speed = 0.4;
+  var speed = 0.8;
+  var halfWidth = 0;
+
+  function measure(){
+    halfWidth = track.scrollWidth / 2;
+  }
+  measure();
+  window.addEventListener('resize', measure);
+
   track.addEventListener('mouseenter', function(){ paused = true; });
   track.addEventListener('mouseleave', function(){ paused = false; });
   track.addEventListener('touchstart', function(){ paused = true; }, {passive:true});
+  track.addEventListener('touchend', function(){
+    setTimeout(function(){ paused = false; }, 1500);
+  }, {passive:true});
+
   function tick(){
     if (!paused) {
       track.scrollLeft += speed;
-      if (track.scrollLeft >= track.scrollWidth - track.clientWidth) {
-        track.scrollLeft = 0;
+      if (track.scrollLeft >= halfWidth) {
+        track.scrollLeft -= halfWidth;
       }
     }
     requestAnimationFrame(tick);

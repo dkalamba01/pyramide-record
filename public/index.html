@@ -127,16 +127,19 @@
     .jgrid { grid-template-columns:1fr !important; gap:var(--sp-5) !important; }
   }
 
-  .artist-scroll { display:flex; gap:var(--sp-4); overflow-x:auto; padding-bottom:var(--sp-3); -webkit-overflow-scrolling:touch; }
-  .artist-scroll::-webkit-scrollbar { height:6px; }
-  .artist-scroll::-webkit-scrollbar-thumb { background:transparent; border-radius:3px; transition:background var(--dur) var(--ease); }
-  .artist-scroll:hover::-webkit-scrollbar-thumb { background:var(--hair-2); }
-  .artist-scroll { scrollbar-width:none; }
-  .artist-scroll:hover { scrollbar-width:thin; }
+  .artist-scroll-wrap { position:relative; }
+  .artist-scroll { display:flex; gap:var(--sp-4); overflow-x:auto; padding-bottom:var(--sp-3); -webkit-overflow-scrolling:touch; scrollbar-width:none; -ms-overflow-style:none; }
+  .artist-scroll::-webkit-scrollbar { display:none; }
   .artist-scroll-card { flex:0 0 200px; background:var(--panel); border:1px solid var(--hair); border-radius:var(--r-lg); overflow:hidden; transition:border-color var(--dur) var(--ease), transform var(--dur) var(--ease); }
   .artist-scroll-card:hover { border-color:var(--gold-dim); transform:translateY(-3px); }
   .artist-scroll-card img { width:100%; aspect-ratio:4/5; object-fit:cover; display:block; }
   .artist-scroll-card__name { padding:var(--sp-3); font-family:var(--font-display); font-size:var(--fs-body); color:var(--bone); }
+  .artist-scroll-arrow { position:absolute; top:calc(50% - 18px); transform:translateY(-50%); width:44px; height:44px; border-radius:50%; background:rgba(13,19,28,0.85); border:1px solid var(--hair-2); color:var(--bone); display:flex; align-items:center; justify-content:center; cursor:pointer; z-index:10; transition:background var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease); }
+  .artist-scroll-arrow:hover { background:var(--gold); border-color:var(--gold); color:#0B1017; }
+  .artist-scroll-arrow--prev { left:-14px; }
+  .artist-scroll-arrow--next { right:-14px; }
+  .artist-scroll-arrow svg { width:20px; height:20px; fill:none; stroke:currentColor; stroke-width:2; }
+  @media(max-width:640px){ .artist-scroll-arrow{display:none} }
 </style>
 <link rel="icon" type="image/png" href="assets/images/logo.png">
 <link rel="apple-touch-icon" href="assets/images/logo.png">
@@ -286,7 +289,11 @@
   <!-- ARTISTES -->
   <section class="section wrap reveal">
     <div class="sec-head"><h2 class="h2">Nos artistes</h2><a class="sec-more" href="pages/discography.html">Voir tous les artistes →</a></div>
-    <div class="artist-scroll" id="artist-scroll"></div>
+    <div class="artist-scroll-wrap">
+      <button class="artist-scroll-arrow artist-scroll-arrow--prev" id="artist-scroll-prev" aria-label="Précédent"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></button>
+      <div class="artist-scroll" id="artist-scroll"></div>
+      <button class="artist-scroll-arrow artist-scroll-arrow--next" id="artist-scroll-next" aria-label="Suivant"><svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg></button>
+    </div>
   </section>
 
   <!-- JOURNAL -->
@@ -394,11 +401,29 @@
   measure();
   window.addEventListener('resize', measure);
 
+  track.addEventListener('mouseenter', function(){ paused = true; });
+  track.addEventListener('mouseleave', function(){ paused = false; });
   track.addEventListener('touchstart', function(){ paused = true; }, {passive:true});
   track.addEventListener('touchend', function(){
     clearTimeout(track._resumeTimer);
     track._resumeTimer = setTimeout(function(){ paused = false; }, 1500);
   }, {passive:true});
+
+  var prevBtn = document.getElementById('artist-scroll-prev');
+  var nextBtn = document.getElementById('artist-scroll-next');
+  var cardStep = 216; // card width (200) + gap (16)
+  if (prevBtn) {
+    prevBtn.addEventListener('mouseenter', function(){ paused = true; });
+    prevBtn.addEventListener('click', function(){
+      track.scrollBy({ left: -cardStep, behavior: 'smooth' });
+    });
+  }
+  if (nextBtn) {
+    nextBtn.addEventListener('mouseenter', function(){ paused = true; });
+    nextBtn.addEventListener('click', function(){
+      track.scrollBy({ left: cardStep, behavior: 'smooth' });
+    });
+  }
 
   function tick(){
     if (!paused) {

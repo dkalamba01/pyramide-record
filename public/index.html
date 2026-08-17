@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Pyramide Record — Studio d'enregistrement à Kinshasa</title>
+<title>Pyramid Record — Studio d'enregistrement à Kinshasa</title>
 <meta name="description" content="Studio d'enregistrement, de mixage et de mastering à Kinshasa. Fondé par Leonhel Kabemba, diplômé du programme de Tony Maserati. Le son congolais, à la hauteur du monde.">
-<meta property="og:title" content="Pyramide Record — Le son congolais, à la hauteur du monde">
+<meta property="og:title" content="Pyramid Record — Le son congolais, à la hauteur du monde">
 <meta property="og:description" content="Studio d'enregistrement, mixage et mastering au cœur de Kinshasa.">
 <meta property="og:type" content="website">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -125,7 +125,13 @@
     .form-band__inner { grid-template-columns:1fr; gap:var(--sp-4); }
     .stats__inner .stat { flex:1 0 40%; }
     .jgrid { grid-template-columns:1fr !important; gap:var(--sp-5) !important; }
-  }
+  }  .artist-scroll { display:flex; gap:var(--sp-4); overflow-x:auto; scroll-snap-type:x mandatory; padding-bottom:var(--sp-3); -webkit-overflow-scrolling:touch; }
+  .artist-scroll::-webkit-scrollbar { height:6px; }
+  .artist-scroll::-webkit-scrollbar-thumb { background:var(--hair-2); border-radius:3px; }
+  .artist-scroll-card { flex:0 0 200px; scroll-snap-align:start; background:var(--panel); border:1px solid var(--hair); border-radius:var(--r-lg); overflow:hidden; transition:border-color var(--dur) var(--ease), transform var(--dur) var(--ease); }
+  .artist-scroll-card:hover { border-color:var(--gold-dim); transform:translateY(-3px); }
+  .artist-scroll-card img { width:100%; aspect-ratio:4/5; object-fit:cover; display:block; }
+  .artist-scroll-card__name { padding:var(--sp-3); font-family:var(--font-display); font-size:var(--fs-body); color:var(--bone); }
 </style>
 <link rel="icon" type="image/png" href="assets/images/logo.png">
 <link rel="apple-touch-icon" href="assets/images/logo.png">
@@ -136,7 +142,7 @@
 {
   "@context": "https://schema.org",
   "@type": "MusicVenue",
-  "name": "Pyramide Record",
+  "name": "Pyramid Record",
   "description": "Studio d'enregistrement, de mixage et de mastering à Kinshasa.",
   "url": "https://pyramidrecord.com",
   "telephone": "+243819797568",
@@ -158,7 +164,7 @@
 
 <header class="header">
   <nav class="nav wrap" aria-label="Navigation principale">
-    <a class="nav__logo" href="index.html" aria-label="Pyramide Record — accueil"><img src="assets/images/logo.png" alt="Pyramide Record"></a>
+    <a class="nav__logo" href="index.html" aria-label="Pyramid Record — accueil"><img src="assets/images/logo.png" alt="Pyramid Record"></a>
     <button class="nav__burger" id="burger" aria-label="Ouvrir le menu" aria-expanded="false">
       <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
     </button>
@@ -270,33 +276,54 @@
     -->
   </section>
 
-  <!-- TÉMOIGNAGES — replace with real artist quotes -->
-  <section class="section wrap reveal" style="padding-top:0">
-    <p class="eyebrow">Ils nous font confiance</p>
-    <div class="grid grid--3" style="margin-top:var(--sp-5)">
-      <blockquote class="card" style="border-left:3px solid var(--gold)">
-        <p class="ital" style="color:var(--bone);font-size:var(--fs-lg);line-height:1.5;margin-bottom:var(--sp-3)">« Un son doux, riche et professionnel. Mon projet a pris une autre dimension. »</p>
-        <footer style="color:var(--sand);font-size:var(--fs-sm)">— <span style="color:var(--ember)">Artiste à ajouter</span></footer>
-      </blockquote>
-      <blockquote class="card" style="border-left:3px solid var(--gold)">
-        <p class="ital" style="color:var(--bone);font-size:var(--fs-lg);line-height:1.5;margin-bottom:var(--sp-3)">« L'équipe capture vraiment l'âme de la musique, pas seulement le son. »</p>
-        <footer style="color:var(--sand);font-size:var(--fs-sm)">— <span style="color:var(--ember)">Artiste à ajouter</span></footer>
-      </blockquote>
-      <blockquote class="card" style="border-left:3px solid var(--gold)">
-        <p class="ital" style="color:var(--bone);font-size:var(--fs-lg);line-height:1.5;margin-bottom:var(--sp-3)">« Un niveau international, ici à Kinshasa. Je recommande sans hésiter. »</p>
-        <footer style="color:var(--sand);font-size:var(--fs-sm)">— <span style="color:var(--ember)">Artiste à ajouter</span></footer>
-      </blockquote>
+  <!-- TÉMOIGNAGES — reintroduce once you have 3 real artist quotes to add here -->
+
+  <!-- ARTISTES -->
+  <section class="section wrap reveal">
+    <div class="sec-head"><h2 class="h2">Nos artistes</h2><a class="sec-more" href="pages/discography.html">Voir tous les artistes →</a></div>
+    <div class="artist-scroll">
+      <a class="artist-scroll-card" href="pages/artists/agenors-kabongo.html">
+        <img src="assets/images/discography/agenors-kabongo.jpeg" alt="Agenors Kabongo" loading="lazy" decoding="async">
+        <div class="artist-scroll-card__name">Agenors Kabongo</div>
+      </a>
+      <a class="artist-scroll-card" href="pages/artists/roland-muanga.html">
+        <img src="assets/images/discography/roland-muanga_lifoko-du-ciel-notre-fierte.jpg" alt="Roland Muanga" loading="lazy" decoding="async">
+        <div class="artist-scroll-card__name">Roland Muanga</div>
+      </a>
+      <a class="artist-scroll-card" href="pages/artists/elvie-pambu.html">
+        <img src="assets/images/discography/elvie-pambu.png" alt="Elvie Pambu" loading="lazy" decoding="async">
+        <div class="artist-scroll-card__name">Elvie Pambu</div>
+      </a>
+      <a class="artist-scroll-card" href="pages/artists/john-lusala.html">
+        <img src="assets/images/discography/john-lusala.png" alt="John Lusala" loading="lazy" decoding="async">
+        <div class="artist-scroll-card__name">John Lusala</div>
+      </a>
+      <a class="artist-scroll-card" href="pages/artists/grace-mutombo.html">
+        <img src="assets/images/discography/grace-mutombo.jpg" alt="Pasteur Grâce Mutombo" loading="lazy" decoding="async">
+        <div class="artist-scroll-card__name">Pasteur Grâce Mutombo</div>
+      </a>
+      <a class="artist-scroll-card" href="pages/artists/henri-papa-mulaja.html">
+        <img src="assets/images/discography/henri-papa-mulaja.png" alt="Henri Papa Mulaja" loading="lazy" decoding="async">
+        <div class="artist-scroll-card__name">Henri Papa Mulaja</div>
+      </a>
+      <a class="artist-scroll-card" href="pages/artists/pasteur-lifoko-du-ciel.html">
+        <img src="assets/images/discography/pasteur-lifoko-du-ciel.jpg" alt="Pasteur Lifoko du Ciel" loading="lazy" decoding="async">
+        <div class="artist-scroll-card__name">Pasteur Lifoko du Ciel</div>
+      </a>
+      <a class="artist-scroll-card" href="pages/artists/billy-kabongo.html">
+        <img src="assets/images/discography/billy-kabongo.jpg" alt="Billy Kabongo" loading="lazy" decoding="async">
+        <div class="artist-scroll-card__name">Billy Kabongo</div>
+      </a>
     </div>
-    <p class="muted" style="font-size:var(--fs-xs);margin-top:var(--sp-4)">Remplacez ces témoignages par de vraies citations d'artistes ayant enregistré chez vous.</p>
   </section>
 
   <!-- JOURNAL -->
   <section class="section wrap reveal">
-    <div class="sec-head"><h2 class="h2">Le Blog</h2><a class="sec-more" href="pages/blog.html">11 articles →</a></div>
+    <div class="sec-head"><h2 class="h2">Le Blog</h2><a class="sec-more" href="pages/blog.html">6 articles →</a></div>
     <div class="grid grid--3 jgrid">
-      <a class="jcard" href="pages/blog.html"><div class="jcard__cat">Prise de son</div><div class="jcard__title">Enregistrer la batterie en studio : le guide complet</div></a>
-      <a class="jcard" href="pages/blog.html"><div class="jcard__cat">Mixage</div><div class="jcard__title">Le compresseur : l'arme secrète pour un mix pro</div></a>
-      <a class="jcard" href="pages/blog.html"><div class="jcard__cat">Mastering</div><div class="jcard__title">La touche finale qui transforme votre mix</div></a>
+      <a class="jcard" href="pages/article-octapad.html"><div class="jcard__cat">Prise de son</div><div class="jcard__title">Guide de l'Octapad</div></a>
+      <a class="jcard" href="pages/article-masquage-frequences.html"><div class="jcard__cat">Mixage</div><div class="jcard__title">Le masquage de fréquences</div></a>
+      <a class="jcard" href="pages/article-erreurs-eq.html"><div class="jcard__cat">Mixage</div><div class="jcard__title">5 erreurs d'EQ que font les débutants</div></a>
     </div>
   </section>
 
@@ -317,7 +344,7 @@
   <div class="wrap">
     <div class="footer__grid">
       <div>
-        <div class="footer__logo"><img loading="lazy" decoding="async" src="assets/images/logo.png" alt="Pyramide Record"></div>
+        <div class="footer__logo"><img loading="lazy" decoding="async" src="assets/images/logo.png" alt="Pyramid Record"></div>
         <p class="footer__addr">13ème Rue Limete Industriel, Kinshasa, RD Congo<br>+243 819 797 568 · info@pyramidrecord.com</p>
       </div>
       <div class="footer__socials">
@@ -327,7 +354,7 @@
         <a href="#" aria-label="YouTube"><svg viewBox="0 0 24 24"><path d="M23 12s0-3.5-.45-5.2a2.8 2.8 0 00-2-2C18.9 4.4 12 4.4 12 4.4s-6.9 0-8.55.4a2.8 2.8 0 00-2 2C1 8.5 1 12 1 12s0 3.5.45 5.2a2.8 2.8 0 002 2c1.65.4 8.55.4 8.55.4s6.9 0 8.55-.4a2.8 2.8 0 002-2C23 15.5 23 12 23 12zm-13 3.5v-7l6 3.5z"/></svg></a>
       </div>
     </div>
-    <div class="footer__note">© 2025 Pyramide Record — Tous droits réservés · Kinshasa, RD Congo</div>
+    <div class="footer__note">© 2025 Pyramid Record — Tous droits réservés · Kinshasa, RD Congo</div>
   </div>
 </footer>
 

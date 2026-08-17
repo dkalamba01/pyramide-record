@@ -385,7 +385,7 @@
   });
 
   var paused = false;
-  var speed = 0.3;
+  var speed = 0.5;
   var halfWidth = 0;
 
   function measure(){
@@ -394,11 +394,10 @@
   measure();
   window.addEventListener('resize', measure);
 
-  track.addEventListener('mouseenter', function(){ paused = true; });
-  track.addEventListener('mouseleave', function(){ paused = false; });
   track.addEventListener('touchstart', function(){ paused = true; }, {passive:true});
   track.addEventListener('touchend', function(){
-    setTimeout(function(){ paused = false; }, 1500);
+    clearTimeout(track._resumeTimer);
+    track._resumeTimer = setTimeout(function(){ paused = false; }, 1500);
   }, {passive:true});
 
   function tick(){

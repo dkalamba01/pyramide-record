@@ -636,7 +636,7 @@
       "image": "henri-papa-mulaja_kimbangi.jpg"
     },
     {
-      "title": "Adoration et louange",
+      "title": "Chaque Jour / C'est mon histoire",
       "artist": "Groupe Pyramide",
       "genre": "gospel",
       "type": "studio",
@@ -706,6 +706,15 @@
       "role": "Session live",
       "link": "https://www.youtube.com/watch?v=XGMp5Jad6xs",
       "image": "mike-flor-mulumba_adorer-malgre-tout-ministries.jpg"
+    },
+    {
+      "title": "Celebration Toda Raba - Aujourd'hui / Si C'est Toi / Toda Raba / Ma Signature / Beulah",
+      "artist": "Pasteur Lifoko du Ciel",
+      "genre": "gospel",
+      "type": "live",
+      "role": "Captation · Mastering",
+      "link": "https://youtu.be/lib39vLWmbc",
+      "image": "pasteur-lifoko-du-ciel_celebration-toda-raba.jpg"
     }
   ]
 }

@@ -3,9 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Grace Mutombo — Pyramide Record</title>
-<meta name="description" content="Découvrez Pasteur Grâce Mutombo, chanteur gospel congolais et conducteur du Tabernacle Sublime, ayant enregistré chez Pyramide Record.">
-<!-- Artist bio page — built from artists/_template.html -->
+<title>Pasteur Lifoko du Ciel — Pyramide Record</title>
+<meta name="description" content="Découvrez Pasteur Simon-Pierre Lifoko du Ciel, figure influente du gospel congolais, ayant enregistré chez Pyramide Record.">
+<!--
+  Artist bio page — built from artists/_template.html
+  No photo provided yet — placeholder box used until one is
+  available. Bio kept minimal (no detailed biographical research
+  provided yet, beyond his connection to Roland Muanga's tribute
+  medley). Never states deceased status — not confirmed.
+-->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;1,9..144,400;1,9..144,500&family=Archivo:wght@400;500;600&display=swap" rel="stylesheet">
@@ -45,26 +51,29 @@
     <div class="bio-layout" style="margin-top:var(--sp-5)">
 
       <aside class="bio-photo">
-        <img src="../../assets/images/discography/grace-mutombo.jpg" alt="Grace Mutombo" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover">
+        <!-- REPLACE with a real photo of the artist: pasteur-lifoko-du-ciel.jpg -->
+        <div class="ph" style="width:100%;height:100%"><small>Photo · Pasteur Lifoko du Ciel</small></div>
       </aside>
 
       <div>
         <div class="bio-tags">
           <span class="chip chip--gold">Gospel</span>
         </div>
-        <h1 class="bio-name">Grace Mutombo</h1>
+        <h1 class="bio-name">Pasteur Lifoko du Ciel</h1>
 
         <div class="bio-text">
-          <p><strong>Pasteur Grâce Mutombo Onga</strong> est un chanteur, auteur-compositeur gospel congolais et pasteur principal du Tabernacle Sublime à Kinshasa. Il commence à chanter dès l'âge de 5 ans, interprétant des morceaux de ministres établis comme le pasteur Lifoko du Ciel, avant d'écrire sa toute première composition, « Wadiesa », à l'âge de 10 ans lors de l'école du dimanche.</p>
+          <p><strong>Pasteur Simon-Pierre Lifoko du Ciel</strong>, né le 21 juin 1967 à Kinshasa, est l'une des figures les plus influentes de la musique chrétienne d'Afrique centrale. Il commence à prêcher en 1989 sous la conduite du pasteur Bruno Mbabu, à Boma, avant de conjuguer son ministère avec un talent d'écriture musicale reconnu.</p>
 
-          <p>Son album de percée <em>Ç'a été difficile</em> (2016), sorti après deux tentatives studio précédentes infructueuses, a connu des millions d'écoutes en ligne. Il est également connu pour des titres largement diffusés comme « Cris de l'âme », « Il y a une main », « A chacun son chapitre » et « Quand la foi se lance ». Il mène régulièrement des campagnes de réveil à travers l'Afrique centrale, souvent aux côtés d'autres ministres.</p>
+          <p>Il dirige aujourd'hui deux congrégations — le Tabernacle Rouge Gorge à Pointe-Noire et le Tabernacle Lys à Lubumbashi. En 2004, il est désigné Meilleur Chanteur Chrétien Congolais par le comité des TBT Awards. En juin 2013, il célèbre ses 30 ans de carrière lors d'un concert marquant au Stade Tata Raphaël de Kinshasa.</p>
 
-          <p>Son titre « Ngolu », interprété aux côtés d'<a class="link" href="enoch-amisi.html">Enoch Amisi</a>, a été produit chez <strong>Pyramide Record</strong>.</p>
+          <p>Parmi ses titres les plus reconnus figurent « Nkolo Oyebi Motema Na Ngai », « Je n'ai Jamais Vu », « Un Jour Sur Le Chemin », « Amour » et « Conclusion », ainsi que des albums marquants comme <em>Le Patron lui-même</em> (2007), <em>Dieu au féminin</em> (2009), <em>Ma signature</em> (2014) et <em>Le fils prodigue</em> (2019).</p>
+
+          <p>Sa carrière a inspiré un hommage de <a class="link" href="roland-muanga.html">Roland Muanga</a>, « Lifoko du Ciel Notre Fierté », produit chez <strong>Pyramide Record</strong>.</p>
         </div>
 
         <div class="bio-releases">
           <h2>Productions chez Pyramide Record</h2>
-          <div class="bio-release-item"><span class="bio-release-item__left"><img class="bio-release-item__thumb" src="../../assets/images/discography/enoch-amisi_ngolu.jpg" alt="" loading="lazy"><span>Ngolu <span style="color:var(--ash)">(feat. Enoch Amisi)</span></span></span><span class="role">Enregistrement · Mixage<a class="bio-release-listen" href="https://www.youtube.com/watch?v=Gq3d8_rs_ys" target="_blank" rel="noopener">Écouter →</a></span></div>
+          <div class="bio-release-item"><span class="bio-release-item__left"><div class="ph" style="width:44px;height:44px;flex-shrink:0"></div><span>Celebration Toda Raba <span style="color:var(--ash)">(Aujourd'hui / Si C'est Toi / Toda Raba / Ma Signature / Beulah)</span></span></span><span class="role">Session live<a class="bio-release-listen" href="https://youtu.be/lib39vLWmbc" target="_blank" rel="noopener">Écouter →</a></span></div>
         </div>
       </div>
 
@@ -86,6 +95,8 @@
 
 <script src="../../js/main.js"></script>
 
+<!-- Inline media player overlay — clicking "Écouter" plays the video
+     here instead of navigating away. Same pattern as discography.html. -->
 <div class="media-overlay" id="media-overlay">
   <div class="media-overlay__inner">
     <button class="media-overlay__close" id="media-close" aria-label="Fermer le lecteur">

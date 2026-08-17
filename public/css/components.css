@@ -226,6 +226,26 @@
 .nav__burger { display: none; background: none; border: 0; color: var(--bone); cursor: pointer; width: 28px; height: 28px; }
 .nav__burger svg { width: 26px; height: 26px; stroke: var(--bone); }
 
+/* ------------------------------------------------------------
+   NAV DROPDOWN ("Plus ▾") — groups secondary links so the
+   primary nav doesn't overflow on smaller desktop widths.
+   ------------------------------------------------------------ */
+.nav__dropdown { position: relative; }
+.nav__dropdown-toggle { background: none; border: 0; display: flex; align-items: center; gap: 4px; cursor: pointer; font: inherit; }
+.nav__dropdown-toggle svg { width: 12px; height: 12px; stroke: currentColor; fill: none; stroke-width: 2; transition: transform var(--dur-fast) var(--ease); }
+.nav__dropdown-menu { position: absolute; top: 100%; left: 0; margin-top: 14px; background: var(--panel); border: 1px solid var(--hair-2); border-radius: var(--r-lg); padding: 8px; min-width: 190px; opacity: 0; visibility: hidden; transform: translateY(-6px); transition: opacity var(--dur-fast) var(--ease), transform var(--dur-fast) var(--ease), visibility var(--dur-fast); z-index: 50; }
+.nav__dropdown:hover .nav__dropdown-menu,
+.nav__dropdown.is-open .nav__dropdown-menu { opacity: 1; visibility: visible; transform: translateY(0); }
+.nav__dropdown:hover .nav__dropdown-toggle svg,
+.nav__dropdown.is-open .nav__dropdown-toggle svg { transform: rotate(180deg); }
+.nav__dropdown-link { display: block; padding: 9px 12px; font-size: var(--fs-xs); letter-spacing: var(--ls-wide); text-transform: uppercase; color: var(--sand); border-radius: 6px; transition: background var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease); }
+.nav__dropdown-link:hover { background: var(--hair); color: var(--bone); }
+
+@media (max-width: 900px) {
+  .nav__dropdown-menu { position: static; opacity: 1; visibility: visible; transform: none; background: none; border: 0; padding: 0; margin-top: var(--sp-2); display: flex; flex-direction: column; gap: var(--sp-2); min-width: 0; }
+  .nav__dropdown-toggle svg { display: none; }
+}
+
 @media (max-width: 900px) {
   .nav__menu {
     display: none;

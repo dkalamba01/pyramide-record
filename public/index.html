@@ -178,14 +178,23 @@
     </button>
     <div class="nav__menu" id="menu">
       <a class="nav__link" href="pages/studio.html">Studio</a>
-      <a class="nav__link" href="pages/services.html">Services</a>
       <a class="nav__link" href="pages/discography.html">Discographie</a>
       <a class="nav__link" href="pages/promo.html">Nos Artistes</a>
-      <a class="nav__link" href="pages/academy.html">Academy</a>
-      <a class="nav__link" href="pages/gallery.html">Galerie</a>
-      <a class="nav__link" href="pages/shop.html">Boutique</a>
-      <a class="nav__link" href="pages/about.html">À&nbsp;Propos</a>
       <a class="nav__link" href="pages/blog.html">Blog</a>
+      <div class="nav__dropdown" id="nav-more">
+        <button class="nav__link nav__dropdown-toggle" aria-expanded="false" aria-haspopup="true">
+          Plus <svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+        <div class="nav__dropdown-menu">
+          <a class="nav__dropdown-link" href="pages/services.html">Services</a>
+          <a class="nav__dropdown-link" href="pages/academy.html">Academy</a>
+          <a class="nav__dropdown-link" href="pages/gallery.html">Galerie</a>
+          <a class="nav__dropdown-link" href="pages/shop.html">Boutique</a>
+          <a class="nav__dropdown-link" href="pages/about.html">À Propos</a>
+          <a class="nav__dropdown-link" href="pages/portal.html">Espace Client</a>
+          <a class="nav__dropdown-link" href="pages/contact.html">Contact</a>
+        </div>
+      </div>
       <a class="nav__cta" href="pages/booking.html">Réserver</a>
     </div>
   </nav>
@@ -317,6 +326,20 @@
     </div>
   </div>
 
+  <!-- WHATSAPP LEAD CAPTURE BAND -->
+  <div class="form-band reveal" style="border-top:none">
+    <div class="form-band__inner wrap">
+      <div>
+        <div class="form-band__title">Restez informé</div>
+        <div class="form-band__sub">Recevez nos guides gratuits et soyez averti des nouvelles sorties — directement sur WhatsApp.</div>
+      </div>
+      <a class="btn btn--ghost" href="https://wa.me/243819797568?text=Bonjour%2C%20je%20souhaite%20recevoir%20les%20mises%20%C3%A0%20jour%20de%20Pyramide%20Record." target="_blank" rel="noopener">
+        <svg style="width:16px;height:16px;fill:currentColor;margin-right:6px;vertical-align:-3px" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12c0 1.85.5 3.58 1.38 5.07L2 22l5.07-1.33A9.96 9.96 0 0012 22c5.52 0 10-4.48 10-10S17.52 2 12 2zm5.2 14.2c-.22.62-1.28 1.18-1.76 1.24-.45.06-.9.24-3.03-.63-2.55-1.06-4.2-3.63-4.33-3.8-.13-.17-1.03-1.37-1.03-2.6 0-1.23.65-1.84.88-2.09.23-.25.5-.31.67-.31l.48.01c.15 0 .36-.06.56.43.22.55.74 1.9.8 2.04.06.14.1.3.02.48-.08.18-.12.29-.25.44-.13.15-.27.34-.38.46-.13.13-.26.27-.11.53.15.26.67 1.1 1.43 1.78.98.87 1.81 1.14 2.08 1.27.27.13.42.11.58-.07.15-.18.65-.76.83-1.02.18-.26.35-.22.6-.13.24.09 1.55.73 1.82.87.27.13.44.2.51.31.07.11.07.65-.15 1.27z"/></svg>
+        Rejoindre sur WhatsApp
+      </a>
+    </div>
+  </div>
+
 </main>
 
 <footer class="footer">
@@ -338,6 +361,24 @@
 </footer>
 
 <script src="js/main.js"></script>
+<script>
+(function(){
+  var dropdown = document.getElementById('nav-more');
+  if (!dropdown) return;
+  var toggle = dropdown.querySelector('.nav__dropdown-toggle');
+  toggle.addEventListener('click', function(e){
+    e.stopPropagation();
+    var open = dropdown.classList.toggle('is-open');
+    toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+  document.addEventListener('click', function(e){
+    if (!dropdown.contains(e.target)) {
+      dropdown.classList.remove('is-open');
+      toggle.setAttribute('aria-expanded', 'false');
+    }
+  });
+})();
+</script>
 <script>
 (function(){
   var track = document.getElementById('artist-scroll');

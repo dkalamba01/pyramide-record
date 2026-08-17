@@ -129,7 +129,10 @@
 
   .artist-scroll { display:flex; gap:var(--sp-4); overflow-x:auto; padding-bottom:var(--sp-3); -webkit-overflow-scrolling:touch; }
   .artist-scroll::-webkit-scrollbar { height:6px; }
-  .artist-scroll::-webkit-scrollbar-thumb { background:var(--hair-2); border-radius:3px; }
+  .artist-scroll::-webkit-scrollbar-thumb { background:transparent; border-radius:3px; transition:background var(--dur) var(--ease); }
+  .artist-scroll:hover::-webkit-scrollbar-thumb { background:var(--hair-2); }
+  .artist-scroll { scrollbar-width:none; }
+  .artist-scroll:hover { scrollbar-width:thin; }
   .artist-scroll-card { flex:0 0 200px; background:var(--panel); border:1px solid var(--hair); border-radius:var(--r-lg); overflow:hidden; transition:border-color var(--dur) var(--ease), transform var(--dur) var(--ease); }
   .artist-scroll-card:hover { border-color:var(--gold-dim); transform:translateY(-3px); }
   .artist-scroll-card img { width:100%; aspect-ratio:4/5; object-fit:cover; display:block; }
@@ -382,7 +385,7 @@
   });
 
   var paused = false;
-  var speed = 0.8;
+  var speed = 0.3;
   var halfWidth = 0;
 
   function measure(){

@@ -38,7 +38,7 @@
 
 .btn--ghost {
   --btn-bg: transparent;
-  --btn-fg: var(--blue);
+  --btn-fg: var(--gold-bright);
   border-color: var(--gold-dim);
 }
 .btn--ghost:hover { background: var(--blue); color: #0B1017; border-color: var(--blue); }
@@ -223,6 +223,8 @@
   transition: background var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease);
 }
 .nav__cta:hover { background: var(--blue); color: #0B1017; }
+.nav__burger { display: none; background: none; border: 0; color: var(--bone); cursor: pointer; width: 28px; height: 28px; }
+.nav__burger svg { width: 26px; height: 26px; stroke: var(--bone); }
 
 /* ------------------------------------------------------------
    NAV ACCOUNT ("Espace Client") — kept visible in primary nav,
@@ -247,8 +249,31 @@
   .nav__account span { display: none; }
   .nav__account { padding: 8px; }
 }
-.nav__burger { display: none; background: none; border: 0; color: var(--bone); cursor: pointer; width: 28px; height: 28px; }
-.nav__burger svg { width: 26px; height: 26px; stroke: var(--bone); }
+
+/* ------------------------------------------------------------
+   NAV THEME TOGGLE — day/night switch. Icon visibility mirrors
+   the exact same adaptive/explicit cascade used for the color
+   tokens in tokens.css, so no JS is needed to pick the icon.
+   ------------------------------------------------------------ */
+.nav__theme-toggle {
+  display: flex; align-items: center; justify-content: center;
+  width: 34px; height: 34px;
+  border: 1px solid var(--hair-2); border-radius: 50%;
+  background: none; color: var(--sand); cursor: pointer;
+  transition: color var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease);
+}
+.nav__theme-toggle:hover { color: var(--bone); border-color: var(--gold-dim); }
+.nav__theme-toggle svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 1.8; }
+.nav__theme-icon-moon { display: block; }
+.nav__theme-icon-sun { display: none; }
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="night"]) .nav__theme-icon-moon { display: none; }
+  :root:not([data-theme="night"]) .nav__theme-icon-sun { display: block; }
+}
+:root[data-theme="day"] .nav__theme-icon-moon { display: none; }
+:root[data-theme="day"] .nav__theme-icon-sun { display: block; }
+:root[data-theme="night"] .nav__theme-icon-moon { display: block; }
+:root[data-theme="night"] .nav__theme-icon-sun { display: none; }
 
 /* ------------------------------------------------------------
    NAV DROPDOWN ("Plus ▾") — groups secondary links so the

@@ -136,3 +136,35 @@
   window.addEventListener('blur', function () { setTimeout(snapHorizontalScroll, 50); });
   window.addEventListener('focus', function () { setTimeout(snapHorizontalScroll, 50); });
 })();
+
+/* ============================================================
+   DAY/NIGHT THEME TOGGLE — append to the END of js/main.js
+   ------------------------------------------------------------
+   The color swap itself is pure CSS (tokens.css handles both
+   the adaptive prefers-color-scheme case and the explicit
+   data-theme override — see that file's DAY MODE section).
+   This script only needs to:
+     1. Persist an explicit choice to localStorage so it
+        survives navigation and future visits.
+     2. Flip the data-theme attribute on click.
+   A blocking inline script in <head> (added to every page)
+   already re-applies any saved explicit choice before first
+   paint, so there's no flash of the wrong theme on load.
+   ============================================================ */
+(function () {
+  var toggle = document.getElementById('theme-toggle');
+  if (!toggle) return;
+
+  function effectiveTheme() {
+    var explicit = document.documentElement.getAttribute('data-theme');
+    if (explicit === 'day' || explicit === 'night') return explicit;
+    var prefersLight = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
+    return prefersLight ? 'day' : 'night';
+  }
+
+  toggle.addEventListener('click', function () {
+    var next = effectiveTheme() === 'day' ? 'night' : 'day';
+    document.documentElement.setAttribute('data-theme', next);
+    try { localStorage.setItem('pr-theme', next); } catch (e) {}
+  });
+})();

@@ -92,6 +92,96 @@
 }
 
 /* ============================================================
+   DAY MODE
+   Base :root above is the NIGHT palette (default). The rules
+   below layer on top of it in two ways:
+     1. Adaptive — if the browser/OS reports a light color
+        scheme AND the person hasn't made an explicit choice on
+        this site, day-mode values apply automatically.
+     2. Explicit — a manual toggle sets data-theme="day" or
+        data-theme="night" on <html> (persisted in
+        localStorage), which always wins over the OS setting.
+   Same variable names throughout, so every existing component
+   that already reads var(--x) adapts with zero markup changes.
+   ============================================================ */
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="night"]) {
+    --obsidian:      #F7F5F0;
+    --panel:         #FFFFFF;
+    --panel-2:       #F1EDE4;
+    --panel-3:       #E3DDD0;
+    --gold:          #2D6690;
+    --gold-bright:   #245576;
+    --gold-deep:     #1F4C6B;
+    --gold-dim:      #C7D6E2;
+    --steel-deepest: #DCE7F0;
+    --ember:         #B4711F;
+    --ember-deep:    #8A5416;
+    --crimson:       #C23D2E;
+    --crimson-bright:#D8503F;
+    --bone:          #1C232E;
+    --sand:          #57626E;
+    --ash:           #838C96;
+    --hair:          #E7E2D6;
+    --hair-2:        #D8D1C1;
+    --success:       #1F8F68;
+    --whatsapp-bg:   #DCF3E4;
+    --shadow-card: 0 1px 0 rgba(0,0,0,0.03) inset;
+    --focus-ring: 0 0 0 2px var(--obsidian), 0 0 0 4px var(--gold);
+  }
+}
+
+:root[data-theme="day"] {
+  --obsidian:      #F7F5F0;
+  --panel:         #FFFFFF;
+  --panel-2:       #F1EDE4;
+  --panel-3:       #E3DDD0;
+  --gold:          #2D6690;
+  --gold-bright:   #245576;
+  --gold-deep:     #1F4C6B;
+  --gold-dim:      #C7D6E2;
+  --steel-deepest: #DCE7F0;
+  --ember:         #B4711F;
+  --ember-deep:    #8A5416;
+  --crimson:       #C23D2E;
+  --crimson-bright:#D8503F;
+  --bone:          #1C232E;
+  --sand:          #57626E;
+  --ash:           #838C96;
+  --hair:          #E7E2D6;
+  --hair-2:        #D8D1C1;
+  --success:       #1F8F68;
+  --whatsapp-bg:   #DCF3E4;
+  --shadow-card: 0 1px 0 rgba(0,0,0,0.03) inset;
+  --focus-ring: 0 0 0 2px var(--obsidian), 0 0 0 4px var(--gold);
+}
+
+:root[data-theme="night"] {
+  --obsidian:      #0D131C;
+  --panel:         #141D28;
+  --panel-2:       #1D2A38;
+  --panel-3:       #26374A;
+  --gold:          #3A78A6;
+  --gold-bright:   #5EA3D0;
+  --gold-deep:     #6BAEDB;
+  --gold-dim:      #2E5578;
+  --steel-deepest: #22384D;
+  --ember:         #E8A552;
+  --ember-deep:    #C9822F;
+  --crimson:       #CE4436;
+  --crimson-bright:#E45B4B;
+  --bone:          #F0EBE1;
+  --sand:          #9AA7B6;
+  --ash:           #5E6A78;
+  --hair:          #1E2A38;
+  --hair-2:        #2A3B4F;
+  --success:       #5DCAA5;
+  --whatsapp-bg:   #1F4D3A;
+  --shadow-card: 0 1px 0 rgba(255,255,255,0.02) inset;
+  --focus-ring: 0 0 0 2px var(--obsidian), 0 0 0 4px var(--blue);
+}
+
+/* ============================================================
    RESET
    ============================================================ */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -107,6 +197,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
+  transition: background var(--dur) var(--ease), color var(--dur) var(--ease);
 }
 img, svg, video { display: block; max-width: 100%; }
 a { color: inherit; text-decoration: none; }

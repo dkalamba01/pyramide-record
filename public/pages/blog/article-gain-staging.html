@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="fr">
+<script>(function(){try{var t=localStorage.getItem('pr-theme');if(t==='day'||t==='night'){document.documentElement.setAttribute('data-theme',t);}}catch(e){}})();</script>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -49,12 +50,25 @@
       <a class="nav__link" href="../studio.html">Studio</a>
       <a class="nav__link" href="../services.html">Services</a>
       <a class="nav__link" href="../discography.html">Discographie</a>
+      <a class="nav__link" href="../promo.html">Nos Artistes</a>
       <a class="nav__link" href="../academy.html">Academy</a>
-      <a class="nav__link" href="../gallery.html">Galerie</a>
-      <a class="nav__link" href="../shop.html">Boutique</a>
-      <a class="nav__link" href="../about.html">À&nbsp;Propos</a>
       <a class="nav__link" href="../blog.html" aria-current="page">Blog</a>
-      <a class="nav__link" href="../portal.html">Espace&nbsp;Client</a>
+      <div class="nav__dropdown" id="nav-more">
+        <button class="nav__link nav__dropdown-toggle" aria-expanded="false" aria-haspopup="true">
+          Plus <svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+        <div class="nav__dropdown-menu">
+          <a class="nav__dropdown-link" href="../gallery.html">Galerie</a>
+          <a class="nav__dropdown-link" href="../shop.html">Boutique</a>
+          <a class="nav__dropdown-link" href="../about.html">À Propos</a>
+          <a class="nav__dropdown-link" href="../contact.html">Contact</a>
+        </div>
+      </div>
+      <a class="nav__link nav__account" href="../portal.html"><svg class="nav__account-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 12a4.5 4.5 0 100-9 4.5 4.5 0 000 9zm-7 9c0-3.6 3.5-6.2 7-6.2s7 2.6 7 6.2"/></svg><span>Espace Client</span></a>
+      <button class="nav__theme-toggle" id="theme-toggle" type="button" aria-label="Basculer entre le mode jour et nuit">
+        <svg class="nav__theme-icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 12.5A9 9 0 1111.5 3 7 7 0 0021 12.5z"/></svg>
+        <svg class="nav__theme-icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2.5M12 19.5V22M4.2 4.2l1.8 1.8M18 18l1.8 1.8M2 12h2.5M19.5 12H22M4.2 19.8L6 18M18 6l1.8-1.8"/></svg>
+      </button>
       <a class="nav__cta" href="../booking.html">Réserver</a>
     </div>
   </nav>
@@ -120,5 +134,23 @@
 </footer>
 
 <script src="../../js/main.js"></script>
+<script>
+(function(){
+  var dropdown = document.getElementById('nav-more');
+  if (!dropdown) return;
+  var toggle = dropdown.querySelector('.nav__dropdown-toggle');
+  toggle.addEventListener('click', function(e){
+    e.stopPropagation();
+    var open = dropdown.classList.toggle('is-open');
+    toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+  document.addEventListener('click', function(e){
+    if (!dropdown.contains(e.target)) {
+      dropdown.classList.remove('is-open');
+      toggle.setAttribute('aria-expanded', 'false');
+    }
+  });
+})();
+</script>
 </body>
 </html>

@@ -223,6 +223,30 @@
   transition: background var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease);
 }
 .nav__cta:hover { background: var(--blue); color: #0B1017; }
+
+/* ------------------------------------------------------------
+   NAV ACCOUNT ("Espace Client") — kept visible in primary nav,
+   styled distinctly from plain text links so it reads as an
+   account/login affordance rather than a marketing page link.
+   ------------------------------------------------------------ */
+.nav__account {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border: 1px solid var(--hair-2);
+  border-radius: var(--r-sm);
+  color: var(--sand) !important;
+}
+.nav__account:hover, .nav__account[aria-current="page"] {
+  color: var(--bone) !important;
+  border-color: var(--gold-dim);
+}
+.nav__account-icon { width: 15px; height: 15px; flex-shrink: 0; }
+@media (max-width: 1080px) {
+  .nav__account span { display: none; }
+  .nav__account { padding: 8px; }
+}
 .nav__burger { display: none; background: none; border: 0; color: var(--bone); cursor: pointer; width: 28px; height: 28px; }
 .nav__burger svg { width: 26px; height: 26px; stroke: var(--bone); }
 

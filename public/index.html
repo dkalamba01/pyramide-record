@@ -129,7 +129,7 @@
   }
 
   .artist-scroll-wrap { position:relative; }
-  .artist-scroll { display:flex; gap:var(--sp-4); overflow-x:auto; padding-bottom:var(--sp-3); -webkit-overflow-scrolling:touch; scrollbar-width:none; -ms-overflow-style:none; }
+  .artist-scroll { display:flex; gap:var(--sp-4); overflow-x:auto; padding-bottom:var(--sp-3); scrollbar-width:none; -ms-overflow-style:none; }
   .artist-scroll::-webkit-scrollbar { display:none; }
   .artist-scroll-card { flex:0 0 200px; background:var(--panel); border:1px solid var(--hair); border-radius:var(--r-lg); overflow:hidden; transition:border-color var(--dur) var(--ease), transform var(--dur) var(--ease); }
   .artist-scroll-card:hover { border-color:var(--gold-dim); transform:translateY(-3px); }
@@ -438,6 +438,7 @@
   });
 
   var paused = false;
+  var autoScrolling = false;
   var speed = 0.5;
   var halfWidth = 0;
 
@@ -449,10 +450,16 @@
 
   track.addEventListener('mouseenter', function(){ paused = true; });
   track.addEventListener('mouseleave', function(){ paused = false; });
-  track.addEventListener('touchstart', function(){ paused = true; }, {passive:true});
-  track.addEventListener('touchend', function(){
+
+  // Only pause for scroll movement the user actually caused (dragging the
+  // track, or the arrow buttons) - not for a finger simply passing over the
+  // carousel while scrolling the page vertically, which was pausing this
+  // permanently on mobile before.
+  track.addEventListener('scroll', function(){
+    if (autoScrolling) return;
+    paused = true;
     clearTimeout(track._resumeTimer);
-    track._resumeTimer = setTimeout(function(){ paused = false; }, 1500);
+    track._resumeTimer = setTimeout(function(){ paused = false; }, 2500);
   }, {passive:true});
 
   var prevBtn = document.getElementById('artist-scroll-prev');
@@ -473,10 +480,12 @@
 
   function tick(){
     if (!paused) {
+      autoScrolling = true;
       track.scrollLeft += speed;
       if (track.scrollLeft >= halfWidth) {
         track.scrollLeft -= halfWidth;
       }
+      autoScrolling = false;
     }
     requestAnimationFrame(tick);
   }

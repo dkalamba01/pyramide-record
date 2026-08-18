@@ -75,17 +75,25 @@
   <nav class="nav wrap" aria-label="Navigation principale">
     <a class="nav__logo" href="../index.html" aria-label="Pyramide Record — accueil"><img src="../assets/images/logo.png" alt="Pyramide Record"></a>
     <button class="nav__burger" id="burger" aria-label="Ouvrir le menu" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
-    <div class="nav__menu" id="menu">
+        <div class="nav__menu" id="menu">
       <a class="nav__link" href="studio.html">Studio</a>
-      <a class="nav__link" href="services.html">Services</a>
       <a class="nav__link" href="discography.html">Discographie</a>
       <a class="nav__link" href="promo.html">Nos Artistes</a>
-      <a class="nav__link" href="academy.html">Academy</a>
-      <a class="nav__link" href="gallery.html">Galerie</a>
-      <a class="nav__link" href="shop.html">Boutique</a>
-      <a class="nav__link" href="about.html" aria-current="page">À&nbsp;Propos</a>
       <a class="nav__link" href="blog.html">Blog</a>
-      <a class="nav__link" href="portal.html">Espace&nbsp;Client</a>
+      <div class="nav__dropdown is-current" id="nav-more">
+        <button class="nav__link nav__dropdown-toggle" aria-expanded="false" aria-haspopup="true">
+          Plus <svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+        <div class="nav__dropdown-menu">
+          <a class="nav__dropdown-link" href="services.html">Services</a>
+          <a class="nav__dropdown-link" href="academy.html">Academy</a>
+          <a class="nav__dropdown-link" href="gallery.html">Galerie</a>
+          <a class="nav__dropdown-link" href="shop.html">Boutique</a>
+          <a class="nav__dropdown-link" href="about.html" aria-current="page">À Propos</a>
+          <a class="nav__dropdown-link" href="portal.html">Espace Client</a>
+          <a class="nav__dropdown-link" href="contact.html">Contact</a>
+        </div>
+      </div>
       <a class="nav__cta" href="booking.html">Réserver</a>
     </div>
   </nav>
@@ -100,15 +108,15 @@
   <section class="section-sm wrap">
     <div class="story-layout">
       <div class="story reveal">
-        <p><strong>Pyramid Record</strong> est l'idée originale de son fondateur, <strong>Leonhel Kabemba</strong>, dont la vie a été transformée par son père, lui-même musicien, qui lui a appris le piano dès son plus jeune âge. Grâce à un processus d'apprentissage rigoureux, il a découvert tous les aspects de la musique, du solfège à la production musicale, élargissant ainsi ses connaissances et ses compétences.</p>
+        <p><strong>Pyramide Record</strong> est l'idée originale de son fondateur, <strong>Leonhel Kabemba</strong>, dont la vie a été transformée par son père, lui-même musicien, qui lui a appris le piano dès son plus jeune âge. Grâce à un processus d'apprentissage rigoureux, il a découvert tous les aspects de la musique, du solfège à la production musicale, élargissant ainsi ses connaissances et ses compétences.</p>
 
         <p>En <span class="yr">2021</span>, il a obtenu son diplôme avec mention du programme de formation de la légende du mixage sonore, <strong>Tony Maserati</strong>. Fort d'un portefeuille musical déjà impressionnant, Leon a élargi sa gamme de compétences pour atteindre un niveau supérieur — un niveau que peu d'ingénieurs du son ont atteint. Il continue aujourd'hui à se former régulièrement auprès de ce même programme, afin de rester constamment aligné sur les standards les plus exigeants du mixage international.</p>
 
         <div class="pull">« Après avoir acquis une maîtrise de la musique à un niveau international, c'est en 2022 que Leon est sorti de l'ombre. »</div>
 
-        <p>Il a étendu sa portée d'un public local et national à une échelle internationale. Il a méticuleusement choisi une équipe stratégique pour gérer les affaires et l'aspect technique de Pyramid Record, puis l'a formée intensivement à la maîtrise du métier d'ingénieur du son.</p>
+        <p>Il a étendu sa portée d'un public local et national à une échelle internationale. Il a méticuleusement choisi une équipe stratégique pour gérer les affaires et l'aspect technique de Pyramide Record, puis l'a formée intensivement à la maîtrise du métier d'ingénieur du son.</p>
 
-        <p>Chez Pyramid Record, nous embrassons et incarnons tous la vision de notre fondateur. Nous nous efforçons toujours d'obtenir le meilleur, et nous ne nous contentons de rien de moins. Nous sommes très enthousiastes quant à l'avenir qui nous attend.</p>
+        <p>Chez Pyramide Record, nous embrassons et incarnons tous la vision de notre fondateur. Nous nous efforçons toujours d'obtenir le meilleur, et nous ne nous contentons de rien de moins. Nous sommes très enthousiastes quant à l'avenir qui nous attend.</p>
 
         <p class="closing">Venez en faire partie — <strong>votre son ne sera plus jamais le même.</strong></p>
       </div>
@@ -204,5 +212,23 @@
 </footer>
 
 <script src="../js/main.js"></script>
+<script>
+(function(){
+  var dropdown = document.getElementById('nav-more');
+  if (!dropdown) return;
+  var toggle = dropdown.querySelector('.nav__dropdown-toggle');
+  toggle.addEventListener('click', function(e){
+    e.stopPropagation();
+    var open = dropdown.classList.toggle('is-open');
+    toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+  document.addEventListener('click', function(e){
+    if (!dropdown.contains(e.target)) {
+      dropdown.classList.remove('is-open');
+      toggle.setAttribute('aria-expanded', 'false');
+    }
+  });
+})();
+</script>
 </body>
 </html>

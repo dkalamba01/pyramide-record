@@ -126,6 +126,20 @@
     .stats__inner .stat { flex:1 0 40%; }
     .jgrid { grid-template-columns:1fr !important; gap:var(--sp-5) !important; }
   }
+
+  .artist-scroll-wrap { position:relative; }
+  .artist-scroll { display:flex; gap:var(--sp-4); overflow-x:auto; padding-bottom:var(--sp-3); -webkit-overflow-scrolling:touch; scrollbar-width:none; -ms-overflow-style:none; }
+  .artist-scroll::-webkit-scrollbar { display:none; }
+  .artist-scroll-card { flex:0 0 200px; background:var(--panel); border:1px solid var(--hair); border-radius:var(--r-lg); overflow:hidden; transition:border-color var(--dur) var(--ease), transform var(--dur) var(--ease); }
+  .artist-scroll-card:hover { border-color:var(--gold-dim); transform:translateY(-3px); }
+  .artist-scroll-card img { width:100%; aspect-ratio:4/5; object-fit:cover; display:block; }
+  .artist-scroll-card__name { padding:var(--sp-3); font-family:var(--font-display); font-size:var(--fs-body); color:var(--bone); }
+  .artist-scroll-arrow { position:absolute; top:calc(50% - 18px); transform:translateY(-50%); width:44px; height:44px; border-radius:50%; background:rgba(13,19,28,0.85); border:1px solid var(--hair-2); color:var(--bone); display:flex; align-items:center; justify-content:center; cursor:pointer; z-index:10; transition:background var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease); }
+  .artist-scroll-arrow:hover { background:var(--gold); border-color:var(--gold); color:#0B1017; }
+  .artist-scroll-arrow--prev { left:-14px; }
+  .artist-scroll-arrow--next { right:-14px; }
+  .artist-scroll-arrow svg { width:20px; height:20px; fill:none; stroke:currentColor; stroke-width:2; }
+  @media(max-width:640px){ .artist-scroll-arrow{display:none} }
 </style>
 <link rel="icon" type="image/png" href="assets/images/logo.png">
 <link rel="apple-touch-icon" href="assets/images/logo.png">
@@ -164,14 +178,23 @@
     </button>
     <div class="nav__menu" id="menu">
       <a class="nav__link" href="pages/studio.html">Studio</a>
-      <a class="nav__link" href="pages/services.html">Services</a>
       <a class="nav__link" href="pages/discography.html">Discographie</a>
       <a class="nav__link" href="pages/promo.html">Nos Artistes</a>
-      <a class="nav__link" href="pages/academy.html">Academy</a>
-      <a class="nav__link" href="pages/gallery.html">Galerie</a>
-      <a class="nav__link" href="pages/shop.html">Boutique</a>
-      <a class="nav__link" href="pages/about.html">À&nbsp;Propos</a>
       <a class="nav__link" href="pages/blog.html">Blog</a>
+      <div class="nav__dropdown" id="nav-more">
+        <button class="nav__link nav__dropdown-toggle" aria-expanded="false" aria-haspopup="true">
+          Plus <svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+        <div class="nav__dropdown-menu">
+          <a class="nav__dropdown-link" href="pages/services.html">Services</a>
+          <a class="nav__dropdown-link" href="pages/academy.html">Academy</a>
+          <a class="nav__dropdown-link" href="pages/gallery.html">Galerie</a>
+          <a class="nav__dropdown-link" href="pages/shop.html">Boutique</a>
+          <a class="nav__dropdown-link" href="pages/about.html">À Propos</a>
+          <a class="nav__dropdown-link" href="pages/portal.html">Espace Client</a>
+          <a class="nav__dropdown-link" href="pages/contact.html">Contact</a>
+        </div>
+      </div>
       <a class="nav__cta" href="pages/booking.html">Réserver</a>
     </div>
   </nav>
@@ -270,33 +293,25 @@
     -->
   </section>
 
-  <!-- TÉMOIGNAGES — replace with real artist quotes -->
-  <section class="section wrap reveal" style="padding-top:0">
-    <p class="eyebrow">Ils nous font confiance</p>
-    <div class="grid grid--3" style="margin-top:var(--sp-5)">
-      <blockquote class="card" style="border-left:3px solid var(--gold)">
-        <p class="ital" style="color:var(--bone);font-size:var(--fs-lg);line-height:1.5;margin-bottom:var(--sp-3)">« Un son doux, riche et professionnel. Mon projet a pris une autre dimension. »</p>
-        <footer style="color:var(--sand);font-size:var(--fs-sm)">— <span style="color:var(--ember)">Artiste à ajouter</span></footer>
-      </blockquote>
-      <blockquote class="card" style="border-left:3px solid var(--gold)">
-        <p class="ital" style="color:var(--bone);font-size:var(--fs-lg);line-height:1.5;margin-bottom:var(--sp-3)">« L'équipe capture vraiment l'âme de la musique, pas seulement le son. »</p>
-        <footer style="color:var(--sand);font-size:var(--fs-sm)">— <span style="color:var(--ember)">Artiste à ajouter</span></footer>
-      </blockquote>
-      <blockquote class="card" style="border-left:3px solid var(--gold)">
-        <p class="ital" style="color:var(--bone);font-size:var(--fs-lg);line-height:1.5;margin-bottom:var(--sp-3)">« Un niveau international, ici à Kinshasa. Je recommande sans hésiter. »</p>
-        <footer style="color:var(--sand);font-size:var(--fs-sm)">— <span style="color:var(--ember)">Artiste à ajouter</span></footer>
-      </blockquote>
+  <!-- TÉMOIGNAGES — reintroduce once you have 3 real artist quotes to add here -->
+
+  <!-- ARTISTES -->
+  <section class="section wrap reveal">
+    <div class="sec-head"><h2 class="h2">Nos artistes</h2><a class="sec-more" href="pages/discography.html">Voir tous les artistes →</a></div>
+    <div class="artist-scroll-wrap">
+      <button class="artist-scroll-arrow artist-scroll-arrow--prev" id="artist-scroll-prev" aria-label="Précédent"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></button>
+      <div class="artist-scroll" id="artist-scroll"></div>
+      <button class="artist-scroll-arrow artist-scroll-arrow--next" id="artist-scroll-next" aria-label="Suivant"><svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg></button>
     </div>
-    <p class="muted" style="font-size:var(--fs-xs);margin-top:var(--sp-4)">Remplacez ces témoignages par de vraies citations d'artistes ayant enregistré chez vous.</p>
   </section>
 
   <!-- JOURNAL -->
   <section class="section wrap reveal">
-    <div class="sec-head"><h2 class="h2">Le Blog</h2><a class="sec-more" href="pages/blog.html">11 articles →</a></div>
+    <div class="sec-head"><h2 class="h2">Le Blog</h2><a class="sec-more" href="pages/blog.html">6 articles →</a></div>
     <div class="grid grid--3 jgrid">
-      <a class="jcard" href="pages/blog.html"><div class="jcard__cat">Prise de son</div><div class="jcard__title">Enregistrer la batterie en studio : le guide complet</div></a>
-      <a class="jcard" href="pages/blog.html"><div class="jcard__cat">Mixage</div><div class="jcard__title">Le compresseur : l'arme secrète pour un mix pro</div></a>
-      <a class="jcard" href="pages/blog.html"><div class="jcard__cat">Mastering</div><div class="jcard__title">La touche finale qui transforme votre mix</div></a>
+      <a class="jcard" href="pages/article-octapad.html"><div class="jcard__cat">Prise de son</div><div class="jcard__title">Guide de l'Octapad</div></a>
+      <a class="jcard" href="pages/article-masquage-frequences.html"><div class="jcard__cat">Mixage</div><div class="jcard__title">Le masquage de fréquences</div></a>
+      <a class="jcard" href="pages/article-erreurs-eq.html"><div class="jcard__cat">Mixage</div><div class="jcard__title">5 erreurs d'EQ que font les débutants</div></a>
     </div>
   </section>
 
@@ -308,6 +323,20 @@
         <div class="form-band__sub">Module 1 · en ligne · à partir de 300 $ — maîtrisez l'art de capturer le son.</div>
       </div>
       <a class="btn btn--ghost" href="pages/academy.html">S'inscrire</a>
+    </div>
+  </div>
+
+  <!-- WHATSAPP LEAD CAPTURE BAND -->
+  <div class="form-band reveal" style="border-top:none">
+    <div class="form-band__inner wrap">
+      <div>
+        <div class="form-band__title">Restez informé</div>
+        <div class="form-band__sub">Recevez nos guides gratuits et soyez averti des nouvelles sorties — directement sur WhatsApp.</div>
+      </div>
+      <a class="btn btn--ghost" href="https://wa.me/243819797568?text=Bonjour%2C%20je%20souhaite%20recevoir%20les%20mises%20%C3%A0%20jour%20de%20Pyramide%20Record." target="_blank" rel="noopener">
+        <svg style="width:16px;height:16px;fill:currentColor;margin-right:6px;vertical-align:-3px" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12c0 1.85.5 3.58 1.38 5.07L2 22l5.07-1.33A9.96 9.96 0 0012 22c5.52 0 10-4.48 10-10S17.52 2 12 2zm5.2 14.2c-.22.62-1.28 1.18-1.76 1.24-.45.06-.9.24-3.03-.63-2.55-1.06-4.2-3.63-4.33-3.8-.13-.17-1.03-1.37-1.03-2.6 0-1.23.65-1.84.88-2.09.23-.25.5-.31.67-.31l.48.01c.15 0 .36-.06.56.43.22.55.74 1.9.8 2.04.06.14.1.3.02.48-.08.18-.12.29-.25.44-.13.15-.27.34-.38.46-.13.13-.26.27-.11.53.15.26.67 1.1 1.43 1.78.98.87 1.81 1.14 2.08 1.27.27.13.42.11.58-.07.15-.18.65-.76.83-1.02.18-.26.35-.22.6-.13.24.09 1.55.73 1.82.87.27.13.44.2.51.31.07.11.07.65-.15 1.27z"/></svg>
+        Rejoindre sur WhatsApp
+      </a>
     </div>
   </div>
 
@@ -332,5 +361,122 @@
 </footer>
 
 <script src="js/main.js"></script>
+<script>
+(function(){
+  var dropdown = document.getElementById('nav-more');
+  if (!dropdown) return;
+  var toggle = dropdown.querySelector('.nav__dropdown-toggle');
+  toggle.addEventListener('click', function(e){
+    e.stopPropagation();
+    var open = dropdown.classList.toggle('is-open');
+    toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+  document.addEventListener('click', function(e){
+    if (!dropdown.contains(e.target)) {
+      dropdown.classList.remove('is-open');
+      toggle.setAttribute('aria-expanded', 'false');
+    }
+  });
+})();
+</script>
+<script>
+(function(){
+  var track = document.getElementById('artist-scroll');
+  if (!track) return;
+
+  // Full pool of artists with confirmed real photos. A random subset is
+  // picked and rendered fresh on every page load — see "Nos artistes".
+  var artists = [
+    { name:"Agenors Kabongo", img:"agenors-kabongo.jpeg", href:"pages/artists/agenors-kabongo.html" },
+    { name:"Roland Muanga", img:"roland-muanga_lifoko-du-ciel-notre-fierte.jpg", href:"pages/artists/roland-muanga.html" },
+    { name:"Elvie Pambu", img:"elvie-pambu.png", href:"pages/artists/elvie-pambu.html" },
+    { name:"John Lusala", img:"john-lusala.png", href:"pages/artists/john-lusala.html" },
+    { name:"Pasteur Grâce Mutombo", img:"grace-mutombo.jpg", href:"pages/artists/grace-mutombo.html" },
+    { name:"Henri Papa Mulaja", img:"henri-papa-mulaja.png", href:"pages/artists/henri-papa-mulaja.html" },
+    { name:"Pasteur Lifoko du Ciel", img:"pasteur-lifoko-du-ciel.jpg", href:"pages/artists/pasteur-lifoko-du-ciel.html" },
+    { name:"Billy Kabongo", img:"billy-kabongo.jpg", href:"pages/artists/billy-kabongo.html" },
+    { name:"Dan Ngoy", img:"dan-ngoy.png", href:"pages/artists/dan-ngoy.html" },
+    { name:"Enoch Amisi", img:"enoch-amisi.jpg", href:"pages/artists/enoch-amisi.html" },
+    { name:"Maman Hélène Dikoka", img:"maman-helene-dikoka.png", href:"pages/artists/maman-helene-dikoka.html" },
+    { name:"Nelson Kikem", img:"nelson-kikem.png", href:"pages/artists/nelson-kikem.html" },
+    { name:"Pasteur Billy Tshilenge", img:"pasteur-billy-tshilenge.jpg", href:"pages/artists/pasteur-billy-tshilenge.html" },
+    { name:"Fabrice Mulaja", img:"fabrice-mulaja.jpg", href:"pages/artists/fabrice-mulaja.html" },
+    { name:"Giresse Mafuta", img:"giresse-mafuta.jpeg", href:"pages/artists/giresse-mafuta.html" },
+    { name:"Groupe Pyramide", img:"groupe-pyramide.png", href:"pages/artists/groupe-pyramide.html" },
+    { name:"Trésor Lianza", img:"tresor-lianza.jpg", href:"pages/artists/tresor-lianza.html" },
+    { name:"Jérémie Vase", img:"jeremie-vase.png", href:"pages/artists/jeremie-vase.html" },
+    { name:"Jérémie Dex M", img:"jeremie-dex-m.jpg", href:"pages/artists/jeremie-dex-m.html" },
+    { name:"Sr Bena", img:"sr-bena.jpeg", href:"pages/artists/sr-bena.html" }
+  ];
+
+  // Fisher-Yates shuffle
+  for (var i = artists.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var tmp = artists[i]; artists[i] = artists[j]; artists[j] = tmp;
+  }
+  var picked = artists.slice(0, 8);
+
+  var html = picked.map(function(a){
+    return '<a class="artist-scroll-card" href="' + a.href + '">' +
+      '<img src="assets/images/discography/' + a.img + '" alt="' + a.name + '" loading="lazy" decoding="async">' +
+      '<div class="artist-scroll-card__name">' + a.name + '</div></a>';
+  }).join('');
+  track.innerHTML = html;
+
+  // Clone the rendered set once for a seamless infinite loop.
+  var originalCards = Array.prototype.slice.call(track.children);
+  originalCards.forEach(function(card){
+    var clone = card.cloneNode(true);
+    clone.setAttribute('aria-hidden', 'true');
+    clone.setAttribute('tabindex', '-1');
+    track.appendChild(clone);
+  });
+
+  var paused = false;
+  var speed = 0.5;
+  var halfWidth = 0;
+
+  function measure(){
+    halfWidth = track.scrollWidth / 2;
+  }
+  measure();
+  window.addEventListener('resize', measure);
+
+  track.addEventListener('mouseenter', function(){ paused = true; });
+  track.addEventListener('mouseleave', function(){ paused = false; });
+  track.addEventListener('touchstart', function(){ paused = true; }, {passive:true});
+  track.addEventListener('touchend', function(){
+    clearTimeout(track._resumeTimer);
+    track._resumeTimer = setTimeout(function(){ paused = false; }, 1500);
+  }, {passive:true});
+
+  var prevBtn = document.getElementById('artist-scroll-prev');
+  var nextBtn = document.getElementById('artist-scroll-next');
+  var cardStep = 216; // card width (200) + gap (16)
+  if (prevBtn) {
+    prevBtn.addEventListener('mouseenter', function(){ paused = true; });
+    prevBtn.addEventListener('click', function(){
+      track.scrollBy({ left: -cardStep, behavior: 'smooth' });
+    });
+  }
+  if (nextBtn) {
+    nextBtn.addEventListener('mouseenter', function(){ paused = true; });
+    nextBtn.addEventListener('click', function(){
+      track.scrollBy({ left: cardStep, behavior: 'smooth' });
+    });
+  }
+
+  function tick(){
+    if (!paused) {
+      track.scrollLeft += speed;
+      if (track.scrollLeft >= halfWidth) {
+        track.scrollLeft -= halfWidth;
+      }
+    }
+    requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+})();
+</script>
 </body>
 </html>

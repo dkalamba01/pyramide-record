@@ -45,17 +45,25 @@
   <nav class="nav wrap" aria-label="Navigation principale">
     <a class="nav__logo" href="../../index.html" aria-label="Pyramide Record — accueil"><img src="../../assets/images/logo.png" alt="Pyramide Record"></a>
     <button class="nav__burger" id="burger" aria-label="Ouvrir le menu" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
-    <div class="nav__menu" id="menu">
+        <div class="nav__menu" id="menu">
       <a class="nav__link" href="../studio.html">Studio</a>
-      <a class="nav__link" href="../services.html">Services</a>
       <a class="nav__link" href="../discography.html" aria-current="page">Discographie</a>
       <a class="nav__link" href="../promo.html">Nos Artistes</a>
-      <a class="nav__link" href="../academy.html">Academy</a>
-      <a class="nav__link" href="../gallery.html">Galerie</a>
-      <a class="nav__link" href="../shop.html">Boutique</a>
-      <a class="nav__link" href="../about.html">À&nbsp;Propos</a>
       <a class="nav__link" href="../blog.html">Blog</a>
-      <a class="nav__link" href="../portal.html">Espace&nbsp;Client</a>
+      <div class="nav__dropdown" id="nav-more">
+        <button class="nav__link nav__dropdown-toggle" aria-expanded="false" aria-haspopup="true">
+          Plus <svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+        <div class="nav__dropdown-menu">
+          <a class="nav__dropdown-link" href="../services.html">Services</a>
+          <a class="nav__dropdown-link" href="../academy.html">Academy</a>
+          <a class="nav__dropdown-link" href="../gallery.html">Galerie</a>
+          <a class="nav__dropdown-link" href="../shop.html">Boutique</a>
+          <a class="nav__dropdown-link" href="../about.html">À Propos</a>
+          <a class="nav__dropdown-link" href="../portal.html">Espace Client</a>
+          <a class="nav__dropdown-link" href="../contact.html">Contact</a>
+        </div>
+      </div>
       <a class="nav__cta" href="../booking.html">Réserver</a>
     </div>
   </nav>
@@ -68,7 +76,7 @@
     <div class="bio-layout" style="margin-top:var(--sp-5)">
 
       <aside class="bio-photo">
-        <img src="../../assets/images/discography/roland-muanga_lifoko-du-ciel-notre-fierte.png" alt="Roland Muanga" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;object-position:center 65%">
+        <img src="../../assets/images/discography/roland-muanga_lifoko-du-ciel-notre-fierte.jpg" alt="Roland Muanga" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;object-position:center 65%">
       </aside>
 
       <div>
@@ -80,18 +88,22 @@
         <div class="bio-text">
           <p><strong>Roland Muanga</strong> est un chanteur, auteur-compositeur et conducteur de louange gospel congolais, reconnu pour son rôle particulier d'archiviste musical au sein du mouvement gospel congolais : il reprend et modernise d'anciens hymnes classiques avec une instrumentation acoustique actuelle, préservant ainsi le patrimoine musical des pionniers du mouvement pour la nouvelle génération. Sa production technique est étroitement liée à Pyramide Music / <strong>Pyramide Record</strong>, à Limete, Kinshasa.</p>
 
-          <p>Son medley live « Lifoko du Ciel Notre Fierté », un hommage aux plus grands titres de la carrière du pasteur et icône du gospel congolais Simon-Pierre Lifoko du Ciel, ainsi que son titre « Bobele Yo », ont tous deux été produits chez Pyramide Record.</p>
+          <p>Son medley live « Lifoko du Ciel Notre Fierté », un hommage aux plus grands titres de la carrière du pasteur et icône du gospel congolais <a class="link" href="pasteur-lifoko-du-ciel.html">Simon-Pierre Lifoko du Ciel</a>, ainsi que son titre « Bobele Yo », ont tous deux été produits chez Pyramide Record.</p>
         </div>
 
         <div class="bio-releases">
           <h2>Productions chez Pyramide Record</h2>
-          <div class="bio-release-item"><span>Lifoko du Ciel Notre Fierté</span><span class="role">Enregistrement · Mixage<a class="bio-release-listen" href="https://youtu.be/athoEPb11zM" target="_blank" rel="noopener">Écouter →</a></span></div>
-          <div class="bio-release-item"><span>Bobele Yo</span><span class="role">Enregistrement · Mixage<a class="bio-release-listen" href="https://youtu.be/gLFdGEEK4XU" target="_blank" rel="noopener">Écouter →</a></span></div>
-          <div class="bio-release-item"><span>Besoin de Toi</span><span class="role">Enregistrement · Mixage<a class="bio-release-listen" href="https://youtu.be/WNXaDWmoABE" target="_blank" rel="noopener">Écouter →</a></span></div>
-          <div class="bio-release-item"><span>Yo nde Pole</span><span class="role">Enregistrement · Mixage<a class="bio-release-listen" href="https://youtu.be/z0hx7HubtBo" target="_blank" rel="noopener">Écouter →</a></span></div>
-          <div class="bio-release-item"><span>Dispose Assoiffé</span><span class="role">Enregistrement · Mixage<a class="bio-release-listen" href="https://youtu.be/DUB5mkCITjM" target="_blank" rel="noopener">Écouter →</a></span></div>
-          <div class="bio-release-item"><span>Tu Connais Mon Cœur</span><span class="role">Enregistrement · Mixage<a class="bio-release-listen" href="https://youtu.be/56Jj6GfAKEg" target="_blank" rel="noopener">Écouter →</a></span></div>
-          <div class="bio-release-item"><span>Au revoir Pasteur Baruti Kasongo <span style="color:var(--ash)">(feat. Trésor Lianza)</span></span><span class="role">Enregistrement · Mixage<a class="bio-release-listen" href="https://youtu.be/ZsOWaIKEa_g" target="_blank" rel="noopener">Écouter →</a></span></div>
+          <div class="bio-release-item"><span class="bio-release-item__left"><img class="bio-release-item__thumb" src="../../assets/images/discography/roland-muanga_lifoko-du-ciel-notre-fierte.jpg" alt="" loading="lazy"><span>Lifoko du Ciel Notre Fierté</span></span><span class="role">Enregistrement · Mixage<a class="bio-release-listen" href="https://youtu.be/athoEPb11zM" target="_blank" rel="noopener">Écouter →</a></span></div>
+          <div class="bio-release-item"><span class="bio-release-item__left"><img class="bio-release-item__thumb" src="../../assets/images/discography/roland-muanga_bobele-yo.jpg" alt="" loading="lazy"><span>Bobele Yo</span></span><span class="role">Enregistrement · Mixage<a class="bio-release-listen" href="https://youtu.be/gLFdGEEK4XU" target="_blank" rel="noopener">Écouter →</a></span></div>
+          <div class="bio-release-item"><span class="bio-release-item__left"><img class="bio-release-item__thumb" src="../../assets/images/discography/roland-muanga_besoin-de-toi.jpg" alt="" loading="lazy"><span>Besoin de Toi</span></span><span class="role">Enregistrement · Mixage<a class="bio-release-listen" href="https://youtu.be/WNXaDWmoABE" target="_blank" rel="noopener">Écouter →</a></span></div>
+          <div class="bio-release-item"><span class="bio-release-item__left"><img class="bio-release-item__thumb" src="../../assets/images/discography/roland-muanga_yo-nde-pole.png" alt="" loading="lazy"><span>Yo nde Pole</span></span><span class="role">Enregistrement · Mixage<a class="bio-release-listen" href="https://youtu.be/z0hx7HubtBo" target="_blank" rel="noopener">Écouter →</a></span></div>
+          <div class="bio-release-item"><span class="bio-release-item__left"><img class="bio-release-item__thumb" src="../../assets/images/discography/roland-muanga_dispose-assoiffe.png" alt="" loading="lazy"><span>Dispose Assoiffé</span></span><span class="role">Enregistrement · Mixage<a class="bio-release-listen" href="https://youtu.be/DUB5mkCITjM" target="_blank" rel="noopener">Écouter →</a></span></div>
+          <div class="bio-release-item"><span class="bio-release-item__left"><img class="bio-release-item__thumb" src="../../assets/images/discography/roland-muanga_tu-connais-mon-coeur.jpg" alt="" loading="lazy"><span>Tu Connais Mon Cœur</span></span><span class="role">Enregistrement · Mixage<a class="bio-release-listen" href="https://youtu.be/56Jj6GfAKEg" target="_blank" rel="noopener">Écouter →</a></span></div>
+          <div class="bio-release-item"><span class="bio-release-item__left"><img class="bio-release-item__thumb" src="../../assets/images/discography/roland-muanga_au-revoir-pasteur-baruti-kasongo.jpg" alt="" loading="lazy"><span>Au revoir Pasteur Baruti Kasongo <span style="color:var(--ash)">(feat. <a class="link" href="tresor-lianza.html">Trésor Lianza</a>)</span></span></span><span class="role">Enregistrement · Mixage<a class="bio-release-listen" href="https://youtu.be/ZsOWaIKEa_g" target="_blank" rel="noopener">Écouter →</a></span></div>
+        </div>
+
+        <div class="bio-cta" style="margin-top:var(--sp-6);padding-top:var(--sp-5);border-top:1px solid var(--hair)">
+          <a class="link" href="../booking.html">Envie d'enregistrer votre prochain titre ? Réservez une session →</a>
         </div>
       </div>
 
@@ -171,5 +183,23 @@
 })();
 </script>
 
+<script>
+(function(){
+  var dropdown = document.getElementById('nav-more');
+  if (!dropdown) return;
+  var toggle = dropdown.querySelector('.nav__dropdown-toggle');
+  toggle.addEventListener('click', function(e){
+    e.stopPropagation();
+    var open = dropdown.classList.toggle('is-open');
+    toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+  document.addEventListener('click', function(e){
+    if (!dropdown.contains(e.target)) {
+      dropdown.classList.remove('is-open');
+      toggle.setAttribute('aria-expanded', 'false');
+    }
+  });
+})();
+</script>
 </body>
 </html>

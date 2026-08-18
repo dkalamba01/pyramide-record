@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>El Beryith — Pyramide Record</title>
-<meta name="description" content="Découvrez El Beryith, artiste gospel ayant enregistré chez Pyramide Record.">
+<title>Trésor Lianza — Pyramide Record</title>
+<meta name="description" content="Découvrez Frère Trésor Lianza, chanteur et conducteur de louange gospel congolais, ayant enregistré chez Pyramide Record.">
 <!-- Artist bio page — built from artists/_template.html -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -22,17 +22,25 @@
   <nav class="nav wrap" aria-label="Navigation principale">
     <a class="nav__logo" href="../../index.html" aria-label="Pyramide Record — accueil"><img src="../../assets/images/logo.png" alt="Pyramide Record"></a>
     <button class="nav__burger" id="burger" aria-label="Ouvrir le menu" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
-    <div class="nav__menu" id="menu">
+        <div class="nav__menu" id="menu">
       <a class="nav__link" href="../studio.html">Studio</a>
-      <a class="nav__link" href="../services.html">Services</a>
       <a class="nav__link" href="../discography.html" aria-current="page">Discographie</a>
       <a class="nav__link" href="../promo.html">Nos Artistes</a>
-      <a class="nav__link" href="../academy.html">Academy</a>
-      <a class="nav__link" href="../gallery.html">Galerie</a>
-      <a class="nav__link" href="../shop.html">Boutique</a>
-      <a class="nav__link" href="../about.html">À&nbsp;Propos</a>
       <a class="nav__link" href="../blog.html">Blog</a>
-      <a class="nav__link" href="../portal.html">Espace&nbsp;Client</a>
+      <div class="nav__dropdown" id="nav-more">
+        <button class="nav__link nav__dropdown-toggle" aria-expanded="false" aria-haspopup="true">
+          Plus <svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+        <div class="nav__dropdown-menu">
+          <a class="nav__dropdown-link" href="../services.html">Services</a>
+          <a class="nav__dropdown-link" href="../academy.html">Academy</a>
+          <a class="nav__dropdown-link" href="../gallery.html">Galerie</a>
+          <a class="nav__dropdown-link" href="../shop.html">Boutique</a>
+          <a class="nav__dropdown-link" href="../about.html">À Propos</a>
+          <a class="nav__dropdown-link" href="../portal.html">Espace Client</a>
+          <a class="nav__dropdown-link" href="../contact.html">Contact</a>
+        </div>
+      </div>
       <a class="nav__cta" href="../booking.html">Réserver</a>
     </div>
   </nav>
@@ -45,23 +53,28 @@
     <div class="bio-layout" style="margin-top:var(--sp-5)">
 
       <aside class="bio-photo">
-        <!-- REPLACE with a real photo of the artist: el-beryith.jpg -->
-        <div class="ph" style="width:100%;height:100%"><small>Photo · El Beryith</small></div>
+        <img src="../../assets/images/discography/tresor-lianza.jpg" alt="Trésor Lianza" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover">
       </aside>
 
       <div>
         <div class="bio-tags">
           <span class="chip chip--gold">Gospel</span>
         </div>
-        <h1 class="bio-name">El Beryith</h1>
+        <h1 class="bio-name">Trésor Lianza</h1>
 
         <div class="bio-text">
-          <p><strong>El Beryith</strong> est un artiste gospel congolais ayant enregistré chez <strong>Pyramide Record</strong>. Biographie complète à venir.</p>
+          <p><strong>Frère Trésor Lianza</strong> est un chanteur, auteur-compositeur et conducteur de louange gospel congolais, reconnu pour ses adorations profondément émotionnelles et sa fidélité spirituelle affirmée. Son écriture insiste sur une foi chrétienne sans compromis, refusant de « piétiner la parole » face aux pressions financières, professionnelles ou relationnelles.</p>
+
+          <p>Il intervient régulièrement comme conducteur de louange invité dans de grandes assemblées évangéliques de Kinshasa, notamment au Tabernacle Baruti et au Tabernacle Sublime du <a class="link" href="grace-mutombo.html">Pasteur Grâce Mutombo</a>. Parmi ses titres les plus marquants figurent « Christ est mon Sauveur », son hymne signature, « Amène-Moi », « Champion » (aux côtés de Furah Moyemba) et « Itomba Pamba ».</p>
         </div>
 
         <div class="bio-releases">
           <h2>Productions chez Pyramide Record</h2>
-          <div class="bio-release-item"><span>Adoration et louange</span><span class="role">Enregistrement · Mixage<a class="bio-release-listen" href="https://youtu.be/cBboYr1BGD4" target="_blank" rel="noopener">Écouter →</a></span></div>
+          <div class="bio-release-item"><span class="bio-release-item__left"><img class="bio-release-item__thumb" src="../../assets/images/discography/roland-muanga_au-revoir-pasteur-baruti-kasongo.jpg" alt="" loading="lazy"><span>Au revoir Pasteur Baruti Kasongo <span style="color:var(--ash)">(feat. <a class="link" href="roland-muanga.html">Roland Muanga</a>)</span></span></span><span class="role">Enregistrement · Mixage<a class="bio-release-listen" href="https://youtu.be/ZsOWaIKEa_g" target="_blank" rel="noopener">Écouter →</a></span></div>
+        </div>
+
+        <div class="bio-cta" style="margin-top:var(--sp-6);padding-top:var(--sp-5);border-top:1px solid var(--hair)">
+          <a class="link" href="../booking.html">Envie d'enregistrer votre prochain titre ? Réservez une session →</a>
         </div>
       </div>
 
@@ -83,6 +96,8 @@
 
 <script src="../../js/main.js"></script>
 
+<!-- Inline media player overlay — clicking "Écouter" plays the video
+     here instead of navigating away. Same pattern as discography.html. -->
 <div class="media-overlay" id="media-overlay">
   <div class="media-overlay__inner">
     <button class="media-overlay__close" id="media-close" aria-label="Fermer le lecteur">
@@ -139,5 +154,23 @@
 })();
 </script>
 
+<script>
+(function(){
+  var dropdown = document.getElementById('nav-more');
+  if (!dropdown) return;
+  var toggle = dropdown.querySelector('.nav__dropdown-toggle');
+  toggle.addEventListener('click', function(e){
+    e.stopPropagation();
+    var open = dropdown.classList.toggle('is-open');
+    toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+  document.addEventListener('click', function(e){
+    if (!dropdown.contains(e.target)) {
+      dropdown.classList.remove('is-open');
+      toggle.setAttribute('aria-expanded', 'false');
+    }
+  });
+})();
+</script>
 </body>
 </html>

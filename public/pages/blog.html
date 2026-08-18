@@ -4,12 +4,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Blog — Pyramide Record · Guides audio par nos ingénieurs</title>
-<meta name="description" content="Le Blog de Pyramide Record : onze guides techniques sur la prise de son, le mixage et le mastering, rédigés par nos ingénieurs à Kinshasa.">
+<meta name="description" content="Le Blog de Pyramide Record : sept guides techniques sur la prise de son, le mixage et le mastering, rédigés par nos ingénieurs à Kinshasa.">
 <link rel="icon" type="image/png" href="../assets/images/logo.png">
 <link rel="canonical" href="https://pyramidrecord.com/pages/blog.html">
 <meta name="theme-color" content="#0D131C">
 <meta property="og:title" content="Blog — Pyramide Record">
-<meta property="og:description" content="Onze guides techniques audio rédigés par nos ingénieurs.">
+<meta property="og:description" content="Sept guides techniques audio rédigés par nos ingénieurs.">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="fr_FR">
 <meta property="og:site_name" content="Pyramide Record">
@@ -49,16 +49,25 @@
   <nav class="nav wrap" aria-label="Navigation principale">
     <a class="nav__logo" href="../index.html" aria-label="Pyramide Record — accueil"><img src="../assets/images/logo.png" alt="Pyramide Record"></a>
     <button class="nav__burger" id="burger" aria-label="Ouvrir le menu" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
-    <div class="nav__menu" id="menu">
+        <div class="nav__menu" id="menu">
       <a class="nav__link" href="studio.html">Studio</a>
-      <a class="nav__link" href="services.html">Services</a>
       <a class="nav__link" href="discography.html">Discographie</a>
       <a class="nav__link" href="promo.html">Nos Artistes</a>
-      <a class="nav__link" href="academy.html">Academy</a>
-      <a class="nav__link" href="gallery.html">Galerie</a>
-      <a class="nav__link" href="shop.html">Boutique</a>
-      <a class="nav__link" href="about.html">À&nbsp;Propos</a>
       <a class="nav__link" href="blog.html" aria-current="page">Blog</a>
+      <div class="nav__dropdown" id="nav-more">
+        <button class="nav__link nav__dropdown-toggle" aria-expanded="false" aria-haspopup="true">
+          Plus <svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+        <div class="nav__dropdown-menu">
+          <a class="nav__dropdown-link" href="services.html">Services</a>
+          <a class="nav__dropdown-link" href="academy.html">Academy</a>
+          <a class="nav__dropdown-link" href="gallery.html">Galerie</a>
+          <a class="nav__dropdown-link" href="shop.html">Boutique</a>
+          <a class="nav__dropdown-link" href="about.html">À Propos</a>
+          <a class="nav__dropdown-link" href="portal.html">Espace Client</a>
+          <a class="nav__dropdown-link" href="contact.html">Contact</a>
+        </div>
+      </div>
       <a class="nav__cta" href="booking.html">Réserver</a>
     </div>
   </nav>
@@ -68,7 +77,7 @@
   <section class="page-hero wrap">
     <p class="eyebrow">Le Blog</p>
     <h1>Le savoir-faire, partagé.</h1>
-    <p class="lede">Six guides techniques rédigés par nos ingénieurs — de la prise de son au mixage. Pour apprendre, progresser, et mieux comprendre l'art qui se joue en studio.</p>
+    <p class="lede">Sept guides techniques rédigés par nos ingénieurs — de la prise de son au mixage. Pour apprendre, progresser, et mieux comprendre l'art qui se joue en studio.</p>
   </section>
 
   <section class="section-sm wrap reveal">
@@ -76,32 +85,37 @@
       <button class="filter is-active" data-filter="all">Tout</button>
       <button class="filter" data-filter="prise">Prise de son</button>
       <button class="filter" data-filter="mixage">Mixage</button>
+      <button class="filter" data-filter="industrie">Industrie</button>
     </div>
 
     <div class="articles">
-      <a class="article-card" data-cat="prise" href="article-octapad.html">
+      <a class="article-card" data-cat="prise" href="blog/article-octapad.html">
         <div class="ph article-card__img"><small>Illustration</small></div>
         <div class="article-card__body"><div class="article-card__cat">Prise de son</div><div class="article-card__title">Libérez le percussionniste qui sommeille en vous : Guide de l'Octapad</div><div class="article-card__meta">2 min de lecture</div></div>
       </a>
-      <a class="article-card" data-cat="mixage" href="article-masquage-frequences.html">
+      <a class="article-card" data-cat="mixage" href="blog/article-masquage-frequences.html">
         <div class="ph article-card__img"><small>Illustration</small></div>
         <div class="article-card__body"><div class="article-card__cat">Mixage</div><div class="article-card__title">Le masquage de fréquences : pourquoi votre mix devient boueux</div><div class="article-card__meta">4 min de lecture</div></div>
       </a>
-      <a class="article-card" data-cat="mixage" href="article-voix-dans-le-mix.html">
+      <a class="article-card" data-cat="mixage" href="blog/article-voix-dans-le-mix.html">
         <div class="ph article-card__img"><small>Illustration</small></div>
         <div class="article-card__body"><div class="article-card__cat">Mixage</div><div class="article-card__title">Pourquoi votre voix ne « sit » pas dans le mix</div><div class="article-card__meta">4 min de lecture</div></div>
       </a>
-      <a class="article-card" data-cat="mixage" href="article-kick-basse.html">
+      <a class="article-card" data-cat="mixage" href="blog/article-kick-basse.html">
         <div class="ph article-card__img"><small>Illustration</small></div>
         <div class="article-card__body"><div class="article-card__cat">Mixage</div><div class="article-card__title">Kick et basse : pourquoi ils se battent</div><div class="article-card__meta">3 min de lecture</div></div>
       </a>
-      <a class="article-card" data-cat="mixage" href="article-gain-staging.html">
+      <a class="article-card" data-cat="mixage" href="blog/article-gain-staging.html">
         <div class="ph article-card__img"><small>Illustration</small></div>
         <div class="article-card__body"><div class="article-card__cat">Mixage</div><div class="article-card__title">Gain staging : les 4 erreurs qui abîment votre mix</div><div class="article-card__meta">4 min de lecture</div></div>
       </a>
-      <a class="article-card" data-cat="mixage" href="article-erreurs-eq.html">
+      <a class="article-card" data-cat="mixage" href="blog/article-erreurs-eq.html">
         <div class="ph article-card__img"><small>Illustration</small></div>
         <div class="article-card__body"><div class="article-card__cat">Mixage</div><div class="article-card__title">5 erreurs d'EQ que font (presque) tous les débutants</div><div class="article-card__meta">4 min de lecture</div></div>
+      </a>
+      <a class="article-card" data-cat="industrie" href="blog/article-ia-musique.html">
+        <div class="ph article-card__img"><small>Illustration</small></div>
+        <div class="article-card__body"><div class="article-card__cat">Industrie</div><div class="article-card__title">L'IA peut esquisser une chanson. Elle ne peut pas la finir.</div><div class="article-card__meta">4 min de lecture</div></div>
       </a>
     </div>
 
@@ -147,6 +161,24 @@
       items.forEach(function(it){ it.classList.toggle('is-hidden', !(cat==='all'||it.getAttribute('data-cat')===cat)); });
     });});
   })();
+</script>
+<script>
+(function(){
+  var dropdown = document.getElementById('nav-more');
+  if (!dropdown) return;
+  var toggle = dropdown.querySelector('.nav__dropdown-toggle');
+  toggle.addEventListener('click', function(e){
+    e.stopPropagation();
+    var open = dropdown.classList.toggle('is-open');
+    toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+  document.addEventListener('click', function(e){
+    if (!dropdown.contains(e.target)) {
+      dropdown.classList.remove('is-open');
+      toggle.setAttribute('aria-expanded', 'false');
+    }
+  });
+})();
 </script>
 </body>
 </html>

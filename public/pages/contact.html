@@ -157,7 +157,7 @@
           <div class="field"><label class="field__label" for="c-msg">Votre message</label><textarea class="textarea" id="c-msg" name="message" placeholder="Comment pouvons-nous vous aider ?" required></textarea></div>
           <div class="form-actions">
             <button class="btn" type="submit" id="contact-submit">Envoyer</button>
-            <a class="btn btn--whatsapp" href="https://wa.me/243819797568"><svg class="icon" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 00-8.6 15L2 22l5.2-1.4A10 10 0 1012 2z"/></svg>WhatsApp</a>
+            <a class="btn btn--whatsapp" id="contact-whatsapp" href="https://wa.me/243819797568"><svg class="icon" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 00-8.6 15L2 22l5.2-1.4A10 10 0 1012 2z"/></svg>WhatsApp</a>
           </div>
           <p class="form-status" id="contact-status" role="status" aria-live="polite"></p>
         </form>
@@ -210,6 +210,42 @@
   if (!form) return;
   var submitBtn = document.getElementById('contact-submit');
   var status = document.getElementById('contact-status');
+  var whatsappLink = document.getElementById('contact-whatsapp');
+  var WHATSAPP_NUMBER = '243819797568';
+
+  function buildWhatsAppUrl(){
+    var prenom = document.getElementById('c-prenom').value.trim();
+    var nom = document.getElementById('c-nom').value.trim();
+    var email = document.getElementById('c-email').value.trim();
+    var tel = document.getElementById('c-tel').value.trim();
+    var message = document.getElementById('c-msg').value.trim();
+
+    var hasAnyInput = prenom || nom || email || tel || message;
+    if (!hasAnyInput) {
+      return 'https://wa.me/' + WHATSAPP_NUMBER;
+    }
+
+    var lines = [];
+    var name = (prenom + ' ' + nom).trim();
+    if (name) lines.push('Bonjour, je suis ' + name + '.');
+    if (email) lines.push('E-mail : ' + email);
+    if (tel) lines.push('Téléphone : ' + tel);
+    if (message) lines.push('Message : ' + message);
+
+    var text = lines.length ? lines.join('\n') : 'Bonjour, j\'aimerais avoir plus d\'informations.';
+    return 'https://wa.me/' + WHATSAPP_NUMBER + '?text=' + encodeURIComponent(text);
+  }
+
+  if (whatsappLink) {
+    // Update href right before navigation so it always reflects the latest field values
+    whatsappLink.addEventListener('click', function(){
+      whatsappLink.setAttribute('href', buildWhatsAppUrl());
+    });
+    // Also update on focus/blur across the form so a middle-click or long-press-to-copy still gets a fresh link
+    form.addEventListener('input', function(){
+      whatsappLink.setAttribute('href', buildWhatsAppUrl());
+    });
+  }
 
   form.addEventListener('submit', function(e){
     e.preventDefault();

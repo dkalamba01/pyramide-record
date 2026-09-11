@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr" data-theme="night">
 <script>(function(){try{var t=localStorage.getItem('pr-theme');if(t==='day'||t==='night'){document.documentElement.setAttribute('data-theme',t);}}catch(e){}})();</script>
 <head>
 <meta charset="UTF-8">
@@ -12,8 +12,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;1,9..144,400;1,9..144,500&family=Archivo:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/tokens.css">
-<link rel="stylesheet" href="css/components.css">
+<link rel="stylesheet" href="css/tokens.css?v=2">
+<link rel="stylesheet" href="css/components.css?v=2">
 <style>
   /* Home-specific composition (built only from design-system tokens) */
   .hero { position: relative; padding: var(--sp-9) 0 0; overflow: hidden; }
@@ -129,7 +129,7 @@
   }
 
   .artist-scroll-wrap { position:relative; }
-  .artist-scroll { display:flex; gap:var(--sp-4); overflow-x:auto; padding-bottom:var(--sp-3); -webkit-overflow-scrolling:touch; scrollbar-width:none; -ms-overflow-style:none; }
+  .artist-scroll { display:flex; gap:var(--sp-4); overflow-x:auto; padding-bottom:var(--sp-3); scrollbar-width:none; -ms-overflow-style:none; }
   .artist-scroll::-webkit-scrollbar { display:none; }
   .artist-scroll-card { flex:0 0 200px; background:var(--panel); border:1px solid var(--hair); border-radius:var(--r-lg); overflow:hidden; transition:border-color var(--dur) var(--ease), transform var(--dur) var(--ease); }
   .artist-scroll-card:hover { border-color:var(--gold-dim); transform:translateY(-3px); }
@@ -438,7 +438,8 @@
   });
 
   var paused = false;
-  var speed = 0.5;
+  var autoScrolling = false;
+  var speed = 9;
   var halfWidth = 0;
 
   function measure(){
@@ -449,10 +450,16 @@
 
   track.addEventListener('mouseenter', function(){ paused = true; });
   track.addEventListener('mouseleave', function(){ paused = false; });
-  track.addEventListener('touchstart', function(){ paused = true; }, {passive:true});
-  track.addEventListener('touchend', function(){
+
+  // Only pause for scroll movement the user actually caused (dragging the
+  // track, or the arrow buttons) - not for a finger simply passing over the
+  // carousel while scrolling the page vertically, which was pausing this
+  // permanently on mobile before.
+  track.addEventListener('scroll', function(){
+    if (autoScrolling) return;
+    paused = true;
     clearTimeout(track._resumeTimer);
-    track._resumeTimer = setTimeout(function(){ paused = false; }, 1500);
+    track._resumeTimer = setTimeout(function(){ paused = false; }, 2500);
   }, {passive:true});
 
   var prevBtn = document.getElementById('artist-scroll-prev');
@@ -473,10 +480,12 @@
 
   function tick(){
     if (!paused) {
+      autoScrolling = true;
       track.scrollLeft += speed;
       if (track.scrollLeft >= halfWidth) {
         track.scrollLeft -= halfWidth;
       }
+      autoScrolling = false;
     }
     requestAnimationFrame(tick);
   }

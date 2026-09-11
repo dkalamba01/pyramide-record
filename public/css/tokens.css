@@ -89,6 +89,7 @@
   /* ---- Elevation (used with restraint) ---- */
   --shadow-card: 0 1px 0 rgba(255,255,255,0.02) inset;
   --focus-ring: 0 0 0 2px var(--obsidian), 0 0 0 4px var(--blue);
+  --header-bg: rgba(13, 19, 28, 0.78);
 }
 
 /* ============================================================
@@ -126,6 +127,7 @@
     --hair-2:        #D8D1C1;
     --success:       #1F8F68;
     --whatsapp-bg:   #DCF3E4;
+    --header-bg: rgba(247, 245, 240, 0.82);
     --shadow-card: 0 1px 0 rgba(0,0,0,0.03) inset;
     --focus-ring: 0 0 0 2px var(--obsidian), 0 0 0 4px var(--gold);
   }
@@ -152,6 +154,7 @@
   --hair-2:        #D8D1C1;
   --success:       #1F8F68;
   --whatsapp-bg:   #DCF3E4;
+  --header-bg: rgba(247, 245, 240, 0.82);
   --shadow-card: 0 1px 0 rgba(0,0,0,0.03) inset;
   --focus-ring: 0 0 0 2px var(--obsidian), 0 0 0 4px var(--gold);
 }
@@ -177,6 +180,7 @@
   --hair-2:        #2A3B4F;
   --success:       #5DCAA5;
   --whatsapp-bg:   #1F4D3A;
+  --header-bg: rgba(13, 19, 28, 0.78);
   --shadow-card: 0 1px 0 rgba(255,255,255,0.02) inset;
   --focus-ring: 0 0 0 2px var(--obsidian), 0 0 0 4px var(--blue);
 }

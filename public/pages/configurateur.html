@@ -200,11 +200,12 @@ function buildGuests(W,D){guest.count=0;const N=guest.n,st=guest.style;if(!N)ret
   if(guest.layout==='arc'){const cz=-D*.28;for(let k=0;c<N&&k<8;k++){const r=2.3+k*.85;for(let a=-1.1;a<=1.1&&c<N;a+=.6/r){const x=r*Math.sin(a),z=cz+r*Math.cos(a);if(Math.abs(x)>W/2-.6||z>D/2-.6||z<-D/2+.6)continue;addChair(st,x,z,Math.atan2(-x,-(z-cz)));c++}}}
   else{const per=Math.max(1,Math.floor((W-1.6)/.6));for(let k=0;k<N;k++){const row=Math.floor(k/per),cnt=Math.min(per,N-row*per),x=((k%per)-(cnt-1)/2)*.6,z=D*.08+row*.9;if(z>D/2-.6)break;addChair(st,x,z,Math.PI);c++}}
   guest.count=c}
-function buildSeats(W,D){let st=seat.style;const rows=seat.rows||SDEF[size];let n=0;
+function carpet(x,z,w,d){const c=box(w,.02,d,mat(0x7a3042));c.position.set(x,.01,z);room.add(c)}
+function buildSeats(W,D){let st=seat.style;if(seat.layout==='rows')carpet(0,0,seat.aisle,D-4);if(seat.layout==='arc')carpet(0,(-D/2+3+D/2-.7)/2+.5,seat.aisle,D/2-.7-(-D/2+3)-1);const rows=seat.rows||SDEF[size];let n=0;
   const bench=(x,z,w)=>{const m=mat(0x6b4f33),b=box(w,.4,.4,m);b.position.set(x,.2,z);room.add(b);const bk=box(w,.4,.05,m);bk.position.set(x,.6,z+.2);room.add(bk);furn.push({x,z,hw:w/2,hd:.25,pew:true,rot:Math.PI});n+=Math.floor(w/.5)};
   const chair=(x,z,rot)=>{const c=chairMesh(st);c.position.set(x,0,z);c.rotation.y=rot;room.add(c);furn.push({x,z,hw:.3,hd:.3,pew:true,rot,single:true});n++};
   if(seat.layout==='arc'){if(st==='pew')st='chair';const cz=-D/2+3;
-    for(let k=0;k<rows;k++){const r=4+k*.95;for(let a=-1.2;a<=1.2;a+=.52/r){const x=r*Math.sin(a),z=cz+r*Math.cos(a);if(Math.abs(x)>W/2-.7||z>D/2-.7||z<cz+1)continue;chair(x,z,Math.atan2(-x,-(z-cz)))}}}
+    for(let k=0;k<rows;k++){const r=4+k*.95;for(let a=-1.2;a<=1.2;a+=.52/r){const x=r*Math.sin(a),z=cz+r*Math.cos(a);if(Math.abs(x)>W/2-.7||z>D/2-.7||z<cz+1)continue;if(Math.abs(a)*r<seat.aisle/2||Math.abs(Math.abs(a)-.62)*r<seat.aisle*.4)continue;chair(x,z,Math.atan2(-x,-(z-cz)))}}}
   else{const z0=-D/2+5.2,z1=D/2-5.8,zs=rows>1?Math.max(.85,(z1-z0)/(rows-1)):0;
     const blocks=seat.layout==='center'?[[0,W-1.4]]:(()=>{const bw=(W-1.4-seat.aisle)/2;return[[-(seat.aisle/2+bw/2),bw],[seat.aisle/2+bw/2,bw]]})();
     for(let r=0;r<rows;r++){const z=z0+r*zs;if(z>D/2-.6)break;blocks.forEach(([cx,bw])=>{if(bw<.5)return;
@@ -436,7 +437,7 @@ function seatUI(){const B=document.getElementById('seatbox');if(rm!=='church'){c
     ['gn','gs','gl'].forEach(i=>document.getElementById(i).onchange=g);return}
   const sel=(id,v,o)=>`<select id="${id}">${o.map(([k,l])=>`<option value="${k}" ${k==v?'selected':''}>${l}</option>`).join('')}</select>`;
   B.innerHTML=`<div class="zone">Disposition des sièges</div><div class="sbx"><details open><summary style="font-size:13px;cursor:pointer">Modifier les sièges (<span id="scount">${seat.count}</span> places)</summary>
-  <label>Disposition ${sel('sl',seat.layout,[['rows','Rangées avec allée'],['center','Bloc central sans allée'],['arc','Demi-cercle autour de la scène']])}</label>
+  <label>Disposition ${sel('sl',seat.layout,[['rows','Rangées avec allée'],['center','Bloc central (allées le long des murs)'],['arc','Demi-cercle autour de la scène']])}</label>
   <label>Style ${sel('ss',seat.style,[['pew','Bancs en bois'],['chair','Chaises en bois'],['plastic','Chaises plastique'],['padded','Fauteuils rembourrés']])}</label>
   <label>Rangées <input id="sr" type="number" min="1" max="14" value="${seat.rows||SDEF[size]}"></label>
   <label>Allée (m) ${sel('sa',seat.aisle,[[1.2,'1,2'],[1.6,'1,6'],[2,'2'],[2.4,'2,4']])}</label>

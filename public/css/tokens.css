@@ -239,3 +239,6 @@ ul, ol { list-style: none; }
   :root { --gutter: 20px; }
   .section { padding: var(--sp-7) 0; }
 }
+
+/* listes déroulantes lisibles en mode sombre et clair */
+select option,select optgroup{background:var(--panel-2);color:var(--bone)}

@@ -78,11 +78,11 @@ textarea{width:100%;height:90px;background:#10142b;color:#cfd3f0;border:1px soli
   <div id="view"><canvas id="cv"></canvas><div id="size"></div><a href="shop.html" style="position:absolute;right:12px;bottom:10px;font-size:12px;color:#cfd3f0;background:#1c2040;border:1px solid #343a6a;border-radius:16px;padding:6px 11px;text-decoration:none">← Retour à la boutique</a><div id="covleg" style="display:none;position:absolute;left:12px;bottom:34px;font-size:12px;background:#10142bdd;border:1px solid #2f3566;border-radius:8px;padding:6px 9px;color:#e8eaff;pointer-events:none;max-width:60%"></div><div id="hint">Glisser un objet : le déplacer · Glisser le fond : tourner · Molette / pincer : zoom · Toucher un emplacement</div></div>
   <div id="panel">
     <div id="head"><h1>Votre salle d'église</h1><p>Choisissez un emplacement, puis le matériel. Prix tout compris, livraison à Kinshasa incluse.</p></div>
-    <div id="body"><div id="lvlbox"></div><div id="dimbox"></div><div id="presets"></div><div id="seatbox"></div><div id="scrbox"></div><div id="list"></div><div id="opts" style="display:none"></div></div>
+    <div id="body"><div id="lvlbox"></div><div id="dimbox"></div><div id="fillbox"></div><div id="acbox"></div><div id="presets"></div><div id="seatbox"></div><div id="scrbox"></div><div id="list"></div><div id="opts" style="display:none"></div></div>
     <div id="foot">
       <div id="chk"></div><div id="tot"><span>Total estimé (livré)</span><b id="total">0 $</b></div>
       <div class="mini" id="reqline"></div>
-      <div id="dbar" style="display:flex;gap:6px;flex-wrap:wrap;margin:8px 0 0"><button class="pill" id="d1">+ Personne debout</button><button class="pill" id="d2">+ Personne assise</button><button class="pill" id="d3">Retirer la personne choisie</button><button class="pill" id="cvb">🔊 Couverture sonore</button><button class="pill" id="cva">Placer les enceintes</button><button class="pill" id="plt">Plan de scène (PDF)</button><label style="display:inline-flex;gap:4px;align-items:center;font-size:12px"><input type="checkbox" id="pcol2"> PDF couleur</label><button class="pill" id="un">↶ Annuler</button><button class="pill" id="re">↷ Rétablir</button><button class="pill" id="d4">↻ Tourner l'élément choisi</button></div><div id="kits"></div>
+      <div id="dbar" style="display:flex;gap:6px;flex-wrap:wrap;margin:8px 0 0"><button class="pill" id="d1">+ Personne debout</button><button class="pill" id="d2">+ Personne assise</button><button class="pill" id="d3">Retirer la personne choisie</button><button class="pill" id="cvb">🔊 Couverture sonore</button><button class="pill" id="clb">🗣 Clarté (écho)</button><button class="pill" id="cva">Placer les enceintes</button><button class="pill" id="plt">Plan de scène (PDF)</button><label style="display:inline-flex;gap:4px;align-items:center;font-size:12px"><input type="checkbox" id="pcol2"> PDF couleur</label><button class="pill" id="un">↶ Annuler</button><button class="pill" id="re">↷ Rétablir</button><button class="pill" id="d4">↻ Tourner l'élément choisi</button></div><div id="kits"></div>
       <button class="pill" id="rst" style="width:100%;margin-bottom:8px">Remettre les objets à leur place</button><button class="cta" id="quote">Voir et demander mon devis</button>
       <div style="display:flex;gap:6px;margin-top:8px"><input id="ld" placeholder="Coller un code de salle" style="flex:1;min-width:0;background:#1c2040;color:#fff;border:1px solid #343a6a;border-radius:8px;padding:7px;font-size:12px"><button class="pill" id="ldb">Charger</button></div>
       <details id="adm" style="display:none"><summary>Paramètres (équipe Pyramide Record)</summary>
@@ -232,8 +232,8 @@ function buildGuests(W,D){guest.count=0;const N=guest.n,st=guest.style;if(!N)ret
   guest.count=c}
 function carpet(x,z,w,d){const c=box(w,.02,d,mat(0x7a3042));c.position.set(x,.01,z);room.add(c)}
 function buildSeats(W,D){let st=seat.style;if(seat.layout==='rows')carpet(0,0,seat.aisle,D-4);if(seat.layout==='arc')carpet(0,(-D/2+3+D/2-.7)/2+.5,seat.aisle,D/2-.7-(-D/2+3)-1);const rows=seat.rows||SDEF[size];let n=0;
-  const bench=(x,z,w)=>{const m=mat(0x6b4f33),b=box(w,.4,.4,m);b.position.set(x,.2,z);room.add(b);const bk=box(w,.4,.05,m);bk.position.set(x,.6,z+.2);room.add(bk);furn.push({x,z,hw:w/2,hd:.25,pew:true,rot:Math.PI});n+=Math.floor(w/.5)};
-  const chair=(x,z,rot)=>{const c=chairMesh(st);c.position.set(x,0,z);c.rotation.y=rot;room.add(c);furn.push({x,z,hw:.3,hd:.3,pew:true,rot,single:true});n++};
+  const bench=(x,z,w)=>{const m=mat(0x6b4f33),b=box(w,.4,.4,m);b.position.set(x,.2,z);room.add(b);const bk=box(w,.4,.05,m);bk.position.set(x,.6,z+.2);room.add(bk);furn.push({x,z,hw:w/2,hd:.25,pew:true,rot:Math.PI});for(let k=0;k<Math.floor(w/.5);k++)cp(x-w/2+(k+.5)*.5,0,z);n+=Math.floor(w/.5)};
+  const chair=(x,z,rot)=>{const c=chairMesh(st);c.position.set(x,0,z);c.rotation.y=rot;room.add(c);furn.push({x,z,hw:.3,hd:.3,pew:true,rot,single:true});cp(x,0,z);n++};
   if(seat.layout==='arc'){if(st==='pew')st='chair';const cz=-D/2+3;
     for(let k=0;k<rows;k++){const r=4+k*.95;for(let a=-1.2;a<=1.2;a+=.52/r){const x=r*Math.sin(a),z=cz+r*Math.cos(a);if(Math.abs(x)>W/2-.7||z>D/2-.7||z<cz+1)continue;if(Math.abs(a)*r<seat.aisle/2||Math.abs(Math.abs(a)-.62)*r<seat.aisle*.4)continue;chair(x,z,Math.atan2(-x,-(z-cz)))}}}
   else{const z0=-D/2+5.2,z1=D/2-5.8,zs=rows>1?Math.max(.85,(z1-z0)/(rows-1)):0;
@@ -365,7 +365,7 @@ function applyPreset(i){const p=ROOMS[rm].presets[i];if(!p)return;two=!!p.two;
   setSize(p.size);Object.assign(seat,p.seat||{});if(p.seat)seat.count=0;Object.assign(scr,p.scr||{});Object.assign(guest,{n:0},p.guest||{});
   fx={};fsel=null;sel={};const ks=ROOMS[rm].kits[p.kit].s;for(const id in ks){const sl=SLOTS.find(z=>z.id===id),o=sl&&sl.o[ks[id]];if(o&&vis(o)&&(optState(o)!=='soon'||ADMIN))sel[id]=ks[id]}
   qov={};applyScr();dummies=[];dsel=null;cur=null;for(const k in offs)delete offs[k];buildRoom();renderList();seatUI();scrUI()}
-function presetUI(){const v=isVen();['cvb','cva'].forEach(i=>{const e=document.getElementById(i);if(e)e.style.display=v?'':'none'});const cb=document.getElementById('cvb');if(cb)cb.classList.toggle('on',covOn);const B=document.getElementById('presets'),L=ROOMS[rm].presets||[];
+function presetUI(){const v=isVen();['cvb','clb','cva'].forEach(i=>{const e=document.getElementById(i);if(e)e.style.display=v?'':'none'});const cb=document.getElementById('cvb');if(cb)cb.classList.toggle('on',covOn);const B=document.getElementById('presets'),L=ROOMS[rm].presets||[];
   B.innerHTML=(rm==='rec'||rm==='vid'||rm==='pod'?'<button class="pill'+(two?' on':'')+'" id="two" style="margin-bottom:8px">Deux salles : régie + vitre'+(rm==='rec'?' + cabine':'')+'</button>':'')+(L.length?'<div class="zone">Modèles prêts à l\'emploi</div><div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:6px">'+L.map((p,i)=>`<button class="pill" data-p="${i}">${p.n}</button>`).join('')+'</div>':'');
   const tb=document.getElementById('two');if(tb)tb.onclick=()=>{two=!two;for(const k in offs)delete offs[k];buildRoom();renderList();presetUI()};
   B.querySelectorAll('[data-p]').forEach(b=>b.onclick=()=>applyPreset(+b.dataset.p))}
@@ -512,7 +512,7 @@ function covGrid(){const L=spkList(),{W,D}=SIZES[size];if(!L.length||!isVen())re
     v.push(10*Math.log10(I))}
   const so=v.slice().sort((a,b)=>a-b),p=q=>so[Math.floor(q*(so.length-1))];return{v,nx,nz,A,ref:p(.9),spread:p(.9)-p(.1)}}
 function covBuild(){room.children.filter(g=>g.userData&&g.userData.cov).forEach(g=>room.remove(g));const lg=document.getElementById('covleg');
-  if(!covOn){lg.style.display='none';return}lg.style.display='block';const G=covGrid();
+  if(!covOn){lg.style.display='none';return}lg.style.display='block';if(covMode==='clr'){const C=clrGrid();if(C){const c=document.createElement('canvas');c.width=C.nx;c.height=C.nz;const x=c.getContext('2d');for(let j=0;j<C.nz;j++)for(let i=0;i<C.nx;i++){const q=C.v[j*C.nx+i];x.fillStyle=q>=3?'rgba(60,200,120,.6)':q>=0?'rgba(235,210,60,.6)':q>=-4?'rgba(240,140,50,.6)':'rgba(220,60,60,.6)';x.fillRect(i,j,1,1)}const t=new THREE.CanvasTexture(c);t.magFilter=THREE.LinearFilter;const m=new THREE.Mesh(new THREE.PlaneGeometry(C.A.x1-C.A.x0,C.A.z1-C.A.z0),new THREE.MeshBasicMaterial({map:t,transparent:true,depthWrite:false}));m.rotation.x=-Math.PI/2;m.position.set((C.A.x0+C.A.x1)/2,.05,(C.A.z0+C.A.z1)/2);m.userData={cov:true};room.add(m);lg.innerHTML='Clarté de la parole · écho '+fs(C.rt)+'<br><span style="color:#3cc878">■</span> claire <span style="color:#ebd23c">■</span> correcte <span style="color:#f08c32">■</span> confuse <span style="color:#dc3c3c">■</span> très confuse';return}lg.textContent=acoustics(0).out?'Plein air : pas d\'écho de salle ; voyez la carte « Couverture sonore ».':'Choisissez des enceintes pour voir la clarté.';return}const G=covGrid();
   if(!G){lg.textContent=isVen()?'Choisissez des enceintes pour voir la couverture.':'';return}
   const c=document.createElement('canvas');c.width=G.nx;c.height=G.nz;const x=c.getContext('2d');
   for(let j=0;j<G.nz;j++)for(let i=0;i<G.nx;i++){const dev=G.ref-G.v[j*G.nx+i];x.fillStyle=dev<4?'rgba(60,200,120,.6)':dev<8?'rgba(235,210,60,.6)':dev<12?'rgba(240,140,50,.6)':'rgba(220,60,60,.6)';x.fillRect(i,j,1,1)}
@@ -543,7 +543,7 @@ function plotOpen(full){full=full===true;const K=c=>pdfColor?c:'#fff',{W,D}=SIZE
   const html=(()=>{const hs=t=>{let h=0;for(let i=0;i<t.length;i++)h=(h*31+t.charCodeAt(i))|0;return Math.abs(h)},now=new Date(),ds=now.toLocaleDateString('fr-FR',{day:'numeric',month:'long',year:'numeric'}),ref='PR-'+now.toISOString().slice(0,10).replace(/-/g,'')+'-'+(1000+hs(encodeState())%9000),rr=totals(),nf=x=>x.toLocaleString('fr-FR'),A=Math.round(W*D),
  css='@page{size:A4;margin:14mm}*{box-sizing:border-box}body{font-family:Arial,Helvetica,sans-serif;color:#111;font-size:12px;line-height:1.45;margin:0 auto;max-width:780px;padding:0 10px}.hd{display:flex;justify-content:space-between;align-items:flex-end;border-bottom:2px solid #111;padding-bottom:8px;margin-bottom:12px}.hd img{height:74px}.co{text-align:right;font-size:11px;color:#333;line-height:1.5}h1{font-size:20px;margin:4px 0 2px}h2{font-size:14px;margin:18px 0 6px;border-bottom:1px solid #999;padding-bottom:2px;page-break-after:avoid}table{border-collapse:collapse;width:100%;margin:4px 0}td,th{border-bottom:1px solid #ccc;padding:4px 6px;text-align:left;vertical-align:top}th{border-bottom:1.5px solid #111;font-size:10.5px;text-transform:uppercase;letter-spacing:.03em}tr{page-break-inside:avoid}.r{text-align:right;white-space:nowrap}.tot td{border-top:2px solid #111;border-bottom:none;font-weight:bold;font-size:13px}.kv td:first-child{width:30%;color:#444}ul{margin:4px 0 4px 18px;padding:0}li{margin:4px 0;page-break-inside:avoid}.sm{font-size:10.5px;color:#444}.pb{page-break-before:always}img.sh{width:100%;max-height:330px;object-fit:contain}svg{max-width:100%;height:auto}.ft{margin-top:18px;border-top:1px solid #999;padding-top:6px;font-size:10px;color:#444;display:flex;justify-content:space-between}',
  wa=(contact.wa||'').replace(/\D/g,''),tel=wa?'+'+wa.slice(0,3)+' '+wa.slice(3):'';
- const kv=[['Salle',ROOMS[rm].n+' · '+SIZES[size].n],['Dimensions',W+' × '+D+' m ('+nf(A)+' m²)'],att>0?['Personnes attendues',nf(att)]:null,['Qualité du matériel',LV[lvl].n+' – '+LV[lvl].d],['Installation et formation',inst?'Souhaitées (sur devis)':'Non demandées']].filter(Boolean);
+ const kv=[['Salle',ROOMS[rm].n+' · '+SIZES[size].n],['Dimensions',W+' × '+D+' m ('+nf(A)+' m²)'],att>0?['Personnes attendues',nf(att)]:null,['Qualité du matériel',LV[lvl].n+' – '+LV[lvl].d],['Installation et formation',inst?'Souhaitées (sur devis)':'Non demandées'],['Lieu et matériaux',acv().env==='out'?'Plein air':'Intérieur, hauteur '+acv().h+' m · murs : '+mget('wall',acv().wall)[1]+' · plafond : '+mget('roof',acv().roof)[1]+' · sol : '+mget('floor',acv().floor)[1]]].filter(Boolean);
  const qrows=rr.rows.map(x=>`<tr><td>${esc(x.s.l)}<div class="sm">${esc(x.o.n)}${inStock(x.o)?' · en stock':x.o.us!=null?' · sur commande':''}</div></td><td class="r">${x.q}</td><td class="r">${x.pr==null?'—':money(x.pr)}</td><td class="r">${x.pr==null?'Sur demande':money(x.pr*x.q)}</td></tr>`).join('')||'<tr><td colspan="4">Aucun matériel choisi pour le moment.</td></tr>';
  const warn=checks().filter(c=>c[0]==='w').map(c=>c[1]);
  return '<html><head><meta charset="utf-8"><title>'+(full?'Devis':'Plan de scène')+' – Pyramide Record</title><style>'+css+'</style></head><body>'
@@ -565,22 +565,22 @@ function buildVenue(W,D,fl){const vn=ven,v=ROOMS[rm].venue,big=v==='stad'?4:v===
   {const sc=stageC(),sz=stageSz(W,D),stage=sc?box(sz[0],.35,sz[1],mat(0x4a3f2c)):box(sw,.35,3.2,mat(0x4a3f2c));stage.position.set(0,.17,sc?0:-D/2+1.7);room.add(stage)}
   const fz=v==='stad'?D*.1+.8:D/2-.7;
   if(stageC()){room.add(label('SCÈNE AU CENTRE',0,0,'#f2b632',big));room.add(label('SONORISATION · RÉGIE',-W*.14,D*.3,'#8fa2ff',big));room.add(label('DIFFUSION EN DIRECT',W*.14,D*.3,'#6fe3a0',big))}else{room.add(label('SCÈNE',0,-D/2+.4,'#f2b632',big));room.add(label('SONORISATION · RÉGIE',-W*.18*(v==='stad'?.3:1),fz,'#8fa2ff',big));room.add(label('DIFFUSION EN DIRECT',W*.3*(v==='stad'?.3:1),fz,'#6fe3a0',big))}
-  const wallM=()=>mat(0x23284a,{transparent:true,opacity:.5});
+  const wallM=()=>mat(acCol('wall'),{transparent:true,opacity:.5});
   if(v==='amph'){fl.material.color.set(0x34406a);const cz=-D/2+3.8,step=1.1,r0=4.6,maxZ=D/2-3.6,A=vn.arc||1.35,ai=vn.aisle!=null?vn.aisle:.9;
     for(let k=0;;k++){const r=r0+k*step;if(cz+r>maxZ||(vn.tiers&&k>=vn.tiers))break;const h=.3+k*.4,m=mat(k%2?0x5b6180:0x4d5373);
       for(let a=-A,da=1.6/r;a<=A;a+=da){const x=r*Math.sin(a),z=cz+r*Math.cos(a);if(Math.abs(x)>W/2-.5||Math.abs(a*r)<ai)continue;
-        const b=box(1.7,h,step*.98,m);b.position.set(x,h/2,z);b.rotation.y=a;room.add(b);furn.push({x,z,hw:.9,hd:.6,pew:false});venSeats+=3}}
+        const b=box(1.7,h,step*.98,m);b.position.set(x,h/2,z);b.rotation.y=a;room.add(b);furn.push({x,z,hw:.9,hd:.6,pew:false});for(let j=0;j<3;j++)cp(x+Math.cos(a)*(j-1)*.55,h,z-Math.sin(a)*(j-1)*.55);venSeats+=3}}
     room.add(label('GRADINS',0,cz+r0+2,'#9aa0c0',big))}
   else if(v==='balc'){[[0,-D/2],[-W/2,0],[W/2,0],[0,D/2]].forEach(([x,z],i)=>{const hh=(vn.bal!=null?vn.bal:(size==='l'?2:1))>1?8:5.5,w=box(i%3==0?W:.15,hh,i==1||i==2?D:.15,wallM());w.position.set(x,hh/2,z);room.add(w)});
     const z0=-D/2+5.5,z1=D/2-6.2,aisle=vn.aisle!=null?vn.aisle:1.6,bw=(W-2-aisle)/2,rows=vn.rows||Math.max(3,Math.floor((z1-z0)/.9)),sm=mat(0x8a6a44);
-    for(let r=0;r<rows;r++){const z=z0+r*(z1-z0)/(rows-1);[-1,1].forEach(sg=>{const x=sg*(aisle/2+bw/2),b=box(bw,.45,.45,sm);b.position.set(x,.22,z);room.add(b);furn.push({x,z,hw:bw/2,hd:.25,pew:false});venSeats+=Math.floor(bw/.5)})}
+    for(let r=0;r<rows;r++){const z=z0+r*(z1-z0)/(rows-1);[-1,1].forEach(sg=>{const x=sg*(aisle/2+bw/2),b=box(bw,.45,.45,sm);b.position.set(x,.22,z);room.add(b);furn.push({x,z,hw:bw/2,hd:.25,pew:false});for(let k=0;k<Math.floor(bw/.5);k++)cp(x-bw/2+(k+.5)*.5,.5,z);venSeats+=Math.floor(bw/.5)})}
     carpet(0,(z0+z1)/2,aisle,z1-z0+1);
     const nb=vn.bal!=null?vn.bal:(size==='l'?2:1),levels=[3.4,6.8].slice(0,nb),gm=new THREE.MeshStandardMaterial({color:0x9fd8ff,transparent:true,opacity:.25}),slm=mat(0x4a4f78,{transparent:true,opacity:.6});
     levels.forEach((y,li)=>{const dp=li?2.6:3.4,rz=D/2-.3-dp/2,sd=li?2.4:3;
       const rear=box(W-.4,.3,dp,slm);rear.position.set(0,y,rz);room.add(rear);
       [-1,1].forEach(sg=>{const sx=sg*(W/2-.2-sd/2),sl=box(sd,.3,D-5,slm);sl.position.set(sx,y,(-D/2+4.5+D/2-.3-dp)/2);sl.scale.z=1;room.add(sl)});
-      const rr=Math.floor(dp/.9);for(let r=0;r<rr;r++){const b=box(W-sd*2-1,.4,.4,sm);b.position.set(0,y+.35,D/2-.8-r*.9-.3);room.add(b);venSeats+=Math.floor((W-sd*2-1)/.5)}
-      [-1,1].forEach(sg=>{const lenz=D-5-dp-1,sr=Math.floor(sd/.9);for(let r=0;r<sr;r++){const b=box(.4,.4,lenz,sm);b.position.set(sg*(W/2-.6-r*.9),y+.35,(-D/2+4.5+D/2-.3-dp)/2);room.add(b);venSeats+=Math.floor(lenz/.5)}});
+      const rr=Math.floor(dp/.9);for(let r=0;r<rr;r++){const b=box(W-sd*2-1,.4,.4,sm);b.position.set(0,y+.35,D/2-.8-r*.9-.3);room.add(b);{const nn=Math.floor((W-sd*2-1)/.5),zz=D/2-.8-r*.9-.3;for(let k=0;k<nn;k++)cp(-(W-sd*2-1)/2+(k+.5)*.5,y+.5,zz);venSeats+=nn}}
+      [-1,1].forEach(sg=>{const lenz=D-5-dp-1,sr=Math.floor(sd/.9);for(let r=0;r<sr;r++){const b=box(.4,.4,lenz,sm);b.position.set(sg*(W/2-.6-r*.9),y+.35,(-D/2+4.5+D/2-.3-dp)/2);room.add(b);{const nn=Math.floor(lenz/.5),zc=(-D/2+4.5+D/2-.3-dp)/2;for(let k=0;k<nn;k++)cp(sg*(W/2-.6-r*.9),y+.5,zc-lenz/2+(k+.5)*.5);venSeats+=nn}}});
       const rail=box(W-.4,.9,.06,gm);rail.position.set(0,y+.6,D/2-.3-dp);room.add(rail);
       for(let c=-2;c<=2;c++){const col=box(.4,y,.4,mat(0x3a3f66));col.position.set(c*W/4.6,y/2,D/2-.3-dp);room.add(col)}});
     room.add(label('BALCON',0,D/2-1.6,'#f2b632',1))}
@@ -588,25 +588,25 @@ function buildVenue(W,D,fl){const vn=ven,v=ROOMS[rm].venue,big=v==='stad'?4:v===
     if(!stageC()){const rg=new THREE.Mesh(new THREE.RingGeometry(8,8.3,40),new THREE.MeshBasicMaterial({color:0xffffff,side:THREE.DoubleSide}));rg.rotation.x=-Math.PI/2;rg.position.y=.07;room.add(rg)}
     const tiers=vn.tiers||8,per=(a,b)=>Math.PI*(3*(a+b)-Math.sqrt((3*a+b)*(a+3*b)));
     for(let k=0;k<tiers;k++){const h=.9*(k+1),off=2+k*1.4,rx=W/2+off,rz=D/2+off,sh=new THREE.Shape();sh.absellipse(0,0,rx+1.4,rz+1.4,0,Math.PI*2,false);const hole=new THREE.Path();hole.absellipse(0,0,rx,rz,0,Math.PI*2,true);sh.holes.push(hole);
-      const m=new THREE.Mesh(new THREE.ExtrudeGeometry(sh,{depth:h,bevelEnabled:false,curveSegments:72}),mat(k%2?0x5b6180:0x4d5373));m.rotation.x=-Math.PI/2;room.add(m);venSeats+=Math.floor(per(rx+.7,rz+.7)/.5)}
+      const m=new THREE.Mesh(new THREE.ExtrudeGeometry(sh,{depth:h,bevelEnabled:false,curveSegments:72}),mat(k%2?0x5b6180:0x4d5373));m.rotation.x=-Math.PI/2;room.add(m);{const nn=Math.floor(per(rx+.7,rz+.7)/.5);for(let k=0;k<nn;k++){const th=2*Math.PI*k/nn;cp((rx+.7)*Math.cos(th),h,(rz+.7)*Math.sin(th))}venSeats+=nn}}
     room.add(label('TRIBUNES',0,D/2+10,'#9aa0c0',big))}
   else{fl.material.color.set(0x2f7a3e);
     const ln=(w,d,x,z)=>{const b=box(w,.02,d,mat(0xffffff));b.position.set(x,.06,z);room.add(b)};
     ln(W-1,.25,0,-D/2+.6);ln(W-1,.25,0,D/2-.6);ln(.25,D-1,-W/2+.6,0);ln(.25,D-1,W/2-.6,0);ln(W-1,.25,0,0);
     const rg=new THREE.Mesh(new THREE.RingGeometry(8,8.3,40),new THREE.MeshBasicMaterial({color:0xffffff,side:THREE.DoubleSide}));rg.rotation.x=-Math.PI/2;rg.position.y=.07;room.add(rg);
     const tiers=vn.tiers||8;for(let k=0;k<tiers;k++){const h=.9*(k+1),m=mat(k%2?0x5b6180:0x4d5373),off=2+k*1.4;
-      [-1,1].forEach(sg=>{const b=box(1.4,h,D+2*off,m);b.position.set(sg*(W/2+off),h/2,0);room.add(b);venSeats+=Math.floor((D+2*off)/.5)});
-      if(vn.sides!=='2'){const f=box(W+2*off,h,1.4,m);f.position.set(0,h/2,D/2+off);room.add(f);venSeats+=Math.floor((W+2*off)/.5)}}
+      [-1,1].forEach(sg=>{const b=box(1.4,h,D+2*off,m);b.position.set(sg*(W/2+off),h/2,0);room.add(b);{const nn=Math.floor((D+2*off)/.5);for(let k=0;k<nn;k++)cp(sg*(W/2+off),h,-(D/2+off)+(k+.5)*.5);venSeats+=nn}});
+      if(vn.sides!=='2'){const f=box(W+2*off,h,1.4,m);f.position.set(0,h/2,D/2+off);room.add(f);{const nn=Math.floor((W+2*off)/.5);for(let k=0;k<nn;k++)cp(-(W/2+off)+(k+.5)*.5,h,D/2+off);venSeats+=nn}}}
     room.add(label('TRIBUNES',0,D/2+10,'#9aa0c0',big))}}
 function mkTable(w,d,def){const g=new THREE.Group(),top=box(w,.08,d,mat(0x6b4f33));top.position.y=.75;g.add(top);
   [-1,1].forEach(sx=>{const l=box(.08,.75,d*.9,mat(0x4a3a28));l.position.set(sx*(w/2-.1),.37,0);g.add(l)});mkFix('tbl',g,w/2,d/2,def,false)}
 function buildRoom(){
-  while(room.children.length)room.remove(room.children[0]);markers=[];furn=[];fixt={};gk=0;
+  while(room.children.length)room.remove(room.children[0]);markers=[];furn=[];fixt={};gk=0;crowdPts=[];
   const {W,D}=SIZES[size];
-  const fl=box(W,.1,D,mat(0x2a2f4d));fl.position.set(0,-.05,0);room.add(fl);
+  const fl=box(W,.1,D,mat(acv().env==='in'||rm==='stad'?acCol('floor'):0x2a2f4d));fl.position.set(0,-.05,0);room.add(fl);
   if(rm==='church'){
   const stage=box(W*.8,.35,3,mat(0x4a3f2c));stage.position.set(0,.17,-D/2+1.7);room.add(stage);
-  if(size!=='l'){[[0,-D/2],[-W/2,0],[W/2,0]].forEach(([x,z],i)=>{const w=box(i?.15:W,3,i?D:.15,mat(0x23284a,{transparent:true,opacity:.55}));w.position.set(x,1.5,z);room.add(w)})}
+  if(size!=='l'){[[0,-D/2],[-W/2,0],[W/2,0]].forEach(([x,z],i)=>{const w=box(i?.15:W,3,i?D:.15,mat(acCol('wall'),{transparent:true,opacity:.55}));w.position.set(x,1.5,z);room.add(w)})}
   buildSeats(W,D);
   room.add(label('SCÈNE / AUTEL',0,-D/2+.4,'#f2b632'));
   room.add(label('SONORISATION · RÉGIE',-W*.18,D/2-.7,'#8fa2ff'));
@@ -636,7 +636,7 @@ function buildRoom(){
   if(rm!=='church'&&!ROOMS[rm].venue)buildGuests(W,D);
   dummies.forEach(d=>{if(!valid(d,d.x,d.z)){freeSpot(d,d.x,d.z);seatFix(d)}room.add(person(d))});
   rad=ROOMS[rm].rad[size]*radK();
-  covBuild();
+  covBuild();buildCrowd();if(typeof fillUI==='function'){fillUI();acRes()}
 }
 function cameraUpdate(){const w=cv.clientWidth||cv.parentElement.clientWidth,h=cv.clientHeight||cv.parentElement.clientHeight;R.setSize(w,h,false);cam.aspect=w/h;cam.updateProjectionMatrix();
   cam.position.set(rad*Math.sin(phi)*Math.sin(theta),rad*Math.cos(phi),rad*Math.sin(phi)*Math.cos(theta));cam.lookAt(0,.8,0)}
@@ -681,7 +681,7 @@ function chrome(){
  document.getElementById('kits').innerHTML=Object.entries(KITS).map(([k,v])=>`<button class="pill" data-k="${k}">${v.n}</button>`).join('')+'<button class="pill" id="clr">Tout vider</button>';
  document.querySelectorAll('#kits [data-k]').forEach(b=>b.onclick=()=>{sel={};const ks=KITS[b.dataset.k].s;for(const id in ks){const sl=SLOTS.find(z=>z.id===id),o=sl&&sl.o[ks[id]];if(o&&vis(o)&&(optState(o)!=='soon'||ADMIN))sel[id]=ks[id]}qov={};applyScr();refresh()});
  document.getElementById('clr').onclick=()=>{sel={};refresh()};
- document.querySelector('#head h1').textContent=ROOMS[rm].h;seatUI();scrUI();presetUI();lvlUI();dimUI()}
+ document.querySelector('#head h1').textContent=ROOMS[rm].h;seatUI();scrUI();presetUI();lvlUI();dimUI();acUI()}
 // ===== Dimensions, personnes, conseils =====
 let att=0,pdfColor=false,client={n:'',t:''};const ORG={};
 try{client=Object.assign(client,JSON.parse(localStorage.getItem('pr_client')||'{}'))}catch(e){}
@@ -726,12 +726,64 @@ function advice(){const {W,D}=SIZES[size],A=Math.round(W*D),v=ROOMS[rm].venue,bi
     if(D>20){const d=Math.round(D*.45/343*1000+10);o.push(['Salle profonde',`Avec ${D} m de profondeur, ajoutez une rangée d'enceintes de renfort vers ${Math.round(D*.45)} m de la scène, avec un retard d'environ ${d} ms pour que le son arrive en même temps que celui de la scène.`])}}
   const ch=['mic','kbd','piano'].reduce((a,t)=>a+SLOTS.filter(x=>x.t===t&&sel[x.id]!=null).reduce((b,x)=>b+qty(x)*(t==='kbd'?2:1),0),0);
   if(ch>0)o.push(['Table de mixage',`${ch} entrée${ch>1?'s':''} utilisée${ch>1?'s':''} : choisissez une table d'au moins ${ch+2} voies pour garder de la marge.`]);
-  if(big)o.push(['Acoustique',D>15||v?'Les grands volumes créent de l\'écho : orientez les enceintes vers le public, loin des murs, gardez les micros éloignés des enceintes pour éviter le larsen, et réglez l\'égalisation sur place.':'Éloignez les micros des enceintes pour éviter le larsen et traitez les murs réfléchissants si possible.']);
-  else o.push(['Acoustique',rm==='pod'?'Absorbez les réflexions (panneaux, rideaux, tapis) et placez chaque micro près de la bouche de son intervenant.':'Prévoyez des panneaux absorbants sur les murs et un tapis au sol ; isolez bien la cabine de la régie pour éviter les fuites de son.']);
+  {const r=acoustics(fillPct);if(r.out)o.push(['Acoustique','Plein air : pas d\'écho de salle, mais le son se perd avec la distance et le vent. Prévoyez des enceintes de renfort et des protections contre le vent.']);else{const q=rateRt(r.rt),r0=acoustics(0),r1=acoustics(100),alt=acoustics(fillPct,{wall:'pan'});o.push(['Acoustique',`Écho estimé (RT60) : ${fs(r.rt)} (salle vide ${fs(r0.rt)}, pleine ${fs(r1.rt)}) ; compréhension de la parole : ${q.t.toLowerCase()}. Distance critique environ ${(Math.round(r.dc*10)/10).toString().replace('.',',')} m. `+(q.i>=2?`Pour améliorer : rideaux lourds ou panneaux acoustiques sur les murs (avec des panneaux, l'écho passerait à environ ${fs(alt.rt)}), faux plafond acoustique, moquette ou tapis, et enceintes directionnelles orientées vers le public.`:'Acoustique favorable à la parole.')])}}
+  if(false)o.push(['Acoustique',D>15||v?'Les grands volumes créent de l\'écho : orientez les enceintes vers le public, loin des murs, gardez les micros éloignés des enceintes pour éviter le larsen, et réglez l\'égalisation sur place.':'Éloignez les micros des enceintes pour éviter le larsen et traitez les murs réfléchissants si possible.']);
+  else if(false)o.push(['Acoustique',rm==='pod'?'Absorbez les réflexions (panneaux, rideaux, tapis) et placez chaque micro près de la bouche de son intervenant.':'Prévoyez des panneaux absorbants sur les murs et un tapis au sol ; isolez bien la cabine de la régie pour éviter les fuites de son.']);
   o.push(['Alimentation',(n>200||v?'Prévoir une alimentation électrique dédiée au son et un stabilisateur de tension. ':'Prévoir un stabilisateur de tension. ')+(act('pwr')?'Une alimentation de secours est incluse dans votre sélection.':'Une alimentation de secours (onduleur) évite les coupures en plein usage.')]);
   o.push(['Installation',inst?'Installation, câblage, réglages et formation par '+'Pyramide Record : inclus à la demande, sur devis.':'L\'installation, le câblage, les réglages et la formation peuvent être assurés par Pyramide Record, sur devis.']);
   o.push(['Qualité',`${LV[lvl].n} : ${LV[lvl].d}`]);
   return o}
+// ===== Foule et acoustique =====
+let crowdPts=[],fillPct=0,fillMode='sit',covMode='lvl';const cp=(x,y,z)=>{crowdPts.push([x,y,z])};
+const MAT={wall:[['bet','Béton / parpaing nu',.03,0x7a8099],['bri','Brique enduite',.04,0x8a4b3a],['boi','Bois / lambris',.10,0x8a6a44],['ver','Verre / baies vitrées',.05,0x7fc4e8],['rid','Rideaux lourds',.55,0x7a2d4a],['pan','Panneaux acoustiques',.85,0x3d6b4a]],
+ roof:[['bet','Dalle béton',.03,0x7a8099],['tol','Tôle (bac acier)',.10,0x9aa4b0],['boi','Bois / charpente',.12,0x8a6a44],['fau','Faux plafond acoustique',.65,0xdcdcc8],['pla','Plâtre',.05,0xcfd2dc]],
+ floor:[['bet','Béton / carrelage',.02,0x3a4060],['boi','Bois / parquet',.08,0x6b4f33],['moq','Moquette / tapis',.35,0x4a3a6a],['ter','Terre / herbe',.15,0x2f7a3e]]};
+const acBy={};
+const acDef=k=>({church:{env:'in',wall:'bri',roof:'tol',floor:'bet',h:5},rec:{env:'in',wall:'bri',roof:'fau',floor:'moq',h:2.8},pod:{env:'in',wall:'bri',roof:'fau',floor:'moq',h:2.8},vid:{env:'in',wall:'bri',roof:'fau',floor:'moq',h:3.5},pho:{env:'in',wall:'bri',roof:'fau',floor:'moq',h:3.5},amph:{env:'out',wall:'bet',roof:'bet',floor:'bet',h:8},balc:{env:'in',wall:'bri',roof:'pla',floor:'boi',h:9},stad:{env:'out',wall:'bet',roof:'bet',floor:'ter',h:20}}[k]);
+const acv=()=>acBy[rm]||(acBy[rm]=acDef(rm));
+const mget=(t,k)=>MAT[t].find(x=>x[0]===k)||MAT[t][0];
+const acCol=t=>mget(t,acv()[t])[3];
+function acoustics(pct,ov){const a=Object.assign({},acv(),ov||{});if(a.env==='out')return{out:true};
+  const {W,D}=SIZES[size],h=a.h,V=W*D*h,Sw=2*(W+D)*h,Sr=W*D,Sf=W*D,N=crowdPts.length||capNow(),occ=Math.round(N*pct/100),
+   Aw=Sw*mget('wall',a.wall)[2],Ar=Sr*mget('roof',a.roof)[2],Af=Sf*mget('floor',a.floor)[2],Ap=occ*(fillMode==='stand'?.40:.45)+(N-occ)*.15,A=Aw+Ar+Af+Ap,rt=.161*V/A,Stot=Sw+Sr+Sf,ab=Math.min(.95,A/Stot);
+  return{V,A,rt,dc:.057*Math.sqrt(5*V/rt),R:A/(1-ab),N,occ,Stot}}
+function rateRt(rt){const st=rm==='rec'||rm==='pod'||rm==='vid'||rm==='pho',T=st?[.35,.5,.8]:[.8,1.2,1.8,2.5],L=['Excellente','Bonne','Moyenne','Difficile','Très difficile'],C=['#3cc878','#8fd13c','#ebd23c','#f08c32','#dc3c3c'];let i=0;while(i<T.length&&rt>T[i])i++;return{t:L[i],c:C[i],i}}
+const fs=x=>x.toFixed(1).replace('.',',')+' s';
+function acRes(){const e=document.getElementById('acres');if(!e)return;const a=acv(),r=acoustics(fillPct);
+  if(r.out){e.innerHTML='<b>Plein air</b> : pas d\'écho de salle. Le son se perd avec la distance (et le vent) : prévoyez plus d\'enceintes et des enceintes de renfort.';return}
+  const r0=acoustics(0),r1=acoustics(100),q=rateRt(r.rt),pos=Math.min(100,r.rt/3*100);
+  e.innerHTML=`Volume : ${Math.round(r.V).toLocaleString('fr-FR')} m³ · Écho (RT60) : <b>${fs(r.rt)}</b> · Compréhension de la parole : <b style="color:${q.c}">${q.t}</b>
+  <div style="height:8px;border-radius:4px;margin:6px 0;position:relative;background:linear-gradient(90deg,#3cc878,#ebd23c 45%,#f08c32 70%,#dc3c3c)"><div style="position:absolute;left:${pos}%;top:-3px;width:3px;height:14px;background:#fff;border-radius:2px"></div></div>
+  Salle vide ${fs(r0.rt)} → pleine ${fs(r1.rt)}${r.N?'':' (aucune place)'} · au-delà de ${fs(1).replace(' s','')} m... `.replace(/ · au-delà.*$/,'')+` · distance critique ≈ ${(Math.round(r.dc*10)/10).toString().replace('.',',')} m (au-delà, l'écho domine la voix).`}
+function fillUI(){const B=document.getElementById('fillbox');if(!B)return;const N=crowdPts.length;
+  if(!N){B.innerHTML='';return}
+  B.innerHTML=`<div class="zone">Remplir la salle</div><div class="sbx"><div style="display:flex;gap:6px;flex-wrap:wrap"><button class="pill" id="f1">Remplir (assis)</button><button class="pill" id="f2">Remplir (debout)</button><button class="pill" id="f0">Vider</button></div>
+  <label style="display:flex;gap:8px;align-items:center;margin-top:8px">Remplissage <input id="fr" type="range" min="0" max="100" value="${fillPct}" style="flex:1;width:auto"> <b id="fp">${fillPct}%</b></label><div class="mini" id="fcnt"></div></div>`;
+  const ap=()=>{document.getElementById('fp').textContent=fillPct+'%';document.getElementById('fr').value=fillPct;buildCrowd();acRes();fillCnt()};
+  f1.onclick=()=>{fillMode='sit';fillPct=100;ap()};f2.onclick=()=>{fillMode='stand';fillPct=100;ap()};f0.onclick=()=>{fillPct=0;ap()};
+  fr.oninput=()=>{fillPct=+fr.value;ap()};fillCnt()}
+function fillCnt(){const e=document.getElementById('fcnt');if(e){const N=crowdPts.length;e.textContent=Math.round(N*fillPct/100).toLocaleString('fr-FR')+' personnes sur '+N.toLocaleString('fr-FR')+' places (absorbent le son : l\'écho baisse quand la salle se remplit).'}}
+function buildCrowd(){room.children.filter(g=>g.userData&&g.userData.crowd).forEach(g=>room.remove(g));const N=crowdPts.length;if(!N||fillPct<=0)return;
+  const rk=i=>((i*2654435761)>>>0)/4294967296,idx=[];for(let i=0;i<N;i++)if(rk(i)<fillPct/100)idx.push(i);
+  const st=Math.max(1,Math.ceil(idx.length/6000)),use=idx.filter((_,j)=>j%st===0),n=use.length;if(!n)return;
+  const sit=fillMode!=='stand',bh=sit?.55:1.05,body=new THREE.InstancedMesh(new THREE.CylinderGeometry(.17,.2,bh,8),new THREE.MeshStandardMaterial({color:0xffffff,roughness:.8}),n),head=new THREE.InstancedMesh(new THREE.SphereGeometry(.11,8,6),new THREE.MeshStandardMaterial({color:0xd9a066,roughness:.8}),n),pal=[0x3b5bdb,0xc92a2a,0x2b8a3e,0x862e9c,0xe67700,0x555a78],m=new THREE.Matrix4(),c=new THREE.Color();
+  use.forEach((p,j)=>{const [x,y,z]=crowdPts[p],by=y+(sit?.5:.55)+(sit?0:0);m.makeTranslation(x,by,z);body.setMatrixAt(j,m);c.setHex(pal[p%pal.length]);body.setColorAt(j,c);m.makeTranslation(x,by+bh/2+.14,z);head.setMatrixAt(j,m)});
+  body.instanceMatrix.needsUpdate=true;if(body.instanceColor)body.instanceColor.needsUpdate=true;head.instanceMatrix.needsUpdate=true;
+  const g=new THREE.Group();g.add(body);g.add(head);g.userData={crowd:true};room.add(g)}
+function acUI(){const B=document.getElementById('acbox');if(!B)return;const a=acv(),so=(id,t,v)=>`<select id="${id}">${MAT[t].map(x=>`<option value="${x[0]}" ${x[0]===v?'selected':''}>${x[1]}</option>`).join('')}</select>`;
+  B.innerHTML=`<div class="zone">Acoustique de la salle</div><div class="sbx"><details open><summary style="font-size:13px;cursor:pointer">Lieu et matériaux</summary>
+  <label>Lieu <select id="ae"><option value="in" ${a.env==='in'?'selected':''}>Intérieur</option><option value="out" ${a.env==='out'?'selected':''}>Plein air</option></select></label>
+  <label>Hauteur sous plafond (m) <input id="ah" type="number" min="2" max="60" step="0.5" value="${a.h}"></label>
+  <label>Murs ${so('aw','wall',a.wall)}</label><label>Plafond / toit ${so('ar','roof',a.roof)}</label><label>Sol ${so('af','floor',a.floor)}</label>
+  <div class="mini" id="acres" style="margin-top:8px"></div><div class="mini">Estimation indicative (formule de Sabine), à confirmer par une mesure sur place.</div></details></div>`;
+  const ch=()=>{a.env=ae.value;a.h=Math.max(2,Math.min(60,+ah.value||a.h));a.wall=aw.value;a.roof=ar.value;a.floor=af.value;buildRoom();renderList();acRes()};
+  ['ae','ah','aw','ar','af'].forEach(i=>document.getElementById(i).onchange=ch);acRes()}
+function clrGrid(){const L=spkList(),{W,D}=SIZES[size],r=acoustics(fillPct);if(!L.length||!isVen()||r.out)return null;
+  const A={x0:-W/2+.5,x1:W/2-.5,z0:-D/2+3.6,z1:D/2-.5},cell=Math.max(.5,Math.max(W,D)/70),nx=Math.max(2,Math.floor((A.x1-A.x0)/cell)),nz=Math.max(2,Math.floor((A.z1-A.z0)/cell)),v=[],rev=L.length*4/r.R;
+  for(let j=0;j<nz;j++)for(let i=0;i<nx;i++){const x=A.x0+(i+.5)*(A.x1-A.x0)/nx,z=A.z0+(j+.5)*(A.z1-A.z0)/nz;let I=0;
+    for(const s of L){const dx=x-s.x,dz=z-s.z,rr=Math.max(1.5,Math.hypot(dx,dz)),d=(dx*s.fx+dz*s.fz)/rr;I+=(1+5*Math.pow(Math.max(d,0),2))/(4*Math.PI*rr*rr)}
+    v.push(10*Math.log10(I/rev))}
+  return{v,nx,nz,A,rt:r.rt}}
 function lvlUI(){const B=document.getElementById('lvlbox');if(!B)return;
   B.innerHTML='<div class="zone">Qualité du matériel</div><div class="sbx"><div style="display:flex;gap:6px;flex-wrap:wrap">'+[1,2,3].map(k=>`<button class="pill ${k===lvl?'on':''}" data-l="${k}">${LV[k].n}</button>`).join('')+`</div><div class="mini" style="margin-top:6px">${LV[lvl].d}</div><div class="mini">${LV[lvl].dl}</div><div class="mini">${LVNOTE}</div></div>`;
   B.querySelectorAll('[data-l]').forEach(b=>b.onclick=()=>setLvl(+b.dataset.l))}
@@ -765,8 +817,8 @@ function seatUI(){const B=document.getElementById('seatbox');if(ROOMS[rm].venue)
   <div class="mini">Sièges : affichés pour visualiser la salle, non vendus.</div></details></div>`;
   const ch=()=>{seat.layout=sl.value;seat.style=ss.value;seat.rows=Math.max(1,Math.min(14,+sr.value||1));seat.aisle=+sa.value;buildRoom();renderList();scount.textContent=seat.count};
   ['sl','ss','sr','sa'].forEach(i=>document.getElementById(i).onchange=ch)}
-const encodeState=()=>btoa(unescape(encodeURIComponent(JSON.stringify({ven,fx,two,rm,size,sel,qov,offs,dummies,seat,scr,guest,fwd,mar,fee,lvl,att,dm:ORG[rm+size]?[SIZES[size].W,SIZES[size].D]:null}))));
-function loadState(o){lvl=[1,2,3].includes(o.lvl)?o.lvl:1;ven=o.ven||{};fx=o.fx||{};two=!!o.two;rm=ROOMS[o.rm]?o.rm:'church';SLOTS=ROOMS[rm].slots;KITS=ROOMS[rm].kits;SIZES=ROOMS[rm].sizes;size=SIZES[o.size]?o.size:ROOMS[rm].def;sel=o.sel||{};qov=o.qov||{};resetDims();att=o.att||0;if(o.dm&&o.dm[0]>0)setDims(o.dm[0],o.dm[1]);
+const encodeState=()=>btoa(unescape(encodeURIComponent(JSON.stringify({ven,fx,two,rm,size,sel,qov,offs,dummies,seat,scr,guest,fwd,mar,fee,lvl,att,fp:fillPct,fm:fillMode,ac:acBy,dm:ORG[rm+size]?[SIZES[size].W,SIZES[size].D]:null}))));
+function loadState(o){lvl=[1,2,3].includes(o.lvl)?o.lvl:1;ven=o.ven||{};fx=o.fx||{};two=!!o.two;rm=ROOMS[o.rm]?o.rm:'church';SLOTS=ROOMS[rm].slots;KITS=ROOMS[rm].kits;SIZES=ROOMS[rm].sizes;size=SIZES[o.size]?o.size:ROOMS[rm].def;sel=o.sel||{};qov=o.qov||{};resetDims();att=o.att||0;fillPct=o.fp||0;fillMode=o.fm||'sit';for(const k in acBy)delete acBy[k];Object.assign(acBy,o.ac||{});if(o.dm&&o.dm[0]>0)setDims(o.dm[0],o.dm[1]);
   for(const k in offs)delete offs[k];Object.assign(offs,o.offs||{});dummies=o.dummies||[];dn=dummies.reduce((m,d)=>Math.max(m,d.id),0);
   Object.assign(seat,o.seat||{});Object.assign(scr,o.scr||{});Object.assign(guest,o.guest||{});if(o.fwd){fwd=o.fwd;document.getElementById('fwd').value=fwd}
   dsel=null;cur=null;chrome();document.querySelectorAll('#sz .pill').forEach(b=>b.classList.toggle('on',b.dataset.k===size));buildRoom();renderList()}
@@ -791,7 +843,7 @@ document.getElementById('close').onclick=()=>document.getElementById('modal').st
 document.getElementById('copy').onclick=()=>{const t=document.getElementById('qt');t.select();
   try{navigator.clipboard.writeText(quoteText);document.getElementById('copy').textContent='Copié ✓'}catch(e){document.execCommand&&document.execCommand('copy')}};
 
-chrome();document.getElementById('d1').onclick=()=>spawn('stand');document.getElementById('d2').onclick=()=>spawn('sit');document.getElementById('d4').onclick=rotSel;document.getElementById('cvb').onclick=()=>{covOn=!covOn;document.getElementById('cvb').classList.toggle('on',covOn);covBuild()};document.getElementById('cva').onclick=autoSpk;document.getElementById('pcol2').onchange=e=>{pdfColor=e.target.checked};document.getElementById('plt').onclick=()=>plotOpen(false);
+chrome();document.getElementById('d1').onclick=()=>spawn('stand');document.getElementById('d2').onclick=()=>spawn('sit');document.getElementById('d4').onclick=rotSel;const cvs=()=>{document.getElementById('cvb').classList.toggle('on',covOn&&covMode==='lvl');document.getElementById('clb').classList.toggle('on',covOn&&covMode==='clr')};document.getElementById('cvb').onclick=()=>{if(covOn&&covMode==='lvl')covOn=false;else{covOn=true;covMode='lvl'}cvs();covBuild()};document.getElementById('clb').onclick=()=>{if(covOn&&covMode==='clr')covOn=false;else{covOn=true;covMode='clr'}cvs();covBuild()};document.getElementById('cva').onclick=autoSpk;document.getElementById('pcol2').onchange=e=>{pdfColor=e.target.checked};document.getElementById('plt').onclick=()=>plotOpen(false);
 {let last=encodeState(),pend=last,pt=0,hist=[],fut=[],busy=false;
  const load=c=>{busy=true;try{loadState(JSON.parse(decodeURIComponent(escape(atob(c)))))}catch(e){}last=pend=encodeState();busy=false};
  setInterval(()=>{if(busy)return;const c=encodeState(),n=Date.now();if(c!==pend){pend=c;pt=n}else if(pend!==last&&n-pt>=350){hist.push(last);if(hist.length>60)hist.shift();last=pend;fut=[]}},150);

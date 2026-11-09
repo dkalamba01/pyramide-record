@@ -499,6 +499,13 @@ function renderOpts(){
   O.querySelectorAll('.opt').forEach(e=>e.onclick=()=>{if(e.dataset.off==='1')return;const i=+e.dataset.i;if(i<0)delete sel[s.id];else sel[s.id]=i;refresh()});
 }
 const seatInfo=()=>true?{n:0,st:'chair'}:ROOMS[rm].venue?{n:0,st:'chair'}:rm==='church'?{n:seat.count,st:seat.style==='pew'&&seat.layout==='arc'?'chair':seat.style}:{n:guest.count,st:guest.style};
+// ===== Enceintes suspendues =====
+let hang=false;
+const hangY=()=>Math.round(Math.max(3,Math.min(acv().h-1.5,8))*2)/2;
+const hungN=()=>hang?spkList().filter(q=>q.hg).length:0;
+const HRIG=[['Accroche des enceintes','Kit d\'accroche, élingues et sécurité (estimé)',150,20],['Levage des enceintes','Palan électrique 1 t (estimé)',450,60]];
+function hangRows(rent){const n=hungN();if(!n)return[];const rows=HRIG.map(([l,nm,b,r])=>({s:{l},o:{n:nm},q:n,pr:rent?Math.round(r*rfac(rdays)):b,site:false}));
+  rows.push({s:{l:'Technicien d\'accrochage et étude de charge'},o:{n:rent?'120 $ par jour (estimé)':'Forfait (estimé)'},q:1,pr:rent?120*rdays:200,svc:true});return rows}
 // ===== Location =====
 let rmode='buy',rdays=1,rfrom='',rtech=false,rlog=true;
 const RTERMS=['Réservation : confirmée par un acompte de 50 % du montant de la location. Le solde est payable avant la remise du matériel.','Caution : remboursable à la restitution du matériel complet et en bon état. Une pièce d\'identité valide est demandée.','Durée : une journée de location correspond à 24 heures. Tout retard est facturé comme une journée supplémentaire.','Utilisation : le matériel est utilisé uniquement par le locataire, aux dates et sur le lieu convenus. La sous-location est interdite.','Dommages, perte ou vol : facturés à la valeur de remplacement, déduits d\'abord de la caution. En plein air, le matériel doit être protégé de la pluie et de la poussière.','Annulation : gratuite jusqu\'à 72 heures avant la date de début ; ensuite, l\'acompte est conservé.','Disponibilité : le matériel est confirmé après vérification du stock aux dates demandées. Les tarifs marqués « estimé » sont confirmés dans le devis final.','Services : la livraison, l\'installation et la reprise à Kinshasa sont facturées au forfait. Un technicien son sur place est proposé en option (80 $ par jour).'];
@@ -512,6 +519,7 @@ function rperiod(){if(!rfrom)return'dates à préciser ('+rdays+' jour'+(rdays>1
 function totalsRent(){let t=0,req=[],rows=[],val=0,units=0;
   active().forEach(sl=>{if(sel[sl.id]==null||DECO.has(sl.id))return;const o=sl.o[sel[sl.id]],q=qty(sl),rd=rentDay(sl,o);
     if(!rd){req.push(sl.l);return}const pr=Math.round(rd.p*rfac(rdays));t+=pr*q;units+=q;val+=(price(o)||0)*q;rows.push({s:sl,o,q,pr,site:rd.site})});
+  hangRows(true).forEach(x=>{t+=x.pr*x.q;rows.push(x)});
   if(rows.length){if(rlog){const lg=Math.min(600,50+3*units);t+=lg;rows.push({s:{l:'Livraison, installation et reprise (Kinshasa)'},o:{n:'Forfait'},q:1,pr:lg,svc:true})}
     if(rtech){const tc=80*rdays;t+=tc;rows.push({s:{l:'Technicien son sur place'},o:{n:'80 $ par jour'},q:1,pr:tc,svc:true})}}
   return{t,req,rows,rent:{caution:Math.round(val*.3/10)*10,acompte:Math.round(t*.5)}}}
@@ -534,6 +542,7 @@ function totals(){if(rmode==='rent')return totalsRent();let t=0,req=[],rows=[];
   active().forEach(s=>{if(sel[s.id]==null||DECO.has(s.id))return;const o=s.o[sel[s.id]],q=qty(s),pr=price(o);
     if(pr==null)req.push(s.l);else t+=pr*q;rows.push({s,o,q,pr})});
   acBuy().forEach(b=>{t+=b.pr;rows.push({s:{l:'Traitement acoustique'},o:{n:b.n},q:1,pr:b.pr})});
+  hangRows(false).forEach(x=>{t+=x.pr*x.q;rows.push(x)});
   const si=seatInfo();if(si.n>0){const sp=local['seat:'+si.st];if(sp>0){t+=sp*si.n;rows.push({s:{l:'Sièges'},o:{n:STN[si.st]},q:si.n,pr:sp})}else req.push('Sièges ('+si.n+' places, '+STN[si.st]+')')}
   if(fwd==='ps'&&rows.some(r=>r.pr!=null))t+=Math.round(5*1.392*(1+mar/100)*(1+fee/100));
   return{t,req,rows}}
@@ -547,6 +556,7 @@ function checks(){const out=[],act=id=>{const sl=SLOTS.find(x=>x.id===id);return
   if(has('cam')&&!has('cap')&&!has('ai')&&!has('lap'))out.push(['i','Caméra sans ordinateur ni carte de capture : la diffusion en direct ne sera pas possible.']);
   if((spkOn||micOn)&&!has('pwr'))out.push(['i','Pensez à l\'alimentation de secours : les coupures de courant peuvent interrompre le son.']);
   const cg=covGrid();if(cg&&cg.spread>15)out.push(['w','Le son sera environ '+Math.round(cg.spread)+' dB plus faible au fond qu\'à l\'avant. Ajoutez des enceintes, des enceintes de retard, ou essayez « Placer les enceintes ».']);else if(cg&&cg.spread>9)out.push(['i','Écart de volume d\'environ '+Math.round(cg.spread)+' dB dans la salle : voyez la carte « Couverture sonore ».']);
+  if(hungN())out.push(['w','Enceintes suspendues : la structure du bâtiment doit être vérifiée (étude de charge) et l\'accrochage fait par un technicien qualifié, avec élingues de sécurité. Prix d\'accroche estimés.']);
   const r=totals();if(r.rows.length&&r.req.length)out.push(['i',r.req.length+' élément(s) sans prix : le total est incomplet, il sera confirmé dans le devis.']);
   return out}
 function chkUI(){const B=document.getElementById('chk');if(!B)return;const c=checks();B.innerHTML=c.length?'<div class="zone">Vérification de la configuration</div>'+c.map(([l,m])=>`<div class="chk ${l}">${l==='w'?'⚠':'ℹ'} ${m}</div>`).join(''):''}
@@ -625,7 +635,7 @@ function partition(W,D,zw,lc,ls_){const wm=mat(0x3a4170),gm=new THREE.MeshStanda
       room.add(label(lc[0],lc[1],lc[2],'#8fa2ff'));room.add(label('VITRE',(gA+gB)/2,zw-.5,'#9fd8ff'));room.add(label(ls_[0],ls_[1],ls_[2],'#6fe3a0'));room.add(label('PORTE',(dA+dB)/2,zw-.5,'#f2b632'))}
 let venSeats=0,ven={},covOn=false;
 const isVen=()=>rm==='church'||!!ROOMS[rm].venue;
-function spkList(){return room.children.filter(g=>g.userData&&g.userData.t==='spk'&&!g.userData.ghost).map(g=>({x:g.position.x,z:g.position.z,fx:Math.sin(g.rotation.y),fz:Math.cos(g.rotation.y),g:(typeof sgain!=='undefined'&&sgain[g.userData.key])||0,k:g.userData.key,y:g.position.y}))}
+function spkList(){return room.children.filter(g=>g.userData&&g.userData.t==='spk'&&!g.userData.ghost).map(g=>({x:g.position.x,z:g.position.z,fx:Math.sin(g.rotation.y),fz:Math.cos(g.rotation.y),g:(typeof sgain!=='undefined'&&sgain[g.userData.key])||0,k:g.userData.key,y:g.position.y,hg:!!g.userData.hg}))}
 function covGrid(){const L=spkList(),{W,D}=SIZES[size];if(!L.length||!isVen())return null;
   const A={x0:-W/2+.5,x1:W/2-.5,z0:-D/2+3.6,z1:D/2-.5},cell=Math.max(.5,Math.max(W,D)/70),nx=Math.max(2,Math.floor((A.x1-A.x0)/cell)),nz=Math.max(2,Math.floor((A.z1-A.z0)/cell)),v=[];
   for(let j=0;j<nz;j++)for(let i=0;i<nx;i++){const x=A.x0+(i+.5)*(A.x1-A.x0)/nx,z=A.z0+(j+.5)*(A.z1-A.z0)/nz;let I=0;
@@ -656,11 +666,11 @@ function viewApply(){room.children.forEach(g=>{const u=g.userData||{};if(u.zone)
 
 let flRef=null;
 const outV=()=>isVen()&&acv().env==='out';
-function clrOutAt(L,x,z,ey){const S=spl1(),amb=Math.pow(10,(65-S-trim)/10);let r0=1e9;const R=L.map(s=>{const dx=x-s.x,dz=z-s.z,dy=(ey==null?1.1:ey)-((s.y||0)+1.4),rh=Math.max(1.5,Math.hypot(dx,dz)),r=Math.max(1.5,Math.hypot(dx,dz,dy)),d=(dx*s.fx+dz*s.fz)/rh;if(r<r0)r0=r;return{r,I:Math.pow(10,(dirDb(d)+(s.g||0)-20*Math.log10(r)-.012*r)/10)}});
+function clrOutAt(L,x,z,ey){const S=spl1(),amb=Math.pow(10,(65-S-trim)/10);let r0=1e9;const R=L.map(s=>{const dx=x-s.x,dz=z-s.z,dy=(ey==null?1.1:ey)-((s.y||0)+(s.hg?.4:1.4)),rh=Math.max(1.5,Math.hypot(dx,dz)),r=Math.max(1.5,Math.hypot(dx,dz,dy)),d=(dx*s.fx+dz*s.fz)/rh;if(r<r0)r0=r;return{r,I:Math.pow(10,(dirDb(d)+(s.g||0)-20*Math.log10(r)-.012*r)/10)}});
   let E=0,La=0;R.forEach(a=>{if(a.r-r0<=17)E+=a.I;else La+=a.I});return 10*Math.log10((E+1e-12)/(La+amb))}
 function seatSet(cap){if(!isVen())return[];const out=acv().env==='out',P=out?crowdPts:crowdPts.filter(p=>p[1]>1.2),st=Math.max(1,Math.ceil(P.length/(cap||6000)));return P.filter((_,i)=>i%st===0)}
 function clrFn(){const L=spkList(),r=acoustics(fillPct);if(r.out)return(x,z,y)=>clrOutAt(L,x,z,y);const rev=L.length*4/r.R;
-  return(x,z,y)=>{let I=0;for(const s of L){const dx=x-s.x,dz=z-s.z,dy=(y==null?1.1:y)-((s.y||0)+1.4),rh=Math.max(1.5,Math.hypot(dx,dz)),rr=Math.max(1.5,Math.hypot(dx,dz,dy)),d=(dx*s.fx+dz*s.fz)/rh;I+=(1+5*Math.pow(Math.max(d,0),2))/(4*Math.PI*rr*rr)}return 10*Math.log10(I/rev)}}
+  return(x,z,y)=>{let I=0;for(const s of L){const dx=x-s.x,dz=z-s.z,dy=(y==null?1.1:y)-((s.y||0)+(s.hg?.4:1.4)),rh=Math.max(1.5,Math.hypot(dx,dz)),rr=Math.max(1.5,Math.hypot(dx,dz,dy)),d=(dx*s.fx+dz*s.fz)/rh;I+=(1+5*Math.pow(Math.max(d,0),2))/(4*Math.PI*rr*rr)}return 10*Math.log10(I/rev)}}
 function seatRgb(mode,L,x,z,ey,cf){const Lv=levelAt(L,x,z,ey),dev=tgt-Lv;
   const lc=Lv>tgt+9?0x965af0:dev<=3?0x3cc878:dev<=6?0xebd23c:dev<=10?0xf08c32:0xdc3c3c,q=mode==='lvl'?null:cf(x,z,ey),qc=q==null?0:q>=3?0x3cc878:q>=0?0xebd23c:q>=-4?0xf08c32:0xdc3c3c;
   if(mode==='lvl')return lc;if(mode==='clr')return qc;const good=Lv>=tgt-3&&Lv<=tgt+9;return !good?0xdc3c3c:q>=0?0x3cc878:q>=-4?0xebd23c:0xf08c32}
@@ -748,7 +758,7 @@ function plotOpen(full,SH){full=full===true;const K=c=>pdfColor?c:'#fff',{W,D}=S
   const html=(()=>{const hs=t=>{let h=0;for(let i=0;i<t.length;i++)h=(h*31+t.charCodeAt(i))|0;return Math.abs(h)},now=new Date(),ds=now.toLocaleDateString('fr-FR',{day:'numeric',month:'long',year:'numeric'})+', '+now.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'}).replace(':',' h '),ref='PR-'+now.getFullYear()+String(now.getMonth()+1).padStart(2,'0')+String(now.getDate()).padStart(2,'0')+'-'+(1000+hs(encodeState())%9000),rr=totals(),nf=x=>x.toLocaleString('fr-FR'),A=Math.round(W*D),
  css='@page{size:A4;margin:14mm}*{box-sizing:border-box}body{font-family:Arial,Helvetica,sans-serif;color:#111;font-size:12px;line-height:1.45;margin:0 auto;max-width:780px;padding:0 10px}.hd{display:flex;justify-content:space-between;align-items:flex-end;border-bottom:2px solid #111;padding-bottom:8px;margin-bottom:12px}.hd img{height:74px}.co{text-align:right;font-size:11px;color:#333;line-height:1.5}h1{font-size:20px;margin:4px 0 2px}h2{font-size:14px;margin:18px 0 6px;border-bottom:1px solid #999;padding-bottom:2px;page-break-after:avoid}table{border-collapse:collapse;width:100%;margin:4px 0}td,th{border-bottom:1px solid #ccc;padding:4px 6px;text-align:left;vertical-align:top}th{border-bottom:1.5px solid #111;font-size:10.5px;text-transform:uppercase;letter-spacing:.03em}tr{page-break-inside:avoid}.r{text-align:right;white-space:nowrap}.tot td{border-top:2px solid #111;border-bottom:none;font-weight:bold;font-size:13px}.kv td:first-child{width:30%;color:#444}ul{margin:4px 0 4px 18px;padding:0}li{margin:4px 0;page-break-inside:avoid}.sm{font-size:10.5px;color:#444}.pb{page-break-before:always}img.sh{width:100%;max-height:330px;object-fit:contain}svg{max-width:100%;height:auto}.ft{margin-top:18px;border-top:1px solid #999;padding-top:6px;font-size:10px;color:#444;display:flex;justify-content:space-between}',
  wa=(contact.wa||'').replace(/\D/g,''),tel=wa?'+'+wa.slice(0,3)+' '+wa.slice(3):'';
- const kv=[['Salle',ROOMS[rm].n+' · '+SIZES[size].n],['Dimensions',W+' × '+D+' m ('+nf(A)+' m²)'],att>0?['Personnes attendues',nf(att)]:null,['Qualité du matériel',LV[lvl].n+' – '+LV[lvl].d],rmode==='rent'?['Formule','Location '+rperiod()]:null,['Installation et formation',inst?'Souhaitées (sur devis)':'Non demandées'],['Lieu et matériaux',acv().env==='out'?'Plein air':'Intérieur, hauteur '+acv().h+' m · murs : '+mget('wall',acv().wall)[1]+' · plafond : '+mget('roof',acv().roof)[1]+' · sol : '+mget('floor',acv().floor)[1]]].filter(Boolean);
+ const kv=[['Salle',ROOMS[rm].n+' · '+SIZES[size].n],['Dimensions',W+' × '+D+' m ('+nf(A)+' m²)'],att>0?['Personnes attendues',nf(att)]:null,['Qualité du matériel',LV[lvl].n+' – '+LV[lvl].d],rmode==='rent'?['Formule','Location '+rperiod()]:null,hungN()?['Enceintes','Suspendues à environ '+hangY()+' m (étude de charge requise)']:null,['Installation et formation',inst?'Souhaitées (sur devis)':'Non demandées'],['Lieu et matériaux',acv().env==='out'?'Plein air':'Intérieur, hauteur '+acv().h+' m · murs : '+mget('wall',acv().wall)[1]+' · plafond : '+mget('roof',acv().roof)[1]+' · sol : '+mget('floor',acv().floor)[1]]].filter(Boolean);
  const qrows=rr.rows.map(x=>`<tr><td>${esc(x.s.l)}<div class="sm">${esc(x.o.n)}${rowTag(x)}</div></td><td class="r">${x.q}</td><td class="r">${x.pr==null?'—':money(x.pr)}</td><td class="r">${x.pr==null?'Sur demande':money(x.pr*x.q)}</td></tr>`).join('')||'<tr><td colspan="4">Aucun matériel choisi pour le moment.</td></tr>';
  const warn=checks().filter(c=>c[0]==='w').map(c=>c[1]);{const r=acoustics(fillPct);if(!r.out){const q=rateRt(r.rt);if(q.i>=3)warn.push('Acoustique : écho trop long ('+fs(r.rt)+'), la parole sera '+(q.i>=4?'très difficile':'difficile')+' à comprendre sans traitement de la salle. Voir la section « Acoustique de la salle » ci-dessus.')}}
  return '<html><head><meta charset="utf-8"><title>'+(full?'Devis':'Plan de scène')+' '+ref+(client.n?' – '+esc(client.n):'')+' – Pyramide Record</title><style>'+css+'</style></head><body>'
@@ -836,10 +846,11 @@ function buildRoom(){
     const q=qty(s),o=sel[s.id]!=null?s.o[sel[s.id]]:null;
     for(let i=0;i<q;i++){
       const g=new THREE.Group();
-      {const pp=ROOMS[rm].place(s,i,q,W,D),cl=(v,m)=>Math.max(-m,Math.min(m,v));g.position.set(cl(pp[0],W/2-.6),pp[1],cl(pp[2],D/2-.6));if(pp[3]!=null)g.rotation.y=pp[3]}if(s.t==='scr'){const e=scrPos(i,q,W,D);g.position.set(e[0],e[1],e[2]);g.rotation.y=e[3];g.scale.setScalar(SCS[scr.size])}const of=offs[rm+s.id+i];if(of){g.position.x=of[0];g.position.z=of[1];if(of[2]!=null)g.rotation.y=of[2];if(of[3]!=null)g.position.y=of[3]}if(TOK.has(s.t)&&onT(g.position.x,g.position.z))g.position.y=.78;
+      {const pp=ROOMS[rm].place(s,i,q,W,D),cl=(v,m)=>Math.max(-m,Math.min(m,v));g.position.set(cl(pp[0],W/2-.6),pp[1],cl(pp[2],D/2-.6));if(pp[3]!=null)g.rotation.y=pp[3]}if(s.t==='scr'){const e=scrPos(i,q,W,D);g.position.set(e[0],e[1],e[2]);g.rotation.y=e[3];g.scale.setScalar(SCS[scr.size])}const of=offs[rm+s.id+i];if(of){g.position.x=of[0];g.position.z=of[1];if(of[2]!=null)g.rotation.y=of[2];if(of[3]!=null)g.position.y=of[3]}if(s.t==='spk'&&hang&&(!of||of[3]==null))g.position.y=hangY();if(TOK.has(s.t)&&onT(g.position.x,g.position.z))g.position.y=.78;
       const ghost=!o&&!DECO.has(s.id);g.add(product(o&&s.t==='lap'&&/PC de bureau/.test(o.n)?'pc':s.t,ghost));setOn(g,TOK.has(s.t)&&onT(g.position.x,g.position.z));
             const hit2=s.t==='scr'?box(3.3,1.9,.6,new THREE.MeshBasicMaterial({visible:false})):(()=>{const h=HS[s.t]||[.3,.3];return box(Math.max(.5,h[0]*2+.15),1.6,Math.max(.5,h[1]*2+.15),new THREE.MeshBasicMaterial({visible:false}))})();hit2.position.y=s.t==='scr'?1.9:.8;hit2.userData.slot=s.id;hit2.userData.i=i;g.add(hit2);markers.push(hit2);
-      if(ROOMS[rm].es&&s.t!=='scr')g.scale.setScalar(ROOMS[rm].es[size]);g.userData={slot:s.id,ghost,i,key:rm+s.id+i,t:s.t};room.add(g)}
+      if(ROOMS[rm].es&&s.t!=='scr')g.scale.setScalar(ROOMS[rm].es[size]);g.userData={slot:s.id,ghost,i,key:rm+s.id+i,t:s.t,hg:s.t==='spk'&&hang&&Math.abs(g.position.y-hangY())<.06};
+      if(g.userData.hg){const ln=Math.max(1.2,Math.min(acv().h-g.position.y-.8,3)),rod=new THREE.Mesh(new THREE.CylinderGeometry(.025,.025,ln,6),mat(0x9aa0c0));rod.position.y=.8+ln/2;g.add(rod);const br=box(.7,.06,.06,mat(0x9aa0c0));br.position.y=.8+ln;g.add(br)}room.add(g)}
   });
   if(rm!=='church'&&!ROOMS[rm].venue)buildGuests(W,D);
   dummies=dummies.filter(d=>!d.on||fixt[d.on]);dummies.forEach(d=>{if(d.on){const fi=fixt[d.on];d.x=fi.x;d.z=fi.z;d.rot=fi.r}else if(!valid(d,d.x,d.z)){freeSpot(d,d.x,d.z);seatFix(d)}room.add(person(d))});
@@ -1021,7 +1032,7 @@ const areaOk=(x,z,W,D)=>{if(isRound()&&Math.pow(x/(W/2),2)+Math.pow(z/(D/2),2)>1
 function covCells(maxM){const {W,D}=SIZES[size],A={x0:-W/2+.5,x1:W/2-.5,z0:(stageC()||isRound()?-D/2+.5:-D/2+3.6),z1:D/2-.5},pts=[],step=Math.max(.5,Math.sqrt((A.x1-A.x0)*(A.z1-A.z0)/maxM));
   for(let z=A.z0+step/2;z<A.z1;z+=step)for(let x=A.x0+step/2;x<A.x1;x+=step)if(areaOk(x,z,W,D))pts.push([x,z]);return{pts,A}}
 const dirDb=d=>10*Math.log10(.1+.9*Math.pow(Math.max(d,0),2));
-function levelAt(L,x,z,ey){let I=0;const S=spl1();for(const s of L){const dx=x-s.x,dz=z-s.z,dy=(ey==null?1.1:ey)-((s.y||0)+1.4),rh=Math.max(1.5,Math.hypot(dx,dz)),r=Math.max(1.5,Math.hypot(dx,dz,dy)),d=(dx*s.fx+dz*s.fz)/rh;I+=Math.pow(10,(S+dirDb(d)+(s.g||0)-20*Math.log10(r)-.012*r+trim)/10)}return I>0?10*Math.log10(I):0}
+function levelAt(L,x,z,ey){let I=0;const S=spl1();for(const s of L){const dx=x-s.x,dz=z-s.z,dy=(ey==null?1.1:ey)-((s.y||0)+(s.hg?.4:1.4)),rh=Math.max(1.5,Math.hypot(dx,dz)),r=Math.max(1.5,Math.hypot(dx,dz,dy)),d=(dx*s.fx+dz*s.fz)/rh;I+=Math.pow(10,(S+dirDb(d)+(s.g||0)-20*Math.log10(r)-.012*r+trim)/10)}return I>0?10*Math.log10(I):0}
 function lvlGrid(){const L=spkList(),{W,D}=SIZES[size];if(!L.length||!isVen())return null;
   const A={x0:-W/2+.5,x1:W/2-.5,z0:(stageC()||isRound()?-D/2+.5:-D/2+3.6),z1:D/2-.5},cell=Math.max(.5,Math.max(W,D)/70),nx=Math.max(2,Math.floor((A.x1-A.x0)/cell)),nz=Math.max(2,Math.floor((A.z1-A.z0)/cell)),v=[],ok=[];
   for(let j=0;j<nz;j++)for(let i=0;i<nx;i++){const x=A.x0+(i+.5)*(A.x1-A.x0)/nx,z=A.z0+(j+.5)*(A.z1-A.z0)/nz;ok.push(areaOk(x,z,W,D));v.push(levelAt(L,x,z))}
@@ -1087,7 +1098,8 @@ function optSpeakers(){const sl=SLOTS.find(x=>x.id==='spk');if(!sl||!isVen())ret
   if(zr){let x0=1e9,x1=-1e9,z0=1e9,z1=-1e9;for(const p of pts){x0=Math.min(x0,p[0]);x1=Math.max(x1,p[0]);z0=Math.min(z0,p[1]);z1=Math.max(z1,p[1])}
     const m=2.5,cx=(x0+x1)/2,cz=(z0+z1)/2,P=[];for(let k=0;k<=6;k++){const t=k/6;P.push([x0-m+t*(x1-x0+2*m),z0-m],[x0-m+t*(x1-x0+2*m),z1+m],[x0-m,z0-m+t*(z1-z0+2*m)],[x1+m,z0-m+t*(z1-z0+2*m)])}
     for(const [x,z] of P){const px=Math.max(-W/2+.8,Math.min(W/2-.8,x)),pz=Math.max(-D/2+.8,Math.min(D/2-.8,z));if(!inZone(px,pz))addG('Autour de la zone',px,pz,Math.atan2(cx-px,cz-pz),60*R2,false)}}
-  const ctr=sp=>{const arr=new Float32Array(n);for(let k=0;k<n;k++){const dx=pts[k][0]-sp.x,dz=pts[k][1]-sp.z,dy=(pts[k][2]==null?1.1:pts[k][2])-((sp.y||0)+1.4),rh=Math.max(1.5,Math.hypot(dx,dz)),r=Math.max(1.5,Math.hypot(dx,dz,dy)),d=(dx*Math.sin(sp.th)+dz*Math.cos(sp.th))/rh;arr[k]=Math.pow(10,(S+dirDb(d)-20*Math.log10(r)-.012*r)/10)}return arr};
+  if(hang){const hy=hangY();G.forEach(g=>g.sp.forEach(q=>{if(q.y==null){q.y=hy;q.hg=true}}))}
+  const ctr=sp=>{const arr=new Float32Array(n);for(let k=0;k<n;k++){const dx=pts[k][0]-sp.x,dz=pts[k][1]-sp.z,dy=(pts[k][2]==null?1.1:pts[k][2])-((sp.y||0)+(sp.hg?.4:1.4)),rh=Math.max(1.5,Math.hypot(dx,dz)),r=Math.max(1.5,Math.hypot(dx,dz,dy)),d=(dx*Math.sin(sp.th)+dz*Math.cos(sp.th))/rh;arr[k]=Math.pow(10,(S+dirDb(d)-20*Math.log10(r)-.012*r)/10)}return arr};
   const C=G.map(g=>{const a=ctr(g.sp[0]);if(g.sp.length>1){const b=ctr(g.sp[1]);for(let k=0;k<n;k++)a[k]+=b[k]}return a});
   const I=new Float64Array(n),used=new Set(),chosen=[],pen=L=>{const v=L-(T3-12);return(v<=0?0:v>=12?12:v)-.7*Math.max(0,Math.min(15,L-HI))},HB=new Int32Array(160),Lt=new Float64Array(n);
   const evalSet=arr=>{HB.fill(0);for(let k=0;k<n;k++){const L=10*Math.log10(I[k]+(arr?arr[k]:0)+1e-9);Lt[k]=L;HB[Math.max(0,Math.min(159,Math.round(L)))]++}
@@ -1105,6 +1117,7 @@ function ovSummary(){const r=ovRoles[ovKey()],sl=SLOTS.find(x=>x.id==='spk');if(
   return Object.keys(m).map(k=>`${k} ×${m[k].n}`+(m[k].ms>0?` (retard ${m[k].ms} ms)`:'')).join(' · ')}
 function covUI(){const B=document.getElementById('covbox');if(!B)return;if(!isVen()){B.innerHTML='';return}
   B.innerHTML=`<div class="zone">Couverture sonore maximale</div><div class="sbx"><button class="cta" id="zi" style="margin:0 0 6px">★ Installation idéale (enceintes + acoustique)</button><div id="idealres">${idealHtml}</div><details open><summary style="font-size:13px;cursor:pointer">Niveau, zone et placement automatique</summary>
+  <div class="mini" style="margin-top:4px">Pose des enceintes</div><div style="display:flex;gap:6px;flex-wrap:wrap;margin:4px 0"><button class="pill ${!hang?'on':''}" data-h="0">Au sol / sur scène</button><button class="pill ${hang?'on':''}" data-h="1">Suspendues</button></div>${hang?`<div class="mini">Suspendues à environ ${hangY()} m. Accroche, palans et technicien ajoutés au devis (estimés). Étude de charge de la structure obligatoire.</div>`:''}
   <label style="display:flex;gap:8px;align-items:center">Niveau souhaité <input id="ctg" type="range" min="70" max="110" value="${tgt}" style="flex:1;width:auto"> <b id="ctgv">${tgt} dB</b></label>
   <div style="display:flex;gap:6px;flex-wrap:wrap;margin:4px 0"><button class="pill" data-t="80">Parole 80</button><button class="pill" data-t="90">${V('Culte 90')}</button><button class="pill" data-t="100">Concert 100</button></div><div class="mini">Parole 80 : confortable · ${V('Culte 90')} : niveau courant · Concert 100 : fort, durée limitée (risque pour l'audition).</div>
   <label style="display:flex;gap:8px;align-items:center">Volume du système <input id="ctrim" type="range" min="-20" max="0" value="${trim}" style="flex:1;width:auto"> <b id="ctrimv">${trim} dB</b></label>
@@ -1114,6 +1127,7 @@ function covUI(){const B=document.getElementById('covbox');if(!B)return;if(!isVe
   const rf=()=>{document.getElementById('ctgv').textContent=tgt+' dB';document.getElementById('ctrimv').textContent=trim+' dB';covBuild();covRes()};
   ctg.oninput=()=>{tgt=+ctg.value;rf()};ctrim.oninput=()=>{trim=+ctrim.value;rf()};
   B.querySelectorAll('[data-t]').forEach(b=>b.onclick=()=>{tgt=+b.dataset.t;ctg.value=tgt;rf()});
+  B.querySelectorAll('[data-h]').forEach(b=>b.onclick=()=>{const h=b.dataset.h==='1';if(h===hang)return;hang=h;const hy=hangY();for(let i=0;i<24;i++){const o=offs[rm+'spk'+i];if(!o)continue;if(hang&&o[3]==null)o[3]=hy;if(!hang&&o[3]===hy)o.length=3}buildRoom();renderList();covUI();chkUI()});
   const zb=()=>{zd.classList.toggle('on',zdraw&&!zerase);ze.classList.toggle('on',zdraw&&zerase);cv.style.cursor=zdraw?'crosshair':'';viewApply()};
   zd.onclick=()=>{zdraw=!(zdraw&&!zerase);zerase=false;zb()};ze.onclick=()=>{zdraw=!(zdraw&&zerase);zerase=true;zb()};
   zv.onclick=()=>{zview=zview==='zone'?'cov':'zone';viewApply()};
@@ -1162,8 +1176,8 @@ function seatUI(){const B=document.getElementById('seatbox');if(ROOMS[rm].venue)
   <div class="mini">Sièges : affichés pour visualiser la salle, non vendus.</div></details></div>`;
   const ch=()=>{seat.layout=sl.value;seat.style=ss.value;seat.rows=Math.max(1,Math.min(14,+sr.value||1));seat.aisle=+sa.value;buildRoom();renderList();scount.textContent=seat.count};
   ['sl','ss','sr','sa'].forEach(i=>document.getElementById(i).onchange=ch)}
-const encodeState=()=>btoa(unescape(encodeURIComponent(JSON.stringify({evt,rmode,rdays,rfrom,rtech,rlog,uf,ufn,ven,fx,two,rm,size,sel,qov,offs,dummies,seat,scr,guest,fwd,mar,fee,lvl,att,fp:fillPct,fm:fillMode,tl:tgt,tr:trim,ac:acBy,dm:ORG[rm+size]?[SIZES[size].W,SIZES[size].D]:null}))));
-function loadState(o){rmode=o.rmode==='rent'?'rent':'buy';rdays=Math.max(1,Math.min(60,+o.rdays||1));rfrom=o.rfrom||'';rtech=!!o.rtech;rlog=o.rlog!==false;evt=VOCS[o.evt]?o.evt:'church';applyVoc();uf=Array.isArray(o.uf)?o.uf:null;ufn=o.ufn||0;lvl=[1,2,3].includes(o.lvl)?o.lvl:1;ven=o.ven||{};fx=o.fx||{};two=!!o.two;rm=ROOMS[o.rm]?o.rm:'church';SLOTS=ROOMS[rm].slots;KITS=ROOMS[rm].kits;SIZES=ROOMS[rm].sizes;size=SIZES[o.size]?o.size:ROOMS[rm].def;sel=o.sel||{};qov=o.qov||{};resetDims();att=o.att||0;fillPct=o.fp||0;fillMode=o.fm||'sit';tgt=o.tl||90;trim=o.tr||0;for(const k in acBy)delete acBy[k];Object.assign(acBy,o.ac||{});if(o.dm&&o.dm[0]>0)setDims(o.dm[0],o.dm[1]);
+const encodeState=()=>btoa(unescape(encodeURIComponent(JSON.stringify({evt,hang,rmode,rdays,rfrom,rtech,rlog,uf,ufn,ven,fx,two,rm,size,sel,qov,offs,dummies,seat,scr,guest,fwd,mar,fee,lvl,att,fp:fillPct,fm:fillMode,tl:tgt,tr:trim,ac:acBy,dm:ORG[rm+size]?[SIZES[size].W,SIZES[size].D]:null}))));
+function loadState(o){hang=!!o.hang;rmode=o.rmode==='rent'?'rent':'buy';rdays=Math.max(1,Math.min(60,+o.rdays||1));rfrom=o.rfrom||'';rtech=!!o.rtech;rlog=o.rlog!==false;evt=VOCS[o.evt]?o.evt:'church';applyVoc();uf=Array.isArray(o.uf)?o.uf:null;ufn=o.ufn||0;lvl=[1,2,3].includes(o.lvl)?o.lvl:1;ven=o.ven||{};fx=o.fx||{};two=!!o.two;rm=ROOMS[o.rm]?o.rm:'church';SLOTS=ROOMS[rm].slots;KITS=ROOMS[rm].kits;SIZES=ROOMS[rm].sizes;size=SIZES[o.size]?o.size:ROOMS[rm].def;sel=o.sel||{};qov=o.qov||{};resetDims();att=o.att||0;fillPct=o.fp||0;fillMode=o.fm||'sit';tgt=o.tl||90;trim=o.tr||0;for(const k in acBy)delete acBy[k];Object.assign(acBy,o.ac||{});if(o.dm&&o.dm[0]>0)setDims(o.dm[0],o.dm[1]);
   for(const k in offs)delete offs[k];Object.assign(offs,o.offs||{});dummies=o.dummies||[];dn=dummies.reduce((m,d)=>Math.max(m,d.id),0);
   Object.assign(seat,o.seat||{});Object.assign(scr,o.scr||{});Object.assign(guest,o.guest||{});if(o.fwd){fwd=o.fwd;document.getElementById('fwd').value=fwd}
   dsel=null;cur=null;chrome();document.querySelectorAll('#sz .pill').forEach(b=>b.classList.toggle('on',b.dataset.k===size));buildRoom();renderList()}

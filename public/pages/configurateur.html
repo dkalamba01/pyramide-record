@@ -232,7 +232,7 @@ function buildSeats(W,D){let st=seat.style;if(seat.layout==='rows')carpet(0,0,se
 function seatFix(d){if(rm!=='church'||d.kind!=='sit')return;const f=furn.filter(f=>f.pew).sort((a,b)=>Math.hypot(a.x-d.x,a.z-d.z)-Math.hypot(b.x-d.x,b.z-d.z))[0];
   if(f){if(f.single&&!dummies.some(o=>o!==d&&Math.hypot(o.x-f.x,o.z-f.z)<.3)){d.x=f.x;d.z=f.z}d.rot=f.rot}}
 let scr={layout:'center',size:'m'};const SCL={center:1,two:2,three:3,sides:3},SCS={s:.7,m:1,l:1.5};
-function scrPos(i,q,W,D,rm_){const ch=rm==='church',y=ch?.35:0,zb=-D/2+.5;
+function scrPos(i,q,W,D,rm_){const ch=rm==='church'||!!ROOMS[rm].venue,y=ch?.35:0,zb=-D/2+.5;
   const L=scr.layout==='two'?[[-W*.22,y,zb,0],[W*.22,y,zb,0]]:scr.layout==='three'?[[0,y,zb,0],[-W*.3,y,zb,0],[W*.3,y,zb,0]]:scr.layout==='sides'?[[0,y,zb,0],[-(W/2-.3),0,0,Math.PI/2],[W/2-.3,0,0,-Math.PI/2]]:[[0,y,zb,0]];
   return L[i]||[W*.3*((i%5)-2),y,zb,0]}
 function applyScr(){const n=SCL[scr.layout];if(n>1)qov[rm+'scr']=n;else delete qov[rm+'scr']}
@@ -253,7 +253,7 @@ function capRiders(){const t=fixt.tbl;if(!t)return[];const c=Math.cos(t.r),s=Mat
   return room.children.filter(g=>g.userData&&g.userData.slot&&TOK.has(g.userData.t)&&onT(g.position.x,g.position.z)).map(g=>{const dx=g.position.x-t.x,dz=g.position.z-t.z;return{g,lx:dx*c-dz*s,lz:dx*s+dz*c,r0:g.rotation.y-t.r}})}
 function moveFix(fi,x,z,r,riders){setFix(fi,x,z,r);fx[rm+fi.key]=[x,z,r];
   if(riders)riders.forEach(q=>{const c=Math.cos(r),s=Math.sin(r),wx=x+q.lx*c+q.lz*s,wz=z-q.lx*s+q.lz*c;q.g.position.x=wx;q.g.position.z=wz;q.g.rotation.y=q.r0+r;offs[q.g.userData.key]=[wx,wz,q.g.rotation.y]})}
-function snapWall(g,p){const {W,D}=SIZES[size],sc=g.scale.x,hw=1.6*sc+.2,ch=rm==='church',
+function snapWall(g,p){const {W,D}=SIZES[size],sc=g.scale.x,hw=1.6*sc+.2,ch=rm==='church'||!!ROOMS[rm].venue,
   d=[[p.z+D/2,'b'],[D/2-p.z,'f'],[p.x+W/2,'l'],[W/2-p.x,'r']].sort((a,b)=>a[0]-b[0])[0][1],cl=(v,m)=>Math.max(-m,Math.min(m,v));
   if(d==='b'){g.position.set(cl(p.x,Math.max(0,W/2-hw)),ch?.35:0,-D/2+.5);g.rotation.y=0}
   else if(d==='f'){g.position.set(cl(p.x,Math.max(0,W/2-hw)),0,D/2-.5);g.rotation.y=Math.PI}
@@ -280,7 +280,7 @@ function moveD(d,tx,tz){if(rm==='church'&&d.kind==='sit'){if(valid(d,tx,tz)){d.x
 function freeSpot(d,sx,sz){const {W,D}=SIZES[size],c=[];
   for(let x=-W/2+.4;x<=W/2-.4;x+=.3)for(let z=-D/2+.4;z<=D/2-.4;z+=.3)c.push([x,z,Math.hypot(x-sx,z-sz)]);
   c.sort((a,b)=>a[2]-b[2]);for(const p of c)if(valid(d,p[0],p[1])){d.x=p[0];d.z=p[1];return true}return false}
-const dyOf=d=>{const {W,D}=SIZES[size];return rm==='church'&&d.kind==='stand'&&Math.abs(d.x)<W*.4&&d.z<-D/2+3.2?.35:0};
+const dyOf=d=>{const {W,D}=SIZES[size];return (rm==='church'||ROOMS[rm].venue)&&d.kind==='stand'&&Math.abs(d.x)<Math.min(W*.4,13)&&d.z<-D/2+3.2?.35:0};
 function person(d){const g=new THREE.Group(),m=c=>mat(c),sk=m(d.c),cl=m([0x3b5bdb,0xc92a2a,0x2b8a3e,0x862e9c,0xe67700][d.id%5]),add=(o,x,y,z)=>{o.position.set(x,y,z);g.add(o);return o};
   const cy=(a,b,h,mm)=>new THREE.Mesh(new THREE.CylinderGeometry(a,b,h,10),mm);
   if(d.kind==='stand'){[-.08,.08].forEach(x=>add(cy(.07,.06,.8,m(0x333355)),x,.4,0));add(cy(.17,.15,.6,cl),0,1.1,0);add(new THREE.Mesh(new THREE.SphereGeometry(.12,12,12),sk),0,1.55,0)}
@@ -298,6 +298,17 @@ const SCR={id:'scr',z:'Écran',l:'Écran mural Pyramide Record',t:'scr',back:tru
  P('Écran LED 55″ à 65″',null,0,'Fourni par Pyramide Record, prix à confirmer'),
  P('Écran LED géant (mur d\'images)',null,0,'Pour grande salle, prix à confirmer'),
  P('Vidéoprojecteur + toile',null,0,'Prix à confirmer')]};
+const EVQ={
+ amph:{pmic:[1,1,1],cmic:[2,4,6],stand:[3,5,7],kbd:[1,1,1],mon:[2,4,4],spk:[4,6,10],mix:[1,1,2],amp:[1,2,3],eq:[1,1,2],pwr:[1,1,2],cam:[2,3,4],tri:[2,3,4],cap:[1,1,2],ai:[1,1,1],lap:[1,1,1]},
+ balc:{pmic:[1,1,1],cmic:[2,4,6],stand:[3,5,7],kbd:[1,1,1],mon:[2,4,4],spk:[4,6,8],mix:[1,1,2],amp:[1,2,3],eq:[1,1,2],pwr:[1,1,2],cam:[2,3,4],tri:[2,3,4],cap:[1,1,2],ai:[1,1,1],lap:[1,1,1]},
+ stad:{pmic:[1,1,2],cmic:[4,6,8],stand:[5,7,9],kbd:[1,2,2],mon:[4,6,8],spk:[8,12,16],mix:[1,2,2],amp:[2,4,6],eq:[2,2,3],pwr:[2,2,3],cam:[3,4,6],tri:[3,4,6],cap:[1,2,2],ai:[1,2,2],lap:[1,1,2]}};
+const evSlots=k=>CH_SLOTS.map(sl=>{const a=EVQ[k][sl.id]||[1,1,1],o=sl.id==='spk'?sl.o.concat([P('Système line array professionnel',null,0,'Pour très grand public, devis sur demande')]):sl.o;return Object.assign({},sl,{o,q:{s:a[0],m:a[1],l:a[2]}})});
+const EVKITS={budget:{n:'Kit budget',s:{pmic:0,spk:1,mix:0,stand:0}},full:{n:'Kit complet + direct',s:Object.assign({},CH_KITS.full.s,{spk:1})}};
+const placeVen=(s,i,q,W,D)=>{if(s.back)return[0,.35,-D/2+.5];const We=Math.min(W,26),x=s.pos[0]*We+(q>1?(i-(q-1)/2)*((s.span||.06)*We*2/Math.max(q-1,1)):0);
+  return s.pos[1]>0?[x,.35,-D/2+2.2+s.pos[1]*2.5]:[x,0,(rm==='stad'?D*.1:D/2-2.4)+(s.pos[1]+.34)*3]};
+ROOMS.amph={n:'Amphithéâtre',venue:'amph',slots:evSlots('amph'),kits:EVKITS,sizes:{s:{n:'Petit',W:22,D:22},m:{n:'Moyen',W:32,D:30},l:{n:'Grand',W:46,D:40}},def:'m',place:placeVen,rad:{s:30,m:42,l:60},rmax:90,es:{s:1,m:1.3,l:1.6},h:'Votre amphithéâtre'};
+ROOMS.balc={n:'Salle à balcons',venue:'balc',slots:evSlots('balc'),kits:EVKITS,sizes:{s:{n:'Petite',W:16,D:22},m:{n:'Moyenne',W:22,D:30},l:{n:'Grande (2 balcons)',W:30,D:40}},def:'m',place:placeVen,rad:{s:30,m:42,l:62},rmax:100,es:{s:1,m:1.2,l:1.5},h:'Votre salle à balcons'};
+ROOMS.stad={n:'Stade',venue:'stad',slots:evSlots('stad'),kits:EVKITS,sizes:{s:{n:'Petit stade',W:50,D:70},m:{n:'Stade moyen',W:70,D:100},l:{n:'Grand stade',W:90,D:130}},def:'m',place:placeVen,rad:{s:100,m:140,l:190},rmax:300,es:{s:2.5,m:3.2,l:4},h:'Votre stade'};
 Object.values(ROOMS).forEach(r=>r.slots.push(SCR));
 ROOMS.church.presets=[
  {n:'Culte classique',size:'m',kit:'budget',seat:{layout:'rows',style:'pew',rows:6,aisle:1.6},scr:{layout:'center',size:'m'}},
@@ -320,6 +331,18 @@ ROOMS.pod.presets=[
  {n:'Studio + régie vitrée',size:'m',kit:'full',two:true,guest:{n:4,style:'padded',layout:'arc'},scr:{layout:'two',size:'m'}},
  {n:'Duo',size:'s',kit:'budget',guest:{n:0},scr:{layout:'center',size:'s'}},
  {n:'Table à quatre avec invités',size:'m',kit:'full',guest:{n:6,style:'padded',layout:'arc'},scr:{layout:'two',size:'m'}}];
+ROOMS.amph.presets=[
+ {n:'Conférence',size:'s',kit:'budget',scr:{layout:'center',size:'m'}},
+ {n:'Concert',size:'m',kit:'full',scr:{layout:'three',size:'m'}},
+ {n:'Grand événement',size:'l',kit:'full',scr:{layout:'sides',size:'l'}}];
+ROOMS.balc.presets=[
+ {n:'Conférence',size:'s',kit:'budget',scr:{layout:'center',size:'m'}},
+ {n:'Concert / culte',size:'m',kit:'full',scr:{layout:'two',size:'m'}},
+ {n:'Grande salle (2 balcons)',size:'l',kit:'full',scr:{layout:'sides',size:'l'}}];
+ROOMS.stad.presets=[
+ {n:'Rassemblement',size:'s',kit:'budget',scr:{layout:'two',size:'l'}},
+ {n:'Concert',size:'m',kit:'full',scr:{layout:'three',size:'l'}},
+ {n:'Méga événement',size:'l',kit:'full',scr:{layout:'sides',size:'l'}}];
 function applyPreset(i){const p=ROOMS[rm].presets[i];if(!p)return;two=!!p.two;
   setSize(p.size);Object.assign(seat,p.seat||{});if(p.seat)seat.count=0;Object.assign(scr,p.scr||{});Object.assign(guest,{n:0},p.guest||{});
   fx={};fsel=null;sel={};const ks=ROOMS[rm].kits[p.kit].s;for(const id in ks){const sl=SLOTS.find(z=>z.id===id),o=sl&&sl.o[ks[id]];if(o&&(optState(o)!=='soon'||ADMIN))sel[id]=ks[id]}
@@ -378,7 +401,7 @@ function renderOpts(){
   O.innerHTML=h;document.getElementById('qm').onclick=()=>setQ(s,q-1);document.getElementById('qp').onclick=()=>setQ(s,q+1);
   O.querySelectorAll('.opt').forEach(e=>e.onclick=()=>{if(e.dataset.off==='1')return;const i=+e.dataset.i;if(i<0)delete sel[s.id];else sel[s.id]=i;refresh()});
 }
-const seatInfo=()=>rm==='church'?{n:seat.count,st:seat.style==='pew'&&seat.layout==='arc'?'chair':seat.style}:{n:guest.count,st:guest.style};
+const seatInfo=()=>ROOMS[rm].venue?{n:0,st:'chair'}:rm==='church'?{n:seat.count,st:seat.style==='pew'&&seat.layout==='arc'?'chair':seat.style}:{n:guest.count,st:guest.style};
 function totals(){let t=0,req=[],rows=[];
   active().forEach(s=>{if(sel[s.id]==null)return;const o=s.o[sel[s.id]],q=qty(s),pr=price(o);
     if(pr==null)req.push(s.l);else t+=pr*q;rows.push({s,o,q,pr})});
@@ -394,16 +417,16 @@ function updTotal(){const r=totals();
 const cv=document.getElementById('cv');
 const R=new THREE.WebGLRenderer({canvas:cv,antialias:true});
 const scene=new THREE.Scene();scene.background=new THREE.Color(0x0f1220);
-const cam=new THREE.PerspectiveCamera(50,1,.1,200);
+const cam=new THREE.PerspectiveCamera(50,1,.1,700);
 scene.add(new THREE.HemisphereLight(0xffffff,0x303050,.9));
 const dl=new THREE.DirectionalLight(0xffffff,.8);dl.position.set(6,12,8);scene.add(dl);
 let theta=.6,phi=1.0,rad=22,room=new THREE.Group(),markers=[];scene.add(room);
 const mat=(c,o={})=>new THREE.MeshStandardMaterial(Object.assign({color:c,roughness:.7},o));
 const box=(w,h,d,m)=>new THREE.Mesh(new THREE.BoxGeometry(w,h,d),m);
-function label(txt,x,z,col){const c=document.createElement('canvas');c.width=512;c.height=96;const g=c.getContext('2d');
+function label(txt,x,z,col,k){const c=document.createElement('canvas');c.width=512;c.height=96;const g=c.getContext('2d');
   g.fillStyle=col;g.font='bold 44px Arial';g.textAlign='center';g.fillText(txt,256,64);
   const sp=new THREE.Sprite(new THREE.SpriteMaterial({map:new THREE.CanvasTexture(c),transparent:true}));
-  sp.scale.set(5,.94,1);sp.position.set(x,.15,z);return sp}
+  sp.scale.set(5*(k||1),.94*(k||1),1);sp.position.set(x,.15,z);return sp}
 function product(t,ghost){
   const g=new THREE.Group(),m=()=>ghost?mat(0x8fa2ff,{transparent:true,opacity:.28}):mat(COL[t]||0x555555);
   const add=(o,x,y,z)=>{o.position.set(x,y,z);g.add(o)};
@@ -438,6 +461,38 @@ function partition(W,D,zw,lc,ls_){const wm=mat(0x3a4170),gm=new THREE.MeshStanda
       [[-W/2,dA],[dB,gA],[gB,W/2]].forEach(([a,b])=>furn.push({x:(a+b)/2,z:zw,hw:(b-a)/2,hd:.12}));
       furn.push({x:(gA+gB)/2,z:zw,hw:(gB-gA)/2,hd:.12});
       room.add(label(lc[0],lc[1],lc[2],'#8fa2ff'));room.add(label('VITRE',(gA+gB)/2,zw-.5,'#9fd8ff'));room.add(label(ls_[0],ls_[1],ls_[2],'#6fe3a0'));room.add(label('PORTE',(dA+dB)/2,zw-.5,'#f2b632'))}
+let venSeats=0;
+function buildVenue(W,D,fl){const v=ROOMS[rm].venue,big=v==='stad'?4:v==='amph'&&size==='l'?1.6:1,sw=Math.min(W*.8,v==='stad'?30:26);venSeats=0;
+  const stage=box(sw,.35,3.2,mat(0x4a3f2c));stage.position.set(0,.17,-D/2+1.7);room.add(stage);
+  const fz=v==='stad'?D*.1+.8:D/2-.7;
+  room.add(label('SCÈNE',0,-D/2+.4,'#f2b632',big));room.add(label('SONORISATION · RÉGIE',-W*.18*(v==='stad'?.3:1),fz,'#8fa2ff',big));room.add(label('DIFFUSION EN DIRECT',W*.3*(v==='stad'?.3:1),fz,'#6fe3a0',big));
+  const wallM=()=>mat(0x23284a,{transparent:true,opacity:.5});
+  if(v==='amph'){fl.material.color.set(0x34406a);const cz=-D/2+3.8,step=1.1,r0=4.6,maxZ=D/2-3.6,A=1.35;
+    for(let k=0;;k++){const r=r0+k*step;if(cz+r>maxZ)break;const h=.3+k*.4,m=mat(k%2?0x5b6180:0x4d5373);
+      for(let a=-A,da=1.6/r;a<=A;a+=da){const x=r*Math.sin(a),z=cz+r*Math.cos(a);if(Math.abs(x)>W/2-.5||Math.abs(a*r)<.9)continue;
+        const b=box(1.7,h,step*.98,m);b.position.set(x,h/2,z);b.rotation.y=a;room.add(b);furn.push({x,z,hw:.9,hd:.6,pew:false});venSeats+=3}}
+    room.add(label('GRADINS',0,cz+r0+2,'#9aa0c0',big))}
+  else if(v==='balc'){[[0,-D/2],[-W/2,0],[W/2,0],[0,D/2]].forEach(([x,z],i)=>{const w=box(i%3==0?W:.15,size==='l'?8:5.5,i==1||i==2?D:.15,wallM());w.position.set(x,size==='l'?4:2.75,z);room.add(w)});
+    const z0=-D/2+5.5,z1=D/2-6.2,aisle=1.6,bw=(W-2-aisle)/2,rows=Math.max(3,Math.floor((z1-z0)/.9)),sm=mat(0x8a6a44);
+    for(let r=0;r<rows;r++){const z=z0+r*(z1-z0)/(rows-1);[-1,1].forEach(sg=>{const x=sg*(aisle/2+bw/2),b=box(bw,.45,.45,sm);b.position.set(x,.22,z);room.add(b);furn.push({x,z,hw:bw/2,hd:.25,pew:false});venSeats+=Math.floor(bw/.5)})}
+    carpet(0,(z0+z1)/2,aisle,z1-z0+1);
+    const levels=size==='l'?[3.4,6.8]:[3.4],gm=new THREE.MeshStandardMaterial({color:0x9fd8ff,transparent:true,opacity:.25}),slm=mat(0x4a4f78,{transparent:true,opacity:.6});
+    levels.forEach((y,li)=>{const dp=li?2.6:3.4,rz=D/2-.3-dp/2,sd=li?2.4:3;
+      const rear=box(W-.4,.3,dp,slm);rear.position.set(0,y,rz);room.add(rear);
+      [-1,1].forEach(sg=>{const sx=sg*(W/2-.2-sd/2),sl=box(sd,.3,D-5,slm);sl.position.set(sx,y,(-D/2+4.5+D/2-.3-dp)/2);sl.scale.z=1;room.add(sl)});
+      const rr=Math.floor(dp/.9);for(let r=0;r<rr;r++){const b=box(W-sd*2-1,.4,.4,sm);b.position.set(0,y+.35,D/2-.8-r*.9-.3);room.add(b);venSeats+=Math.floor((W-sd*2-1)/.5)}
+      [-1,1].forEach(sg=>{const lenz=D-5-dp-1,sr=Math.floor(sd/.9);for(let r=0;r<sr;r++){const b=box(.4,.4,lenz,sm);b.position.set(sg*(W/2-.6-r*.9),y+.35,(-D/2+4.5+D/2-.3-dp)/2);room.add(b);venSeats+=Math.floor(lenz/.5)}});
+      const rail=box(W-.4,.9,.06,gm);rail.position.set(0,y+.6,D/2-.3-dp);room.add(rail);
+      for(let c=-2;c<=2;c++){const col=box(.4,y,.4,mat(0x3a3f66));col.position.set(c*W/4.6,y/2,D/2-.3-dp);room.add(col)}});
+    room.add(label('BALCON',0,D/2-1.6,'#f2b632',1))}
+  else{fl.material.color.set(0x2f7a3e);
+    const ln=(w,d,x,z)=>{const b=box(w,.02,d,mat(0xffffff));b.position.set(x,.06,z);room.add(b)};
+    ln(W-1,.25,0,-D/2+.6);ln(W-1,.25,0,D/2-.6);ln(.25,D-1,-W/2+.6,0);ln(.25,D-1,W/2-.6,0);ln(W-1,.25,0,0);
+    const rg=new THREE.Mesh(new THREE.RingGeometry(8,8.3,40),new THREE.MeshBasicMaterial({color:0xffffff,side:THREE.DoubleSide}));rg.rotation.x=-Math.PI/2;rg.position.y=.07;room.add(rg);
+    const tiers=8;for(let k=0;k<tiers;k++){const h=.9*(k+1),m=mat(k%2?0x5b6180:0x4d5373),off=2+k*1.4;
+      [-1,1].forEach(sg=>{const b=box(1.4,h,D+2*off,m);b.position.set(sg*(W/2+off),h/2,0);room.add(b);venSeats+=Math.floor((D+2*off)/.5)});
+      const f=box(W+2*off,h,1.4,m);f.position.set(0,h/2,D/2+off);room.add(f);venSeats+=Math.floor((W+2*off)/.5)}
+    room.add(label('TRIBUNES',0,D/2+10,'#9aa0c0',big))}}
 function mkTable(w,d,def){const g=new THREE.Group(),top=box(w,.08,d,mat(0x6b4f33));top.position.y=.75;g.add(top);
   [-1,1].forEach(sx=>{const l=box(.08,.75,d*.9,mat(0x4a3a28));l.position.set(sx*(w/2-.1),.37,0);g.add(l)});mkFix('tbl',g,w/2,d/2,def,false)}
 function buildRoom(){
@@ -451,7 +506,8 @@ function buildRoom(){
   room.add(label('SCÈNE / AUTEL',0,-D/2+.4,'#f2b632'));
   room.add(label('SONORISATION · RÉGIE',-W*.18,D/2-.7,'#8fa2ff'));
   room.add(label('DIFFUSION EN DIRECT',W*.3,D/2-.7,'#6fe3a0'));
-  } else {
+  } else if(ROOMS[rm].venue){buildVenue(W,D,fl)}
+  else {
     [[0,-D/2],[-W/2,0],[W/2,0],[0,D/2]].forEach(([x,z],i)=>{const w=box(i%3==0&&i<3?W:(i==3?W:.15),3,i==1||i==2?D:.15,mat(0x23284a,{transparent:true,opacity:.5}));w.position.set(x,1.5,z);room.add(w)});
     if(rm==='rec'){mkTable(W*.55,.9,[0,-.3*D-.1,0]);
     {const st=new THREE.Group(),wm=mat(0x8a6a44);const sc=new THREE.Mesh(new THREE.CylinderGeometry(.2,.2,.06,16),wm);sc.position.y=.66;st.add(sc);
@@ -470,9 +526,9 @@ function buildRoom(){
       {const pp=ROOMS[rm].place(s,i,q,W,D),cl=(v,m)=>Math.max(-m,Math.min(m,v));g.position.set(cl(pp[0],W/2-.6),pp[1],cl(pp[2],D/2-.6))}if(s.t==='scr'){const e=scrPos(i,q,W,D);g.position.set(e[0],e[1],e[2]);g.rotation.y=e[3];g.scale.setScalar(SCS[scr.size])}const of=offs[rm+s.id+i];if(of){g.position.x=of[0];g.position.z=of[1];if(of[2]!=null)g.rotation.y=of[2]}if(TOK.has(s.t)&&onT(g.position.x,g.position.z))g.position.y=.78;
       const ghost=!o;g.add(product(s.t,ghost));
             const hit2=s.t==='scr'?box(3.3,1.9,.6,new THREE.MeshBasicMaterial({visible:false})):(()=>{const h=HS[s.t]||[.3,.3];return box(Math.max(.5,h[0]*2+.15),1.6,Math.max(.5,h[1]*2+.15),new THREE.MeshBasicMaterial({visible:false}))})();hit2.position.y=s.t==='scr'?1.9:.8;hit2.userData.slot=s.id;hit2.userData.i=i;g.add(hit2);markers.push(hit2);
-      g.userData={slot:s.id,ghost,i,key:rm+s.id+i,t:s.t};room.add(g)}
+      if(ROOMS[rm].es&&s.t!=='scr')g.scale.setScalar(ROOMS[rm].es[size]);g.userData={slot:s.id,ghost,i,key:rm+s.id+i,t:s.t};room.add(g)}
   });
-  if(rm!=='church')buildGuests(W,D);
+  if(rm!=='church'&&!ROOMS[rm].venue)buildGuests(W,D);
   dummies.forEach(d=>{if(!valid(d,d.x,d.z)){freeSpot(d,d.x,d.z);seatFix(d)}room.add(person(d))});
   rad=ROOMS[rm].rad[size];
 }
@@ -498,12 +554,12 @@ cv.addEventListener('pointermove',e=>{if(!pts.has(e.pointerId))return;const p=pt
     const {W,D}=SIZES[size],g=drag.g;if(p3){if(g.userData.t==='scr')snapWall(g,p3);else{const x=Math.max(-W/2+.3,Math.min(W/2-.3,p3.x+drag.ox)),z=Math.max(-D/2+.3,Math.min(D/2-.3,p3.z+drag.oz));g.position.x=x;g.position.z=z;g.position.y=TOK.has(g.userData.t)&&onT(x,z)?.78:0}
       offs[g.userData.key]=[g.position.x,g.position.z,g.rotation.y]}}}
   else if(pts.size===1){theta-=dx*.006;phi=Math.max(.25,Math.min(1.45,phi-dy*.005))}
-  else if(pts.size===2){const d=dist();if(pd)rad=Math.max(6,Math.min(45,rad*pd/d));pd=d}});
+  else if(pts.size===2){const d=dist();if(pd)rad=Math.max(6,Math.min(ROOMS[rm].rmax||45,rad*pd/d));pd=d}});
 const dist=()=>{const a=[...pts.values()];return Math.hypot(a[0][0]-a[1][0],a[0][1]-a[1][1])};
 cv.addEventListener('pointerup',e=>{const was=pts.size===1&&moved<6;pts.delete(e.pointerId);
   if(was&&drag){if(drag.fix){fsel=drag.fix;dsel=null}else if(drag.dummy){dsel=drag.dummy;fsel=null}else{fsel=null;pick(drag.slot)}}drag=null;cv.style.cursor='grab'});
 cv.addEventListener('pointercancel',e=>pts.delete(e.pointerId));
-cv.addEventListener('wheel',e=>{e.preventDefault();rad=Math.max(6,Math.min(45,rad*(1+e.deltaY*.001)))},{passive:false});
+cv.addEventListener('wheel',e=>{e.preventDefault();rad=Math.max(6,Math.min(ROOMS[rm].rmax||45,rad*(1+e.deltaY*.001)))},{passive:false});
 
 // ===== Actions =====
 function pick(id){cur=id;renderList();const el=document.querySelector('#opts');if(el&&el.scrollIntoView)el.scrollIntoView({block:'nearest',behavior:'smooth'})}
@@ -520,7 +576,7 @@ function chrome(){
  document.querySelectorAll('#kits [data-k]').forEach(b=>b.onclick=()=>{sel={};const ks=KITS[b.dataset.k].s;for(const id in ks){const sl=SLOTS.find(z=>z.id===id),o=sl&&sl.o[ks[id]];if(o&&(optState(o)!=='soon'||ADMIN))sel[id]=ks[id]}qov={};applyScr();refresh()});
  document.getElementById('clr').onclick=()=>{sel={};refresh()};
  document.querySelector('#head h1').textContent=ROOMS[rm].h;seatUI();scrUI();presetUI()}
-function seatUI(){const B=document.getElementById('seatbox');if(rm!=='church'){const so=(id,v,o)=>`<select id="${id}">${o.map(([k,l])=>`<option value="${k}" ${k==v?'selected':''}>${l}</option>`).join('')}</select>`;
+function seatUI(){const B=document.getElementById('seatbox');if(ROOMS[rm].venue){B.innerHTML='<div class="zone">Gradins du lieu</div><div class="sbx" style="font-size:13px;color:#9aa0c0">'+venSeats+' places environ (structure du lieu, non incluse dans le prix)</div>';return}if(rm!=='church'){const so=(id,v,o)=>`<select id="${id}">${o.map(([k,l])=>`<option value="${k}" ${k==v?'selected':''}>${l}</option>`).join('')}</select>`;
     B.innerHTML=`<div class="zone">Sièges invités</div><div class="sbx"><details><summary style="font-size:13px;cursor:pointer">Ajouter des sièges (<span id="scount">${guest.count}</span>)</summary>
     <label>Nombre <input id="gn" type="number" min="0" max="24" value="${guest.n}"></label>
     <label>Style ${so('gs',guest.style,[['chair','Chaises en bois'],['plastic','Chaises plastique'],['padded','Fauteuils rembourrés']])}</label>

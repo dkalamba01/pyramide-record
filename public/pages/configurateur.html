@@ -225,7 +225,7 @@ VID_SLOTS.push({id:'bkl',z:'Éclairage',l:'Contre-jour / ambiance',t:'light',q:Q
 PHO_SLOTS.push({id:'bkl',z:'Éclairage',l:'Lumière d\'appoint',t:'light',q:Q(0,1),pos:[-.3,.2],span:.1,o:[LED,NA('Flash de studio + softbox (modèle à confirmer)')]});
 CH_SLOTS.push({id:'stl',z:'Éclairage',l:'Éclairage de scène',t:'light',q:{s:0,m:0,l:0},pos:[-.3,.45],span:.4,o:[LED,NA('Projecteurs LED de scène (modèle à confirmer)')]});
 const ROOMS={
- church:{n:'Église',slots:CH_SLOTS,kits:CH_KITS,sizes:CH_SIZES,def:'m',place:placeCh,rad:{s:15,m:22,l:32},h:'Votre salle d\'église'},
+ church:{get n(){return V('Église')},slots:CH_SLOTS,kits:CH_KITS,sizes:CH_SIZES,def:'m',place:placeCh,rad:{s:15,m:22,l:32},get h(){return V('Votre salle d\'église')}},
  rec:{n:'Studio d\'enregistrement',slots:REC_SLOTS,kits:REC_KITS,sizes:REC_SIZES,def:'s',place:placeRec,rad:{s:13,m:19},h:'Votre studio d\'enregistrement'}};
 let seat={layout:'rows',style:'pew',rows:null,aisle:1.6,count:0};const SDEF={s:4,m:6,l:9};
 const STN={pew:'bancs en bois',chair:'chaises en bois',plastic:'chaises plastique',padded:'fauteuils rembourrés',padpew:'bancs rembourrés'};
@@ -372,12 +372,30 @@ ROOMS.amph={n:'Amphithéâtre',venue:'amph',slots:evSlots('amph'),kits:EVKITS,si
 ROOMS.balc={n:'Salle à balcons',venue:'balc',slots:evSlots('balc'),kits:EVKITS,sizes:{s:{n:'Petite',W:16,D:22},m:{n:'Moyenne',W:22,D:30},l:{n:'Grande (2 balcons)',W:30,D:40}},def:'m',place:placeVen,rad:{s:30,m:42,l:62},rmax:100,es:{s:1,m:1.2,l:1.5},h:'Votre salle à balcons'};
 ROOMS.stad={n:'Stade',venue:'stad',slots:evSlots('stad'),kits:EVKITS,sizes:{s:{n:'Petit stade',W:50,D:70},m:{n:'Stade moyen',W:70,D:100},l:{n:'Grand stade',W:90,D:130}},def:'m',place:placeVen,rad:{s:100,m:140,l:190},rmax:300,es:{s:2.5,m:3.2,l:4},h:'Votre stade'};
 Object.values(ROOMS).forEach(r=>r.slots.push(SCR));
-ROOMS.church.presets=[
+const CHP=[
  {n:'Culte classique',size:'m',kit:'budget',seat:{layout:'rows',style:'pew',rows:6,aisle:1.6},scr:{layout:'center',size:'m'}},
  {n:'Moderne en demi-cercle',size:'m',kit:'full',seat:{layout:'arc',style:'padded',rows:6,aisle:1.6},scr:{layout:'three',size:'m'}},
  {n:'Petite assemblée',size:'s',kit:'budget',seat:{layout:'center',style:'chair',rows:4,aisle:1.2},scr:{layout:'center',size:'s'}},
  {n:'Grande salle',size:'l',kit:'full',seat:{layout:'rows',style:'plastic',rows:9,aisle:2.4},scr:{layout:'sides',size:'l'}},
  {n:'Extérieur',size:'l',kit:'budget',seat:{layout:'arc',style:'plastic',rows:7,aisle:2},scr:{layout:'two',size:'m'}}];
+const PRES={
+ conf:[{n:'Conférence en rangées',size:'m',kit:'full',seat:{layout:'rows',style:'padded',rows:8,aisle:1.6},scr:{layout:'center',size:'m'}},
+  {n:'Conférence en demi-cercle',size:'m',kit:'full',seat:{layout:'arc',style:'padded',rows:6,aisle:1.6},scr:{layout:'two',size:'m'}},
+  {n:'Séminaire (petite salle)',size:'s',kit:'budget',seat:{layout:'center',style:'chair',rows:4,aisle:1.2},scr:{layout:'center',size:'s'}},
+  {n:'Grande conférence',size:'l',kit:'full',seat:{layout:'rows',style:'padded',rows:10,aisle:2.4},scr:{layout:'sides',size:'l'}}],
+ concert:[{n:'Concert assis',size:'m',kit:'full',seat:{layout:'rows',style:'chair',rows:8,aisle:1.6},scr:{layout:'two',size:'m'}},
+  {n:'Concert debout (grande salle)',size:'l',kit:'full',seat:{layout:'center',style:'plastic',rows:3,aisle:2.4},scr:{layout:'three',size:'l'}},
+  {n:'Spectacle en demi-cercle',size:'m',kit:'full',seat:{layout:'arc',style:'padded',rows:6,aisle:1.6},scr:{layout:'three',size:'m'}},
+  {n:'Petit concert',size:'s',kit:'budget',seat:{layout:'center',style:'chair',rows:4,aisle:1.2},scr:{layout:'center',size:'s'}}]};
+Object.defineProperty(ROOMS.church,'presets',{get(){return PRES[evt]||CHP}});
+let evt='church';const EVN={church:'Église / culte',conf:'Conférence',concert:'Concert / spectacle'},EVT={church:90,conf:80,concert:100};
+const VOCS={church:{},
+ conf:{'Micro du pasteur':'Micro de l\'orateur','Micros de chorale':'Micros de panel / questions','pour la chorale':'pour les panélistes','que le pasteur et les musiciens':'que l\'orateur et les intervenants','Enceintes vers l\'assemblée':'Enceintes vers le public','pour une longue messe':'pour une longue conférence','SCÈNE / AUTEL':'SCÈNE / PODIUM','Votre salle d\'église':'Votre salle de conférence','Église':'Salle de conférence','Culte 90':'Standard 90'},
+ concert:{'Micro du pasteur':'Micro du chanteur principal','Micros de chorale':'Micros chœurs et instruments','pour la chorale':'pour les chœurs et instruments','que le pasteur et les musiciens':'que les artistes','Enceintes vers l\'assemblée':'Enceintes vers le public','pour une longue messe':'pour une longue prestation','SCÈNE / AUTEL':'SCÈNE','Votre salle d\'église':'Votre salle de concert','Église':'Salle de concert','Culte 90':'Standard 90'}};
+function V(t){const m=VOCS[evt]||{};if(typeof t!=='string')return t;Object.keys(m).sort((a,b)=>b.length-a.length).forEach(k=>{t=t.split(k).join(m[k])});return t}
+const VORIG=new Map();
+function applyVoc(){const seen=new Set();Object.values(ROOMS).forEach(r=>r.slots.forEach(sl=>{if(seen.has(sl))return;seen.add(sl);if(!VORIG.has(sl))VORIG.set(sl,{l:sl.l,d:sl.o.map(o=>o.d)});const q=VORIG.get(sl);sl.l=V(q.l);sl.o.forEach((o,i)=>{o.d=V(q.d[i])})}))}
+function setEvt(k){evt=k;tgt=EVT[k];applyVoc();switchRoom('church')}
 ROOMS.rec.presets=[
  {n:'Deux salles (régie + cabine)',size:'m',kit:'full',two:true,guest:{n:2,style:'chair',layout:'row'},scr:{layout:'center',size:'m'}},
  {n:'Voix et beats (solo)',size:'s',kit:'budget',guest:{n:0},scr:{layout:'center',size:'s'}},
@@ -743,7 +761,7 @@ function buildRoom(){
   const stage=box(W*.8,.35,3,mat(0x4a3f2c));stage.position.set(0,.17,-D/2+1.7);room.add(stage);
   if(size!=='l'){[[0,-D/2],[-W/2,0],[W/2,0]].forEach(([x,z],i)=>{const w=box(i?.15:W,3,i?D:.15,mat(acCol('wall'),{transparent:true,opacity:.55}));w.position.set(x,1.5,z);room.add(w)})}
   buildSeats(W,D);
-  room.add(label('SCÈNE / AUTEL',0,-D/2+.4,'#f2b632'));
+  room.add(label(V('SCÈNE / AUTEL'),0,-D/2+.4,'#f2b632'));
   room.add(label('SONORISATION · RÉGIE',-W*.18,D/2-.7,'#8fa2ff'));
   room.add(label('DIFFUSION EN DIRECT',W*.3,D/2-.7,'#6fe3a0'));
   } else if(ROOMS[rm].venue){buildVenue(W,D,fl)}
@@ -813,10 +831,11 @@ function refresh(){buildRoom();renderList()}
 function setSize(k){uf=null;resetDims();att=0;dimInfo.note='';size=k;fx={};ven={};fsel=null;qov={};applyScr();seat.rows=null;dummies=[];dsel=null;document.querySelectorAll('#sz .pill').forEach(b=>b.classList.toggle('on',b.dataset.k===k));
   if(cur&&!active().some(s=>s.id===cur))cur=null;refresh();seatUI();dimUI()}
 function chrome(){
- document.getElementById('size').innerHTML='<div style="display:flex;gap:6px;flex-wrap:wrap">'+Object.entries(ROOMS).filter(([k])=>!HIDR.includes(k)).map(([k,v])=>`<button class="pill ${k===rm?'on':''}" data-r="${k}">${v.n}</button>`).join('')+'</div>'
+ document.getElementById('size').innerHTML='<div class="mini" style="margin:0 0 4px">Type d\'événement</div><div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:6px">'+Object.entries(EVN).map(([k,l])=>`<button class="pill ${rm==="church"&&evt===k?"on":""}" data-e="${k}">${l}</button>`).join('')+'</div><div style="display:flex;gap:6px;flex-wrap:wrap">'+Object.entries(ROOMS).filter(([k])=>!HIDR.includes(k)).map(([k,v])=>`<button class="pill ${k===rm?'on':''}" data-r="${k}">${v.n}</button>`).join('')+'</div>'
   +'<div id="sz" style="display:flex;gap:6px;flex-wrap:wrap;margin-top:6px">'+Object.entries(SIZES).map(([k,v])=>`<button class="pill" data-k="${k}">${v.n}</button>`).join('')+'</div>';
  document.getElementById('size').style.flexDirection='column';
  document.querySelectorAll('#size [data-r]').forEach(b=>b.onclick=()=>switchRoom(b.dataset.r));
+ document.querySelectorAll('#size [data-e]').forEach(b=>b.onclick=()=>setEvt(b.dataset.e));
  document.querySelectorAll('#sz .pill').forEach(b=>b.onclick=()=>setSize(b.dataset.k));
  document.getElementById('kits').innerHTML=Object.entries(KITS).map(([k,v])=>`<button class="pill" data-k="${k}">${v.n}</button>`).join('')+'<button class="pill" id="clr">Tout vider</button>';
  document.querySelectorAll('#kits [data-k]').forEach(b=>b.onclick=()=>{sel={};const ks=KITS[b.dataset.k].s;for(const id in ks){const sl=SLOTS.find(z=>z.id===id),o=sl&&sl.o[ks[id]];if(o&&vis(o)&&(optState(o)!=='soon'||ADMIN))sel[id]=ks[id]}qov={};applyScr();refresh()});
@@ -1028,7 +1047,7 @@ function ovSummary(){const r=ovRoles[ovKey()],sl=SLOTS.find(x=>x.id==='spk');if(
 function covUI(){const B=document.getElementById('covbox');if(!B)return;if(!isVen()){B.innerHTML='';return}
   B.innerHTML=`<div class="zone">Couverture sonore maximale</div><div class="sbx"><button class="cta" id="zi" style="margin:0 0 6px">★ Installation idéale (enceintes + acoustique)</button><div id="idealres">${idealHtml}</div><details open><summary style="font-size:13px;cursor:pointer">Niveau, zone et placement automatique</summary>
   <label style="display:flex;gap:8px;align-items:center">Niveau souhaité <input id="ctg" type="range" min="70" max="110" value="${tgt}" style="flex:1;width:auto"> <b id="ctgv">${tgt} dB</b></label>
-  <div style="display:flex;gap:6px;flex-wrap:wrap;margin:4px 0"><button class="pill" data-t="80">Parole 80</button><button class="pill" data-t="90">Culte 90</button><button class="pill" data-t="100">Concert 100</button></div><div class="mini">Parole 80 : confortable · Culte 90 : standard · Concert 100 : fort, durée limitée (risque pour l'audition).</div>
+  <div style="display:flex;gap:6px;flex-wrap:wrap;margin:4px 0"><button class="pill" data-t="80">Parole 80</button><button class="pill" data-t="90">${V('Culte 90')}</button><button class="pill" data-t="100">Concert 100</button></div><div class="mini">Parole 80 : confortable · ${V('Culte 90')} : niveau courant · Concert 100 : fort, durée limitée (risque pour l'audition).</div>
   <label style="display:flex;gap:8px;align-items:center">Volume du système <input id="ctrim" type="range" min="-20" max="0" value="${trim}" style="flex:1;width:auto"> <b id="ctrimv">${trim} dB</b></label>
   <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:6px"><button class="pill" id="zd">✏ Dessiner la zone</button><button class="pill" id="ze">Gomme</button><button class="pill" id="zc">Effacer la zone</button><button class="pill" id="zv">Vue : couverture réelle</button></div>
   <button class="cta" id="zo" style="margin-top:8px">① Couverture maximale : toute la salle</button><button class="cta" id="zp" style="margin-top:6px;background:#3b82f6;color:#fff">② Placer les enceintes sur ma zone dessinée</button>
@@ -1083,8 +1102,8 @@ function seatUI(){const B=document.getElementById('seatbox');if(ROOMS[rm].venue)
   <div class="mini">Sièges : affichés pour visualiser la salle, non vendus.</div></details></div>`;
   const ch=()=>{seat.layout=sl.value;seat.style=ss.value;seat.rows=Math.max(1,Math.min(14,+sr.value||1));seat.aisle=+sa.value;buildRoom();renderList();scount.textContent=seat.count};
   ['sl','ss','sr','sa'].forEach(i=>document.getElementById(i).onchange=ch)}
-const encodeState=()=>btoa(unescape(encodeURIComponent(JSON.stringify({uf,ufn,ven,fx,two,rm,size,sel,qov,offs,dummies,seat,scr,guest,fwd,mar,fee,lvl,att,fp:fillPct,fm:fillMode,tl:tgt,tr:trim,ac:acBy,dm:ORG[rm+size]?[SIZES[size].W,SIZES[size].D]:null}))));
-function loadState(o){uf=Array.isArray(o.uf)?o.uf:null;ufn=o.ufn||0;lvl=[1,2,3].includes(o.lvl)?o.lvl:1;ven=o.ven||{};fx=o.fx||{};two=!!o.two;rm=ROOMS[o.rm]?o.rm:'church';SLOTS=ROOMS[rm].slots;KITS=ROOMS[rm].kits;SIZES=ROOMS[rm].sizes;size=SIZES[o.size]?o.size:ROOMS[rm].def;sel=o.sel||{};qov=o.qov||{};resetDims();att=o.att||0;fillPct=o.fp||0;fillMode=o.fm||'sit';tgt=o.tl||90;trim=o.tr||0;for(const k in acBy)delete acBy[k];Object.assign(acBy,o.ac||{});if(o.dm&&o.dm[0]>0)setDims(o.dm[0],o.dm[1]);
+const encodeState=()=>btoa(unescape(encodeURIComponent(JSON.stringify({evt,uf,ufn,ven,fx,two,rm,size,sel,qov,offs,dummies,seat,scr,guest,fwd,mar,fee,lvl,att,fp:fillPct,fm:fillMode,tl:tgt,tr:trim,ac:acBy,dm:ORG[rm+size]?[SIZES[size].W,SIZES[size].D]:null}))));
+function loadState(o){evt=VOCS[o.evt]?o.evt:'church';applyVoc();uf=Array.isArray(o.uf)?o.uf:null;ufn=o.ufn||0;lvl=[1,2,3].includes(o.lvl)?o.lvl:1;ven=o.ven||{};fx=o.fx||{};two=!!o.two;rm=ROOMS[o.rm]?o.rm:'church';SLOTS=ROOMS[rm].slots;KITS=ROOMS[rm].kits;SIZES=ROOMS[rm].sizes;size=SIZES[o.size]?o.size:ROOMS[rm].def;sel=o.sel||{};qov=o.qov||{};resetDims();att=o.att||0;fillPct=o.fp||0;fillMode=o.fm||'sit';tgt=o.tl||90;trim=o.tr||0;for(const k in acBy)delete acBy[k];Object.assign(acBy,o.ac||{});if(o.dm&&o.dm[0]>0)setDims(o.dm[0],o.dm[1]);
   for(const k in offs)delete offs[k];Object.assign(offs,o.offs||{});dummies=o.dummies||[];dn=dummies.reduce((m,d)=>Math.max(m,d.id),0);
   Object.assign(seat,o.seat||{});Object.assign(scr,o.scr||{});Object.assign(guest,o.guest||{});if(o.fwd){fwd=o.fwd;document.getElementById('fwd').value=fwd}
   dsel=null;cur=null;chrome();document.querySelectorAll('#sz .pill').forEach(b=>b.classList.toggle('on',b.dataset.k===size));buildRoom();renderList()}

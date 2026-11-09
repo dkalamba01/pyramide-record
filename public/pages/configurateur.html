@@ -25,7 +25,7 @@ select option{background:var(--panel);color:var(--bone)}
 #site a{color:var(--bone);text-decoration:none;white-space:nowrap}#site a:hover{color:var(--gold)}
 #site .lg{font-family:var(--font-display);font-weight:600;margin-right:auto}
 #site .sbtn{flex:none;width:auto;background:var(--ember);color:#fff;padding:5px 12px;border-radius:999px;font-weight:600}#site .sbtn:hover{color:#fff;opacity:.9}
-@media(max-width:700px){#site .ln{display:none}}
+@media(max-width:700px){#site .ln:not(.keep){display:none}}
 #app{display:grid;grid-template-columns:1fr 380px;height:calc(100% - 40px)}
 #view{position:relative;min-height:0}
 #cv{width:100%;height:100%;display:block;touch-action:none;cursor:grab}
@@ -108,7 +108,7 @@ textarea{width:100%;height:90px;background:var(--obsidian);color:var(--bone);bor
 </style>
 </head>
 <body>
-<nav id="site"><a class="lg" href="../index.html">← Pyramide Record</a><a class="ln" href="studio.html">Studio</a><a class="ln" href="services.html">Services</a><a class="ln" href="shop.html">Boutique</a><a class="ln" href="contact.html">Contact</a><a class="sbtn" href="booking.html">Réserver</a></nav>
+<nav id="site"><a class="lg" href="../index.html">← Pyramide Record</a><a class="ln keep" href="guide-configurateur.html" title="Guide d'utilisation">? Aide</a><a class="ln" href="studio.html">Studio</a><a class="ln" href="services.html">Services</a><a class="ln" href="shop.html">Boutique</a><a class="ln" href="contact.html">Contact</a><a class="sbtn" href="booking.html">Réserver</a></nav>
 <div id="app">
   <div id="view"><canvas id="cv"></canvas><div id="size"></div><a href="shop.html" style="position:absolute;right:12px;bottom:10px;font-size:12px;color:var(--bone);background:var(--panel-2);border:1px solid var(--hair-2);border-radius:16px;padding:6px 11px;text-decoration:none">← Retour à la boutique</a><div id="covleg" style="display:none;position:absolute;left:12px;bottom:34px;font-size:12px;background:#10142bdd;border:1px solid var(--hair-2);border-radius:8px;padding:6px 9px;color:var(--bone);pointer-events:none;max-width:60%"></div><div id="hint">Glisser un objet : le déplacer · Glisser le fond : tourner · Molette / pincer : zoom · Toucher un emplacement</div></div>
   <div id="panel">

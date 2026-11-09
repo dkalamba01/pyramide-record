@@ -29,6 +29,7 @@ a.cta{display:block;text-align:center;text-decoration:none;margin-top:8px;paddin
 .slot.sel{border-color:#f2b632;background:#262a52}
 .slot small{display:block;color:#9aa0c0;font-size:11px;margin-top:2px}
 .slot b{white-space:nowrap}
+.chk{font-size:12px;border-radius:8px;padding:6px 8px;margin:4px 0;line-height:1.35}.chk.w{background:#3a2a10;color:#f2c97a}.chk.i{background:#17203f;color:#9aa0c0}
 .ok{color:#6fe3a0}.req{color:#f2b632}
 #opts,.sbx{background:#10142b;border:1px solid #2f3566;border-radius:10px;padding:8px;margin:6px 0 10px}
 #opts h3{font-size:13px;margin:2px 4px 8px}
@@ -76,9 +77,9 @@ textarea{width:100%;height:90px;background:#10142b;color:#cfd3f0;border:1px soli
     <div id="head"><h1>Votre salle d'église</h1><p>Choisissez un emplacement, puis le matériel. Prix tout compris, livraison à Kinshasa incluse.</p></div>
     <div id="body"><div id="presets"></div><div id="seatbox"></div><div id="scrbox"></div><div id="list"></div><div id="opts" style="display:none"></div></div>
     <div id="foot">
-      <div id="tot"><span>Total estimé (livré)</span><b id="total">0 $</b></div>
+      <div id="chk"></div><div id="tot"><span>Total estimé (livré)</span><b id="total">0 $</b></div>
       <div class="mini" id="reqline"></div>
-      <div id="dbar" style="display:flex;gap:6px;flex-wrap:wrap;margin:8px 0 0"><button class="pill" id="d1">+ Personne debout</button><button class="pill" id="d2">+ Personne assise</button><button class="pill" id="d3">Retirer la personne choisie</button><button class="pill" id="d4">↻ Tourner l'élément choisi</button></div><div id="kits"></div>
+      <div id="dbar" style="display:flex;gap:6px;flex-wrap:wrap;margin:8px 0 0"><button class="pill" id="d1">+ Personne debout</button><button class="pill" id="d2">+ Personne assise</button><button class="pill" id="d3">Retirer la personne choisie</button><button class="pill" id="un">↶ Annuler</button><button class="pill" id="re">↷ Rétablir</button><button class="pill" id="d4">↻ Tourner l'élément choisi</button></div><div id="kits"></div>
       <button class="pill" id="rst" style="width:100%;margin-bottom:8px">Remettre les objets à leur place</button><button class="cta" id="quote">Voir et demander mon devis</button>
       <div style="display:flex;gap:6px;margin-top:8px"><input id="ld" placeholder="Coller un code de salle" style="flex:1;min-width:0;background:#1c2040;color:#fff;border:1px solid #343a6a;border-radius:8px;padding:7px;font-size:12px"><button class="pill" id="ldb">Charger</button></div>
       <details id="adm" style="display:none"><summary>Paramètres (équipe Pyramide Record)</summary>
@@ -113,6 +114,9 @@ const CH_SLOTS=[
  {id:'kbd',z:'Scène',l:'Clavier',t:'kbd',q:{s:1,m:1,l:1},pos:[.32,.1],o:[
    P('M-Audio Keystation 49 MK3',129,4,'49 touches, branché à un ordi ou un module'),
    P('Yamaha PSR-E473',400,8,'61 touches avec sons et haut-parleurs intégrés')]},
+ {id:'piano',z:'Scène',l:'Piano',t:'piano',q:{s:0,m:0,l:0},pos:[-.32,.2],o:[
+   P('Piano numérique (modèle à confirmer)',null,0,'Prix à confirmer selon le stock local'),
+   P('Piano acoustique droit (occasion)',null,0,'Prix à confirmer, selon disponibilité')]},
  {id:'mon',z:'Scène',l:'Retours de scène',t:'mon',q:{s:0,m:2,l:2},pos:[.0,.42],span:.28,o:[
    P('Yamaha HS5 (retour actif)',170,3.5,'Pour que le pasteur et les musiciens s\'entendent')]},
  {id:'spk',z:'Sonorisation',l:'Enceintes vers l\'assemblée',t:'spk',q:{s:2,m:2,l:4},pos:[0,.38],span:.42,o:[
@@ -145,7 +149,7 @@ const CH_KITS={
  full:{n:'Kit complet + direct',s:{pmic:1,cmic:0,stand:0,kbd:0,spk:0,mix:0,eq:0,pwr:0,cam:0,tri:0,cap:0,ai:1,lap:0}}
 };
 const CH_SIZES={s:{n:'Petite salle',W:8,D:10},m:{n:'Salle moyenne',W:12,D:16},l:{n:'Grande salle / extérieur',W:18,D:24}};
-const COL={mic:0x444a66,stand:0x333333,kbd:0x222222,mon:0x2b2b2b,spk:0x1a1a1a,mix:0x3a3f66,amp:0x555a77,pwr:0x2f7a52,cam:0x111111,tri:0x333333,box:0x50567a,lap:0x888ea8};
+const COL={piano:0x1a1a1a,mic:0x444a66,stand:0x333333,kbd:0x222222,mon:0x2b2b2b,spk:0x1a1a1a,mix:0x3a3f66,amp:0x555a77,pwr:0x2f7a52,cam:0x111111,tri:0x333333,box:0x50567a,lap:0x888ea8};
 const Q=(a,b)=>({s:a,m:b});
 const REC_SLOTS=[
  {id:'mon',z:'Régie',l:'Enceintes de studio',t:'mon',q:Q(2,2),pos:[0,-.3],span:.16,o:[P('Yamaha HS5 (paire)',170,3.5,'Référence pour mixer, par enceinte'),]},
@@ -265,7 +269,7 @@ function rotSel(){if(!ls)return;const a=Math.PI/4;
   else if(ls.t==='eq'){const g=room.children.find(o=>o.userData&&o.userData.slot===ls.slot&&o.userData.i===ls.i);if(g){g.rotation.y+=a;offs[g.userData.key]=[g.position.x,g.position.z,g.rotation.y]}}
   else if(ls.t==='d'){const d=dummies.find(o=>o.id===ls.id);if(d){d.rot=(d.rot||0)+a;buildRoom()}}}
 let drag=null;let dummies=[],dsel=null,furn=[],dn=0;
-const HS={spk:[.3,.25],mon:[.25,.2],mic:[.12,.12],stand:[.2,.2],kbd:[.65,.25],mix:[.5,.4],amp:[.3,.2],pwr:[.2,.15],cam:[.15,.15],tri:[.25,.25],light:[.3,.3],bg:[1.2,.15],scr:[1.7,.3],box:[.15,.15],lap:[.2,.15]};
+const HS={spk:[.3,.25],mon:[.25,.2],mic:[.12,.12],stand:[.2,.2],kbd:[.65,.25],piano:[.75,.3],mix:[.5,.4],amp:[.3,.2],pwr:[.2,.15],cam:[.15,.15],tri:[.25,.25],light:[.3,.3],bg:[1.2,.15],scr:[1.7,.3],box:[.15,.15],lap:[.2,.15]};
 const eqBoxes=()=>room.children.filter(g=>g.userData&&g.userData.slot).map(g=>{const t=SLOTS.find(s=>s.id===g.userData.slot).t;let h=HS[t]||[.2,.2];if(t==='scr'){const k=g.scale.x;h=[h[0]*k,h[1]];if(Math.abs(Math.sin(g.rotation.y))>.5)h=[h[1],h[0]]}return{x:g.position.x,z:g.position.z,hw:h[0],hd:h[1]}});
 const hitC=(x,z,r,b)=>{const dx=Math.max(Math.abs(x-b.x)-b.hw,0),dz=Math.max(Math.abs(z-b.z)-b.hd,0);return dx*dx+dz*dz<r*r};
 function valid(d,x,z){const {W,D}=SIZES[size],r=.28;if(Math.abs(x)>W/2-.3||Math.abs(z)>D/2-.3)return false;
@@ -302,7 +306,7 @@ const EVQ={
  amph:{pmic:[1,1,1],cmic:[2,4,6],stand:[3,5,7],kbd:[1,1,1],mon:[2,4,4],spk:[4,6,10],mix:[1,1,2],amp:[1,2,3],eq:[1,1,2],pwr:[1,1,2],cam:[2,3,4],tri:[2,3,4],cap:[1,1,2],ai:[1,1,1],lap:[1,1,1]},
  balc:{pmic:[1,1,1],cmic:[2,4,6],stand:[3,5,7],kbd:[1,1,1],mon:[2,4,4],spk:[4,6,8],mix:[1,1,2],amp:[1,2,3],eq:[1,1,2],pwr:[1,1,2],cam:[2,3,4],tri:[2,3,4],cap:[1,1,2],ai:[1,1,1],lap:[1,1,1]},
  stad:{pmic:[1,1,2],cmic:[4,6,8],stand:[5,7,9],kbd:[1,2,2],mon:[4,6,8],spk:[8,12,16],mix:[1,2,2],amp:[2,4,6],eq:[2,2,3],pwr:[2,2,3],cam:[3,4,6],tri:[3,4,6],cap:[1,2,2],ai:[1,2,2],lap:[1,1,2]}};
-const evSlots=k=>CH_SLOTS.map(sl=>{const a=EVQ[k][sl.id]||[1,1,1],o=sl.id==='spk'?sl.o.concat([P('Système line array professionnel',null,0,'Pour très grand public, devis sur demande')]):sl.o;return Object.assign({},sl,{o,q:{s:a[0],m:a[1],l:a[2]}})});
+const evSlots=k=>CH_SLOTS.map(sl=>{const a=EVQ[k][sl.id]||(sl.id==='piano'?[0,0,0]:[1,1,1]),o=sl.id==='spk'?sl.o.concat([P('Système line array professionnel',null,0,'Pour très grand public, devis sur demande')]):sl.o;return Object.assign({},sl,{o,q:{s:a[0],m:a[1],l:a[2]}})});
 const EVKITS={budget:{n:'Kit budget',s:{pmic:0,spk:1,mix:0,stand:0}},full:{n:'Kit complet + direct',s:Object.assign({},CH_KITS.full.s,{spk:1})}};
 const placeVen=(s,i,q,W,D)=>{if(s.back)return[0,.35,-D/2+.5];const We=Math.min(W,26),x=s.pos[0]*We+(q>1?(i-(q-1)/2)*((s.span||.06)*We*2/Math.max(q-1,1)):0);
   return s.pos[1]>0?[x,.35,-D/2+2.2+s.pos[1]*2.5]:[x,0,(rm==='stad'?D*.1:D/2-2.4)+(s.pos[1]+.34)*3]};
@@ -408,7 +412,19 @@ function totals(){let t=0,req=[],rows=[];
   const si=seatInfo();if(si.n>0){const sp=local['seat:'+si.st];if(sp>0){t+=sp*si.n;rows.push({s:{l:'Sièges'},o:{n:STN[si.st]},q:si.n,pr:sp})}else req.push('Sièges ('+si.n+' places, '+STN[si.st]+')')}
   if(fwd==='ps'&&rows.some(r=>r.pr!=null))t+=Math.round(5*1.392*(1+mar/100)*(1+fee/100));
   return{t,req,rows}}
-function updTotal(){const r=totals();
+function checks(){const out=[],act=id=>{const sl=SLOTS.find(x=>x.id===id);return sl&&qty(sl)>0&&sel[id]!=null},has=id=>act(id),mics=SLOTS.filter(x=>x.t==='mic'&&qty(x)>0),micOn=mics.some(x=>sel[x.id]!=null),spkOn=has('spk')||has('mon');
+  const seats=ROOMS[rm].venue?venSeats:(rm==='church'?seat.count:0),sp=SLOTS.find(x=>x.id==='spk');
+  if(spkOn&&!micOn&&!has('kbd')&&!has('piano'))out.push(['w','Aucun micro choisi : les enceintes n\'auront rien à diffuser.']);
+  if(micOn&&!spkOn&&!has('ai'))out.push(['w','Des micros sans enceintes ni interface audio : choisissez comment le son sera diffusé ou enregistré.']);
+  if(has('spk')&&micOn&&!has('mix')&&!has('ai'))out.push(['w','Enceintes et micros sans table de mixage : il manque un moyen de les relier.']);
+  if(rm==='rec'&&has('mon')&&!has('ai'))out.push(['w','Enceintes de studio sans interface audio : on ne pourra pas enregistrer.']);
+  if(sp&&seats>0&&qty(sp)>0&&seats/qty(sp)>150)out.push(['w','Environ '+Math.round(seats/qty(sp))+' places par enceinte : prévoyez plus d\'enceintes ou des modèles plus puissants'+(ROOMS[rm].venue?' (système line array).':'.')]);
+  if(has('cam')&&!has('cap')&&!has('ai')&&!has('lap'))out.push(['i','Caméra sans ordinateur ni carte de capture : la diffusion en direct ne sera pas possible.']);
+  if((spkOn||micOn)&&!has('pwr'))out.push(['i','Pensez à l\'alimentation de secours : les coupures de courant peuvent interrompre le son.']);
+  const r=totals();if(r.rows.length&&r.req.length)out.push(['i',r.req.length+' élément(s) sans prix : le total est incomplet, il sera confirmé dans le devis.']);
+  return out}
+function chkUI(){const B=document.getElementById('chk');if(!B)return;const c=checks();B.innerHTML=c.length?'<div class="zone">Vérification de la configuration</div>'+c.map(([l,m])=>`<div class="chk ${l}">${l==='w'?'⚠':'ℹ'} ${m}</div>`).join(''):''}
+function updTotal(){chkUI();const r=totals();
   document.getElementById('total').textContent=money(r.t);document.getElementById('mtotal').textContent=money(r.t);
   const sp=r.rows.filter(x=>x.pr!=null&&x.o&&inStock(x.o)).reduce((a,x)=>a+x.pr*x.q,0),oc=r.rows.filter(x=>x.pr!=null&&!(x.o&&inStock(x.o))).reduce((a,x)=>a+x.pr*x.q,0);
   document.getElementById('reqline').textContent=(sp>0?'Disponible en boutique : '+money(sp)+' · ':'')+(oc>0&&sp>0?'Sur commande : '+money(oc)+'. ':'')+(r.req.length?'+ prix sur demande : '+r.req.join(', '):(sp>0?'':'Transport et taxes inclus, aucune ligne cachée.'))}
@@ -432,6 +448,7 @@ function product(t,ghost){
   const add=(o,x,y,z)=>{o.position.set(x,y,z);g.add(o)};
   switch(t){
    case'spk':add(box(.55,.85,.45,m()),0,.43,0);if(!ghost){const cn=new THREE.Mesh(new THREE.CylinderGeometry(.17,.17,.02,20),mat(0x555555));cn.rotation.x=Math.PI/2;add(cn,0,.4,.23)}break;
+   case'piano':add(box(1.4,.12,.45,m()),0,.78,0);add(box(1.4,.04,.16,mat(0xf2f2f2)),0,.86,.26);[-.65,.65].forEach(x=>add(box(.06,.78,.4,m()),x,.39,0));add(box(1.3,.5,.1,m()),0,1.1,-.18);break;
    case'mon':add(box(.45,.3,.35,m()),0,.15,0);break;
    case'mic':add(new THREE.Mesh(new THREE.CylinderGeometry(.015,.015,1.3,8),m()),0,.65,0);add(new THREE.Mesh(new THREE.SphereGeometry(.07,12,12),ghost?m():mat(0xcccccc)),0,1.33,0);break;
    case'stand':add(new THREE.Mesh(new THREE.CylinderGeometry(.01,.01,1.1,6),m()),0,.55,0);add(new THREE.Mesh(new THREE.CylinderGeometry(.22,.22,.02,14),m()),0,.01,0);break;
@@ -601,25 +618,31 @@ function loadState(o){fx=o.fx||{};two=!!o.two;rm=ROOMS[o.rm]?o.rm:'church';SLOTS
 function switchRoom(k){two=false;fx={};fsel=null;qov={};scr.layout='center';dummies=[];dsel=null;rm=k;SLOTS=ROOMS[k].slots;KITS=ROOMS[k].kits;SIZES=ROOMS[k].sizes;sel={};cur=null;chrome();setSize(ROOMS[k].def)}
 const setP=()=>{fwd=document.getElementById('fwd').value;mar=+document.getElementById('mar').value||0;fee=+document.getElementById('fee').value||0;renderList()};
 ['fwd','mar','fee'].forEach(i=>document.getElementById(i).onchange=setP);
-let quoteText='';
+let quoteText='',inst=false;
 function quoteExtras(){const code=encodeState();if(code.length<1200){quoteText+='\nCode de la salle : '+code;document.getElementById('qt').value=quoteText}
   let img='';try{R.render(scene,cam);img=`<img src="${cv.toDataURL('image/jpeg',.8)}" style="width:100%;border-radius:8px;margin-top:8px" alt="Aperçu de ma salle">`}catch(e){}
   const num=(contact.wa||'').replace(/\D/g,''),wa='https://wa.me/'+num+'?text='+encodeURIComponent(quoteText),
     em=contact.em?'mailto:'+contact.em+'?subject='+encodeURIComponent('Demande de devis – Pyramide Record')+'&body='+encodeURIComponent(quoteText):'';
-  document.getElementById('mbody').insertAdjacentHTML('beforeend',img+`<a class="cta" target="_blank" rel="noopener" href="${wa}">Envoyer sur WhatsApp</a>`+(em?`<a class="cta em" href="${em}">Envoyer par email</a>`:'')+`<div class="mini">Code de ma salle (pour la retrouver plus tard) :</div><textarea readonly>${code}</textarea>`)}
+  document.getElementById('mbody').insertAdjacentHTML('beforeend',img+`<a class="cta" target="_blank" rel="noopener" href="${wa}">Envoyer sur WhatsApp</a>`+(em?`<a class="cta em" href="${em}">Envoyer par email</a>`:'')+`<button class="cta em" id="prt" style="margin-top:8px">Imprimer / enregistrer en PDF</button><div class="mini">Code de ma salle (pour la retrouver plus tard) :</div><textarea readonly>${code}</textarea>`);document.getElementById('prt').onclick=()=>{const w=window.open('','_blank');if(!w)return;const esc=t=>t.replace(/&/g,'&amp;').replace(/</g,'&lt;');w.document.write('<html><head><meta charset="utf-8"><title>Devis Pyramid Record</title><style>body{font-family:Arial,sans-serif;max-width:720px;margin:24px auto;padding:0 16px;color:#111}img{width:100%;border-radius:8px}pre{white-space:pre-wrap;font:14px/1.5 Arial}</style></head><body><h2>Pyramid Record – Devis estimatif</h2>'+img+'<pre>'+esc(quoteText.replace(/\nCode de la salle : .*/,''))+'</pre><p style="font-size:12px;color:#555">Prix livrés à Kinshasa, transport et taxes inclus. Estimation sujette à confirmation du stock.</p><script>setTimeout(function(){print()},400)<\/script></body></html>');w.document.close()}}
 document.getElementById('quote').onclick=()=>{const r=totals();
   let rows=r.rows.map(x=>`<tr><td>${x.s.l}${x.q>1?' ×'+x.q:''}<br><small style="color:#9aa0c0">${x.o.n}${x.o&&inStock(x.o)?' · en stock':x.o&&x.o.us!=null?' · sur commande':''}</small></td><td>${x.pr==null?'Sur demande':money(x.pr*x.q)}</td></tr>`).join('');
   r.req.filter(x=>x.startsWith('Sièges')).forEach(x=>{rows+=`<tr><td>${x}</td><td>Sur demande</td></tr>`});
   if(!r.rows.length&&!r.req.length)rows='<tr><td>Aucun matériel choisi pour le moment.</td><td></td></tr>';
-  document.getElementById('mbody').innerHTML=`<p style="font-size:12px;color:#9aa0c0;margin-top:6px">${SIZES[size].n}. Prix livrés à Kinshasa, transport et taxes inclus. Les prix sur demande seront confirmés après vérification du stock.</p><table>${rows}<tr><td><b>Total estimé</b></td><td><b>${money(r.t)}</b></td></tr></table><textarea id="qt" readonly></textarea>`;
-  quoteText='Demande de devis – Pyramide Record\n'+SIZES[size].n+'\n'+r.rows.map(x=>`- ${x.s.l}${x.q>1?' x'+x.q:''} : ${x.o.n}${x.o&&inStock(x.o)?' [en stock]':x.o&&x.o.us!=null?' [sur commande]':''} – ${x.pr==null?'prix sur demande':money(x.pr*x.q)}`).join('\n')+r.req.filter(x=>x.startsWith('Sièges')).map(x=>'\n- '+x+' – prix sur demande').join('')+`\nTotal estimé : ${money(r.t)}`;
-  document.getElementById('qt').value=quoteText;document.getElementById('modal').style.display='flex';quoteExtras()};
+  document.getElementById('mbody').innerHTML=`<label style="display:flex;gap:8px;align-items:center;font-size:13px;margin:8px 0"><input type="checkbox" id="inst" ${inst?'checked':''}> Je souhaite l'installation et la formation par Pyramid Record (sur devis)</label><p style="font-size:12px;color:#9aa0c0;margin-top:6px">${SIZES[size].n}. Prix livrés à Kinshasa, transport et taxes inclus. Les prix sur demande seront confirmés après vérification du stock.</p><table>${rows}<tr><td><b>Total estimé</b></td><td><b>${money(r.t)}</b></td></tr></table><textarea id="qt" readonly></textarea>`;
+  quoteText='Demande de devis – Pyramide Record\n'+SIZES[size].n+'\n'+r.rows.map(x=>`- ${x.s.l}${x.q>1?' x'+x.q:''} : ${x.o.n}${x.o&&inStock(x.o)?' [en stock]':x.o&&x.o.us!=null?' [sur commande]':''} – ${x.pr==null?'prix sur demande':money(x.pr*x.q)}`).join('\n')+r.req.filter(x=>x.startsWith('Sièges')).map(x=>'\n- '+x+' – prix sur demande').join('')+`\nTotal estimé : ${money(r.t)}`+(inst?'\n+ Installation et formation par Pyramid Record (sur devis)':'');
+  document.getElementById('qt').value=quoteText;document.getElementById('modal').style.display='flex';quoteExtras();document.getElementById('inst').onchange=e=>{inst=e.target.checked;document.getElementById('quote').click()}};
 document.getElementById('mq').onclick=()=>document.getElementById('quote').click();
 document.getElementById('close').onclick=()=>document.getElementById('modal').style.display='none';
 document.getElementById('copy').onclick=()=>{const t=document.getElementById('qt');t.select();
   try{navigator.clipboard.writeText(quoteText);document.getElementById('copy').textContent='Copié ✓'}catch(e){document.execCommand&&document.execCommand('copy')}};
 
-chrome();document.getElementById('d1').onclick=()=>spawn('stand');document.getElementById('d2').onclick=()=>spawn('sit');document.getElementById('d4').onclick=rotSel;document.getElementById('d3').onclick=()=>{dummies=dummies.filter(o=>o.id!==dsel);dsel=null;buildRoom()};
+chrome();document.getElementById('d1').onclick=()=>spawn('stand');document.getElementById('d2').onclick=()=>spawn('sit');document.getElementById('d4').onclick=rotSel;
+{let last=encodeState(),pend=last,pt=0,hist=[],fut=[],busy=false;
+ const load=c=>{busy=true;try{loadState(JSON.parse(decodeURIComponent(escape(atob(c)))))}catch(e){}last=pend=encodeState();busy=false};
+ setInterval(()=>{if(busy)return;const c=encodeState(),n=Date.now();if(c!==pend){pend=c;pt=n}else if(pend!==last&&n-pt>=350){hist.push(last);if(hist.length>60)hist.shift();last=pend;fut=[]}},150);
+ document.getElementById('un').onclick=()=>{if(pend!==last){hist.push(last);last=pend}if(!hist.length)return;fut.push(last);load(hist.pop())};
+ document.getElementById('re').onclick=()=>{if(!fut.length)return;hist.push(last);load(fut.pop())}}
+document.getElementById('d3').onclick=()=>{dummies=dummies.filter(o=>o.id!==dsel);dsel=null;buildRoom()};
 document.getElementById('rst').onclick=()=>{for(const k in offs)delete offs[k];fx={};buildRoom()};function localUI(){const names=[];Object.values(ROOMS).forEach(r=>r.slots.forEach(sl=>sl.o.forEach(o=>{if(o.us==null&&!names.includes(o.n))names.push(o.n)})));
   const rowH=(k,l)=>`<label><span class="nm">${l}</span><input data-k="${k}" type="number" min="0" placeholder="$ livré" value="${local[k]||''}"></label>`;
   document.getElementById('locbox').innerHTML='<div class="zone" style="margin-top:12px">Prix locaux (tout compris, $)</div>'+names.map(n=>rowH(n,n)).join('')+Object.entries(STN).map(([k,l])=>rowH('seat:'+k,'Siège : '+l+' (par place)')).join('')

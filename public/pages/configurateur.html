@@ -144,8 +144,8 @@ const CH_SLOTS=[
    P('Elgato Cam Link',90,.3,'Branche la caméra à l\'ordinateur')]},
  {id:'ai',z:'Diffusion en direct',l:'Interface audio',t:'box',q:{s:1,m:1,l:1},pos:[.3,-.34],o:[
    P('Behringer UM2',45,.6,'Simple'),P('Focusrite Scarlett Solo',110,.8,'Meilleure qualité')]},
- {id:'lap',z:'Diffusion en direct',l:'Ordinateur portable',t:'lap',q:{s:1,m:1,l:1},pos:[.22,-.34],o:[
-   P('Portable milieu de gamme (estimation)',625,2.5,'Prix estimé, à confirmer')]}
+ {id:'lap',z:'Diffusion en direct',l:'Ordinateur (portable ou PC)',t:'lap',q:{s:1,m:1,l:1},pos:[.22,-.34],o:[
+   P('Portable milieu de gamme (estimation)',625,2.5,'Prix estimé, à confirmer'),P('PC de bureau milieu de gamme (estimation)',700,9,'Tour + écran à ajouter si besoin. Prix estimé, à confirmer')]}
 ];
 const CH_KITS={
  budget:{n:'Kit budget',s:{pmic:0,spk:0,mix:0,stand:0}},
@@ -156,17 +156,18 @@ const COL={piano:0x1a1a1a,mic:0x444a66,stand:0x333333,kbd:0x222222,mon:0x2b2b2b,
 const Q=(a,b)=>({s:a,m:b});
 const REC_SLOTS=[
  {id:'mon',z:'Régie',l:'Enceintes de studio',t:'mon',q:Q(2,2),pos:[0,-.3],span:.16,o:[P('Yamaha HS5 (paire)',170,3.5,'Référence pour mixer, par enceinte'),]},
+ {id:'mix',z:'Régie',l:'Console de mixage',t:'mix',q:Q(1,1),pos:[.26,-.2],o:[P('Behringer X1204USB (12 voies)',225,2.8,'Effets intégrés, sortie USB vers l\'ordinateur'),P('Yamaha MG10XU (10 voies)',280,2.1,'Réputée très fiable')]},
  {id:'ai',z:'Régie',l:'Interface audio',t:'box',q:Q(1,1),pos:[0,-.36],o:[P('Behringer UM2',45,.6,'Pour débuter'),P('Focusrite Scarlett Solo',110,.8,'1 micro + 1 instrument'),P('Focusrite Scarlett 2i2',200,1.5,'2 entrées, plus polyvalente')]},
- {id:'lap',z:'Régie',l:'Ordinateur portable',t:'lap',q:Q(1,1),pos:[-.14,-.36],o:[P('Portable milieu de gamme (estimation)',625,2.5,'Prix estimé, à confirmer')]},
- {id:'hp',z:'Régie',l:'Casque de studio',t:'box',q:Q(1,2),pos:[.14,-.36],span:.05,o:[P('Samson SR850',37.49,.5,'Casque semi-ouvert pour le mixage')]},
+ {id:'lap',z:'Régie',l:'Ordinateur (portable ou PC)',t:'lap',q:Q(1,1),pos:[-.14,-.36],o:[P('Portable milieu de gamme (estimation)',625,2.5,'Prix estimé, à confirmer'),P('PC de bureau milieu de gamme (estimation)',700,9,'Tour + écran à ajouter si besoin. Prix estimé, à confirmer')]},
+ {id:'hp',z:'Régie',l:'Casque de studio',t:'hp',q:Q(1,2),pos:[.14,-.36],span:.05,o:[P('Samson SR850',37.49,.5,'Casque semi-ouvert pour le mixage')]},
  {id:'kbd',z:'Régie',l:'Clavier maître',t:'kbd',q:Q(1,1),pos:[-.26,-.2],o:[P('M-Audio Keystation 49 MK3',129,4,'49 touches, pour jouer et programmer'),P('Yamaha PSR-E473',400,8,'61 touches avec sons intégrés')]},
  {id:'mic',z:'Cabine voix',l:'Micro voix',t:'mic',q:Q(1,2),pos:[.28,.22],span:.08,o:[P('Samson Q2U',69.99,1,'USB + XLR, très bon pour débuter'),P('Audio-Technica AT2020',119,1,'Condensateur, voix claires'),P('Rode PodMic',129,2,'Dynamique, pièce non traitée')]},
  {id:'stand',z:'Cabine voix',l:'Pied de micro',t:'stand',q:Q(1,2),pos:[.28,.3],span:.08,o:[P('On-Stage MS7701B',34.95,2.3,'Pied avec perche')]},
  {id:'pwr',z:'Énergie',l:'Alimentation de secours',t:'pwr',q:Q(1,1),pos:[-.3,.3],o:[P('EcoFlow River 2 (station d\'énergie)',189,3.5,'Couvre les coupures pendant l\'enregistrement'),P('Stabilisateur de tension',null,0,'Prix à confirmer selon le stock local')]}
 ];
-const REC_KITS={budget:{n:'Kit débutant',s:{ai:0,hp:0,mic:0,stand:0,lap:0}},full:{n:'Kit complet',s:{mon:0,ai:2,lap:0,hp:0,kbd:0,mic:1,stand:0,pwr:0}}};
+const REC_KITS={budget:{n:'Kit débutant',s:{ai:0,hp:0,mic:0,stand:0,lap:0}},full:{n:'Kit complet',s:{mon:0,mix:0,ai:2,lap:0,hp:0,kbd:0,mic:1,stand:0,pwr:0}}};
 const REC_SIZES={s:{n:'Home studio',W:5,D:6},m:{n:'Studio pro',W:8,D:10}};
-const LAP=P('Portable milieu de gamme (estimation)',625,2.5,'Prix estimé, à confirmer');
+const LAP=P('Portable milieu de gamme (estimation)',625,2.5,'Prix estimé, à confirmer'),PCO=P('PC de bureau milieu de gamme (estimation)',700,9,'Tour + écran à ajouter si besoin. Prix estimé, à confirmer');
 const CAM=P('Sony ZV-E10',698,1.5,'Vidéo 4K et photo, bon en faible lumière');
 const TRI=[P('Trépied léger',45,1.5,'Petite caméra'),P('Trépied pro',95.2,5,'Plus stable')];
 const LED=P('Neewer LED 2 panneaux + pieds',140,6,'Lumière douce, réglable');
@@ -181,7 +182,7 @@ const VID_SLOTS=[
  {id:'bg',z:'Décor',l:'Fond / toile',t:'bg',q:Q(1,1),pos:[0,.4],o:[NA('Toile de fond (achat local)')]},
  {id:'mic',z:'Son',l:'Micro cravate sans fil',t:'mic',q:Q(1,2),pos:[-.25,.15],span:.05,o:[LARK]},
  {id:'ai',z:'Son',l:'Interface audio',t:'box',q:Q(0,1),pos:[-.35,-.3],o:[P('Focusrite Scarlett Solo',110,.8,'Pour micros XLR')]},
- {id:'lap',z:'Montage',l:'Ordinateur portable',t:'lap',q:Q(1,1),pos:[-.3,-.38],o:[LAP]},
+ {id:'lap',z:'Montage',l:'Ordinateur (portable ou PC)',t:'lap',q:Q(1,1),pos:[-.3,-.38],o:[LAP,PCO]},
  {id:'cap',z:'Montage',l:'Carte de capture (direct)',t:'box',q:Q(0,1),pos:[-.2,-.38],o:[P('Elgato Cam Link',90,.3,'Pour diffuser en direct')]},
  {id:'sd',z:'Accessoires',l:'Stockage',t:'box',q:Q(1,1),pos:[.2,-.38],o:[SD]},
  {id:'bat',z:'Accessoires',l:'Batteries',t:'box',q:Q(1,1),pos:[.3,-.38],o:[BAT]},
@@ -193,17 +194,17 @@ const PHO_SLOTS=[
  {id:'led',z:'Éclairage',l:'Kit lumière',t:'light',q:Q(1,2),pos:[.28,-.05],span:.14,o:[LED]},
  {id:'bg',z:'Décor',l:'Fond photo',t:'bg',q:Q(1,2),pos:[0,.4],span:.2,o:[NA('Fond papier / toile (achat local)')]},
  {id:'ref',z:'Éclairage',l:'Réflecteur / diffuseur',t:'light',q:Q(0,1),pos:[-.3,-.05],o:[NA('Réflecteur 5 en 1 (achat local)')]},
- {id:'lap',z:'Retouche',l:'Ordinateur portable',t:'lap',q:Q(1,1),pos:[-.35,-.38],o:[LAP]},
+ {id:'lap',z:'Retouche',l:'Ordinateur (portable ou PC)',t:'lap',q:Q(1,1),pos:[-.35,-.38],o:[LAP,PCO]},
  {id:'sd',z:'Accessoires',l:'Stockage',t:'box',q:Q(1,1),pos:[.2,-.38],o:[SD]},
  {id:'bat',z:'Accessoires',l:'Batteries',t:'box',q:Q(1,1),pos:[.3,-.38],o:[BAT]}];
 const PHO_KITS={budget:{n:'Kit débutant',s:{cam:0,tri:0,led:0,sd:0}},full:{n:'Kit complet',s:{cam:0,tri:1,led:0,bg:0,ref:0,lap:0,sd:0,bat:0}}};
 const POD_SLOTS=[
  {id:'mic',z:'Table d\'enregistrement',l:'Micros',t:'mic',q:Q(2,4),pos:[0,.0],span:.2,o:[P('Samson Q2U',69.99,1,'USB + XLR, idéal pour débuter'),P('Rode PodMic',129,2,'Voix chaudes, filtre le bruit de pièce'),P('Audio-Technica AT2020',119,1,'Condensateur, plus sensible')]},
  {id:'stand',z:'Table d\'enregistrement',l:'Pieds de micro',t:'stand',q:Q(2,4),pos:[0,.1],span:.2,o:[P('On-Stage MS7701B',34.95,2.3,'Pied avec perche')]},
- {id:'hp',z:'Table d\'enregistrement',l:'Casques',t:'box',q:Q(2,4),pos:[0,-.12],span:.2,o:[P('Samson SR850',37.49,.5,'Casque semi-ouvert')]},
+ {id:'hp',z:'Table d\'enregistrement',l:'Casques',t:'hp',q:Q(2,4),pos:[0,-.12],span:.2,o:[P('Samson SR850',37.49,.5,'Casque semi-ouvert')]},
  {id:'mix',z:'Régie',l:'Table de mixage',t:'mix',q:Q(0,1),pos:[-.3,-.35],o:[P('Behringer X1204USB',225,2.8,'Plusieurs micros, sortie USB')]},
  {id:'ai',z:'Régie',l:'Interface audio',t:'box',q:Q(1,0),pos:[-.3,-.35],o:[P('Focusrite Scarlett 2i2',200,1.5,'2 micros XLR')]},
- {id:'lap',z:'Régie',l:'Ordinateur portable',t:'lap',q:Q(1,1),pos:[-.15,-.35],o:[LAP]},
+ {id:'lap',z:'Régie',l:'Ordinateur (portable ou PC)',t:'lap',q:Q(1,1),pos:[-.15,-.35],o:[LAP,PCO]},
  {id:'mon',z:'Régie',l:'Enceintes de contrôle',t:'mon',q:Q(0,2),pos:[.15,-.35],span:.08,o:[P('Yamaha HS5',170,3.5,'Pour réécouter')]},
  {id:'pwr',z:'Énergie',l:'Alimentation de secours',t:'pwr',q:Q(1,1),pos:[.38,-.3],o:[P('EcoFlow River 2',189,3.5,'Pour les coupures'),NA('Stabilisateur de tension')]}];
 const POD_KITS={budget:{n:'Kit débutant',s:{mic:0,stand:0,hp:0,ai:0,lap:0}},full:{n:'Kit complet',s:{mic:1,stand:0,hp:0,mix:0,lap:0,mon:0,pwr:0}}};
@@ -255,7 +256,7 @@ function scrUI(){const B=document.getElementById('scrbox');
   <label>Taille ${sel('cs',scr.size,[['s','Petit (≈55″)'],['m','Moyen (≈75″)'],['l','Grand (mur LED)']])}</label></details></div>`;
   const ch=()=>{scr.layout=cl.value;scr.size=cs.value;qov={};applyScr();buildRoom();renderList()};
   ['cl','cs'].forEach(i=>document.getElementById(i).onchange=ch)}
-const offs={};let fx={},fixt={},fsel=null,ls=null;const TOK=new Set(['mon','box','lap','mic']);let gk=0;
+const offs={};let fx={},fixt={},fsel=null,ls=null;const TOK=new Set(['mon','box','lap','mic','hp','pc']);let gk=0;
 function setFix(fi,x,z,r){fi.x=x;fi.z=z;fi.r=r;fi.g.position.set(x,0,z);fi.g.rotation.y=r;const c=Math.abs(Math.cos(r)),s=Math.abs(Math.sin(r));Object.assign(fi.f,{x,z,hw:c*fi.hw0+s*fi.hd0,hd:s*fi.hw0+c*fi.hd0,rot:r})}
 function mkFix(key,g,hw0,hd0,def,pew){const o=fx[rm+key]||def,{W,D}=SIZES[size],f={x:0,z:0,hw:0,hd:0,pew:!!pew,rot:0},fi={key,g,hw0,hd0,f};fixt[key]=fi;
   setFix(fi,Math.max(-W/2+.5,Math.min(W/2-.5,o[0])),Math.max(-D/2+.5,Math.min(D/2-.5,o[1])),o[2]||0);room.add(g);furn.push(f);
@@ -272,13 +273,13 @@ function snapWall(g,p){const {W,D}=SIZES[size],sc=g.scale.x,hw=1.6*sc+.2,ch=rm==
   else if(d==='l'){g.position.set(-(W/2-.3),0,cl(p.z,Math.max(0,D/2-hw)));g.rotation.y=Math.PI/2}
   else{g.position.set(W/2-.3,0,cl(p.z,Math.max(0,D/2-hw)));g.rotation.y=-Math.PI/2}}
 const gp=(e,y)=>{const p=new THREE.Vector3();ray(e).ray.intersectPlane(new THREE.Plane(new THREE.Vector3(0,1,0),-y),p);return p};
-function rotSel(){rotSel0();if(covOn)covBuild();chkUI()}
+function rotSel(){rotSel0();if(covOn)covBuild();spkMarks();chkUI()}
 function rotSel0(){if(!ls)return;const a=Math.PI/4;
   if(ls.t==='f'){const fi=fixt[ls.key];if(fi)moveFix(fi,fi.x,fi.z,fi.r+a,ls.key==='tbl'?capRiders():null)}
   else if(ls.t==='eq'){const g=room.children.find(o=>o.userData&&o.userData.slot===ls.slot&&o.userData.i===ls.i);if(g){g.rotation.y+=a;offs[g.userData.key]=[g.position.x,g.position.z,g.rotation.y]}}
   else if(ls.t==='d'){const d=dummies.find(o=>o.id===ls.id);if(d){d.rot=(d.rot||0)+a;buildRoom()}}}
 let drag=null;let dummies=[],dsel=null,furn=[],dn=0;
-const HS={spk:[.3,.25],mon:[.25,.2],mic:[.12,.12],stand:[.2,.2],kbd:[.65,.25],piano:[.75,.3],mix:[.5,.4],amp:[.3,.2],pwr:[.2,.15],cam:[.15,.15],tri:[.25,.25],light:[.3,.3],bg:[1.2,.15],scr:[1.7,.3],box:[.15,.15],lap:[.2,.15]};
+const HS={spk:[.3,.25],mon:[.25,.2],mic:[.12,.12],stand:[.2,.2],kbd:[.65,.25],piano:[.75,.3],mix:[.5,.4],amp:[.3,.2],pwr:[.2,.15],cam:[.15,.15],tri:[.25,.25],light:[.3,.3],bg:[1.2,.15],scr:[1.7,.3],box:[.15,.15],lap:[.2,.15],hp:[.12,.12],pc:[.3,.25]};
 const eqBoxes=()=>room.children.filter(g=>g.userData&&g.userData.slot).map(g=>{const t=SLOTS.find(s=>s.id===g.userData.slot).t;let h=HS[t]||[.2,.2];if(t==='scr'){const k=g.scale.x;h=[h[0]*k,h[1]];if(Math.abs(Math.sin(g.rotation.y))>.5)h=[h[1],h[0]]}return{x:g.position.x,z:g.position.z,hw:h[0],hd:h[1]}});
 const hitC=(x,z,r,b)=>{const dx=Math.max(Math.abs(x-b.x)-b.hw,0),dz=Math.max(Math.abs(z-b.z)-b.hd,0);return dx*dx+dz*dz<r*r};
 function valid(d,x,z){const {W,D}=SIZES[size],r=.28;if(Math.abs(x)>W/2-.3||Math.abs(z)>D/2-.3)return false;
@@ -490,8 +491,10 @@ function product(t,ghost){
     x.font='22px Arial';x.fillStyle='#9aa0c0';x.fillText('Studio · Kinshasa',64,284);
     const sc=new THREE.Mesh(new THREE.PlaneGeometry(3.2,1.8),new THREE.MeshBasicMaterial({map:new THREE.CanvasTexture(c),transparent:true,opacity:ghost?.55:1}));
     add(sc,0,1.9,0);add(box(3.3,1.9,.06,mat(0x111111)),0,1.9,-.05);break}
-   case'lap':add(box(.35,.02,.25,m()),0,.92,0);break;
-   default:add(box(.25,.08,.2,m()),0,.92,0)}
+   case'lap':{add(box(.34,.02,.24,m()),0,.01,0);const sc=box(.34,.22,.012,m());sc.rotation.x=-.3;add(sc,0,.12,-.11);break}
+   case'pc':{add(box(.2,.42,.4,m()),.32,.21,0);const sc=box(.52,.31,.03,m());add(sc,-.12,.37,-.1);add(box(.05,.2,.05,m()),-.12,.1,-.1);add(box(.4,.015,.13,m()),-.12,.01,.14);break}
+   case'hp':{const tr=new THREE.Mesh(new THREE.TorusGeometry(.09,.012,6,16,Math.PI),m());add(tr,0,.1,0);[-1,1].forEach(k=>{const c=new THREE.Mesh(new THREE.CylinderGeometry(.04,.04,.03,12),m());c.rotation.z=Math.PI/2;add(c,k*.09,.1,0)});break}
+   default:{add(box(.25,.06,.2,m()),0,.03,0);if(!ghost)[-.06,.06].forEach(k=>{const kn=new THREE.Mesh(new THREE.CylinderGeometry(.015,.015,.02,8),mat(0xdddddd));add(kn,k,.07,.03)})}}
   return g}
 function partition(W,D,zw,lc,ls_){const wm=mat(0x3a4170),gm=new THREE.MeshStandardMaterial({color:0x9fd8ff,transparent:true,opacity:.22});
       const seg=(x0,x1,h,y,m)=>{const w=box(x1-x0,h,.2,m);w.position.set((x0+x1)/2,y,zw);room.add(w)};
@@ -504,25 +507,32 @@ function partition(W,D,zw,lc,ls_){const wm=mat(0x3a4170),gm=new THREE.MeshStanda
       room.add(label(lc[0],lc[1],lc[2],'#8fa2ff'));room.add(label('VITRE',(gA+gB)/2,zw-.5,'#9fd8ff'));room.add(label(ls_[0],ls_[1],ls_[2],'#6fe3a0'));room.add(label('PORTE',(dA+dB)/2,zw-.5,'#f2b632'))}
 let venSeats=0,ven={},covOn=false;
 const isVen=()=>rm==='church'||!!ROOMS[rm].venue;
-function spkList(){return room.children.filter(g=>g.userData&&g.userData.t==='spk'&&!g.userData.ghost).map(g=>({x:g.position.x,z:g.position.z,fx:Math.sin(g.rotation.y),fz:Math.cos(g.rotation.y)}))}
+function spkList(){return room.children.filter(g=>g.userData&&g.userData.t==='spk'&&!g.userData.ghost).map(g=>({x:g.position.x,z:g.position.z,fx:Math.sin(g.rotation.y),fz:Math.cos(g.rotation.y),g:(typeof sgain!=='undefined'&&sgain[g.userData.key])||0,k:g.userData.key}))}
 function covGrid(){const L=spkList(),{W,D}=SIZES[size];if(!L.length||!isVen())return null;
   const A={x0:-W/2+.5,x1:W/2-.5,z0:-D/2+3.6,z1:D/2-.5},cell=Math.max(.5,Math.max(W,D)/70),nx=Math.max(2,Math.floor((A.x1-A.x0)/cell)),nz=Math.max(2,Math.floor((A.z1-A.z0)/cell)),v=[];
   for(let j=0;j<nz;j++)for(let i=0;i<nx;i++){const x=A.x0+(i+.5)*(A.x1-A.x0)/nx,z=A.z0+(j+.5)*(A.z1-A.z0)/nz;let I=0;
     for(const s of L){const dx=x-s.x,dz=z-s.z,r=Math.max(1.5,Math.hypot(dx,dz)),d=(dx*s.fx+dz*s.fz)/r;I+=(.1+.9*Math.pow(Math.max(d,0),2))/(r*r)}
     v.push(10*Math.log10(I))}
   const so=v.slice().sort((a,b)=>a-b),p=q=>so[Math.floor(q*(so.length-1))];return{v,nx,nz,A,ref:p(.9),spread:p(.9)-p(.1)}}
-function spkMarks(){room.children.filter(g=>g.userData&&g.userData.spkm).forEach(g=>{room.remove(g)});if(!isVen())return;const L=spkList();const {W,D}=SIZES[size],len=Math.max(6,Math.min(W,D)*.35);
-  L.forEach((q,i)=>{const th=Math.atan2(q.fx,q.fz);const a=th-.45,b=th+.45;
-    const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.Float32BufferAttribute([q.x,.07,q.z,q.x+len*Math.sin(a),.07,q.z+len*Math.cos(a),q.x+len*Math.sin(b),.07,q.z+len*Math.cos(b)],3));
-    const m=new THREE.Mesh(g,new THREE.MeshBasicMaterial({color:0xffb020,transparent:true,opacity:.22,side:THREE.DoubleSide,depthWrite:false}));m.userData={cov:true,spkm:true};room.add(m);
-    const c=document.createElement('canvas');c.width=c.height=96;const x=c.getContext('2d');x.fillStyle='#ffb020';x.strokeStyle='#111';x.lineWidth=5;x.beginPath();x.arc(48,48,38,0,7);x.fill();x.stroke();x.fillStyle='#111';x.font='bold 46px Arial';x.textAlign='center';x.textBaseline='middle';x.fillText(String(i+1),48,50);
-    const sp=new THREE.Sprite(new THREE.SpriteMaterial({map:new THREE.CanvasTexture(c),depthTest:false,transparent:true}));sp.scale.set(1.3,1.3,1);sp.position.set(q.x,2.1,q.z);sp.renderOrder=9;sp.userData={cov:true,spkm:true};room.add(sp)})
-  const kids=room.children.filter(g=>g.userData&&!g.userData.ghost),mons=kids.filter(g=>g.userData.t==='mon'),pf=kids.filter(g=>g.userData.t==='mic'||g.userData.t==='stand');
-  mons.forEach((q,i)=>{let n=null,bd=1e9;pf.forEach(p=>{const d=Math.hypot(p.position.x-q.position.x,p.position.z-q.position.z);if(d<bd){bd=d;n=p}});const th=n?Math.atan2(n.position.x-q.position.x,n.position.z-q.position.z):Math.PI,len=2.8,a=th-.5,b=th+.5,x0=q.position.x,z0=q.position.z;
-    const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.Float32BufferAttribute([x0,.4,z0,x0+len*Math.sin(a),.4,z0+len*Math.cos(a),x0+len*Math.sin(b),.4,z0+len*Math.cos(b)],3));
-    const m=new THREE.Mesh(g,new THREE.MeshBasicMaterial({color:0x4aa8ff,transparent:true,opacity:.35,side:THREE.DoubleSide,depthWrite:false}));m.userData={cov:true,spkm:true};room.add(m);
-    const c=document.createElement('canvas');c.width=c.height=96;const x=c.getContext('2d');x.fillStyle='#4aa8ff';x.strokeStyle='#111';x.lineWidth=5;x.beginPath();x.arc(48,48,38,0,7);x.fill();x.stroke();x.fillStyle='#111';x.font='bold 44px Arial';x.textAlign='center';x.textBaseline='middle';x.fillText('R'+(i+1),48,50);
-    const sp=new THREE.Sprite(new THREE.SpriteMaterial({map:new THREE.CanvasTexture(c),depthTest:false,transparent:true}));sp.scale.set(.9,.9,1);sp.position.set(x0,1.3,z0);sp.renderOrder=9;sp.userData={cov:true,spkm:true};room.add(sp)})}
+function spkDom(){const {pts}=covCells(900),L=spkList(),S=spl1(),m=L.map(()=>[]),dd=L.map(()=>[]);if(!L.length||pts.length<12)return{L,m,dd};
+  for(const [x,z] of pts){let best=-1,bv=-1e9,I=0,br=0;L.forEach((s,j)=>{const dx=x-s.x,dz=z-s.z,r=Math.max(1.5,Math.hypot(dx,dz)),d=(dx*s.fx+dz*s.fz)/r,v=S+dirDb(d)+(s.g||0)-20*Math.log10(r)-.012*r;I+=Math.pow(10,v/10);if(v>bv){bv=v;best=j;br=r}});m[best].push(10*Math.log10(I+1e-9));dd[best].push(br)}
+  return{L,m,dd,n:pts.length}}
+function spkBalance(){for(let it=0;it<3;it++){const {L,m}=spkDom();if(L.length<2)return;const med=m.map(a=>a.length>=15?a.slice().sort((p,q)=>p-q)[a.length>>1]:null),v=med.filter(x=>x!=null);if(v.length<2)return;const ref=v.reduce((p,q)=>p+q,0)/v.length;
+    L.forEach((s,j)=>{if(med[j]!=null)sgain[s.k]=(sgain[s.k]||0)+.8*(ref-med[j])});let mx=-1e9;L.forEach((s,j)=>{if(med[j]!=null)mx=Math.max(mx,sgain[s.k]||0)});L.forEach((s,j)=>{if(med[j]!=null)sgain[s.k]=Math.max(-12,Math.round(((sgain[s.k]||0)-mx)*2)/2)})}}
+function spkReport(){const {L,m,dd,n}=spkDom();if(!L.length||!n)return[];const hc=(acv().h||5),la=/line array/i.test((SLOTS.find(x=>x.id==='spk').o[sel.spk]||{}).n||'');const R=ovRoles[ovKey()],sl=SLOTS.find(x=>x.id==='spk'),ok=R&&sl&&R.length===qty(sl);
+  return L.map((s,j)=>{const a=m[j].slice().sort((p,q)=>p-q),f=x=>a.length?a[Math.min(a.length-1,Math.floor(a.length*x))]+trim:null;const role=ok&&R[j]?R[j][0]:'Enceinte',da=dd[j].slice().sort((p,q)=>p-q),far=da.length?da[Math.min(da.length-1,Math.floor(da.length*.9))]:8,out=!!acoustics(fillPct).out;let h=/Délai|périph/i.test(role)?3+.04*far:/Rappel/i.test(role)?2.5+.02*far:/Autour/i.test(role)?2.5:2+.03*far;if(la)h+=1.5;h=Math.max(2,Math.min(out?6:Math.max(2,hc-.6),h));const tilt=Math.max(0,Math.round(Math.atan2(h-1.2,far)*180/Math.PI));return{role,h:Math.round(h*10)/10,tilt,ms:ok&&R[j]?R[j][1]:0,g:s.g||0,med:f(.5)!=null?Math.round(f(.5)):null,max:f(.95)!=null?Math.round(f(.95)):null,share:Math.round(100*a.length/n)}})}
+function spkMarks(){room.children.filter(g=>g.userData&&g.userData.spkm).forEach(g=>{room.remove(g)});if(!isVen())return;const {W,D}=SIZES[size],len=Math.max(6,Math.min(W,D)*.35),rep=spkReport();let si=0,mi=0;
+  const badge=(txt,sub,col)=>{const c=document.createElement('canvas');c.width=256;c.height=96;const x=c.getContext('2d');x.shadowColor='rgba(0,0,0,.5)';x.shadowBlur=8;x.fillStyle='rgba(16,20,43,.94)';const w=sub?248:96;x.beginPath();x.roundRect?x.roundRect(4,10,w-4,76,38):x.rect(4,10,w-4,76);x.fill();x.shadowBlur=0;x.lineWidth=3;x.strokeStyle=col;x.stroke();
+    x.fillStyle=col;x.beginPath();x.arc(48,48,26,0,7);x.fill();x.fillStyle='#10142b';x.font='bold 32px Arial';x.textAlign='center';x.textBaseline='middle';x.fillText(txt,48,50);
+    if(sub){x.fillStyle='#fff';x.font='600 30px Arial';x.textAlign='left';x.fillText(sub,88,50)}
+    const sp=new THREE.Sprite(new THREE.SpriteMaterial({map:new THREE.CanvasTexture(c),depthTest:false,transparent:true}));sp.scale.set(sub?1.9:.74,.71,1);sp.center.set(sub?.2:.5,.5);return sp},
+  add=(x,z,th,L,col,op,y,sp)=>{const a=th-.45,b=th+.45,g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.Float32BufferAttribute([x,y,z,x+L*Math.sin(a),y,z+L*Math.cos(a),x+L*Math.sin(b),y,z+L*Math.cos(b)],3));
+    const m=new THREE.Mesh(g,new THREE.MeshBasicMaterial({color:col,transparent:true,opacity:op,side:THREE.DoubleSide,depthWrite:false}));m.userData={cov:true,spkm:true};room.add(m);
+    const r=new THREE.Mesh(new THREE.RingGeometry(.45,.58,28),new THREE.MeshBasicMaterial({color:col,transparent:true,opacity:.9,side:THREE.DoubleSide,depthWrite:false}));r.rotation.x=-Math.PI/2;r.position.set(x,.08,z);r.userData={cov:true,spkm:true};room.add(r);
+    sp.position.set(x,y>.2?1.45:1.5,z);sp.renderOrder=9;sp.userData={cov:true,spkm:true};room.add(sp)};
+  room.children.filter(g=>g.userData&&!g.userData.ghost).forEach(g=>{if(g.userData.t==='spk'){const q=rep[si]||{};si++;add(g.position.x,g.position.z,Math.atan2(Math.sin(g.rotation.y),Math.cos(g.rotation.y)),len,0xffb020,.2,.07,badge(String(si),q.med!=null?q.med+' dB':'', '#ffb020'))}
+    else if(g.userData.t==='mon'){mi++;add(g.position.x,g.position.z,g.rotation.y+Math.PI,2.8,0x4aa8ff,.35,.4,badge('R'+mi,'','#4aa8ff'))}})}
+function spkLines(){return spkReport().map((q,i)=>`${i+1} · ${q.role}${q.ms>0?' (retard '+q.ms+' ms)':''} : ${q.med!=null?q.med+' dB dans sa zone (jusqu\'à '+q.max+' dB au plus près)':'—'}${q.g<0?' · réglage '+q.g+' dB':''} · hauteur conseillée ${String(q.h).replace('.',',')} m (centre de l\'enceinte), inclinée de ${q.tilt}° vers le bas`)}
 function covBuild(){covBuild0();spkMarks()}
 function covBuild0(){room.children.filter(g=>g.userData&&g.userData.cov).forEach(g=>room.remove(g));const lg=document.getElementById('covleg');
   if(!covOn){lg.style.display='none';return}lg.style.display='block';if(covMode==='clr'){const C=clrGrid();if(C){const c=document.createElement('canvas');c.width=C.nx;c.height=C.nz;const x=c.getContext('2d');for(let j=0;j<C.nz;j++)for(let i=0;i<C.nx;i++){const q=C.v[j*C.nx+i];x.fillStyle=q>=3?'rgba(60,200,120,.6)':q>=0?'rgba(235,210,60,.6)':q>=-4?'rgba(240,140,50,.6)':'rgba(220,60,60,.6)';x.fillRect(i,j,1,1)}const t=new THREE.CanvasTexture(c);t.magFilter=THREE.LinearFilter;const m=new THREE.Mesh(new THREE.PlaneGeometry(C.A.x1-C.A.x0,C.A.z1-C.A.z0),new THREE.MeshBasicMaterial({map:t,transparent:true,depthWrite:false}));m.rotation.x=-Math.PI/2;m.position.set((C.A.x0+C.A.x1)/2,.05,(C.A.z0+C.A.z1)/2);m.userData={cov:true};room.add(m);lg.innerHTML='Clarté de la parole · écho '+fs(C.rt)+'<br><span style="color:#3cc878">■</span> claire <span style="color:#ebd23c">■</span> correcte <span style="color:#f08c32">■</span> confuse <span style="color:#dc3c3c">■</span> très confuse';return}lg.textContent=acoustics(0).out?'Plein air : pas d\'écho de salle ; voyez la carte « Couverture sonore ».':'Choisissez des enceintes pour voir la clarté.';return}const G=lvlGrid();
@@ -642,7 +652,7 @@ function buildRoom(){
     for(let i=0;i<q;i++){
       const g=new THREE.Group();
       {const pp=ROOMS[rm].place(s,i,q,W,D),cl=(v,m)=>Math.max(-m,Math.min(m,v));g.position.set(cl(pp[0],W/2-.6),pp[1],cl(pp[2],D/2-.6));if(pp[3]!=null)g.rotation.y=pp[3]}if(s.t==='scr'){const e=scrPos(i,q,W,D);g.position.set(e[0],e[1],e[2]);g.rotation.y=e[3];g.scale.setScalar(SCS[scr.size])}const of=offs[rm+s.id+i];if(of){g.position.x=of[0];g.position.z=of[1];if(of[2]!=null)g.rotation.y=of[2]}if(TOK.has(s.t)&&onT(g.position.x,g.position.z))g.position.y=.78;
-      const ghost=!o&&!DECO.has(s.id);g.add(product(s.t,ghost));
+      const ghost=!o&&!DECO.has(s.id);g.add(product(o&&s.t==='lap'&&/PC de bureau/.test(o.n)?'pc':s.t,ghost));
             const hit2=s.t==='scr'?box(3.3,1.9,.6,new THREE.MeshBasicMaterial({visible:false})):(()=>{const h=HS[s.t]||[.3,.3];return box(Math.max(.5,h[0]*2+.15),1.6,Math.max(.5,h[1]*2+.15),new THREE.MeshBasicMaterial({visible:false}))})();hit2.position.y=s.t==='scr'?1.9:.8;hit2.userData.slot=s.id;hit2.userData.i=i;g.add(hit2);markers.push(hit2);
       if(ROOMS[rm].es&&s.t!=='scr')g.scale.setScalar(ROOMS[rm].es[size]);g.userData={slot:s.id,ghost,i,key:rm+s.id+i,t:s.t};room.add(g)}
   });
@@ -674,7 +684,7 @@ cv.addEventListener('pointermove',e=>{if(!pts.has(e.pointerId))return;const p=pt
   else if(drag&&drag.fix&&pts.size===1){if(moved>6){const p3=new THREE.Vector3(),{W,D}=SIZES[size],fi=fixt[drag.fix];ray(e).ray.intersectPlane(new THREE.Plane(new THREE.Vector3(0,1,0),-.5),p3);
     if(p3&&fi)moveFix(fi,Math.max(-W/2+.5,Math.min(W/2-.5,p3.x+drag.ox)),Math.max(-D/2+.5,Math.min(D/2-.5,p3.z+drag.oz)),fi.r,drag.riders)}}
   else if(drag&&pts.size===1){if(moved>6){const p3=new THREE.Vector3();ray(e).ray.intersectPlane(new THREE.Plane(new THREE.Vector3(0,1,0),-drag.py),p3);
-    const {W,D}=SIZES[size],g=drag.g;if(p3){if(g.userData.t==='scr')snapWall(g,p3);else{const x=Math.max(-W/2+.3,Math.min(W/2-.3,p3.x+drag.ox)),z=Math.max(-D/2+.3,Math.min(D/2-.3,p3.z+drag.oz));g.position.x=x;g.position.z=z;g.position.y=TOK.has(g.userData.t)&&onT(x,z)?.78:0}
+    const {W,D}=SIZES[size],g=drag.g;if(p3){if(g.userData.t==='scr')snapWall(g,p3);else{const x=Math.max(-W/2+.3,Math.min(W/2-.3,p3.x+drag.ox)),z=Math.max(-D/2+.3,Math.min(D/2-.3,p3.z+drag.oz));g.position.x=x;g.position.z=z;g.position.y=TOK.has(g.userData.t)&&onT(x,z)?.78:0;if(g.userData.t==='spk'||g.userData.t==='mon')spkMarks()}
       offs[g.userData.key]=[g.position.x,g.position.z,g.rotation.y]}}}
   else if(pts.size===1){theta-=dx*.006;phi=Math.max(.25,Math.min(1.45,phi-dy*.005))}
   else if(pts.size===2){const d=dist();if(pd)rad=Math.max(6,Math.min(ROOMS[rm].rmax||45,rad*pd/d));pd=d}});
@@ -746,7 +756,7 @@ function advice(){const {W,D}=SIZES[size],A=Math.round(W*D),v=ROOMS[rm].venue,bi
   {const r=acoustics(fillPct);if(r.out)o.push(['Acoustique','Plein air : pas d\'écho de salle, mais le son se perd avec la distance et le vent. Prévoyez des enceintes de renfort et des protections contre le vent.']);else{const q=rateRt(r.rt),r0=acoustics(0),r1=acoustics(100),alt=acoustics(fillPct,{wall:'pan'});o.push(['Acoustique',`Écho estimé (RT60) : ${fs(r.rt)} (salle vide ${fs(r0.rt)}, pleine ${fs(r1.rt)}) ; compréhension de la parole : ${q.t.toLowerCase()}. Distance critique environ ${(Math.round(r.dc*10)/10).toString().replace('.',',')} m. `+(q.i>=2?`Pour améliorer : rideaux lourds ou panneaux acoustiques sur les murs (avec des panneaux, l'écho passerait à environ ${fs(alt.rt)}), faux plafond acoustique, moquette ou tapis, et enceintes directionnelles orientées vers le public.`:'Acoustique favorable à la parole.')])}}
   if(false)o.push(['Acoustique',D>15||v?'Les grands volumes créent de l\'écho : orientez les enceintes vers le public, loin des murs, gardez les micros éloignés des enceintes pour éviter le larsen, et réglez l\'égalisation sur place.':'Éloignez les micros des enceintes pour éviter le larsen et traitez les murs réfléchissants si possible.']);
   else if(false)o.push(['Acoustique',rm==='pod'?'Absorbez les réflexions (panneaux, rideaux, tapis) et placez chaque micro près de la bouche de son intervenant.':'Prévoyez des panneaux absorbants sur les murs et un tapis au sol ; isolez bien la cabine de la régie pour éviter les fuites de son.']);
-  if(isVen()&&sel.spk!=null){const st=covStats();if(st)o.push(['Couverture sonore',`Niveau visé ${tgt} dB : ${st.pct} % de la ${zcur()&&zcur().n?'zone choisie':'salle'} est bien couverte (niveaux de ${st.min} à ${st.max} dB). `+(st.pct<85?'Utilisez « Couverture maximale » pour ajouter des enceintes et mieux les orienter. ':'Bonne couverture. ')+(st.loud>5?`${st.loud} % de la surface est très forte : prévoyez du confort pour les personnes proches des enceintes.`:'')]);if(ovSummary())o.push(['Placement des enceintes','Placement calculé : '+ovSummary()+'. Les enceintes en retard doivent être temporisées (délai en ms) sur la table de mixage ou le processeur, pour que le son de la façade et celui des rappels arrivent ensemble.'])}
+  if(isVen()&&sel.spk!=null){const st=covStats();if(st)o.push(['Couverture sonore',`Niveau visé ${tgt} dB : ${st.pct} % de la ${zcur()&&zcur().n?'zone choisie':'salle'} est bien couverte (niveaux de ${st.min} à ${st.max} dB). `+(st.pct<85?'Utilisez « Couverture maximale » pour ajouter des enceintes et mieux les orienter. ':'Bonne couverture. ')+(st.loud>5?`${st.loud} % de la surface est très forte : prévoyez du confort pour les personnes proches des enceintes.`:'')]);if(spkLines().length)o.push(['Niveau conseillé par enceinte',spkLines().join(' ; ')+'. La hauteur conseillée garde les enceintes au-dessus des têtes, sur pied, mât, tour ou fixation murale, sans toucher le plafond. Réglez le volume pour ne pas dépasser environ 95 dB en continu côté public : au-delà de 100 dB, limitez la durée et prévoyez des protections auditives. Mesurez avec un sonomètre le jour de l\'installation.']);if(ovSummary())o.push(['Placement des enceintes','Placement calculé : '+ovSummary()+'. Les enceintes en retard doivent être temporisées (délai en ms) sur la table de mixage ou le processeur, pour que le son de la façade et celui des rappels arrivent ensemble.'])}
   o.push(['Alimentation',(n>200||v?'Prévoir une alimentation électrique dédiée au son et un stabilisateur de tension. ':'Prévoir un stabilisateur de tension. ')+(act('pwr')?'Une alimentation de secours est incluse dans votre sélection.':'Une alimentation de secours (onduleur) évite les coupures en plein usage.')]);
   o.push(['Installation',inst?'Installation, câblage, réglages et formation par '+'Pyramide Record : inclus à la demande, sur devis.':'L\'installation, le câblage, les réglages et la formation peuvent être assurés par Pyramide Record, sur devis.']);
   o.push(['Qualité',`${LV[lvl].n} : ${LV[lvl].d}`]);
@@ -812,7 +822,7 @@ const areaOk=(x,z,W,D)=>{if(isRound()&&Math.pow(x/(W/2),2)+Math.pow(z/(D/2),2)>1
 function covCells(maxM){const {W,D}=SIZES[size],A={x0:-W/2+.5,x1:W/2-.5,z0:(stageC()||isRound()?-D/2+.5:-D/2+3.6),z1:D/2-.5},pts=[],step=Math.max(.5,Math.sqrt((A.x1-A.x0)*(A.z1-A.z0)/maxM));
   for(let z=A.z0+step/2;z<A.z1;z+=step)for(let x=A.x0+step/2;x<A.x1;x+=step)if(areaOk(x,z,W,D))pts.push([x,z]);return{pts,A}}
 const dirDb=d=>10*Math.log10(.1+.9*Math.pow(Math.max(d,0),2));
-function levelAt(L,x,z){let I=0;const S=spl1();for(const s of L){const dx=x-s.x,dz=z-s.z,r=Math.max(1.5,Math.hypot(dx,dz)),d=(dx*s.fx+dz*s.fz)/r;I+=Math.pow(10,(S+dirDb(d)-20*Math.log10(r)-.012*r+trim)/10)}return I>0?10*Math.log10(I):0}
+function levelAt(L,x,z){let I=0;const S=spl1();for(const s of L){const dx=x-s.x,dz=z-s.z,r=Math.max(1.5,Math.hypot(dx,dz)),d=(dx*s.fx+dz*s.fz)/r;I+=Math.pow(10,(S+dirDb(d)+(s.g||0)-20*Math.log10(r)-.012*r+trim)/10)}return I>0?10*Math.log10(I):0}
 function lvlGrid(){const L=spkList(),{W,D}=SIZES[size];if(!L.length||!isVen())return null;
   const A={x0:-W/2+.5,x1:W/2-.5,z0:(stageC()||isRound()?-D/2+.5:-D/2+3.6),z1:D/2-.5},cell=Math.max(.5,Math.max(W,D)/70),nx=Math.max(2,Math.floor((A.x1-A.x0)/cell)),nz=Math.max(2,Math.floor((A.z1-A.z0)/cell)),v=[],ok=[];
   for(let j=0;j<nz;j++)for(let i=0;i<nx;i++){const x=A.x0+(i+.5)*(A.x1-A.x0)/nx,z=A.z0+(j+.5)*(A.z1-A.z0)/nz;ok.push(areaOk(x,z,W,D));v.push(levelAt(L,x,z))}
@@ -820,9 +830,9 @@ function lvlGrid(){const L=spkList(),{W,D}=SIZES[size];if(!L.length||!isVen())re
 function covStats(){const G=lvlGrid();if(!G)return null;const a=G.v.filter((_,i)=>G.ok[i]);if(!a.length)return null;const so=a.slice().sort((x,y)=>x-y),good=a.filter(x=>x>=tgt-3).length,loud=a.filter(x=>x>tgt+9).length;
   return{pct:Math.round(100*good/a.length),loud:Math.round(100*loud/a.length),min:Math.round(so[0]),max:Math.round(so[so.length-1]),med:Math.round(so[Math.floor(so.length/2)]),p10:so[Math.floor(so.length*.1)],n:a.length}}
 function covRes(){const e=document.getElementById('covres');if(!e)return;const st=covStats(),z=zcur();
-  e.innerHTML=(z&&z.n?'Zone dessinée':'Toute la salle')+' : '+(st?`<b>${st.pct} %</b> bien couverte (≥ ${tgt-3} dB) · niveaux de ${st.min} à ${st.max} dB (médiane ${st.med}) · trop fort : ${st.loud} %`:'choisissez des enceintes pour voir la couverture.')+(ovSummary()?'<br>Placement : '+ovSummary():'')}
+  e.innerHTML=(z&&z.n?'Zone dessinée':'Toute la salle')+' : '+(st?`<b>${st.pct} %</b> bien couverte (≥ ${tgt-3} dB) · niveaux de ${st.min} à ${st.max} dB (médiane ${st.med}) · trop fort : ${st.loud} %`:'choisissez des enceintes pour voir la couverture.')+(ovSummary()?'<br>Placement : '+ovSummary():'')+(spkLines().length?'<br><b>Niveau conseillé par enceinte</b><br>'+spkLines().join('<br>'):'')}
 function covMsg(t){const e=document.getElementById('covres');if(e)e.innerHTML=t}
-let ovRoles={};
+let ovRoles={},sgain={};
 const ovKey=()=>rm+size+(stageC()?'c':'e');
 function optSpeakers(){const sl=SLOTS.find(x=>x.id==='spk');if(!sl||!isVen())return;if(sel.spk==null)sel.spk=0;trim=0;
   const {W,D}=SIZES[size],{pts}=covCells(1100),n=pts.length;if(n<20){covMsg('La zone est trop petite : dessinez une zone plus grande.');return}
@@ -857,13 +867,13 @@ function optSpeakers(){const sl=SLOTS.find(x=>x.id==='spk');if(!sl||!isVen())ret
   const fac=chosen.filter(c=>c.role==='Façade'),ref=c=>{let d=1e9;if(fac.length){for(const f of fac)d=Math.min(d,Math.hypot(c.x-f.x,c.z-f.z))}else d=Math.hypot(c.x,c.z-(sC?0:-D/2));return d};
   chosen.forEach(c=>{c.ms=c.role==='Façade'?0:Math.round(ref(c)/.343)});
   qov[rm+'spk']=chosen.length;for(let i=0;i<24;i++)delete offs[rm+'spk'+i];chosen.forEach((c,i)=>{offs[rm+'spk'+i]=[c.x,c.z,c.th]});
-  covOn=true;covMode='lvl';buildRoom();{const st=covStats();if(st)trim=Math.max(-20,Math.min(0,Math.round(tgt-2-st.p10)))}ovRoles[ovKey()]=chosen.map(c=>[c.role,c.ms]);buildRoom();renderList();covUI()}
+  sgain={};covOn=true;covMode='lvl';buildRoom();{const cs=()=>{trim=0;const a=covStats();if(!a)return{p:0};trim=Math.max(-20,Math.min(0,Math.round(tgt-2-a.p10)));const b=covStats();return{p:b?b.pct:0}};const A=cs();spkBalance();const B=cs();if(B.p<A.p-1){sgain={};cs()}}ovRoles[ovKey()]=chosen.map(c=>[c.role,c.ms]);buildRoom();renderList();covUI()}
 function ovSummary(){const r=ovRoles[ovKey()],sl=SLOTS.find(x=>x.id==='spk');if(!r||!sl||r.length!==qty(sl))return'';const m={};r.forEach(([k,ms])=>{(m[k]=m[k]||{n:0,ms:0}).n++;m[k].ms=Math.max(m[k].ms,ms)});
   return Object.keys(m).map(k=>`${k} ×${m[k].n}`+(m[k].ms>0?` (retard ${m[k].ms} ms)`:'')).join(' · ')}
 function covUI(){const B=document.getElementById('covbox');if(!B)return;if(!isVen()){B.innerHTML='';return}
   B.innerHTML=`<div class="zone">Couverture sonore maximale</div><div class="sbx"><details open><summary style="font-size:13px;cursor:pointer">Niveau, zone et placement automatique</summary>
   <label style="display:flex;gap:8px;align-items:center">Niveau souhaité <input id="ctg" type="range" min="70" max="110" value="${tgt}" style="flex:1;width:auto"> <b id="ctgv">${tgt} dB</b></label>
-  <div style="display:flex;gap:6px;flex-wrap:wrap;margin:4px 0"><button class="pill" data-t="80">Parole 80</button><button class="pill" data-t="90">Culte 90</button><button class="pill" data-t="100">Concert 100</button></div>
+  <div style="display:flex;gap:6px;flex-wrap:wrap;margin:4px 0"><button class="pill" data-t="80">Parole 80</button><button class="pill" data-t="90">Culte 90</button><button class="pill" data-t="100">Concert 100</button></div><div class="mini">Parole 80 : confortable · Culte 90 : standard · Concert 100 : fort, durée limitée (risque pour l'audition).</div>
   <label style="display:flex;gap:8px;align-items:center">Volume du système <input id="ctrim" type="range" min="-20" max="0" value="${trim}" style="flex:1;width:auto"> <b id="ctrimv">${trim} dB</b></label>
   <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:6px"><button class="pill" id="zd">✏ Dessiner la zone</button><button class="pill" id="ze">Gomme</button><button class="pill" id="zc">Effacer la zone</button></div>
   <button class="cta" id="zo" style="margin-top:8px">① Couverture maximale : toute la salle</button><button class="cta" id="zp" style="margin-top:6px;background:#3b82f6;color:#fff">② Placer les enceintes sur ma zone dessinée</button>

@@ -82,7 +82,7 @@ textarea{width:100%;height:90px;background:#10142b;color:#cfd3f0;border:1px soli
     <div id="foot">
       <div id="chk"></div><div id="tot"><span>Total estimé (livré)</span><b id="total">0 $</b></div>
       <div class="mini" id="reqline"></div>
-      <div id="dbar" style="display:flex;gap:6px;flex-wrap:wrap;margin:8px 0 0"><button class="pill" id="d1">+ Personne debout</button><button class="pill" id="d2">+ Personne assise</button><button class="pill" id="d3">Retirer la personne choisie</button><button class="pill" id="cvb">🔊 Couverture sonore</button><button class="pill" id="clb">🗣 Clarté (écho)</button><button class="pill" id="cva">Placer les enceintes</button><button class="pill" id="plt">Plan de scène (PDF)</button><label style="display:inline-flex;gap:4px;align-items:center;font-size:12px"><input type="checkbox" id="pcol2"> PDF couleur</label><button class="pill" id="un">↶ Annuler</button><button class="pill" id="re">↷ Rétablir</button><button class="pill" id="d4">↻ Tourner l'élément choisi</button></div><div id="kits"></div>
+      <div id="dbar" style="display:flex;gap:6px;flex-wrap:wrap;margin:8px 0 0"><button class="pill" id="d1">+ Personne debout</button><button class="pill" id="d2">+ Personne assise</button><button class="pill" id="d3">Retirer la personne choisie</button><button class="pill" id="cvb">🔊 Couverture sonore</button><button class="pill" id="clb">🗣 Clarté (écho)</button><button class="pill" id="cva">Placer les enceintes</button><button class="pill" id="plt">Plan de scène (PDF)</button><label style="display:inline-flex;gap:4px;align-items:center;font-size:12px"><input type="checkbox" id="pcol2"> PDF couleur</label><button class="pill" id="un">↶ Annuler</button><button class="pill" id="re">↷ Rétablir</button><button class="pill" id="d4">↻ Tourner l'élément choisi</button></div><div id="mob" style="display:flex;gap:6px;flex-wrap:wrap;margin:6px 0 0;align-items:center"><span class="mini" style="margin:0">Mobilier :</span><button class="pill" id="fa1">+ Table</button><button class="pill" id="fa2">+ Grande table</button><button class="pill" id="fa3">+ Chaise</button><button class="pill" id="fa4">+ Tabouret</button><button class="pill" id="fa5">Retirer le meuble choisi</button><label style="display:inline-flex;gap:4px;align-items:center;font-size:12px"><input type="checkbox" id="lbt"> Noms des zones</label></div><div id="kits"></div>
       <button class="pill" id="rst" style="width:100%;margin-bottom:8px">Remettre les objets à leur place</button><button class="cta" id="quote">Voir et demander mon devis</button>
       <div style="display:flex;gap:6px;margin-top:8px"><input id="ld" placeholder="Coller un code de salle" style="flex:1;min-width:0;background:#1c2040;color:#fff;border:1px solid #343a6a;border-radius:8px;padding:7px;font-size:12px"><button class="pill" id="ldb">Charger</button></div>
       <details id="adm" style="display:none"><summary>Paramètres (équipe Pyramide Record)</summary>
@@ -200,11 +200,11 @@ const PHO_SLOTS=[
 const PHO_KITS={budget:{n:'Kit débutant',s:{cam:0,tri:0,led:0,sd:0}},full:{n:'Kit complet',s:{cam:0,tri:1,led:0,bg:0,ref:0,lap:0,sd:0,bat:0}}};
 const POD_SLOTS=[
  {id:'mic',z:'Table d\'enregistrement',l:'Micros',t:'mic',q:Q(2,4),pos:[0,.0],span:.2,o:[P('Samson Q2U',69.99,1,'USB + XLR, idéal pour débuter'),P('Rode PodMic',129,2,'Voix chaudes, filtre le bruit de pièce'),P('Audio-Technica AT2020',119,1,'Condensateur, plus sensible')]},
- {id:'stand',z:'Table d\'enregistrement',l:'Pieds de micro',t:'stand',q:Q(2,4),pos:[0,.1],span:.2,o:[P('On-Stage MS7701B',34.95,2.3,'Pied avec perche')]},
- {id:'hp',z:'Table d\'enregistrement',l:'Casques',t:'hp',q:Q(2,4),pos:[0,-.12],span:.2,o:[P('Samson SR850',37.49,.5,'Casque semi-ouvert')]},
+ {id:'stand',z:'Table d\'enregistrement',l:'Pieds de micro',t:'stand',q:Q(2,4),pos:[0,0],span:.2,o:[P('On-Stage MS7701B',34.95,2.3,'Pied avec perche')]},
+ {id:'hp',z:'Table d\'enregistrement',l:'Casques',t:'hp',q:Q(2,4),pos:[0,.06],span:.2,o:[P('Samson SR850',37.49,.5,'Casque semi-ouvert')]},
  {id:'mix',z:'Régie',l:'Table de mixage',t:'mix',q:Q(0,1),pos:[-.3,-.35],o:[P('Behringer X1204USB',225,2.8,'Plusieurs micros, sortie USB')]},
  {id:'ai',z:'Régie',l:'Interface audio',t:'box',q:Q(1,0),pos:[-.3,-.35],o:[P('Focusrite Scarlett 2i2',200,1.5,'2 micros XLR')]},
- {id:'lap',z:'Régie',l:'Ordinateur (portable ou PC)',t:'lap',q:Q(1,1),pos:[-.15,-.35],o:[LAP,PCO,LAPH,PCH]},
+ {id:'lap',z:'Régie',l:'Ordinateur (portable ou PC)',t:'lap',q:Q(1,1),pos:[.2,-.05],o:[LAP,PCO,LAPH,PCH]},
  {id:'mon',z:'Régie',l:'Enceintes de contrôle',t:'mon',q:Q(0,2),pos:[.15,-.35],span:.08,o:[P('Yamaha HS5',170,3.5,'Pour réécouter')]},
  {id:'pwr',z:'Énergie',l:'Alimentation de secours',t:'pwr',q:Q(1,1),pos:[.38,-.3],o:[P('EcoFlow River 2',189,3.5,'Pour les coupures'),NA('Stabilisateur de tension')]}];
 const POD_KITS={budget:{n:'Kit débutant',s:{mic:0,stand:0,hp:0,ai:0,lap:0}},full:{n:'Kit complet',s:{mic:1,stand:0,hp:0,mix:0,lap:0,mon:0,pwr:0}}};
@@ -220,7 +220,7 @@ const ROOMS={
  church:{n:'Église',slots:CH_SLOTS,kits:CH_KITS,sizes:CH_SIZES,def:'m',place:placeCh,rad:{s:15,m:22,l:32},h:'Votre salle d\'église'},
  rec:{n:'Studio d\'enregistrement',slots:REC_SLOTS,kits:REC_KITS,sizes:REC_SIZES,def:'s',place:placeRec,rad:{s:13,m:19},h:'Votre studio d\'enregistrement'}};
 let seat={layout:'rows',style:'pew',rows:null,aisle:1.6,count:0};const SDEF={s:4,m:6,l:9};
-const STN={pew:'bancs en bois',chair:'chaises en bois',plastic:'chaises plastique',padded:'fauteuils rembourrés'};
+const STN={pew:'bancs en bois',chair:'chaises en bois',plastic:'chaises plastique',padded:'fauteuils rembourrés',padpew:'bancs rembourrés'};
 function chairMesh(st){const g=new THREE.Group(),mt=mat({chair:0x8a6a44,plastic:0xf2f2f2,padded:0x9c2f3a}[st]||0x8a6a44),pd=st==='padded';
   const sb=box(.42,pd?.1:.06,.42,mt);sb.position.y=.45;g.add(sb);const bk=box(.42,pd?.55:.4,.05,mt);bk.position.set(0,pd?.78:.7,-.2);g.add(bk);
   const lm=mat(0x333333);[[-.18,-.18],[.18,-.18],[-.18,.18],[.18,.18]].forEach(([x,z])=>{const l=box(.04,.43,.04,lm);l.position.set(x,.21,z);g.add(l)});
@@ -233,14 +233,14 @@ function buildGuests(W,D){guest.count=0;const N=guest.n,st=guest.style;if(!N)ret
   guest.count=c}
 function carpet(x,z,w,d){const c=box(w,.02,d,mat(0x7a3042));c.position.set(x,.01,z);room.add(c)}
 function buildSeats(W,D){let st=seat.style;if(seat.layout==='rows')carpet(0,0,seat.aisle,D-4);if(seat.layout==='arc')carpet(0,(-D/2+3+D/2-.7)/2+.5,seat.aisle,D/2-.7-(-D/2+3)-1);const rows=seat.rows||SDEF[size];let n=0;
-  const bench=(x,z,w)=>{const m=mat(0x6b4f33),b=box(w,.4,.4,m);b.position.set(x,.2,z);room.add(b);const bk=box(w,.4,.05,m);bk.position.set(x,.6,z+.2);room.add(bk);furn.push({x,z,hw:w/2,hd:.25,pew:true,rot:Math.PI});for(let k=0;k<Math.floor(w/.5);k++)cp(x-w/2+(k+.5)*.5,0,z);n+=Math.floor(w/.5)};
+  const bench=(x,z,w)=>{const m=mat(0x6b4f33),b=box(w,.4,.4,m);b.position.set(x,.2,z);room.add(b);const bk=box(w,.4,.05,m);bk.position.set(x,.6,z+.2);room.add(bk);if(st==='padpew'){const cm=mat(0x9c2f3a),c1=box(w-.04,.08,.36,cm);c1.position.set(x,.44,z);room.add(c1);const c2=box(w-.04,.32,.07,cm);c2.position.set(x,.62,z+.16);room.add(c2)};furn.push({x,z,hw:w/2,hd:.25,pew:true,rot:Math.PI});for(let k=0;k<Math.floor(w/.5);k++)cp(x-w/2+(k+.5)*.5,0,z);n+=Math.floor(w/.5)};
   const chair=(x,z,rot)=>{const c=chairMesh(st);c.position.set(x,0,z);c.rotation.y=rot;room.add(c);furn.push({x,z,hw:.3,hd:.3,pew:true,rot,single:true});cp(x,0,z);n++};
-  if(seat.layout==='arc'){if(st==='pew')st='chair';const cz=-D/2+3;
+  if(seat.layout==='arc'){if(st==='pew')st='chair';if(st==='padpew')st='padded';const cz=-D/2+3;
     for(let k=0;k<rows;k++){const r=4+k*.95;for(let a=-1.2;a<=1.2;a+=.52/r){const x=r*Math.sin(a),z=cz+r*Math.cos(a);if(Math.abs(x)>W/2-.7||z>D/2-.7||z<cz+1)continue;if(Math.abs(a)*r<seat.aisle/2||Math.abs(Math.abs(a)-.62)*r<seat.aisle*.4)continue;chair(x,z,Math.atan2(-x,-(z-cz)))}}}
   else{const z0=-D/2+5.2,z1=D/2-5.8,zs=rows>1?Math.max(.85,(z1-z0)/(rows-1)):0;
     const blocks=seat.layout==='center'?[[0,W-1.4]]:(()=>{const bw=(W-1.4-seat.aisle)/2;return[[-(seat.aisle/2+bw/2),bw],[seat.aisle/2+bw/2,bw]]})();
     for(let r=0;r<rows;r++){const z=z0+r*zs;if(z>D/2-.6)break;blocks.forEach(([cx,bw])=>{if(bw<.5)return;
-      if(st==='pew')bench(cx,z,bw);else{const m=Math.floor(bw/.52);for(let j=0;j<m;j++)chair(cx+(j-(m-1)/2)*.52,z,Math.PI)}})}}
+      if(st==='pew'||st==='padpew')bench(cx,z,bw);else{const m=Math.floor(bw/.52);for(let j=0;j<m;j++)chair(cx+(j-(m-1)/2)*.52,z,Math.PI)}})}}
   seat.count=n}
 function seatFix(d){if(rm!=='church'||d.kind!=='sit')return;const f=furn.filter(f=>f.pew).sort((a,b)=>Math.hypot(a.x-d.x,a.z-d.z)-Math.hypot(b.x-d.x,b.z-d.z))[0];
   if(f){if(f.single&&!dummies.some(o=>o!==d&&Math.hypot(o.x-f.x,o.z-f.z)<.3)){d.x=f.x;d.z=f.z}d.rot=f.rot}}
@@ -256,14 +256,15 @@ function scrUI(){const B=document.getElementById('scrbox');
   <label>Taille ${sel('cs',scr.size,[['s','Petit (≈55″)'],['m','Moyen (≈75″)'],['l','Grand (mur LED)']])}</label></details></div>`;
   const ch=()=>{scr.layout=cl.value;scr.size=cs.value;qov={};applyScr();buildRoom();renderList()};
   ['cl','cs'].forEach(i=>document.getElementById(i).onchange=ch)}
-const offs={};let fx={},fixt={},fsel=null,ls=null;const TOK=new Set(['mon','box','lap','mic','hp','pc']);let gk=0;
+const offs={};let fx={},fixt={},fsel=null,ls=null;const TOK=new Set(['mon','box','lap','mic','hp','pc','mix','stand']);let gk=0;
 function setFix(fi,x,z,r){fi.x=x;fi.z=z;fi.r=r;fi.g.position.set(x,0,z);fi.g.rotation.y=r;const c=Math.abs(Math.cos(r)),s=Math.abs(Math.sin(r));Object.assign(fi.f,{x,z,hw:c*fi.hw0+s*fi.hd0,hd:s*fi.hw0+c*fi.hd0,rot:r})}
 function mkFix(key,g,hw0,hd0,def,pew){const o=fx[rm+key]||def,{W,D}=SIZES[size],f={x:0,z:0,hw:0,hd:0,pew:!!pew,rot:0},fi={key,g,hw0,hd0,f};fixt[key]=fi;
   setFix(fi,Math.max(-W/2+.5,Math.min(W/2-.5,o[0])),Math.max(-D/2+.5,Math.min(D/2-.5,o[1])),o[2]||0);room.add(g);furn.push(f);
   const h=box(hw0*2+.3,1.3,hd0*2+.3,new THREE.MeshBasicMaterial({visible:false}));h.position.y=.65;h.userData.fix=key;g.add(h);markers.push(h);g.userData={fix:key};return fi}
-function onT(x,z){const t=fixt.tbl;if(!t)return false;const dx=x-t.x,dz=z-t.z,c=Math.cos(t.r),s=Math.sin(t.r);return Math.abs(dx*c-dz*s)<=t.hw0&&Math.abs(dx*s+dz*c)<=t.hd0}
-function capRiders(){const t=fixt.tbl;if(!t)return[];const c=Math.cos(t.r),s=Math.sin(t.r);
-  return room.children.filter(g=>g.userData&&g.userData.slot&&TOK.has(g.userData.t)&&onT(g.position.x,g.position.z)).map(g=>{const dx=g.position.x-t.x,dz=g.position.z-t.z;return{g,lx:dx*c-dz*s,lz:dx*s+dz*c,r0:g.rotation.y-t.r}})}
+const isT=k=>String(k).slice(0,3)==='tbl';
+function onT(x,z,t0){const L=t0?[t0]:Object.values(fixt).filter(f=>isT(f.key));for(const t of L){const dx=x-t.x,dz=z-t.z,c=Math.cos(t.r),s=Math.sin(t.r);if(Math.abs(dx*c-dz*s)<=t.hw0&&Math.abs(dx*s+dz*c)<=t.hd0)return t}return null}
+function capRiders(t){t=t||fixt.tbl;if(!t)return[];const c=Math.cos(t.r),s=Math.sin(t.r);
+  return room.children.filter(g=>g.userData&&g.userData.slot&&TOK.has(g.userData.t)&&onT(g.position.x,g.position.z,t)).map(g=>{const dx=g.position.x-t.x,dz=g.position.z-t.z;return{g,lx:dx*c-dz*s,lz:dx*s+dz*c,r0:g.rotation.y-t.r}})}
 function moveFix(fi,x,z,r,riders){setFix(fi,x,z,r);fx[rm+fi.key]=[x,z,r];
   if(riders)riders.forEach(q=>{const c=Math.cos(r),s=Math.sin(r),wx=x+q.lx*c+q.lz*s,wz=z-q.lx*s+q.lz*c;q.g.position.x=wx;q.g.position.z=wz;q.g.rotation.y=q.r0+r;offs[q.g.userData.key]=[wx,wz,q.g.rotation.y]})}
 function snapWall(g,p){const {W,D}=SIZES[size],sc=g.scale.x,hw=1.6*sc+.2,ch=rm==='church'||!!ROOMS[rm].venue,
@@ -275,9 +276,22 @@ function snapWall(g,p){const {W,D}=SIZES[size],sc=g.scale.x,hw=1.6*sc+.2,ch=rm==
 const gp=(e,y)=>{const p=new THREE.Vector3();ray(e).ray.intersectPlane(new THREE.Plane(new THREE.Vector3(0,1,0),-y),p);return p};
 function rotSel(){rotSel0();if(covOn)covBuild();spkMarks();chkUI()}
 function rotSel0(){if(!ls)return;const a=Math.PI/4;
-  if(ls.t==='f'){const fi=fixt[ls.key];if(fi)moveFix(fi,fi.x,fi.z,fi.r+a,ls.key==='tbl'?capRiders():null)}
+  if(ls.t==='f'){const fi=fixt[ls.key];if(fi)moveFix(fi,fi.x,fi.z,fi.r+a,isT(ls.key)?capRiders(fixt[ls.key]):null)}
   else if(ls.t==='eq'){const g=room.children.find(o=>o.userData&&o.userData.slot===ls.slot&&o.userData.i===ls.i);if(g){g.rotation.y+=a;offs[g.userData.key]=[g.position.x,g.position.z,g.rotation.y]}}
   else if(ls.t==='d'){const d=dummies.find(o=>o.id===ls.id);if(d){d.rot=(d.rot||0)+a;buildRoom()}}}
+let uf=null,ufn=0;
+const ufKey=f=>(f.kind==='table'?'tbl':f.kind==='chair'?'uc':'us')+f.id;
+function ufDef(){const {W,D}=SIZES[size],L=[],id=()=>++ufn;
+  if(rm==='rec')L.push({id:id(),kind:'chair',x:-W*.12,z:-.3*D+.85,r:Math.PI});
+  if(rm==='pod'){const N=size==='s'?2:4,ns=Math.ceil(N/2);for(let k=0;k<N;k++){const sd=k%2,ix=Math.floor(k/2);L.push({id:id(),kind:'chair',x:(ix-(ns-1)/2)*.9,z:sd?-.95:.95,r:sd?0:Math.PI})}}
+  return L}
+function buildUF(){if(uf===null)uf=ufDef();uf.forEach(f=>{const k=ufKey(f),def=[f.x,f.z,f.r||0];
+  if(f.kind==='table')mkTable(f.w,f.d,def,k);
+  else if(f.kind==='chair')mkFix(k,chairMesh('chair'),.3,.3,def,true);
+  else{const st=new THREE.Group(),wm=mat(0x8a6a44);const sc=new THREE.Mesh(new THREE.CylinderGeometry(.2,.2,.06,16),wm);sc.position.y=.66;st.add(sc);
+    [[-.12,-.12],[.12,-.12],[-.12,.12],[.12,.12]].forEach(([a,b])=>{const l=new THREE.Mesh(new THREE.CylinderGeometry(.015,.015,.66,6),mat(0x555555));l.position.set(a,.33,b);st.add(l)});mkFix(k,st,.22,.22,def,true)}})}
+function addF(kind,w,d){if(uf===null)uf=ufDef();const n=uf.length,f={id:++ufn,kind,w,d,x:((n%5)-2)*.8,z:Math.floor(n/5)*.9,r:0};uf.push(f);const k=ufKey(f);buildRoom();fsel=k;ls={t:'f',key:k};dsel=null;chkUI()}
+function delF(){if(!fsel||uf===null)return;const n=uf.length;uf=uf.filter(f=>ufKey(f)!==fsel);if(uf.length===n)return;delete fx[rm+fsel];fsel=null;ls=null;buildRoom();chkUI()}
 let drag=null;let dummies=[],dsel=null,furn=[],dn=0;
 const HS={spk:[.3,.25],mon:[.25,.2],mic:[.12,.12],stand:[.2,.2],kbd:[.65,.25],piano:[.75,.3],mix:[.5,.4],amp:[.3,.2],pwr:[.2,.15],cam:[.15,.15],tri:[.25,.25],light:[.3,.3],bg:[1.2,.15],scr:[1.7,.3],box:[.15,.15],lap:[.2,.15],hp:[.12,.12],pc:[.3,.25]};
 const eqBoxes=()=>room.children.filter(g=>g.userData&&g.userData.slot).map(g=>{const t=SLOTS.find(s=>s.id===g.userData.slot).t;let h=HS[t]||[.2,.2];if(t==='scr'){const k=g.scale.x;h=[h[0]*k,h[1]];if(Math.abs(Math.sin(g.rotation.y))>.5)h=[h[1],h[0]]}return{x:g.position.x,z:g.position.z,hw:h[0],hd:h[1]}});
@@ -471,11 +485,23 @@ const dl=new THREE.DirectionalLight(0xffffff,.8);dl.position.set(6,12,8);scene.a
 let theta=.6,phi=1.0,rad=22,room=new THREE.Group(),markers=[];scene.add(room);
 const mat=(c,o={})=>new THREE.MeshStandardMaterial(Object.assign({color:c,roughness:.7},o));
 const box=(w,h,d,m)=>new THREE.Mesh(new THREE.BoxGeometry(w,h,d),m);
+let showLab=false;
 function label(txt,x,z,col,k){const c=document.createElement('canvas');c.width=512;c.height=96;const g=c.getContext('2d');
   g.fillStyle=col;g.font='bold 44px Arial';g.textAlign='center';g.fillText(txt,256,64);
   const sp=new THREE.Sprite(new THREE.SpriteMaterial({map:new THREE.CanvasTexture(c),transparent:true}));
-  sp.scale.set(5*(k||1),.94*(k||1),1);sp.position.set(x,.15,z);return sp}
+  sp.scale.set(5*(k||1),.94*(k||1),1);sp.position.set(x,.15,z);sp.visible=showLab;sp.userData.lab=1;return sp}
+function setOn(g,on){const p=g.children[0];if(!p)return;p.children.forEach(c=>{if(c.userData&&c.userData.tv)c.visible=(c.userData.tv==='t')===!!on})}
 function product(t,ghost){
+  if(t==='mix'||(rm==='pod'&&(t==='mic'||t==='stand')))return productV(t,ghost);
+  return product0(t,ghost)}
+function productV(t,ghost){const g=new THREE.Group(),mk=(c,o)=>ghost?mat(0x8fa2ff,{transparent:true,opacity:.28}):mat(c,o||{});
+  const fl=product0(t,ghost);fl.userData.tv='f';g.add(fl);const tb=new THREE.Group();tb.userData.tv='t';g.add(tb);
+  const add=(o,x,y,z)=>{o.position.set(x,y,z);tb.add(o)},cy=(r1,r2,h,c,seg)=>new THREE.Mesh(new THREE.CylinderGeometry(r1,r2,h,seg||12),mk(c));
+  if(t==='mix'){add(box(.9,.1,.5,mk(0x2b2f3d)),0,.05,0);const tp=box(.88,.03,.34,mk(0x3a4052));tp.rotation.x=-.2;add(tp,0,.12,-.02);for(let i=0;i<8;i++)add(box(.03,.01,.1,mk(0xdddddd)),-.36+i*.1,.145,.07)}
+  else if(t==='stand'){add(box(.1,.05,.1,mk(0x222222)),0,.025,-.28);add(cy(.012,.012,.42,0x333333,8),0,.23,-.28);const a=cy(.01,.01,.3,0x333333,8);a.rotation.x=Math.PI/2;add(a,0,.43,-.14)}
+  else{const m=cy(.04,.04,.17,0x1c1c1c,16);m.rotation.x=Math.PI/2;add(m,0,.4,0);const p=cy(.07,.07,.005,0x222222,20);p.rotation.x=Math.PI/2;add(p,0,.4,.1);add(cy(.008,.008,.12,0x333333,6),0,.34,-.04)}
+  return g}
+function product0(t,ghost){
   const g=new THREE.Group(),m=()=>ghost?mat(0x8fa2ff,{transparent:true,opacity:.28}):mat(COL[t]||0x555555);
   const add=(o,x,y,z)=>{o.position.set(x,y,z);g.add(o)};
   switch(t){
@@ -649,11 +675,11 @@ function buildVenue(W,D,fl){const vn=ven,v=ROOMS[rm].venue,big=v==='stad'?4:v===
       [-1,1].forEach(sg=>{const b=box(1.4,h,D+2*off,m);b.position.set(sg*(W/2+off),h/2,0);room.add(b);{const nn=Math.floor((D+2*off)/.5);for(let k=0;k<nn;k++)cp(sg*(W/2+off),h,-(D/2+off)+(k+.5)*.5);venSeats+=nn}});
       if(vn.sides!=='2'){const f=box(W+2*off,h,1.4,m);f.position.set(0,h/2,D/2+off);room.add(f);{const nn=Math.floor((W+2*off)/.5);for(let k=0;k<nn;k++)cp(-(W/2+off)+(k+.5)*.5,h,D/2+off);venSeats+=nn}}}
     room.add(label('TRIBUNES',0,D/2+10,'#9aa0c0',big))}}
-function mkTable(w,d,def){const g=new THREE.Group(),top=box(w,.08,d,mat(0x6b4f33));top.position.y=.75;g.add(top);
-  [-1,1].forEach(sx=>{const l=box(.08,.75,d*.9,mat(0x4a3a28));l.position.set(sx*(w/2-.1),.37,0);g.add(l)});mkFix('tbl',g,w/2,d/2,def,false)}
+function mkTable(w,d,def,key){const g=new THREE.Group(),top=box(w,.08,d,mat(0x6b4f33));top.position.y=.75;g.add(top);
+  [-1,1].forEach(sx=>{const l=box(.08,.75,d*.9,mat(0x4a3a28));l.position.set(sx*(w/2-.1),.37,0);g.add(l)});mkFix(key||'tbl',g,w/2,d/2,def,false)}
 function buildRoom(){
   while(room.children.length)room.remove(room.children[0]);markers=[];furn=[];fixt={};gk=0;crowdPts=[];
-  const {W,D}=SIZES[size];
+  const {W,D}=SIZES[size];if(uf===null)uf=ufDef();
   const fl=box(W,.1,D,mat(acv().env==='in'||rm==='stad'?acCol('floor'):0x2a2f4d));fl.position.set(0,-.05,0);room.add(fl);
   if(rm==='church'){
   const stage=box(W*.8,.35,3,mat(0x4a3f2c));stage.position.set(0,.17,-D/2+1.7);room.add(stage);
@@ -674,13 +700,14 @@ function buildRoom(){
     else partition(W,D,.12*D,['SALLE DE RÉGIE',0,-D/2+.5],['CABINE VOIX',0,D/2-.6])}
     else{if(two&&(rm==='vid'||rm==='pod')){partition(W,D,-.22*D,['RÉGIE',0,-D/2+.5],[rm==='vid'?'PLATEAU':'STUDIO',0,D/2-.6]);if(rm==='vid')mkTable(W*.8,.7,[0,-.37*D,0])}else ROOMS[rm].lab.forEach(([t,fx,fz],k)=>room.add(label(t,fx*W,fz*D+.8,k%2?'#6fe3a0':'#8fa2ff')));if(rm==='pod')mkTable(W*.6,1,[0,0,0])}
   }
+  buildUF();
   // emplacements
   active().forEach(s=>{
     const q=qty(s),o=sel[s.id]!=null?s.o[sel[s.id]]:null;
     for(let i=0;i<q;i++){
       const g=new THREE.Group();
       {const pp=ROOMS[rm].place(s,i,q,W,D),cl=(v,m)=>Math.max(-m,Math.min(m,v));g.position.set(cl(pp[0],W/2-.6),pp[1],cl(pp[2],D/2-.6));if(pp[3]!=null)g.rotation.y=pp[3]}if(s.t==='scr'){const e=scrPos(i,q,W,D);g.position.set(e[0],e[1],e[2]);g.rotation.y=e[3];g.scale.setScalar(SCS[scr.size])}const of=offs[rm+s.id+i];if(of){g.position.x=of[0];g.position.z=of[1];if(of[2]!=null)g.rotation.y=of[2]}if(TOK.has(s.t)&&onT(g.position.x,g.position.z))g.position.y=.78;
-      const ghost=!o&&!DECO.has(s.id);g.add(product(o&&s.t==='lap'&&/PC de bureau/.test(o.n)?'pc':s.t,ghost));
+      const ghost=!o&&!DECO.has(s.id);g.add(product(o&&s.t==='lap'&&/PC de bureau/.test(o.n)?'pc':s.t,ghost));setOn(g,TOK.has(s.t)&&onT(g.position.x,g.position.z));
             const hit2=s.t==='scr'?box(3.3,1.9,.6,new THREE.MeshBasicMaterial({visible:false})):(()=>{const h=HS[s.t]||[.3,.3];return box(Math.max(.5,h[0]*2+.15),1.6,Math.max(.5,h[1]*2+.15),new THREE.MeshBasicMaterial({visible:false}))})();hit2.position.y=s.t==='scr'?1.9:.8;hit2.userData.slot=s.id;hit2.userData.i=i;g.add(hit2);markers.push(hit2);
       if(ROOMS[rm].es&&s.t!=='scr')g.scale.setScalar(ROOMS[rm].es[size]);g.userData={slot:s.id,ghost,i,key:rm+s.id+i,t:s.t};room.add(g)}
   });
@@ -705,14 +732,14 @@ cv.addEventListener('pointerdown',e=>{if(!zdraw)return;e.stopImmediatePropagatio
 cv.addEventListener('pointermove',e=>{if(!zdraw||!zdn)return;e.stopImmediatePropagation();zp(e)},true);
 const zu=e=>{if(!zdraw||!zdn)return;zdn=false;e.stopImmediatePropagation();covBuild();covRes()};cv.addEventListener('pointerup',zu,true);cv.addEventListener('pointercancel',zu,true)}
 cv.addEventListener('pointerdown',e=>{cv.setPointerCapture(e.pointerId);pts.set(e.pointerId,[e.clientX,e.clientY]);moved=0;pd=pts.size==2?dist():0;
-  drag=null;if(pts.size===1){const hs=ray(e).intersectObjects(markers),q0=hs.length>1?gp(e,.5):null,h=q0?hs.slice().sort((p,r)=>Math.hypot(p.object.parent.position.x-q0.x,p.object.parent.position.z-q0.z)-Math.hypot(r.object.parent.position.x-q0.x,r.object.parent.position.z-q0.z))[0]:hs[0];if(h){const u=h.object.userData;if(u.fix){const fi=fixt[u.fix],q=gp(e,.5);drag={fix:u.fix,g:h.object.parent,riders:u.fix==='tbl'?capRiders():null,ox:q?fi.x-q.x:0,oz:q?fi.z-q.z:0};ls={t:'f',key:u.fix}}else if(u.dummy){drag={dummy:u.dummy,g:h.object.parent};ls={t:'d',id:u.dummy}}else{const g0=h.object.parent,q=gp(e,g0.position.y+.6);drag={slot:u.slot,i:u.i,g:g0,py:g0.position.y+.6,ox:q?g0.position.x-q.x:0,oz:q?g0.position.z-q.z:0};ls={t:'eq',slot:u.slot,i:u.i}};cv.style.cursor='move'}}});
+  drag=null;if(pts.size===1){const hs0=ray(e).intersectObjects(markers),hsE=hs0.filter(x=>!x.object.userData.fix),hs=hsE.length?hsE:hs0,q0=hs.length>1?gp(e,.5):null,h=q0?hs.slice().sort((p,r)=>Math.hypot(p.object.parent.position.x-q0.x,p.object.parent.position.z-q0.z)-Math.hypot(r.object.parent.position.x-q0.x,r.object.parent.position.z-q0.z))[0]:hs[0];if(h){const u=h.object.userData;if(u.fix){const fi=fixt[u.fix],q=gp(e,.5);drag={fix:u.fix,g:h.object.parent,riders:isT(u.fix)?capRiders(fixt[u.fix]):null,ox:q?fi.x-q.x:0,oz:q?fi.z-q.z:0};ls={t:'f',key:u.fix}}else if(u.dummy){drag={dummy:u.dummy,g:h.object.parent};ls={t:'d',id:u.dummy}}else{const g0=h.object.parent,q=gp(e,g0.position.y+.6);drag={slot:u.slot,i:u.i,g:g0,py:g0.position.y+.6,ox:q?g0.position.x-q.x:0,oz:q?g0.position.z-q.z:0};ls={t:'eq',slot:u.slot,i:u.i}};cv.style.cursor='move'}}});
 cv.addEventListener('pointermove',e=>{if(!pts.has(e.pointerId))return;const p=pts.get(e.pointerId),dx=e.clientX-p[0],dy=e.clientY-p[1];
   pts.set(e.pointerId,[e.clientX,e.clientY]);moved+=Math.abs(dx)+Math.abs(dy);
   if(drag&&drag.dummy&&pts.size===1){if(moved>6){const p3=new THREE.Vector3(),d=dummies.find(o=>o.id===drag.dummy);ray(e).ray.intersectPlane(new THREE.Plane(new THREE.Vector3(0,1,0),0),p3);if(p3&&d){moveD(d,p3.x,p3.z);drag.g.position.set(d.x,dyOf(d),d.z);drag.g.rotation.y=d.rot||0}}}
   else if(drag&&drag.fix&&pts.size===1){if(moved>6){const p3=new THREE.Vector3(),{W,D}=SIZES[size],fi=fixt[drag.fix];ray(e).ray.intersectPlane(new THREE.Plane(new THREE.Vector3(0,1,0),-.5),p3);
     if(p3&&fi)moveFix(fi,Math.max(-W/2+.5,Math.min(W/2-.5,p3.x+drag.ox)),Math.max(-D/2+.5,Math.min(D/2-.5,p3.z+drag.oz)),fi.r,drag.riders)}}
   else if(drag&&pts.size===1){if(moved>6){const p3=new THREE.Vector3();ray(e).ray.intersectPlane(new THREE.Plane(new THREE.Vector3(0,1,0),-drag.py),p3);
-    const {W,D}=SIZES[size],g=drag.g;if(p3){if(g.userData.t==='scr')snapWall(g,p3);else{const x=Math.max(-W/2+.3,Math.min(W/2-.3,p3.x+drag.ox)),z=Math.max(-D/2+.3,Math.min(D/2-.3,p3.z+drag.oz));g.position.x=x;g.position.z=z;g.position.y=TOK.has(g.userData.t)&&onT(x,z)?.78:0;if(g.userData.t==='spk'||g.userData.t==='mon')spkMarks()}
+    const {W,D}=SIZES[size],g=drag.g;if(p3){if(g.userData.t==='scr')snapWall(g,p3);else{const x=Math.max(-W/2+.3,Math.min(W/2-.3,p3.x+drag.ox)),z=Math.max(-D/2+.3,Math.min(D/2-.3,p3.z+drag.oz));g.position.x=x;g.position.z=z;const on=TOK.has(g.userData.t)&&!!onT(x,z);g.position.y=on?.78:0;setOn(g,on);if(g.userData.t==='spk'||g.userData.t==='mon')spkMarks()}
       offs[g.userData.key]=[g.position.x,g.position.z,g.rotation.y]}}}
   else if(pts.size===1){theta-=dx*.006;phi=Math.max(.25,Math.min(1.45,phi-dy*.005))}
   else if(pts.size===2){const d=dist();if(pd)rad=Math.max(6,Math.min(ROOMS[rm].rmax||45,rad*pd/d));pd=d}});
@@ -725,7 +752,7 @@ cv.addEventListener('wheel',e=>{e.preventDefault();rad=Math.max(6,Math.min(ROOMS
 // ===== Actions =====
 function pick(id){cur=id;renderList();const el=document.querySelector('#opts');if(el&&el.scrollIntoView)el.scrollIntoView({block:'nearest',behavior:'smooth'})}
 function refresh(){buildRoom();renderList()}
-function setSize(k){resetDims();att=0;dimInfo.note='';size=k;fx={};ven={};fsel=null;qov={};applyScr();seat.rows=null;dummies=[];dsel=null;document.querySelectorAll('#sz .pill').forEach(b=>b.classList.toggle('on',b.dataset.k===k));
+function setSize(k){uf=null;resetDims();att=0;dimInfo.note='';size=k;fx={};ven={};fsel=null;qov={};applyScr();seat.rows=null;dummies=[];dsel=null;document.querySelectorAll('#sz .pill').forEach(b=>b.classList.toggle('on',b.dataset.k===k));
   if(cur&&!active().some(s=>s.id===cur))cur=null;refresh();seatUI();dimUI()}
 function chrome(){
  document.getElementById('size').innerHTML='<div style="display:flex;gap:6px;flex-wrap:wrap">'+Object.entries(ROOMS).filter(([k])=>!HIDR.includes(k)).map(([k,v])=>`<button class="pill ${k===rm?'on':''}" data-r="${k}">${v.n}</button>`).join('')+'</div>'
@@ -956,18 +983,18 @@ function seatUI(){const B=document.getElementById('seatbox');if(ROOMS[rm].venue)
   const sel=(id,v,o)=>`<select id="${id}">${o.map(([k,l])=>`<option value="${k}" ${k==v?'selected':''}>${l}</option>`).join('')}</select>`;
   B.innerHTML=`<div class="zone">Disposition des sièges</div><div class="sbx"><details open><summary style="font-size:13px;cursor:pointer">Modifier les sièges (<span id="scount">${seat.count}</span> places)</summary>
   <label>Disposition ${sel('sl',seat.layout,[['rows','Rangées avec allée'],['center','Bloc central (allées le long des murs)'],['arc','Demi-cercle autour de la scène']])}</label>
-  <label>Style ${sel('ss',seat.style,[['pew','Bancs en bois'],['chair','Chaises en bois'],['plastic','Chaises plastique'],['padded','Fauteuils rembourrés']])}</label>
+  <label>Style ${sel('ss',seat.style,[['pew','Bancs en bois'],['padpew','Bancs rembourrés'],['chair','Chaises en bois'],['plastic','Chaises plastique'],['padded','Fauteuils rembourrés']])}</label>
   <label>Rangées <input id="sr" type="number" min="1" max="14" value="${seat.rows||SDEF[size]}"></label>
   <label>Allée (m) ${sel('sa',seat.aisle,[[1.2,'1,2'],[1.6,'1,6'],[2,'2'],[2.4,'2,4']])}</label>
   <div class="mini">Sièges : affichés pour visualiser la salle, non vendus.</div></details></div>`;
   const ch=()=>{seat.layout=sl.value;seat.style=ss.value;seat.rows=Math.max(1,Math.min(14,+sr.value||1));seat.aisle=+sa.value;buildRoom();renderList();scount.textContent=seat.count};
   ['sl','ss','sr','sa'].forEach(i=>document.getElementById(i).onchange=ch)}
-const encodeState=()=>btoa(unescape(encodeURIComponent(JSON.stringify({ven,fx,two,rm,size,sel,qov,offs,dummies,seat,scr,guest,fwd,mar,fee,lvl,att,fp:fillPct,fm:fillMode,tl:tgt,tr:trim,ac:acBy,dm:ORG[rm+size]?[SIZES[size].W,SIZES[size].D]:null}))));
-function loadState(o){lvl=[1,2,3].includes(o.lvl)?o.lvl:1;ven=o.ven||{};fx=o.fx||{};two=!!o.two;rm=ROOMS[o.rm]?o.rm:'church';SLOTS=ROOMS[rm].slots;KITS=ROOMS[rm].kits;SIZES=ROOMS[rm].sizes;size=SIZES[o.size]?o.size:ROOMS[rm].def;sel=o.sel||{};qov=o.qov||{};resetDims();att=o.att||0;fillPct=o.fp||0;fillMode=o.fm||'sit';tgt=o.tl||90;trim=o.tr||0;for(const k in acBy)delete acBy[k];Object.assign(acBy,o.ac||{});if(o.dm&&o.dm[0]>0)setDims(o.dm[0],o.dm[1]);
+const encodeState=()=>btoa(unescape(encodeURIComponent(JSON.stringify({uf,ufn,ven,fx,two,rm,size,sel,qov,offs,dummies,seat,scr,guest,fwd,mar,fee,lvl,att,fp:fillPct,fm:fillMode,tl:tgt,tr:trim,ac:acBy,dm:ORG[rm+size]?[SIZES[size].W,SIZES[size].D]:null}))));
+function loadState(o){uf=Array.isArray(o.uf)?o.uf:null;ufn=o.ufn||0;lvl=[1,2,3].includes(o.lvl)?o.lvl:1;ven=o.ven||{};fx=o.fx||{};two=!!o.two;rm=ROOMS[o.rm]?o.rm:'church';SLOTS=ROOMS[rm].slots;KITS=ROOMS[rm].kits;SIZES=ROOMS[rm].sizes;size=SIZES[o.size]?o.size:ROOMS[rm].def;sel=o.sel||{};qov=o.qov||{};resetDims();att=o.att||0;fillPct=o.fp||0;fillMode=o.fm||'sit';tgt=o.tl||90;trim=o.tr||0;for(const k in acBy)delete acBy[k];Object.assign(acBy,o.ac||{});if(o.dm&&o.dm[0]>0)setDims(o.dm[0],o.dm[1]);
   for(const k in offs)delete offs[k];Object.assign(offs,o.offs||{});dummies=o.dummies||[];dn=dummies.reduce((m,d)=>Math.max(m,d.id),0);
   Object.assign(seat,o.seat||{});Object.assign(scr,o.scr||{});Object.assign(guest,o.guest||{});if(o.fwd){fwd=o.fwd;document.getElementById('fwd').value=fwd}
   dsel=null;cur=null;chrome();document.querySelectorAll('#sz .pill').forEach(b=>b.classList.toggle('on',b.dataset.k===size));buildRoom();renderList()}
-function switchRoom(k){two=false;fx={};ven={};fsel=null;qov={};scr.layout='center';dummies=[];dsel=null;rm=k;SLOTS=ROOMS[k].slots;KITS=ROOMS[k].kits;SIZES=ROOMS[k].sizes;sel={};cur=null;chrome();setSize(ROOMS[k].def)}
+function switchRoom(k){uf=null;two=false;fx={};ven={};fsel=null;qov={};scr.layout='center';dummies=[];dsel=null;rm=k;SLOTS=ROOMS[k].slots;KITS=ROOMS[k].kits;SIZES=ROOMS[k].sizes;sel={};cur=null;chrome();setSize(ROOMS[k].def)}
 const setP=()=>{fwd=document.getElementById('fwd').value;mar=+document.getElementById('mar').value||0;fee=+document.getElementById('fee').value||0;renderList()};
 ['fwd','mar','fee'].forEach(i=>document.getElementById(i).onchange=setP);
 let quoteText='',inst=false;
@@ -994,6 +1021,7 @@ chrome();document.getElementById('d1').onclick=()=>spawn('stand');document.getEl
  setInterval(()=>{if(busy)return;const c=encodeState(),n=Date.now();if(c!==pend){pend=c;pt=n}else if(pend!==last&&n-pt>=350){hist.push(last);if(hist.length>60)hist.shift();last=pend;fut=[]}},150);
  document.getElementById('un').onclick=()=>{if(pend!==last){hist.push(last);last=pend}if(!hist.length)return;fut.push(last);load(hist.pop())};
  document.getElementById('re').onclick=()=>{if(!fut.length)return;hist.push(last);load(fut.pop())}}
+document.getElementById('fa1').onclick=()=>addF('table',1.6,.8);document.getElementById('fa2').onclick=()=>addF('table',2.6,1);document.getElementById('fa3').onclick=()=>addF('chair');document.getElementById('fa4').onclick=()=>addF('stool');document.getElementById('fa5').onclick=delF;document.getElementById('lbt').onchange=function(){showLab=this.checked;room.children.forEach(c=>{if(c.userData&&c.userData.lab)c.visible=showLab})};
 document.getElementById('d3').onclick=()=>{dummies=dummies.filter(o=>o.id!==dsel);dsel=null;buildRoom()};
 document.getElementById('rst').onclick=()=>{for(const k in offs)delete offs[k];fx={};buildRoom()};function localUI(){const names=[];Object.values(ROOMS).forEach(r=>r.slots.forEach(sl=>sl.o.forEach(o=>{if(o.us==null&&!names.includes(o.n))names.push(o.n)})));
   const rowH=(k,l)=>`<label><span class="nm">${l}</span><input data-k="${k}" type="number" min="0" placeholder="$ livré" value="${local[k]||''}"></label>`;

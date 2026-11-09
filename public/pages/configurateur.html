@@ -285,6 +285,7 @@ ROOMS.church.presets=[
  {n:'Grande salle',size:'l',kit:'full',seat:{layout:'rows',style:'plastic',rows:9,aisle:2.4},scr:{layout:'sides',size:'l'}},
  {n:'Extérieur',size:'l',kit:'budget',seat:{layout:'arc',style:'plastic',rows:7,aisle:2},scr:{layout:'two',size:'m'}}];
 ROOMS.rec.presets=[
+ {n:'Deux salles (régie + cabine)',size:'m',kit:'full',two:true,guest:{n:2,style:'chair',layout:'row'},scr:{layout:'center',size:'m'}},
  {n:'Voix et beats (solo)',size:'s',kit:'budget',guest:{n:0},scr:{layout:'center',size:'s'}},
  {n:'Studio complet avec invités',size:'m',kit:'full',guest:{n:4,style:'padded',layout:'row'},scr:{layout:'center',size:'m'}}];
 ROOMS.vid.presets=[
@@ -296,13 +297,15 @@ ROOMS.pho.presets=[
 ROOMS.pod.presets=[
  {n:'Duo',size:'s',kit:'budget',guest:{n:0},scr:{layout:'center',size:'s'}},
  {n:'Table à quatre avec invités',size:'m',kit:'full',guest:{n:6,style:'padded',layout:'arc'},scr:{layout:'two',size:'m'}}];
-function applyPreset(i){const p=ROOMS[rm].presets[i];if(!p)return;
+function applyPreset(i){const p=ROOMS[rm].presets[i];if(!p)return;two=!!p.two;
   setSize(p.size);Object.assign(seat,p.seat||{});if(p.seat)seat.count=0;Object.assign(scr,p.scr||{});Object.assign(guest,{n:0},p.guest||{});
   sel={};const ks=ROOMS[rm].kits[p.kit].s;for(const id in ks){const sl=SLOTS.find(z=>z.id===id),o=sl&&sl.o[ks[id]];if(o&&(optState(o)!=='soon'||ADMIN))sel[id]=ks[id]}
   qov={};applyScr();dummies=[];dsel=null;cur=null;for(const k in offs)delete offs[k];buildRoom();renderList();seatUI();scrUI()}
 function presetUI(){const B=document.getElementById('presets'),L=ROOMS[rm].presets||[];
-  B.innerHTML=L.length?'<div class="zone">Modèles prêts à l\'emploi</div><div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:6px">'+L.map((p,i)=>`<button class="pill" data-p="${i}">${p.n}</button>`).join('')+'</div>':'';
+  B.innerHTML=(rm==='rec'?'<button class="pill'+(two?' on':'')+'" id="two" style="margin-bottom:8px">Deux salles : régie + cabine vitrée</button>':'')+(L.length?'<div class="zone">Modèles prêts à l\'emploi</div><div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:6px">'+L.map((p,i)=>`<button class="pill" data-p="${i}">${p.n}</button>`).join('')+'</div>':'');
+  const tb=document.getElementById('two');if(tb)tb.onclick=()=>{two=!two;for(const k in offs)delete offs[k];buildRoom();renderList();presetUI()};
   B.querySelectorAll('[data-p]').forEach(b=>b.onclick=()=>applyPreset(+b.dataset.p))}
+let two=false;
 let rm='church',SLOTS=CH_SLOTS,KITS=CH_KITS,SIZES=CH_SIZES;
 let size='m',sel={},cur=null,fwd='aq',mar=20,fee=3;
 
@@ -418,8 +421,17 @@ function buildRoom(){
     [[0,-D/2],[-W/2,0],[W/2,0],[0,D/2]].forEach(([x,z],i)=>{const w=box(i%3==0&&i<3?W:(i==3?W:.15),3,i==1||i==2?D:.15,mat(0x23284a,{transparent:true,opacity:.5}));w.position.set(x,1.5,z);room.add(w)});
     if(rm==='rec'){const desk=box(W*.55,.08,.9,mat(0x6b4f33));desk.position.set(0,.75,-.3*D-.1);room.add(desk);furn.push({x:0,z:-.3*D-.1,hw:W*.275,hd:.45});
     [-1,1].forEach(sx=>{const l=box(.08,.75,.8,mat(0x4a3a28));l.position.set(sx*W*.27,.37,-.3*D-.1);room.add(l)});
-    const cab=box(W*.38,2.4,D*.34,new THREE.MeshStandardMaterial({color:0x8fa2ff,transparent:true,opacity:.12}));cab.position.set(.28*W,1.2,.25*D);room.add(cab);
+    if(!two){const cab=box(W*.38,2.4,D*.34,new THREE.MeshStandardMaterial({color:0x8fa2ff,transparent:true,opacity:.12}));cab.position.set(.28*W,1.2,.25*D);room.add(cab);
     room.add(label('RÉGIE',0,-D/2+.5,'#8fa2ff'));room.add(label('CABINE VOIX',.28*W,D/2-.6,'#6fe3a0'));}
+    else{const zw=.12*D,wm=mat(0x3a4170),gm=new THREE.MeshStandardMaterial({color:0x9fd8ff,transparent:true,opacity:.22});
+      const seg=(x0,x1,h,y,m)=>{const w=box(x1-x0,h,.2,m);w.position.set((x0+x1)/2,y,zw);room.add(w)};
+      const dA=-.42*W,dB=-.24*W,gA=-.12*W,gB=.44*W;
+      seg(-W/2,dA,3,1.5,wm);seg(dB,gA,3,1.5,wm);seg(gB,W/2,3,1.5,wm);
+      seg(gA,gB,.9,.45,wm);seg(gA,gB,.5,2.75,wm);seg(gA,gB,1.6,1.7,gm);
+      const dr=box(dB-dA,2.1,.08,new THREE.MeshStandardMaterial({color:0x6b4f33,transparent:true,opacity:.7}));dr.position.set((dA+dB)/2,1.05,zw);room.add(dr);
+      [[-W/2,dA],[dB,gA],[gB,W/2]].forEach(([a,b])=>furn.push({x:(a+b)/2,z:zw,hw:(b-a)/2,hd:.12}));
+      furn.push({x:(gA+gB)/2,z:zw,hw:(gB-gA)/2,hd:.12});
+      room.add(label('SALLE DE RÉGIE',0,-D/2+.5,'#8fa2ff'));room.add(label('VITRE',(gA+gB)/2,zw-.5,'#9fd8ff'));room.add(label('CABINE VOIX',0,D/2-.6,'#6fe3a0'));room.add(label('PORTE',(dA+dB)/2,zw-.5,'#f2b632'))}}
     else{ROOMS[rm].lab.forEach(([t,fx,fz],k)=>room.add(label(t,fx*W,fz*D+.8,k%2?'#6fe3a0':'#8fa2ff')));if(rm==='pod'){const tb=box(W*.6,.08,1,mat(0x6b4f33));tb.position.set(0,.75,0);room.add(tb);furn.push({x:0,z:0,hw:W*.3,hd:.5})}}
   }
   // emplacements
@@ -493,8 +505,8 @@ function seatUI(){const B=document.getElementById('seatbox');if(rm!=='church'){c
   <div class="mini">Sièges : prix sur demande (selon le fournisseur local).</div></details></div>`;
   const ch=()=>{seat.layout=sl.value;seat.style=ss.value;seat.rows=Math.max(1,Math.min(14,+sr.value||1));seat.aisle=+sa.value;buildRoom();renderList();scount.textContent=seat.count};
   ['sl','ss','sr','sa'].forEach(i=>document.getElementById(i).onchange=ch)}
-const encodeState=()=>btoa(unescape(encodeURIComponent(JSON.stringify({rm,size,sel,qov,offs,dummies,seat,scr,guest,fwd,mar,fee}))));
-function loadState(o){rm=ROOMS[o.rm]?o.rm:'church';SLOTS=ROOMS[rm].slots;KITS=ROOMS[rm].kits;SIZES=ROOMS[rm].sizes;size=SIZES[o.size]?o.size:ROOMS[rm].def;sel=o.sel||{};qov=o.qov||{};
+const encodeState=()=>btoa(unescape(encodeURIComponent(JSON.stringify({two,rm,size,sel,qov,offs,dummies,seat,scr,guest,fwd,mar,fee}))));
+function loadState(o){two=!!o.two;rm=ROOMS[o.rm]?o.rm:'church';SLOTS=ROOMS[rm].slots;KITS=ROOMS[rm].kits;SIZES=ROOMS[rm].sizes;size=SIZES[o.size]?o.size:ROOMS[rm].def;sel=o.sel||{};qov=o.qov||{};
   for(const k in offs)delete offs[k];Object.assign(offs,o.offs||{});dummies=o.dummies||[];dn=dummies.reduce((m,d)=>Math.max(m,d.id),0);
   Object.assign(seat,o.seat||{});Object.assign(scr,o.scr||{});Object.assign(guest,o.guest||{});if(o.fwd){fwd=o.fwd;document.getElementById('fwd').value=fwd}
   dsel=null;cur=null;chrome();document.querySelectorAll('#sz .pill').forEach(b=>b.classList.toggle('on',b.dataset.k===size));buildRoom();renderList()}

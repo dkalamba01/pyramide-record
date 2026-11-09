@@ -902,8 +902,9 @@ function acUI(){const B=document.getElementById('acbox');if(!B)return;const a=ac
   <label>Hauteur sous plafond (m) <input id="ah" type="number" min="2" max="60" step="0.5" value="${a.h}"></label>
   <label>Murs ${so('aw','wall',a.wall)}</label><label>Plafond / toit ${so('ar','roof',a.roof)}</label><label>Sol ${so('af','floor',a.floor)}</label>
   ${a.env==='in'?`<div class="zone" style="margin-top:10px">Traitement à ajouter au devis</div><div class="mini" style="margin:0 0 4px">Prix estimés par m², pose incluse, selon la qualité choisie (${LV[lvl].n.toLowerCase()}). À confirmer par un devis local.</div>`+[['wall','Murs',['pan','rid']],['roof','Plafond',['fau']],['floor','Sol',['moq']]].map(([k,l,L])=>{const t=acT[rm]&&acT[rm][k],cur=t&&a[k]===t.mat?t.mat:'';return`<label>${l}<select id="t${k}"><option value="">Aucun</option>${L.map(m=>`<option value="${m}" ${cur===m?'selected':''}>${ACP[m][3]} · ${Math.round(acArea(k))} m² · ${money(Math.round(acArea(k)*ACP[m][lvl-1]))}</option>`).join('')}</select></label>`}).join(''):''}
-  <div class="mini" id="acres" style="margin-top:8px"></div><div class="mini">Estimation indicative (formule de Sabine), à confirmer par une mesure sur place.</div></details></div>`;
+  ${a.env==='in'?'<button class="pill" id="aid" style="margin-top:6px">★ Meilleur traitement pour ma salle</button>':''}<div class="mini" id="acres" style="margin-top:8px"></div><div class="mini">Estimation indicative (formule de Sabine), à confirmer par une mesure sur place.</div></details></div>`;
   const ch=()=>{a.env=ae.value;a.h=Math.max(2,Math.min(60,+ah.value||a.h));a.wall=aw.value;a.roof=ar.value;a.floor=af.value;buildRoom();renderList();acRes()};
+  const ab=document.getElementById('aid');if(ab)ab.onclick=()=>{const r=acIdeal();buildRoom();renderList();acUI();const e=document.getElementById('acres');if(e&&r)e.insertAdjacentHTML('beforeend','<br><b>Proposition :</b> '+(r.L.length?r.L.map(([k,m])=>ACP[m][3]).join(' + ')+' ('+money(r.pr)+', ajouté au devis) : écho '+fs(r.rt0)+' → '+fs(r.rt1)+(r.ok?'':' (objectif non atteint)'):'aucun traitement nécessaire.'))};
   ['wall','roof','floor'].forEach(k=>{const e=document.getElementById('t'+k);if(e)e.onchange=()=>{const T=acT[rm]||(acT[rm]={});const prev=T[k]&&a[k]===T[k].mat?T[k].prev:a[k];if(e.value){T[k]={mat:e.value,prev};a[k]=e.value}else{if(T[k]&&a[k]===T[k].mat)a[k]=T[k].prev;delete T[k]}buildRoom();renderList();acRes()}});
   ['ae','ah','aw','ar','af'].forEach(i=>document.getElementById(i).onchange=ch);acRes()}
 // ===== Couverture maximale et zone à couvrir =====
@@ -933,7 +934,32 @@ function covStats(){const G=lvlGrid();if(!G)return null;const a=G.v.filter((_,i)
 function covRes(){const e=document.getElementById('covres');if(!e)return;const st=covStats(),z=zcur();
   e.innerHTML=(z&&z.n?'Zone dessinée':'Toute la salle')+' : '+(st?`<b>${st.pct} %</b> bien couverte (≥ ${tgt-3} dB) · niveaux de ${st.min} à ${st.max} dB (médiane ${st.med}) · trop fort : ${st.loud} %`:'choisissez des enceintes pour voir la couverture.')+(ovSummary()?'<br>Placement : '+ovSummary():'')+(spkLines().length?'<br><b>Niveau conseillé par enceinte</b><br>'+spkLines().join('<br>'):'')}
 function covMsg(t){const e=document.getElementById('covres');if(e)e.innerHTML=t}
-let ovRoles={},sgain={};
+let ovRoles={},sgain={},idealHtml='',idealSnap=null;
+const clrPct=()=>{const C=clrGrid();return C?Math.round(100*C.v.filter(q=>q>=0).length/C.v.length):null};
+function acIdeal(){const a=acv();if(a.env==='out')return null;const st=['rec','pod','vid','pho'].includes(rm),T=st?.5:1.2,fp=Math.max(fillPct,70),cur=acoustics(fp);
+  if(cur.rt<=T)return{rt0:cur.rt,rt1:cur.rt,pr:0,L:[],ok:true};
+  const WO=[null,'rid','pan'].filter(m=>m!==a.wall),RO=[null,'fau'].filter(m=>m!==a.roof),FO=[null,'moq'].filter(m=>m!==a.floor);let best=null,low=null;
+  for(const w of WO.concat([a.wall]))for(const r of RO.concat([a.roof]))for(const f of FO.concat([a.floor])){
+    const ov={wall:w||a.wall,roof:r||a.roof,floor:f||a.floor},rt=acoustics(fp,ov).rt;let pr=0;const L=[];
+    [['wall',w],['roof',r],['floor',f]].forEach(([k,m])=>{if(m&&m!==a[k]){pr+=Math.round(acArea(k)*ACP[m][lvl-1]);L.push([k,m])}});
+    const c={rt,pr,L,ov};if(rt<=T&&(!best||pr<best.pr))best=c;if(!low||rt<low.rt||(rt===low.rt&&pr<low.pr))low=c}
+  const ch=best||low;if(ch.L.length){const T2=acT[rm]||(acT[rm]={});ch.L.forEach(([k,m])=>{T2[k]={mat:m,prev:a[k]};a[k]=m})}
+  return{rt0:cur.rt,rt1:ch.rt,pr:ch.pr,L:ch.L,ok:!!best}}
+function idealSetup(){const venue=isVen(),a=acv(),snap={acBy:JSON.stringify(acBy[rm]),acT:JSON.stringify(acT[rm]||null),offs:{},qs:qov[rm+'spk'],sg:JSON.stringify(sgain),trim,sp:sel.spk,tg:tgt};
+  for(let i=0;i<24;i++)if(offs[rm+'spk'+i])snap.offs[rm+'spk'+i]=offs[rm+'spk'+i].slice();
+  const sl=SLOTS.find(x=>x.id==='spk'),before=venue&&sl&&sel.spk!=null?{cov:(covStats()||{}).pct,clr:clrPct(),rt:acoustics(Math.max(fillPct,70)).rt}:{rt:acoustics(Math.max(fillPct,70)).rt};
+  const ac=acIdeal();
+  if(venue&&sl){const g=zcur();if(g){g.m.fill(0);g.n=0}optSpeakers()}else{buildRoom();renderList()}
+  const afterCov=venue&&sl?(covStats()||{}).pct:null,afterClr=venue&&sl?clrPct():null,rt1=ac?acoustics(Math.max(fillPct,70)).rt:null;
+  const L=[];
+  if(venue&&sl)L.push(`Enceintes : ${ovSummary()||qty(sl)+' enceintes'}`,`Couverture : ${before.cov!=null?before.cov+' % → ':''}<b>${afterCov} %</b> bien couvert (cible ${tgt} dB)`);
+  if(ac){L.push(`Écho (RT60, salle à 70 % de remplissage) : ${before.rt!=null?fs(ac.rt0)+' → ':''}<b>${fs(rt1)}</b>`+(ac.ok?'':' (objectif non atteint : ajoutez des panneaux ou réduisez le volume)'));
+    L.push(ac.L.length?'Traitement ajouté au devis : '+ac.L.map(([k,m])=>ACP[m][3]).join(' + ')+` (<b>${money(ac.pr)}</b>, estimé)`:'Acoustique : aucun traitement nécessaire.')}
+  if(afterClr!=null)L.push(`Clarté de la parole : ${before.clr!=null?before.clr+' % → ':''}<b>${afterClr} %</b> de la salle claire ou correcte`);
+  idealSnap=snap;idealHtml='<div style="border:1px solid #3a4a9a;border-radius:8px;padding:8px;margin:8px 0;background:#10142b"><b>★ Installation idéale proposée</b><br>'+L.join('<br>')+'<div style="display:flex;gap:6px;margin-top:6px"><button class="pill" id="iok">Garder</button><button class="pill" id="iun">Annuler la proposition</button></div><div class="mini">Estimations indicatives, à confirmer sur place. Tout reste modifiable.</div></div>';
+  buildRoom();renderList();covUI();acUI()}
+function idealUndo(){const s=idealSnap;if(!s)return;if(s.acBy)acBy[rm]=JSON.parse(s.acBy);if(s.acT&&s.acT!=='null')acT[rm]=JSON.parse(s.acT);else delete acT[rm];
+  for(let i=0;i<24;i++)delete offs[rm+'spk'+i];Object.assign(offs,s.offs);if(s.qs!=null)qov[rm+'spk']=s.qs;else delete qov[rm+'spk'];sgain=JSON.parse(s.sg);trim=s.trim;sel.spk=s.sp;tgt=s.tg;idealHtml='';idealSnap=null;buildRoom();renderList();covUI();acUI()}
 const ovKey=()=>rm+size+(stageC()?'c':'e');
 function optSpeakers(){const sl=SLOTS.find(x=>x.id==='spk');if(!sl||!isVen())return;if(sel.spk==null)sel.spk=0;trim=0;
   const {W,D}=SIZES[size],{pts}=covCells(1100),n=pts.length;if(n<20){covMsg('La zone est trop petite : dessinez une zone plus grande.');return}
@@ -974,7 +1000,7 @@ function optSpeakers(){const sl=SLOTS.find(x=>x.id==='spk');if(!sl||!isVen())ret
 function ovSummary(){const r=ovRoles[ovKey()],sl=SLOTS.find(x=>x.id==='spk');if(!r||!sl||r.length!==qty(sl))return'';const m={};r.forEach(([k,ms])=>{(m[k]=m[k]||{n:0,ms:0}).n++;m[k].ms=Math.max(m[k].ms,ms)});
   return Object.keys(m).map(k=>`${k} ×${m[k].n}`+(m[k].ms>0?` (retard ${m[k].ms} ms)`:'')).join(' · ')}
 function covUI(){const B=document.getElementById('covbox');if(!B)return;if(!isVen()){B.innerHTML='';return}
-  B.innerHTML=`<div class="zone">Couverture sonore maximale</div><div class="sbx"><details open><summary style="font-size:13px;cursor:pointer">Niveau, zone et placement automatique</summary>
+  B.innerHTML=`<div class="zone">Couverture sonore maximale</div><div class="sbx"><button class="cta" id="zi" style="margin:0 0 6px">★ Installation idéale (enceintes + acoustique)</button><div id="idealres">${idealHtml}</div><details open><summary style="font-size:13px;cursor:pointer">Niveau, zone et placement automatique</summary>
   <label style="display:flex;gap:8px;align-items:center">Niveau souhaité <input id="ctg" type="range" min="70" max="110" value="${tgt}" style="flex:1;width:auto"> <b id="ctgv">${tgt} dB</b></label>
   <div style="display:flex;gap:6px;flex-wrap:wrap;margin:4px 0"><button class="pill" data-t="80">Parole 80</button><button class="pill" data-t="90">Culte 90</button><button class="pill" data-t="100">Concert 100</button></div><div class="mini">Parole 80 : confortable · Culte 90 : standard · Concert 100 : fort, durée limitée (risque pour l'audition).</div>
   <label style="display:flex;gap:8px;align-items:center">Volume du système <input id="ctrim" type="range" min="-20" max="0" value="${trim}" style="flex:1;width:auto"> <b id="ctrimv">${trim} dB</b></label>
@@ -990,6 +1016,7 @@ function covUI(){const B=document.getElementById('covbox');if(!B)return;if(!isVe
   zc.onclick=()=>{const g=zcur();if(g){g.m.fill(0);g.n=0}zoneBuild();covBuild();covRes()};
   zo.onclick=()=>{zdraw=false;zb();const g=zcur();if(g){g.m.fill(0);g.n=0}zoneBuild();covMsg('Calcul en cours…');setTimeout(()=>{optSpeakers();covRes()},30)};
   zp.onclick=()=>{const g=zcur();if(!g||!g.n){covMsg('Dessinez d\'abord la zone : touchez « Dessiner la zone », puis glissez sur le sol là où le public se tient. Ensuite touchez ②.');return}zdraw=false;zb();covMsg('Calcul en cours…');setTimeout(()=>{optSpeakers();covRes()},30)};
+  zi.onclick=()=>{covMsg('Calcul en cours…');setTimeout(idealSetup,30)};const iu=document.getElementById('iun'),ik=document.getElementById('iok');if(iu)iu.onclick=idealUndo;if(ik)ik.onclick=()=>{idealHtml='';idealSnap=null;covUI()};
   zb();covRes()}
 function clrGrid(){const L=spkList(),{W,D}=SIZES[size],r=acoustics(fillPct);if(!L.length||!isVen()||r.out)return null;
   const A={x0:-W/2+.5,x1:W/2-.5,z0:-D/2+3.6,z1:D/2-.5},cell=Math.max(.5,Math.max(W,D)/70),nx=Math.max(2,Math.floor((A.x1-A.x0)/cell)),nz=Math.max(2,Math.floor((A.z1-A.z0)/cell)),v=[],rev=L.length*4/r.R;

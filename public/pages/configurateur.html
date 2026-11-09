@@ -82,7 +82,7 @@ textarea{width:100%;height:90px;background:#10142b;color:#cfd3f0;border:1px soli
     <div id="foot">
       <div id="chk"></div><div id="tot"><span>Total estimé (livré)</span><b id="total">0 $</b></div>
       <div class="mini" id="reqline"></div>
-      <div id="dbar" style="display:flex;gap:6px;flex-wrap:wrap;margin:8px 0 0"><button class="pill" id="d1">+ Personne debout</button><button class="pill" id="d2">+ Personne assise</button><button class="pill" id="d3">Retirer la personne choisie</button><button class="pill" id="cvb">🔊 Couverture sonore</button><button class="pill" id="clb">🗣 Clarté (écho)</button><button class="pill" id="cva">Placer les enceintes</button><button class="pill" id="plt">Plan de scène (PDF)</button><label style="display:inline-flex;gap:4px;align-items:center;font-size:12px"><input type="checkbox" id="pcol2"> PDF couleur</label><button class="pill" id="un">↶ Annuler</button><button class="pill" id="re">↷ Rétablir</button><button class="pill" id="d4">↻ Tourner l'élément choisi</button></div><div id="mob" style="display:flex;gap:6px;flex-wrap:wrap;margin:6px 0 0;align-items:center"><span class="mini" style="margin:0">Mobilier :</span><button class="pill" id="fa1">+ Table</button><button class="pill" id="fa2">+ Grande table</button><button class="pill" id="fa3">+ Chaise</button><button class="pill" id="fa4">+ Tabouret</button><button class="pill" id="fa5">Retirer le meuble choisi</button><label style="display:inline-flex;gap:4px;align-items:center;font-size:12px"><input type="checkbox" id="lbt"> Noms des zones</label></div><div id="kits"></div>
+      <div id="dbar" style="display:flex;gap:6px;flex-wrap:wrap;margin:8px 0 0"><button class="pill" id="d1">+ Personne debout</button><button class="pill" id="d2">+ Personne assise</button><button class="pill" id="d3">Retirer la personne choisie</button><button class="pill" id="cvb">🔊 Couverture sonore</button><button class="pill" id="clb">🗣 Clarté (écho)</button><button class="pill" id="cva">Placer les enceintes</button><button class="pill" id="plt">Plan de scène (PDF)</button><label style="display:inline-flex;gap:4px;align-items:center;font-size:12px"><input type="checkbox" id="pcol2"> PDF couleur</label><button class="pill" id="un">↶ Annuler</button><button class="pill" id="re">↷ Rétablir</button><button class="pill" id="d4">↻ Tourner l'élément choisi</button></div><div id="mob" style="display:flex;gap:6px;flex-wrap:wrap;margin:6px 0 0;align-items:center"><span class="mini" style="margin:0">Mobilier :</span><button class="pill" id="fa1">+ Table</button><button class="pill" id="fa2">+ Grande table</button><button class="pill" id="fa3">+ Chaise</button><button class="pill" id="fa4">+ Tabouret</button><button class="pill" id="fa6">+ Cabine</button><button class="pill" id="fa7">+ Cloison vitrée avec porte</button><button class="pill" id="fa8">+ Personne sur la chaise choisie</button><button class="pill" id="fa5">Retirer le meuble choisi</button><label style="display:inline-flex;gap:4px;align-items:center;font-size:12px"><input type="checkbox" id="lbt"> Noms des zones</label></div><div id="kits"></div>
       <button class="pill" id="rst" style="width:100%;margin-bottom:8px">Remettre les objets à leur place</button><button class="cta" id="quote">Voir et demander mon devis</button>
       <div style="display:flex;gap:6px;margin-top:8px"><input id="ld" placeholder="Coller un code de salle" style="flex:1;min-width:0;background:#1c2040;color:#fff;border:1px solid #343a6a;border-radius:8px;padding:7px;font-size:12px"><button class="pill" id="ldb">Charger</button></div>
       <details id="adm" style="display:none"><summary>Paramètres (équipe Pyramide Record)</summary>
@@ -152,7 +152,7 @@ const CH_KITS={
  full:{n:'Kit complet + direct',s:{pmic:1,cmic:0,stand:0,kbd:0,spk:0,mix:0,eq:0,pwr:0,cam:0,tri:0,cap:0,ai:1,lap:0}}
 };
 const CH_SIZES={s:{n:'Petite salle',W:8,D:10},m:{n:'Salle moyenne',W:12,D:16},l:{n:'Grande salle / extérieur',W:18,D:24}};
-const COL={piano:0x1a1a1a,mic:0x444a66,stand:0x333333,kbd:0x222222,mon:0x2b2b2b,spk:0x1a1a1a,mix:0x3a3f66,amp:0x555a77,pwr:0x2f7a52,cam:0x111111,tri:0x333333,box:0x50567a,lap:0x888ea8};
+const COL={gtr:0x8a4b2a,drm:0x2b2b3a,perc:0x7a4a2a,wnd:0xc8a22a,pno:0x1a1a1a,piano:0x1a1a1a,mic:0x444a66,stand:0x333333,kbd:0x222222,mon:0x2b2b2b,spk:0x1a1a1a,mix:0x3a3f66,amp:0x555a77,pwr:0x2f7a52,cam:0x111111,tri:0x333333,box:0x50567a,lap:0x888ea8};
 const Q=(a,b)=>({s:a,m:b});
 const REC_SLOTS=[
  {id:'mon',z:'Régie',l:'Enceintes de studio',t:'mon',q:Q(2,2),pos:[0,-.3],span:.16,o:[P('Yamaha HS5 (paire)',170,3.5,'Référence pour mixer, par enceinte'),]},
@@ -211,6 +211,14 @@ const POD_KITS={budget:{n:'Kit débutant',s:{mic:0,stand:0,hp:0,ai:0,lap:0}},ful
 const placeCh=(s,i,q,W,D)=>{if(s.back)return[0,.35,-D/2+.5];const x=s.pos[0]*W+(q>1?(i-(q-1)/2)*((s.span||.06)*W*2/Math.max(q-1,1)):0);
   return s.pos[1]>0?[x,.35,-D/2+2.2+s.pos[1]*2.5]:[x,0,D/2-2.4+(s.pos[1]+.34)*3]};
 const placeRec=(s,i,q,W,D)=>s.back?[0,0,-D/2+.5]:[s.pos[0]*W+(q>1?(i-(q-1)/2)*((s.span||.06)*W*2/Math.max(q-1,1)):0),0,s.pos[1]*D];
+const T3=o=>Object.assign(o,{tier:3});
+const INS_SLOTS=[
+ {id:'gtr',z:'Instruments',l:'Guitare / basse',t:'gtr',q:Q(0,0),pos:[.3,.15],o:[P('Yamaha FG800 (acoustique)',200,3.5,'Guitare acoustique, bon son pour débuter'),P('Squier Affinity Stratocaster',250,4,'Guitare électrique, à brancher à un ampli'),P('Squier Affinity Precision Bass',230,4.5,'Basse électrique'),T3(NA('Guitare locale (Kinshasa)'))]},
+ {id:'drm',z:'Instruments',l:'Batterie',t:'drm',q:Q(0,0),pos:[.28,.3],o:[P('Alesis Nitro Mesh (batterie électronique)',380,14,'Silencieuse, se branche à l\'ordinateur'),P('Pearl Roadshow 5 fûts (acoustique)',560,30,'Batterie complète avec cymbales'),T3(NA('Batterie locale (Kinshasa)'))]},
+ {id:'pno',z:'Instruments',l:'Piano numérique',t:'pno',q:Q(0,0),pos:[-.3,.3],o:[P('Yamaha P-45 (88 touches)',450,11.5,'Touches lestées, pour jouer et enregistrer'),P('Casio CDP-S160',480,11,'Fin et léger, bon toucher')]},
+ {id:'perc',z:'Instruments',l:'Percussions (congas, djembé)',t:'perc',q:Q(0,0),pos:[.1,.35],o:[P('Djembé Meinl 12″',120,4,'Percussion traditionnelle'),P('LP Aspire congas (paire)',380,14,'Deux congas avec supports')]},
+ {id:'wnd',z:'Instruments',l:'Saxophone / trompette',t:'wnd',q:Q(0,0),pos:[-.1,.35],o:[P('Yamaha YAS-280 (saxophone alto)',1600,5,'Pour étudiants et musiciens'),P('Yamaha YTR-2330 (trompette)',900,3,'Trompette en si bémol')]}];
+REC_SLOTS.push(...INS_SLOTS);POD_SLOTS.push(...INS_SLOTS.map(x=>Object.assign({},x,{pos:[x.pos[0],x.pos[1]-.1]})));
 REC_SLOTS.push({id:'amb',z:'Éclairage',l:'Lumière d\'ambiance (LED)',t:'light',q:Q(0,0),pos:[-.4,.2],span:.1,o:[LED]});
 POD_SLOTS.push({id:'amb',z:'Éclairage',l:'Lumière pour la vidéo (LED)',t:'light',q:Q(0,0),pos:[.4,.15],span:.1,o:[LED]});
 VID_SLOTS.push({id:'bkl',z:'Éclairage',l:'Contre-jour / ambiance',t:'light',q:Q(0,1),pos:[-.3,.2],span:.1,o:[LED,NA('Projecteur LED de plateau (modèle à confirmer)')]});
@@ -257,16 +265,23 @@ function scrUI(){const B=document.getElementById('scrbox');
   const ch=()=>{scr.layout=cl.value;scr.size=cs.value;qov={};applyScr();buildRoom();renderList()};
   ['cl','cs'].forEach(i=>document.getElementById(i).onchange=ch)}
 const offs={};let fx={},fixt={},fsel=null,ls=null;const TOK=new Set(['mon','box','lap','mic','hp','pc','mix','stand']);let gk=0;
-function setFix(fi,x,z,r){fi.x=x;fi.z=z;fi.r=r;fi.g.position.set(x,0,z);fi.g.rotation.y=r;const c=Math.abs(Math.cos(r)),s=Math.abs(Math.sin(r));Object.assign(fi.f,{x,z,hw:c*fi.hw0+s*fi.hd0,hd:s*fi.hw0+c*fi.hd0,rot:r})}
+function setFix(fi,x,z,r){dummies.forEach(d=>{if(d.on===fi.key){d.x=x;d.z=z;d.rot=r;const mm=room.children.find(o=>o.userData&&o.userData.dummy===d.id);if(mm){mm.position.x=x;mm.position.z=z;mm.rotation.y=r}}});fi.x=x;fi.z=z;fi.r=r;fi.g.position.set(x,0,z);fi.g.rotation.y=r;const c=Math.abs(Math.cos(r)),s=Math.abs(Math.sin(r));Object.assign(fi.f,{x,z,hw:c*fi.hw0+s*fi.hd0,hd:s*fi.hw0+c*fi.hd0,rot:r})}
 function mkFix(key,g,hw0,hd0,def,pew){const o=fx[rm+key]||def,{W,D}=SIZES[size],f={x:0,z:0,hw:0,hd:0,pew:!!pew,rot:0},fi={key,g,hw0,hd0,f};fixt[key]=fi;
   setFix(fi,Math.max(-W/2+.5,Math.min(W/2-.5,o[0])),Math.max(-D/2+.5,Math.min(D/2-.5,o[1])),o[2]||0);room.add(g);furn.push(f);
   const h=box(hw0*2+.3,1.3,hd0*2+.3,new THREE.MeshBasicMaterial({visible:false}));h.position.y=.65;h.userData.fix=key;g.add(h);markers.push(h);g.userData={fix:key};return fi}
 const isT=k=>String(k).slice(0,3)==='tbl';
 function onT(x,z,t0){const L=t0?[t0]:Object.values(fixt).filter(f=>isT(f.key));for(const t of L){const dx=x-t.x,dz=z-t.z,c=Math.cos(t.r),s=Math.sin(t.r);if(Math.abs(dx*c-dz*s)<=t.hw0&&Math.abs(dx*s+dz*c)<=t.hd0)return t}return null}
-function capRiders(t){t=t||fixt.tbl;if(!t)return[];const c=Math.cos(t.r),s=Math.sin(t.r);
+function capRiders(t){t=t||fixt.tbl;if(!t)return[];
+  if(t.segs){const c=Math.cos(t.r),s=Math.sin(t.r),loc=(x,z)=>{const dx=x-t.x,dz=z-t.z;return[dx*c-dz*s,dx*s+dz*c]},ins=(x,z)=>{const [a,b]=loc(x,z);return Math.abs(a)<=t.hw0&&Math.abs(b)<=t.hd0},R=[];
+    room.children.forEach(g=>{if(g.userData&&g.userData.slot&&ins(g.position.x,g.position.z)){const [a,b]=loc(g.position.x,g.position.z);R.push({g,lx:a,lz:b,r0:g.rotation.y-t.r})}});
+    dummies.forEach(d=>{if(!d.on&&ins(d.x,d.z)){const [a,b]=loc(d.x,d.z);R.push({d,lx:a,lz:b,r0:(d.rot||0)-t.r})}});
+    Object.values(fixt).forEach(f=>{if(f!==t&&!f.segs&&ins(f.x,f.z)){const [a,b]=loc(f.x,f.z);R.push({fi:f,lx:a,lz:b,r0:f.r-t.r})}});return R}const c=Math.cos(t.r),s=Math.sin(t.r);
   return room.children.filter(g=>g.userData&&g.userData.slot&&TOK.has(g.userData.t)&&onT(g.position.x,g.position.z,t)).map(g=>{const dx=g.position.x-t.x,dz=g.position.z-t.z;return{g,lx:dx*c-dz*s,lz:dx*s+dz*c,r0:g.rotation.y-t.r}})}
 function moveFix(fi,x,z,r,riders){setFix(fi,x,z,r);fx[rm+fi.key]=[x,z,r];
-  if(riders)riders.forEach(q=>{const c=Math.cos(r),s=Math.sin(r),wx=x+q.lx*c+q.lz*s,wz=z-q.lx*s+q.lz*c;q.g.position.x=wx;q.g.position.z=wz;q.g.rotation.y=q.r0+r;offs[q.g.userData.key]=[wx,wz,q.g.rotation.y]})}
+  if(riders)riders.forEach(q=>{const c=Math.cos(r),s=Math.sin(r),wx=x+q.lx*c+q.lz*s,wz=z-q.lx*s+q.lz*c;
+    if(q.fi){setFix(q.fi,wx,wz,q.r0+r);fx[rm+q.fi.key]=[wx,wz,q.fi.r];return}
+    if(q.d){q.d.x=wx;q.d.z=wz;q.d.rot=q.r0+r;const mm=room.children.find(o=>o.userData&&o.userData.dummy===q.d.id);if(mm){mm.position.x=wx;mm.position.z=wz;mm.rotation.y=q.d.rot}return}
+    q.g.position.x=wx;q.g.position.z=wz;q.g.rotation.y=q.r0+r;offs[q.g.userData.key]=[wx,wz,q.g.rotation.y]})}
 function snapWall(g,p){const {W,D}=SIZES[size],sc=g.scale.x,hw=1.6*sc+.2,ch=rm==='church'||!!ROOMS[rm].venue,
   d=[[p.z+D/2,'b'],[D/2-p.z,'f'],[p.x+W/2,'l'],[W/2-p.x,'r']].sort((a,b)=>a[0]-b[0])[0][1],cl=(v,m)=>Math.max(-m,Math.min(m,v));
   if(d==='b'){g.position.set(cl(p.x,Math.max(0,W/2-hw)),ch?.35:0,-D/2+.5);g.rotation.y=0}
@@ -276,29 +291,43 @@ function snapWall(g,p){const {W,D}=SIZES[size],sc=g.scale.x,hw=1.6*sc+.2,ch=rm==
 const gp=(e,y)=>{const p=new THREE.Vector3();ray(e).ray.intersectPlane(new THREE.Plane(new THREE.Vector3(0,1,0),-y),p);return p};
 function rotSel(){rotSel0();if(covOn)covBuild();spkMarks();chkUI()}
 function rotSel0(){if(!ls)return;const a=Math.PI/4;
-  if(ls.t==='f'){const fi=fixt[ls.key];if(fi)moveFix(fi,fi.x,fi.z,fi.r+a,isT(ls.key)?capRiders(fixt[ls.key]):null)}
+  if(ls.t==='f'){const fi=fixt[ls.key];if(fi)moveFix(fi,fi.x,fi.z,fi.r+a,(isT(ls.key)||isCb(ls.key))?capRiders(fixt[ls.key]):null)}
   else if(ls.t==='eq'){const g=room.children.find(o=>o.userData&&o.userData.slot===ls.slot&&o.userData.i===ls.i);if(g){g.rotation.y+=a;offs[g.userData.key]=[g.position.x,g.position.z,g.rotation.y]}}
   else if(ls.t==='d'){const d=dummies.find(o=>o.id===ls.id);if(d){d.rot=(d.rot||0)+a;buildRoom()}}}
 let uf=null,ufn=0;
-const ufKey=f=>(f.kind==='table'?'tbl':f.kind==='chair'?'uc':'us')+f.id;
+const ufKey=f=>(f.kind==='table'?'tbl':f.kind==='chair'?'uc':f.kind==='stool'?'us':'cb')+f.id;
+const isCb=k=>String(k).slice(0,2)==='cb';
+function mkCabin(kind,w,d,key,def){const g=new THREE.Group(),wm=mat(0x3a4170),gm=new THREE.MeshStandardMaterial({color:0x9fd8ff,transparent:true,opacity:.22}),dg=.95,dx=kind==='wall'?0:w/2-.8,segs=[];
+  const wall=(x0,x1,z,hd,glass)=>{if(x1-x0<.05)return;const cx=(x0+x1)/2,hw=(x1-x0)/2;segs.push({x:cx,z,hw,hd});
+    if(glass){let b=box(x1-x0,.9,hd*2,wm);b.position.set(cx,.45,z);g.add(b);b=box(x1-x0,1.2,hd*2,gm);b.position.set(cx,1.5,z);g.add(b);b=box(x1-x0,.3,hd*2,wm);b.position.set(cx,2.25,z);g.add(b)}
+    else{const b=box(x1-x0,2.4,hd*2,wm);b.position.set(cx,1.2,z);g.add(b)}};
+  const fz=kind==='wall'?0:d/2;wall(-w/2,dx-dg/2,fz,.06,true);wall(dx+dg/2,w/2,fz,.06,true);
+  const lt=box(dg,.3,.12,wm);lt.position.set(dx,2.25,fz);g.add(lt);
+  if(kind==='cab'){const fl=box(w,.02,d,mat(0x2b3560));fl.position.y=.01;g.add(fl);wall(-w/2,w/2,-d/2,.06,false);
+    const sw=(x)=>{segs.push({x,z:0,hw:.06,hd:d/2});const b=box(.12,2.4,d,wm);b.position.set(x,1.2,0);g.add(b)};sw(-w/2);sw(w/2)}
+  const fi=mkFix(key,g,w/2,kind==='wall'?.12:d/2,def,false);const i=furn.indexOf(fi.f);if(i>=0)furn.splice(i,1);fi.segs=segs;fi.cab=kind;return fi}
+function snapFix(fi,x,z){const {W,D}=SIZES[size],c=Math.abs(Math.cos(fi.r)),s=Math.abs(Math.sin(fi.r)),hw=c*fi.hw0+s*fi.hd0,hd=s*fi.hw0+c*fi.hd0,sn=.45,g=.08;
+  if(x-hw<-W/2+sn)x=-W/2+hw+g;if(x+hw>W/2-sn)x=W/2-hw-g;if(z-hd<-D/2+sn)z=-D/2+hd+g;if(z+hd>D/2-sn)z=D/2-hd-g;return[x,z]}
 function ufDef(){const {W,D}=SIZES[size],L=[],id=()=>++ufn;
   if(rm==='rec')L.push({id:id(),kind:'chair',x:-W*.12,z:-.3*D+.85,r:Math.PI});
   if(rm==='pod'){const N=size==='s'?2:4,ns=Math.ceil(N/2);for(let k=0;k<N;k++){const sd=k%2,ix=Math.floor(k/2);L.push({id:id(),kind:'chair',x:(ix-(ns-1)/2)*.9,z:sd?-.95:.95,r:sd?0:Math.PI})}}
   return L}
 function buildUF(){if(uf===null)uf=ufDef();uf.forEach(f=>{const k=ufKey(f),def=[f.x,f.z,f.r||0];
-  if(f.kind==='table')mkTable(f.w,f.d,def,k);
+  if(f.kind==='table')mkTable(f.w,f.d,def,k);else if(f.kind==='cabin'||f.kind==='wall')mkCabin(f.kind==='wall'?'wall':'cab',f.w,f.d,k,def);
   else if(f.kind==='chair')mkFix(k,chairMesh('chair'),.3,.3,def,true);
   else{const st=new THREE.Group(),wm=mat(0x8a6a44);const sc=new THREE.Mesh(new THREE.CylinderGeometry(.2,.2,.06,16),wm);sc.position.y=.66;st.add(sc);
     [[-.12,-.12],[.12,-.12],[-.12,.12],[.12,.12]].forEach(([a,b])=>{const l=new THREE.Mesh(new THREE.CylinderGeometry(.015,.015,.66,6),mat(0x555555));l.position.set(a,.33,b);st.add(l)});mkFix(k,st,.22,.22,def,true)}})}
-function addF(kind,w,d){if(uf===null)uf=ufDef();const n=uf.length,f={id:++ufn,kind,w,d,x:((n%5)-2)*.8,z:Math.floor(n/5)*.9,r:0};uf.push(f);const k=ufKey(f);buildRoom();fsel=k;ls={t:'f',key:k};dsel=null;chkUI()}
-function delF(){if(!fsel||uf===null)return;const n=uf.length;uf=uf.filter(f=>ufKey(f)!==fsel);if(uf.length===n)return;delete fx[rm+fsel];fsel=null;ls=null;buildRoom();chkUI()}
+function addF(kind,w,d){if(kind==='cabin'||kind==='wall'){if(uf===null)uf=ufDef()}if(uf===null)uf=ufDef();const n=uf.length,f={id:++ufn,kind,w,d,x:((n%5)-2)*.8,z:Math.floor(n/5)*.9,r:0};uf.push(f);const k=ufKey(f);buildRoom();fsel=k;ls={t:'f',key:k};dsel=null;chkUI()}
+function seatOn(){const fi=fixt[fsel];if(!fi||!/^(uc|us|g|stool)/.test(fsel)){alert('Choisissez d\'abord une chaise ou un tabouret en cliquant dessus.');return}if(dummies.some(d=>d.on===fsel))return;const d={id:++dn,kind:'sit',x:fi.x,z:fi.z,rot:fi.r,on:fsel,c:[0xd9a066,0x8d5524,0xf1c27d,0xc68642,0x6b4423][dn%5]};dummies.push(d);dsel=d.id;buildRoom();chkUI()}
+function delF(){if(!fsel||uf===null)return;const n=uf.length;uf=uf.filter(f=>ufKey(f)!==fsel);if(uf.length===n)return;dummies=dummies.filter(d=>d.on!==fsel);delete fx[rm+fsel];fsel=null;ls=null;buildRoom();chkUI()}
 let drag=null;let dummies=[],dsel=null,furn=[],dn=0;
-const HS={spk:[.3,.25],mon:[.25,.2],mic:[.12,.12],stand:[.2,.2],kbd:[.65,.25],piano:[.75,.3],mix:[.5,.4],amp:[.3,.2],pwr:[.2,.15],cam:[.15,.15],tri:[.25,.25],light:[.3,.3],bg:[1.2,.15],scr:[1.7,.3],box:[.15,.15],lap:[.2,.15],hp:[.12,.12],pc:[.3,.25]};
+const HS={spk:[.3,.25],mon:[.25,.2],mic:[.12,.12],stand:[.2,.2],kbd:[.65,.25],piano:[.75,.3],mix:[.5,.4],amp:[.3,.2],pwr:[.2,.15],cam:[.15,.15],tri:[.25,.25],light:[.3,.3],bg:[1.2,.15],scr:[1.7,.3],box:[.15,.15],lap:[.2,.15],hp:[.12,.12],pc:[.3,.25],gtr:[.25,.2],drm:[.7,.6],pno:[.75,.3],perc:[.35,.25],wnd:[.2,.2]};
 const eqBoxes=()=>room.children.filter(g=>g.userData&&g.userData.slot).map(g=>{const t=SLOTS.find(s=>s.id===g.userData.slot).t;let h=HS[t]||[.2,.2];if(t==='scr'){const k=g.scale.x;h=[h[0]*k,h[1]];if(Math.abs(Math.sin(g.rotation.y))>.5)h=[h[1],h[0]]}return{x:g.position.x,z:g.position.z,hw:h[0],hd:h[1]}});
 const hitC=(x,z,r,b)=>{const dx=Math.max(Math.abs(x-b.x)-b.hw,0),dz=Math.max(Math.abs(z-b.z)-b.hd,0);return dx*dx+dz*dz<r*r};
 function valid(d,x,z){const {W,D}=SIZES[size],r=.28;if(Math.abs(x)>W/2-.3||Math.abs(z)>D/2-.3)return false;
   for(const b of eqBoxes())if(hitC(x,z,r,b))return false;
   for(const f of furn){if(d.kind==='sit'&&f.pew)continue;if(hitC(x,z,r,f))return false}
+  for(const fi of Object.values(fixt))if(fi.segs){const dx=x-fi.x,dz=z-fi.z,c=Math.cos(fi.r),s=Math.sin(fi.r),lx=dx*c-dz*s,lz=dx*s+dz*c;for(const sg of fi.segs)if(hitC(lx,lz,r,sg))return false}
   for(const o of dummies)if(o!==d&&Math.hypot(o.x-x,o.z-z)<.5)return false;
   if(rm==='church'&&d.kind==='sit'&&!furn.some(f=>f.pew&&Math.abs(x-f.x)<=f.hw&&Math.abs(z-f.z)<=f.hd+.05))return false;
   return true}
@@ -314,7 +343,7 @@ function person(d){const g=new THREE.Group(),m=c=>mat(c),sk=m(d.c),cl=m([0x3b5bd
   if(d.kind==='stand'){[-.08,.08].forEach(x=>add(cy(.07,.06,.8,m(0x333355)),x,.4,0));add(cy(.17,.15,.6,cl),0,1.1,0);add(new THREE.Mesh(new THREE.SphereGeometry(.12,12,12),sk),0,1.55,0)}
   else{[-.08,.08].forEach(x=>{add(box(.12,.12,.4,m(0x333355)),x,.45,.17);add(cy(.06,.05,.45,m(0x333355)),x,.22,.38)});
     add(cy(.17,.15,.6,cl),0,.85,0);add(new THREE.Mesh(new THREE.SphereGeometry(.12,12,12),sk),0,1.3,0);
-    if(rm!=='church'){add(box(.45,.04,.45,m(0x555555)),0,.4,0);add(box(.45,.5,.04,m(0x555555)),0,.65,-.22)}}
+    if(rm!=='church'&&!d.on){add(box(.45,.04,.45,m(0x555555)),0,.4,0);add(box(.45,.5,.04,m(0x555555)),0,.65,-.22)}}
   const h=box(.7,1.8,.7,new THREE.MeshBasicMaterial({visible:false}));h.position.y=.9;h.userData.dummy=d.id;g.add(h);markers.push(h);
   g.position.set(d.x,dyOf(d),d.z);g.rotation.y=d.rot||0;g.userData={dummy:d.id};return g}
 function spawn(kind){const {W,D}=SIZES[size];const d={id:++dn,kind,x:0,z:0,c:[0xd9a066,0x8d5524,0xf1c27d,0xc68642,0x6b4423][dn%5]};
@@ -454,6 +483,7 @@ const seatInfo=()=>true?{n:0,st:'chair'}:ROOMS[rm].venue?{n:0,st:'chair'}:rm==='
 function totals(){let t=0,req=[],rows=[];
   active().forEach(s=>{if(sel[s.id]==null||DECO.has(s.id))return;const o=s.o[sel[s.id]],q=qty(s),pr=price(o);
     if(pr==null)req.push(s.l);else t+=pr*q;rows.push({s,o,q,pr})});
+  acBuy().forEach(b=>{t+=b.pr;rows.push({s:{l:'Traitement acoustique'},o:{n:b.n},q:1,pr:b.pr})});
   const si=seatInfo();if(si.n>0){const sp=local['seat:'+si.st];if(sp>0){t+=sp*si.n;rows.push({s:{l:'Sièges'},o:{n:STN[si.st]},q:si.n,pr:sp})}else req.push('Sièges ('+si.n+' places, '+STN[si.st]+')')}
   if(fwd==='ps'&&rows.some(r=>r.pr!=null))t+=Math.round(5*1.392*(1+mar/100)*(1+fee/100));
   return{t,req,rows}}
@@ -506,8 +536,12 @@ function product0(t,ghost){
   const add=(o,x,y,z)=>{o.position.set(x,y,z);g.add(o)};
   switch(t){
    case'spk':add(box(.55,.85,.45,m()),0,.43,0);if(!ghost){const cn=new THREE.Mesh(new THREE.CylinderGeometry(.17,.17,.02,20),mat(0x555555));cn.rotation.x=Math.PI/2;add(cn,0,.4,.23)}break;
-   case'piano':add(box(1.4,.12,.45,m()),0,.78,0);add(box(1.4,.04,.16,mat(0xf2f2f2)),0,.86,.26);[-.65,.65].forEach(x=>add(box(.06,.78,.4,m()),x,.39,0));add(box(1.3,.5,.1,m()),0,1.1,-.18);break;
+   case'pno':case'piano':add(box(1.4,.12,.45,m()),0,.78,0);add(box(1.4,.04,.16,mat(0xf2f2f2)),0,.86,.26);[-.65,.65].forEach(x=>add(box(.06,.78,.4,m()),x,.39,0));add(box(1.3,.5,.1,m()),0,1.1,-.18);break;
    case'mon':add(box(.45,.3,.35,m()),0,.15,0);break;
+   case'gtr':{add(box(.4,.5,.09,m()),0,.5,0);add(box(.06,.62,.04,mat(0x3a2a1a)),0,1.05,0);add(box(.5,.03,.3,mat(0x333333)),0,.015,0);break}
+   case'drm':{const cyl=(r,h,y,x,z,c,rx)=>{const o=new THREE.Mesh(new THREE.CylinderGeometry(r,r,h,16),mat(c));if(rx)o.rotation.x=Math.PI/2;add(o,x,y,z)};cyl(.24,.4,.28,0,0,0x2b2b3a,1);cyl(.15,.12,.62,-.4,.3,0x3a3a50);cyl(.12,.12,.78,-.15,-.2,0x3a3a50);cyl(.13,.12,.78,.18,-.2,0x3a3a50);cyl(.2,.015,1.1,.55,.1,0xc8a22a);cyl(.2,.015,1.15,-.55,0,0xc8a22a);cyl(.16,.2,.4,0,.65,0x555566);break}
+   case'perc':{[-.17,.17].forEach(x=>add(new THREE.Mesh(new THREE.CylinderGeometry(.14,.1,.75,14),m()),x,.4,0));break}
+   case'wnd':{add(new THREE.Mesh(new THREE.CylinderGeometry(.03,.03,.7,10),m()),0,.8,0);add(new THREE.Mesh(new THREE.CylinderGeometry(.03,.09,.14,10),m()),0,.4,0);add(new THREE.Mesh(new THREE.CylinderGeometry(.015,.2,.04,3),mat(0x333333)),0,.02,0);break}
    case'mic':add(new THREE.Mesh(new THREE.CylinderGeometry(.015,.015,1.3,8),m()),0,.65,0);add(new THREE.Mesh(new THREE.SphereGeometry(.07,12,12),ghost?m():mat(0xcccccc)),0,1.33,0);break;
    case'stand':add(new THREE.Mesh(new THREE.CylinderGeometry(.01,.01,1.1,6),m()),0,.55,0);add(new THREE.Mesh(new THREE.CylinderGeometry(.22,.22,.02,14),m()),0,.01,0);break;
    case'kbd':add(box(1.2,.08,.35,m()),0,.8,0);add(box(.04,.8,.3,m()),-.5,.4,0);add(box(.04,.8,.3,m()),.5,.4,0);break;
@@ -613,7 +647,7 @@ function plotOpen(full){full=full===true;const K=c=>pdfColor?c:'#fff',{W,D}=SIZE
     const lx=x,ly=t==='spk'?y+21:y+4;it+=sym+`<text x="${lx}" y="${ly}" font-size="10" text-anchor="middle" font-weight="bold" fill="#111" stroke="#fff" stroke-width="2.5" paint-order="stroke">${n}</text>`;list.push([n,sl.l,o.n]);if(t==='mic')mics.push([sl.l,o.n])});
   svg+=dots+it;
   Object.keys(acc).forEach(id=>{const sl=SLOTS.find(x=>x.id===id);list.push(['—',sl.l+' ×'+acc[id]+' (petits points gris sur le plan)',sel[id]!=null?sl.o[sel[id]].n:''])});
-  Object.values(fixt).forEach(fi=>{const x=px(fi.x),y=pz(fi.z),deg=-fi.r*180/Math.PI;svg+=`<rect x="${x-fi.hw0*S}" y="${y-fi.hd0*S}" width="${fi.hw0*2*S}" height="${fi.hd0*2*S}" fill="${fi.key==='tbl'?K('#e6d3b3'):K('#f0f0f0')}" stroke="#8a6a44" transform="rotate(${deg} ${x} ${y})"/>`});
+  Object.values(fixt).forEach(fi=>{const x=px(fi.x),y=pz(fi.z),deg=-fi.r*180/Math.PI;if(fi.segs){svg+=`<g transform="rotate(${deg} ${x} ${y})">`+fi.segs.map(q=>`<rect x="${x+(q.x-q.hw)*S}" y="${y+(q.z-q.hd)*S}" width="${q.hw*2*S}" height="${Math.max(q.hd*2*S,3)}" fill="${K('#8fa2ff')}" stroke="#555"/>`).join('')+'</g>';return}svg+=`<rect x="${x-fi.hw0*S}" y="${y-fi.hd0*S}" width="${fi.hw0*2*S}" height="${fi.hd0*2*S}" fill="${isT(fi.key)?K('#e6d3b3'):K('#f0f0f0')}" stroke="#8a6a44" transform="rotate(${deg} ${x} ${y})"/>`});
   svg+=`<line x1="20" y1="${D*S+34}" x2="${20+5*S}" y2="${D*S+34}" stroke="#111" stroke-width="2"/><text x="${20+5*S+6}" y="${D*S+38}" font-size="11">5 m</text><text x="${W*S+20}" y="${D*S+38}" font-size="11" text-anchor="end">${stageC()?'Scène au centre':'Fond de scène en haut'}</text></svg>`;const esc=t=>String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;');
   let shot='';try{R.render(scene,cam);shot='<h3>Aperçu 3D</h3>'+frameHtml(inkShot())}catch(e){}
   const html=(()=>{const hs=t=>{let h=0;for(let i=0;i<t.length;i++)h=(h*31+t.charCodeAt(i))|0;return Math.abs(h)},now=new Date(),ds=now.toLocaleDateString('fr-FR',{day:'numeric',month:'long',year:'numeric'}),ref='PR-'+now.toISOString().slice(0,10).replace(/-/g,'')+'-'+(1000+hs(encodeState())%9000),rr=totals(),nf=x=>x.toLocaleString('fr-FR'),A=Math.round(W*D),
@@ -712,7 +746,7 @@ function buildRoom(){
       if(ROOMS[rm].es&&s.t!=='scr')g.scale.setScalar(ROOMS[rm].es[size]);g.userData={slot:s.id,ghost,i,key:rm+s.id+i,t:s.t};room.add(g)}
   });
   if(rm!=='church'&&!ROOMS[rm].venue)buildGuests(W,D);
-  dummies.forEach(d=>{if(!valid(d,d.x,d.z)){freeSpot(d,d.x,d.z);seatFix(d)}room.add(person(d))});
+  dummies=dummies.filter(d=>!d.on||fixt[d.on]);dummies.forEach(d=>{if(d.on){const fi=fixt[d.on];d.x=fi.x;d.z=fi.z;d.rot=fi.r}else if(!valid(d,d.x,d.z)){freeSpot(d,d.x,d.z);seatFix(d)}room.add(person(d))});
   rad=ROOMS[rm].rad[size]*radK();
   covBuild();buildCrowd();zoneBuild();if(typeof fillUI==='function'){fillUI();acRes()}
 }
@@ -732,12 +766,12 @@ cv.addEventListener('pointerdown',e=>{if(!zdraw)return;e.stopImmediatePropagatio
 cv.addEventListener('pointermove',e=>{if(!zdraw||!zdn)return;e.stopImmediatePropagation();zp(e)},true);
 const zu=e=>{if(!zdraw||!zdn)return;zdn=false;e.stopImmediatePropagation();covBuild();covRes()};cv.addEventListener('pointerup',zu,true);cv.addEventListener('pointercancel',zu,true)}
 cv.addEventListener('pointerdown',e=>{cv.setPointerCapture(e.pointerId);pts.set(e.pointerId,[e.clientX,e.clientY]);moved=0;pd=pts.size==2?dist():0;
-  drag=null;if(pts.size===1){const hs0=ray(e).intersectObjects(markers),hsE=hs0.filter(x=>!x.object.userData.fix),hs=hsE.length?hsE:hs0,q0=hs.length>1?gp(e,.5):null,h=q0?hs.slice().sort((p,r)=>Math.hypot(p.object.parent.position.x-q0.x,p.object.parent.position.z-q0.z)-Math.hypot(r.object.parent.position.x-q0.x,r.object.parent.position.z-q0.z))[0]:hs[0];if(h){const u=h.object.userData;if(u.fix){const fi=fixt[u.fix],q=gp(e,.5);drag={fix:u.fix,g:h.object.parent,riders:isT(u.fix)?capRiders(fixt[u.fix]):null,ox:q?fi.x-q.x:0,oz:q?fi.z-q.z:0};ls={t:'f',key:u.fix}}else if(u.dummy){drag={dummy:u.dummy,g:h.object.parent};ls={t:'d',id:u.dummy}}else{const g0=h.object.parent,q=gp(e,g0.position.y+.6);drag={slot:u.slot,i:u.i,g:g0,py:g0.position.y+.6,ox:q?g0.position.x-q.x:0,oz:q?g0.position.z-q.z:0};ls={t:'eq',slot:u.slot,i:u.i}};cv.style.cursor='move'}}});
+  drag=null;if(pts.size===1){const hs0=ray(e).intersectObjects(markers),hsE=hs0.filter(x=>!x.object.userData.fix),hs=hsE.length?hsE:hs0,q0=hs.length>1?gp(e,.5):null,h=q0?hs.slice().sort((p,r)=>Math.hypot(p.object.parent.position.x-q0.x,p.object.parent.position.z-q0.z)-Math.hypot(r.object.parent.position.x-q0.x,r.object.parent.position.z-q0.z))[0]:hs[0];if(h){const u=h.object.userData;if(u.fix){const fi=fixt[u.fix],q=gp(e,.5);drag={fix:u.fix,g:h.object.parent,riders:(isT(u.fix)||isCb(u.fix))?capRiders(fixt[u.fix]):null,ox:q?fi.x-q.x:0,oz:q?fi.z-q.z:0};ls={t:'f',key:u.fix}}else if(u.dummy){drag={dummy:u.dummy,g:h.object.parent};ls={t:'d',id:u.dummy}}else{const g0=h.object.parent,q=gp(e,g0.position.y+.6);drag={slot:u.slot,i:u.i,g:g0,py:g0.position.y+.6,ox:q?g0.position.x-q.x:0,oz:q?g0.position.z-q.z:0};ls={t:'eq',slot:u.slot,i:u.i}};cv.style.cursor='move'}}});
 cv.addEventListener('pointermove',e=>{if(!pts.has(e.pointerId))return;const p=pts.get(e.pointerId),dx=e.clientX-p[0],dy=e.clientY-p[1];
   pts.set(e.pointerId,[e.clientX,e.clientY]);moved+=Math.abs(dx)+Math.abs(dy);
-  if(drag&&drag.dummy&&pts.size===1){if(moved>6){const p3=new THREE.Vector3(),d=dummies.find(o=>o.id===drag.dummy);ray(e).ray.intersectPlane(new THREE.Plane(new THREE.Vector3(0,1,0),0),p3);if(p3&&d){moveD(d,p3.x,p3.z);drag.g.position.set(d.x,dyOf(d),d.z);drag.g.rotation.y=d.rot||0}}}
+  if(drag&&drag.dummy&&pts.size===1){if(moved>6&&!(dummies.find(o=>o.id===drag.dummy)||{}).on){const p3=new THREE.Vector3(),d=dummies.find(o=>o.id===drag.dummy);ray(e).ray.intersectPlane(new THREE.Plane(new THREE.Vector3(0,1,0),0),p3);if(p3&&d){moveD(d,p3.x,p3.z);drag.g.position.set(d.x,dyOf(d),d.z);drag.g.rotation.y=d.rot||0}}}
   else if(drag&&drag.fix&&pts.size===1){if(moved>6){const p3=new THREE.Vector3(),{W,D}=SIZES[size],fi=fixt[drag.fix];ray(e).ray.intersectPlane(new THREE.Plane(new THREE.Vector3(0,1,0),-.5),p3);
-    if(p3&&fi)moveFix(fi,Math.max(-W/2+.5,Math.min(W/2-.5,p3.x+drag.ox)),Math.max(-D/2+.5,Math.min(D/2-.5,p3.z+drag.oz)),fi.r,drag.riders)}}
+    if(p3&&fi){let nx=Math.max(-W/2+.5,Math.min(W/2-.5,p3.x+drag.ox)),nz=Math.max(-D/2+.5,Math.min(D/2-.5,p3.z+drag.oz));if(isT(fi.key)||isCb(fi.key))[nx,nz]=snapFix(fi,nx,nz);moveFix(fi,nx,nz,fi.r,drag.riders)}}}
   else if(drag&&pts.size===1){if(moved>6){const p3=new THREE.Vector3();ray(e).ray.intersectPlane(new THREE.Plane(new THREE.Vector3(0,1,0),-drag.py),p3);
     const {W,D}=SIZES[size],g=drag.g;if(p3){if(g.userData.t==='scr')snapWall(g,p3);else{const x=Math.max(-W/2+.3,Math.min(W/2-.3,p3.x+drag.ox)),z=Math.max(-D/2+.3,Math.min(D/2-.3,p3.z+drag.oz));g.position.x=x;g.position.z=z;const on=TOK.has(g.userData.t)&&!!onT(x,z);g.position.y=on?.78:0;setOn(g,on);if(g.userData.t==='spk'||g.userData.t==='mon')spkMarks()}
       offs[g.userData.key]=[g.position.x,g.position.z,g.rotation.y]}}}
@@ -822,6 +856,9 @@ const MAT={wall:[['bet','Béton / parpaing nu',.03,0x7a8099],['bri','Brique endu
  roof:[['bet','Dalle béton',.03,0x7a8099],['tol','Tôle (bac acier)',.10,0x9aa4b0],['boi','Bois / charpente',.12,0x8a6a44],['fau','Faux plafond acoustique',.65,0xdcdcc8],['pla','Plâtre',.05,0xcfd2dc]],
  floor:[['bet','Béton / carrelage',.02,0x3a4060],['boi','Bois / parquet',.08,0x6b4f33],['moq','Moquette / tapis',.35,0x4a3a6a],['ter','Terre / herbe',.15,0x2f7a3e]]};
 const acBy={};
+const ACP={pan:[38,26,15,'Panneaux acoustiques muraux'],rid:[22,15,8,'Rideaux lourds'],fau:[30,21,12,'Faux plafond acoustique'],moq:[18,12,6,'Moquette / tapis']},acT={};
+const acArea=k=>{const {W,D}=SIZES[size],a=acv();return k==='wall'?2*(W+D)*a.h:W*D};
+function acBuy(){const t=acT[rm],a=acv();if(!t||a.env==='out')return[];return['wall','roof','floor'].filter(k=>t[k]&&a[k]===t[k].mat).map(k=>{const m=t[k].mat,ar=Math.round(acArea(k)),pr=Math.round(ar*ACP[m][lvl-1]);return{k,m,ar,pr,n:ACP[m][3]+' ('+ar+' m², pose incluse, prix estimé)'}})}
 const acDef=k=>({church:{env:'in',wall:'bri',roof:'tol',floor:'bet',h:5},rec:{env:'in',wall:'bri',roof:'fau',floor:'moq',h:2.8},pod:{env:'in',wall:'bri',roof:'fau',floor:'moq',h:2.8},vid:{env:'in',wall:'bri',roof:'fau',floor:'moq',h:3.5},pho:{env:'in',wall:'bri',roof:'fau',floor:'moq',h:3.5},amph:{env:'out',wall:'bet',roof:'bet',floor:'bet',h:8},balc:{env:'in',wall:'bri',roof:'pla',floor:'boi',h:9},stad:{env:'out',wall:'bet',roof:'bet',floor:'ter',h:20}}[k]);
 const acv=()=>acBy[rm]||(acBy[rm]=acDef(rm));
 const mget=(t,k)=>MAT[t].find(x=>x[0]===k)||MAT[t][0];
@@ -835,7 +872,7 @@ function acPdf(){const r=acoustics(fillPct);if(r.out)return'<h2>Acoustique de la
   rows=sc.map(([n,ov])=>{const p=acoustics(fillPct,ov),p0=acoustics(0,ov),p1=acoustics(100,ov),qq=rateRt(p.rt);return`<tr><td>${n}</td><td>${fs(p0.rt)} → ${fs(p1.rt)}</td><td>${fs(p.rt)}</td><td>${qq.t}</td><td>${(Math.round(p.dc*10)/10).toString().replace('.',',')} m</td></tr>`}).join('');
   return'<h2>Acoustique de la salle</h2><p class="sm">L\'écho (RT60) est le temps que le son met à s\'éteindre dans la salle. Pour la parole, visez environ '+(['rec','pod','vid','pho'].includes(rm)?'0,5 s':'1 s')+' ou moins. Plus l\'écho est long, plus les mots se mélangent : monter le volume ne l\'améliore pas et l\'aggrave. La distance critique est la distance à l\'enceinte au-delà de laquelle l\'écho de la salle couvre le son direct.</p>'
   +'<p class="sm">Calcul (formule de Sabine) à partir de vos dimensions : '+Math.round(W*10)/10+' × '+Math.round(D*10)/10+' × '+a.h+' m, soit '+Math.round(r.V).toLocaleString('fr-FR')+' m³, de vos matériaux ('+mget('wall',a.wall)[1]+', '+mget('roof',a.roof)[1]+', '+mget('floor',a.floor)[1]+') et du remplissage ('+(r.occ?r.occ+' personnes':'salle vide')+'). Résultat actuel : écho '+fs(r.rt)+', compréhension de la parole « '+q.t.toLowerCase()+' ».</p>'
-  +'<table><tr><th style="width:34%">Scénario</th><th>Vide → pleine</th><th>Écho actuel</th><th>Parole</th><th>Dist. critique</th></tr>'+rows+'</table><p class="sm">Estimation indicative, à confirmer par une mesure sur place. Les traitements acoustiques ne sont pas inclus dans le prix.</p>'}
+  +'<table><tr><th style="width:34%">Scénario</th><th>Vide → pleine</th><th>Écho actuel</th><th>Parole</th><th>Dist. critique</th></tr>'+rows+'</table><p class="sm">Estimation indicative, à confirmer par une mesure sur place. '+(acBuy().length?'Les traitements choisis sont chiffrés dans le devis (prix estimés, à confirmer).':'Les traitements acoustiques ne sont pas inclus dans le prix.')+'</p>'}
 function rateRt(rt){const st=rm==='rec'||rm==='pod'||rm==='vid'||rm==='pho',T=st?[.35,.5,.8]:[.8,1.2,1.8,2.5],L=['Excellente','Bonne','Moyenne','Difficile','Très difficile'],C=['#3cc878','#8fd13c','#ebd23c','#f08c32','#dc3c3c'];let i=0;while(i<T.length&&rt>T[i])i++;return{t:L[i],c:C[i],i}}
 const fs=x=>x.toFixed(1).replace('.',',')+' s';
 function acRes(){const e=document.getElementById('acres');if(!e)return;const a=acv(),r=acoustics(fillPct);
@@ -864,8 +901,10 @@ function acUI(){const B=document.getElementById('acbox');if(!B)return;const a=ac
   <label>Lieu <select id="ae"><option value="in" ${a.env==='in'?'selected':''}>Intérieur</option><option value="out" ${a.env==='out'?'selected':''}>Plein air</option></select></label>
   <label>Hauteur sous plafond (m) <input id="ah" type="number" min="2" max="60" step="0.5" value="${a.h}"></label>
   <label>Murs ${so('aw','wall',a.wall)}</label><label>Plafond / toit ${so('ar','roof',a.roof)}</label><label>Sol ${so('af','floor',a.floor)}</label>
+  ${a.env==='in'?`<div class="zone" style="margin-top:10px">Traitement à ajouter au devis</div><div class="mini" style="margin:0 0 4px">Prix estimés par m², pose incluse, selon la qualité choisie (${LV[lvl].n.toLowerCase()}). À confirmer par un devis local.</div>`+[['wall','Murs',['pan','rid']],['roof','Plafond',['fau']],['floor','Sol',['moq']]].map(([k,l,L])=>{const t=acT[rm]&&acT[rm][k],cur=t&&a[k]===t.mat?t.mat:'';return`<label>${l}<select id="t${k}"><option value="">Aucun</option>${L.map(m=>`<option value="${m}" ${cur===m?'selected':''}>${ACP[m][3]} · ${Math.round(acArea(k))} m² · ${money(Math.round(acArea(k)*ACP[m][lvl-1]))}</option>`).join('')}</select></label>`}).join(''):''}
   <div class="mini" id="acres" style="margin-top:8px"></div><div class="mini">Estimation indicative (formule de Sabine), à confirmer par une mesure sur place.</div></details></div>`;
   const ch=()=>{a.env=ae.value;a.h=Math.max(2,Math.min(60,+ah.value||a.h));a.wall=aw.value;a.roof=ar.value;a.floor=af.value;buildRoom();renderList();acRes()};
+  ['wall','roof','floor'].forEach(k=>{const e=document.getElementById('t'+k);if(e)e.onchange=()=>{const T=acT[rm]||(acT[rm]={});const prev=T[k]&&a[k]===T[k].mat?T[k].prev:a[k];if(e.value){T[k]={mat:e.value,prev};a[k]=e.value}else{if(T[k]&&a[k]===T[k].mat)a[k]=T[k].prev;delete T[k]}buildRoom();renderList();acRes()}});
   ['ae','ah','aw','ar','af'].forEach(i=>document.getElementById(i).onchange=ch);acRes()}
 // ===== Couverture maximale et zone à couvrir =====
 let tgt=90,trim=0,zdraw=false,zerase=false,zg=null;
@@ -1021,7 +1060,7 @@ chrome();document.getElementById('d1').onclick=()=>spawn('stand');document.getEl
  setInterval(()=>{if(busy)return;const c=encodeState(),n=Date.now();if(c!==pend){pend=c;pt=n}else if(pend!==last&&n-pt>=350){hist.push(last);if(hist.length>60)hist.shift();last=pend;fut=[]}},150);
  document.getElementById('un').onclick=()=>{if(pend!==last){hist.push(last);last=pend}if(!hist.length)return;fut.push(last);load(hist.pop())};
  document.getElementById('re').onclick=()=>{if(!fut.length)return;hist.push(last);load(fut.pop())}}
-document.getElementById('fa1').onclick=()=>addF('table',1.6,.8);document.getElementById('fa2').onclick=()=>addF('table',2.6,1);document.getElementById('fa3').onclick=()=>addF('chair');document.getElementById('fa4').onclick=()=>addF('stool');document.getElementById('fa5').onclick=delF;document.getElementById('lbt').onchange=function(){showLab=this.checked;room.children.forEach(c=>{if(c.userData&&c.userData.lab)c.visible=showLab})};
+document.getElementById('fa1').onclick=()=>addF('table',1.6,.8);document.getElementById('fa2').onclick=()=>addF('table',2.6,1);document.getElementById('fa3').onclick=()=>addF('chair');document.getElementById('fa4').onclick=()=>addF('stool');document.getElementById('fa5').onclick=delF;document.getElementById('fa6').onclick=()=>addF('cabin',3,2.6);document.getElementById('fa7').onclick=()=>addF('wall',3,.12);document.getElementById('fa8').onclick=seatOn;document.getElementById('lbt').onchange=function(){showLab=this.checked;room.children.forEach(c=>{if(c.userData&&c.userData.lab)c.visible=showLab})};
 document.getElementById('d3').onclick=()=>{dummies=dummies.filter(o=>o.id!==dsel);dsel=null;buildRoom()};
 document.getElementById('rst').onclick=()=>{for(const k in offs)delete offs[k];fx={};buildRoom()};function localUI(){const names=[];Object.values(ROOMS).forEach(r=>r.slots.forEach(sl=>sl.o.forEach(o=>{if(o.us==null&&!names.includes(o.n))names.push(o.n)})));
   const rowH=(k,l)=>`<label><span class="nm">${l}</span><input data-k="${k}" type="number" min="0" placeholder="$ livré" value="${local[k]||''}"></label>`;

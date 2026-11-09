@@ -1406,10 +1406,10 @@ function shopCartBtn(){if(rmode==='rent')return;const r=totals(),L=[];let tot=0;
   r.rows.forEach(x=>{const st=STOCK[x.o.n];if(st&&st.qty>0){const q=Math.min(x.q,st.qty);L.push((st.sku||st.id)+':'+q);tot+=st.price*q}});
   const box=document.getElementById('mbody');if(!box||!L.length)return;
   box.insertAdjacentHTML('beforeend','<div class="mini" style="margin-top:10px">'+L.length+' produit(s) en stock : commandez-les directement.</div><a class="cta" target="_blank" rel="noopener" href="'+SHOP_URL+'?cart='+L.join(',')+'">Commander dans la boutique ('+money(tot)+')</a>')}
-let quoteCode='',quoteBase='';
+let quoteCode='',quoteBase='',quoteNo='';
 function buildQuote(r){const rent=rmode==='rent',z=SIZES[size],L=[],ev=rm==='church'?EVN[evt]:ROOMS[rm].n,hr='━━━━━━━━━━━━━━━',
     dl=String(LV[lvl].dl||'').replace(/^Délai ?: ?/i,'');
-  L.push('*PYRAMIDE RECORD*','_Demande de devis · '+(rent?'Location':'Vente')+'_','');
+  L.push('*PYRAMIDE RECORD*','_Demande de devis · '+(rent?'Location':'Vente')+' · n° '+quoteNo_()+'_','');
   if(client.n||client.t)L.push('👤 *Client* : '+[client.n,client.t].filter(Boolean).join(' · '));
   L.push('📍 *Salle* : '+z.n+(z.W&&z.D?' ('+z.W+' × '+z.D+' m)':'')+' · '+ev);
   L.push('⭐ *Qualité* : '+LV[lvl].n);
@@ -1431,39 +1431,69 @@ function quoteSet(){quoteBase=buildQuote(totals());quoteText=quoteBase+(quoteCod
   const t=document.getElementById('qt');if(t)t.value=quoteText;
   const w=document.getElementById('qwa');if(w)w.href='https://wa.me/'+(contact.wa||'').replace(/\D/g,'')+'?text='+encodeURIComponent(quoteBase);
   const m=document.getElementById('qem');if(m&&contact.em)m.href='mailto:'+contact.em+'?subject='+encodeURIComponent('Demande de devis ('+(rmode==='rent'?'LOCATION':'VENTE')+') – Pyramide Record')+'&body='+encodeURIComponent(quoteText)}
-function miniPdf(txt,imgUrl,iw,ih){
-  const lat=s=>{let o='';for(const ch of s){const c=ch.codePointAt(0);o+=c<256?ch:(c===0x2014||c===0x2013?'-':c===0x2019?"'":'')}return o},
-    esc=s=>s.replace(/\\/g,'\\\\').replace(/\(/g,'\\(').replace(/\)/g,'\\)'),
-    bin=s=>{const u=new Uint8Array(s.length);for(let i=0;i<s.length;i++)u[i]=s.charCodeAt(i)&255;return u};
-  const pages=[[]];let y=800,pi=0;const add=o=>pages[pi].push(o),need=h=>{if(y-h<50){pages.push([]);pi++;y=800}};
-  add('BT /F2 18 Tf 50 '+y+' Td (PYRAMIDE RECORD) Tj ET');y-=22;
-  add('BT /F1 10 Tf 50 '+y+' Td (Devis estimatif - '+esc(lat(new Date().toLocaleDateString('fr-FR')))+') Tj ET');y-=16;
-  let ib=null;
-  if(imgUrl){try{ib=bin(atob(imgUrl.split(',')[1]));const H=Math.min(300,495*ih/iw),Wd=H*iw/ih;y-=H;add('q '+Wd.toFixed(1)+' 0 0 '+H.toFixed(1)+' 50 '+y.toFixed(1)+' cm /Im Do Q');y-=14}catch(e){ib=null}}
-  txt.split('\n').forEach(raw=>{
-    if(raw.trim()==='*PYRAMIDE RECORD*')return;if(raw.indexOf('━')>=0){need(14);y-=6;add('0.6 w 50 '+y+' m 545 '+y+' l S');y-=8;return}
-    const bold=/^\*[^*]+\*$/.test(raw.trim());let l=lat(raw.replace(/[*_]/g,''));
-    if(!l.trim()){y-=6;return}
-    const ind=(l.match(/^ */)||[''])[0].length;l=l.trim();
-    const fs=bold?11:10,mx=bold?80:92-ind,out=[];let cur='';
-    l.split(' ').forEach(w=>{if((cur+' '+w).trim().length>mx){out.push(cur);cur=w}else cur=(cur+' '+w).trim()});out.push(cur);
-    out.forEach(t=>{need(16);add('BT /'+(bold?'F2':'F1')+' '+fs+' Tf '+(50+ind*3)+' '+y+' Td ('+esc(t)+') Tj ET');y-=14})});
-  const chunks=[],xo=[];let len=0;
-  const put=x=>{const u=typeof x==='string'?bin(x):x;chunks.push(u);len+=u.length};
-  const obj=(id,fn)=>{xo[id]=len;put(id+' 0 obj\n');fn();put('\nendobj\n')};
-  const n=pages.length;put('%PDF-1.4\n');
+const HWR=[278,278,355,556,556,889,667,191,333,333,389,584,278,333,278,278,556,556,556,556,556,556,556,556,556,556,278,278,584,584,584,556,1015,667,667,722,722,667,611,778,722,278,500,667,556,833,722,778,667,778,722,667,611,722,667,944,667,667,611,278,278,278,469,556,333,556,556,500,556,556,278,556,556,222,222,500,222,833,556,556,556,556,333,500,278,556,500,722,500,500,500,334,260,334,584],
+  HWB=[278,333,474,556,556,889,722,238,333,333,389,584,278,333,278,278,556,556,556,556,556,556,556,556,556,556,333,333,584,584,584,611,975,722,722,722,722,667,611,778,722,278,556,722,611,833,722,778,667,778,722,667,611,722,667,944,667,667,611,333,278,333,584,556,333,556,611,556,611,556,333,611,611,278,278,556,278,889,611,611,611,611,389,556,333,611,556,778,556,556,500,389,280,389,584];
+function pdfLat(s){let o='';s=String(s).replace(/[   ]/g,' ').replace(/…/g,'...');for(const ch of s){const c=ch.codePointAt(0);o+=c<256?ch:(c===0x2014||c===0x2013?'-':c===0x2019?"'":'')}return o}
+function pdfW(s,b,sz){const T=b?HWB:HWR;let w=0;for(const ch of s){let c=ch.charCodeAt(0);if(c>126||c<32){const n=ch.normalize('NFD').charCodeAt(0);c=n>=32&&n<=126?n:(c===0xD7?43:c===0xB7?46:0);w+=c>=32&&c<=126?T[c-32]:556}else w+=T[c-32]}return w*sz/1000}
+function quoteNo_(){if(!quoteNo){const d=new Date(),p=n=>String(n).padStart(2,'0');quoteNo='DEV-'+d.getFullYear()+p(d.getMonth()+1)+p(d.getDate())+'-'+p(d.getHours())+p(d.getMinutes())}return quoteNo}
+function pdfName(){const sl=String(client.n||'').normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^A-Za-z0-9]+/g,'-').replace(/^-+|-+$/g,'').slice(0,24);return 'Devis-Pyramide-Record_'+quoteNo_()+(sl?'_'+sl:'')+'.pdf'}
+function quoteData(r){const rent=rmode==='rent',z=SIZES[size],ev=rm==='church'?EVN[evt]:ROOMS[rm].n,dl=String(LV[lvl].dl||'').replace(/^Délai ?: ?/i,''),gs=[],gm={};
+  r.rows.forEach(x=>{const k=x.s.z||'Matériel';if(!gm[k]){gm[k]=[];gs.push(k)}gm[k].push({l:x.s.l,q:x.q,o:x.o.n+rowTag(x),pr:x.pr})});
+  const sr=r.req.filter(x=>x.startsWith('Sièges'));
+  return{no:quoteNo_(),date:new Date().toLocaleDateString('fr-FR'),rent,mode:rent?'Location':'Vente',client:[client.n,client.t].filter(Boolean),
+    salle:z.n+(z.W&&z.D?' ('+z.W+' × '+z.D+' m)':''),ev,qual:LV[lvl].n,dl,duree:rent?rdays+' jour'+(rdays>1?'s':'')+(rfrom?' à partir du '+rfrom:''):'',
+    groups:gs.map(k=>({z:k,items:gm[k]})),seats:sr,total:money(r.t),totLabel:rent?'TOTAL LOCATION ('+rdays+' j)':'TOTAL ESTIMÉ',inst,
+    notes:rent?[rentText(r)]:['Livraison à Kinshasa estimée. Droits de douane et dédouanement à confirmer.',LVNOTE],unitLabel:rent?'Prix ('+rdays+' j)':'Prix unitaire'}}
+function miniPdf(d,imgUrl,iw,ih){
+  const esc=s=>s.replace(/\\/g,'\\\\').replace(/\(/g,'\\(').replace(/\)/g,'\\)'),bin=s=>{const u=new Uint8Array(s.length);for(let i=0;i<s.length;i++)u[i]=s.charCodeAt(i)&255;return u};
+  const NAVY=[.078,.09,.169],EMB=[.91,.62,.2],GRY=[.4,.42,.48],INK=[.12,.13,.18],LT=[.945,.95,.965],TINT=[.99,.93,.82],WH=[1,1,1];
+  const pages=[[]];let pi=0,y=0;const op=o=>pages[pi].push(o),cl=c=>c.map(v=>v.toFixed(3)).join(' ');
+  const rect=(x,yy,w,h,c)=>op(cl(c)+' rg '+x.toFixed(1)+' '+yy.toFixed(1)+' '+w.toFixed(1)+' '+h.toFixed(1)+' re f');
+  const ln=(x1,y1,x2,y2,c,w)=>op(cl(c)+' RG '+w+' w '+x1.toFixed(1)+' '+y1.toFixed(1)+' m '+x2.toFixed(1)+' '+y2.toFixed(1)+' l S');
+  const tx=(s,x,yy,sz,b,c,al)=>{s=pdfLat(s);const w=pdfW(s,b,sz);if(al==='r')x-=w;else if(al==='c')x-=w/2;op(cl(c)+' rg BT /'+(b?'F2':'F1')+' '+sz+' Tf '+x.toFixed(1)+' '+yy.toFixed(1)+' Td ('+esc(s)+') Tj ET')};
+  const fit=(s,b,sz,mx)=>{s=pdfLat(s);if(pdfW(s,b,sz)<=mx)return s;while(s.length>1&&pdfW(s+'...',b,sz)>mx)s=s.slice(0,-1);return s.trim()+'...'};
+  const wrap=(s,b,sz,mx)=>{const out=[];let cur='';pdfLat(s).split(' ').forEach(w=>{const t=cur?cur+' '+w:w;if(pdfW(t,b,sz)>mx&&cur){out.push(cur);cur=w}else cur=t});if(cur)out.push(cur);return out};
+  const L=40,R=555,CW=R-L;
+  const band=first=>{rect(0,first?752:800,595,first?90:42,NAVY);
+    if(first){tx('PYRAMIDE RECORD',L,800,22,1,WH);tx('Studio · Sonorisation · Kinshasa',L,783,9,0,EMB);tx(d.mode==='Location'?'DEVIS LOCATION':'DEVIS',R,802,20,1,EMB,'r');tx('N° '+d.no,R,785,9,0,WH,'r');tx(d.date,R,772,9,0,WH,'r')}
+    else{tx('PYRAMIDE RECORD',L,816,12,1,WH);tx('Devis N° '+d.no,R,816,9,0,WH,'r')}};
+  const thead=()=>{rect(L,y-20,CW,20,NAVY);tx('Désignation',L+8,y-14,8.5,1,WH);tx('Qté',350,y-14,8.5,1,WH,'c');tx(d.unitLabel,445,y-14,8.5,1,WH,'r');tx('Total',R-8,y-14,8.5,1,WH,'r');y-=20};
+  const brk=h=>{if(y-h<80){pages.push([]);pi++;band(false);y=772;return true}return false};
+  band(true);y=730;
+  const bw=(CW-12)/2,bh=84,f=(s,mx)=>fit(s,0,9.5,mx);
+  rect(L,y-bh,bw,bh,LT);rect(L+bw+12,y-bh,bw,bh,LT);rect(L,y-bh,3,bh,EMB);rect(L+bw+12,y-bh,3,bh,EMB);
+  tx('CLIENT',L+14,y-14,7.5,1,GRY);tx('PROJET',L+bw+26,y-14,7.5,1,GRY);
+  const cl_=d.client.length?d.client:['À renseigner'];tx(cl_[0],L+14,y-32,11,1,INK);if(cl_[1])tx(cl_[1],L+14,y-48,9.5,0,INK);
+  const pr_=[d.salle,d.ev+' · '+d.qual,d.rent?d.duree:(d.dl?'Délai : '+d.dl:'')].filter(Boolean);pr_.forEach((t,i)=>tx(f(t,bw-26),L+bw+26,y-32-i*15,9.5,i?0:1,INK));
+  y-=bh+14;
+  if(imgUrl){try{const ib=bin(atob(imgUrl.split(',')[1])),H=Math.min(190,CW*ih/iw),Wd=H*iw/ih,x0=L+(CW-Wd)/2;y-=H;op('q '+Wd.toFixed(1)+' 0 0 '+H.toFixed(1)+' '+x0.toFixed(1)+' '+y.toFixed(1)+' cm /Im Do Q');ln(x0,y,x0+Wd,y,LT,.5);miniPdf._img=ib;y-=16}catch(e){miniPdf._img=null}}else miniPdf._img=null;
+  thead();
+  d.groups.forEach(g=>{if(brk(18+30)){thead()}rect(L,y-18,CW,18,TINT);tx(g.z.toUpperCase(),L+8,y-12.5,8.5,1,NAVY);y-=18;
+    g.items.forEach(x=>{if(brk(30)){thead()}
+      tx(fit(x.l,1,9.5,290),L+8,y-12,9.5,1,INK);tx(fit(x.o,0,8,290),L+8,y-23,8,0,GRY);
+      tx(String(x.q),350,y-17,9.5,0,INK,'c');
+      if(x.pr==null)tx('Sur demande',R-8,y-17,9.5,1,GRY,'r');else{tx(money(x.pr),445,y-17,9.5,0,INK,'r');tx(money(x.pr*x.q),R-8,y-17,9.5,1,INK,'r')}
+      y-=30;ln(L,y,R,y,LT,.8)})});
+  d.seats.forEach(s=>{if(brk(30)){thead()}tx(fit(s,1,9.5,330),L+8,y-17,9.5,1,INK);tx('Sur demande',R-8,y-17,9.5,1,GRY,'r');y-=30;ln(L,y,R,y,LT,.8)});
+  brk(60);y-=14;rect(R-235,y-44,235,44,NAVY);rect(R-235,y-44,4,44,EMB);tx(d.totLabel,R-221,y-18,8.5,1,WH);tx(d.total,R-12,y-32,19,1,EMB,'r');y-=44+16;
+  if(d.inst){brk(16);tx('+ Installation et formation par Pyramide Record (sur devis)',L,y-8,9,1,INK);y-=20}
+  d.notes.concat(['Prix estimatifs, confirmés par notre équipe. Merci de votre confiance !']).forEach((n,i,a)=>{const last=i===a.length-1;String(n).split('\n').forEach(p=>wrap(p,last,last?9:8.5,CW).forEach(t=>{brk(14);tx(t,L,y-8,last?9:8.5,last,last?NAVY:GRY);y-=12}));y-=4});
+  const N=pages.length,wa=(contact.wa||'').replace(/\D/g,'');
+  pages.forEach((_,i)=>{pi=i;ln(L,52,R,52,LT,.8);tx('Pyramide Record · Kinshasa'+(wa?' · WhatsApp +'+wa:'')+' · pyramidrecord.com',L,38,8,0,GRY);tx('Page '+(i+1)+' / '+N,R,38,8,0,GRY,'r')});
+  const ib=miniPdf._img,chunks=[],xo=[];let len=0;
+  const put=x=>{const u=typeof x==='string'?bin(x):x;chunks.push(u);len+=u.length},obj=(id,fn)=>{xo[id]=len;put(id+' 0 obj\n');fn();put('\nendobj\n')};
+  put('%PDF-1.4\n');
   obj(1,()=>put('<< /Type /Catalog /Pages 2 0 R >>'));
-  obj(2,()=>put('<< /Type /Pages /Kids ['+pages.map((_,i)=>(7+2*i)+' 0 R').join(' ')+'] /Count '+n+' >>'));
+  obj(2,()=>put('<< /Type /Pages /Kids ['+pages.map((_,i)=>(7+2*i)+' 0 R').join(' ')+'] /Count '+N+' >>'));
   obj(3,()=>put('<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>'));
   obj(4,()=>put('<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold /Encoding /WinAnsiEncoding >>'));
   obj(5,()=>{if(ib){put('<< /Type /XObject /Subtype /Image /Width '+iw+' /Height '+ih+' /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length '+ib.length+' >>\nstream\n');put(ib);put('\nendstream')}else put('<< >>')});
-  obj(6,()=>put('<< >>'));
+  obj(6,()=>put('<< /Producer (Pyramide Record) /Title (Devis '+esc(d.no)+') >>'));
   pages.forEach((pg,i)=>{const cs=pg.join('\n');
     obj(7+2*i,()=>put('<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 3 0 R /F2 4 0 R >> /XObject << /Im 5 0 R >> >> /Contents '+(8+2*i)+' 0 R >>'));
     obj(8+2*i,()=>put('<< /Length '+cs.length+' >>\nstream\n'+cs+'\nendstream'))});
-  const N=7+2*n,xr=len;put('xref\n0 '+N+'\n0000000000 65535 f \n');
-  for(let i=1;i<N;i++)put(String(xo[i]||0).padStart(10,'0')+' 00000 n \n');
-  put('trailer\n<< /Size '+N+' /Root 1 0 R >>\nstartxref\n'+xr+'\n%%EOF');
+  const M=7+2*N,xr=len;put('xref\n0 '+M+'\n0000000000 65535 f \n');for(let i=1;i<M;i++)put(String(xo[i]||0).padStart(10,'0')+' 00000 n \n');
+  put('trailer\n<< /Size '+M+' /Root 1 0 R /Info 6 0 R >>\nstartxref\n'+xr+'\n%%EOF');
   return new Blob(chunks,{type:'application/pdf'})}
 function qNote(m){const n=document.getElementById('qnote');if(n){n.textContent=m;n.style.display='block'}}
 function qCopy(){const t=document.getElementById('qt');try{navigator.clipboard.writeText(quoteText).catch(()=>{t.select();document.execCommand('copy')})}catch(e){try{t.select();document.execCommand('copy')}catch(_){}}}
@@ -1471,17 +1501,17 @@ function waSend(att){try{localStorage.setItem('pr_att',att?'1':'0')}catch(e){}
   const url='https://wa.me/'+(contact.wa||'').replace(/\D/g,'')+'?text='+encodeURIComponent(quoteBase);
   const go=()=>{qCopy();const w=window.open(url,'_blank');const n=document.getElementById('qnote');if(!w)qNote("WhatsApp ne s'est pas ouvert ici : le message est copié, collez-le dans WhatsApp.");else if(!n||n.style.display==='none')qNote("Message copié. Si WhatsApp affiche une erreur ou ne s'ouvre pas, collez-le directement dans votre conversation WhatsApp.")};
   if(!att){go();return}
-  let file=null;try{R.render(scene,cam);const iu=cv.toDataURL('image/jpeg',.8);file=new File([miniPdf(quoteBase,iu,cv.width,cv.height)],'Devis-Pyramide-Record.pdf',{type:'application/pdf'})}catch(e){try{file=new File([miniPdf(quoteBase,null,0,0)],'Devis-Pyramide-Record.pdf',{type:'application/pdf'})}catch(_){}}
+  let file=null;try{R.render(scene,cam);const iu=cv.toDataURL('image/jpeg',.8);file=new File([miniPdf(quoteData(totals()),iu,cv.width,cv.height)],pdfName(),{type:'application/pdf'})}catch(e){try{file=new File([miniPdf(quoteData(totals()),null,0,0)],pdfName(),{type:'application/pdf'})}catch(_){}}
   if(!file){go();return}
-  if(navigator.canShare&&navigator.canShare({files:[file]})){navigator.share({files:[file],text:quoteBase,title:'Devis Pyramide Record'}).catch(()=>{});return}
+  if(navigator.canShare&&navigator.canShare({files:[file]})){navigator.share({files:[file],text:quoteBase,title:'Devis '+quoteNo_()+' - Pyramide Record'}).catch(()=>{});return}
   const a=document.createElement('a');a.href=URL.createObjectURL(file);a.download=file.name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},4000);
-  qNote("PDF enregistré sur votre appareil. Dans WhatsApp, touchez le trombone et choisissez « Devis-Pyramide-Record.pdf ».");go()}
+  qNote("PDF enregistré sur votre appareil. Dans WhatsApp, touchez le trombone et choisissez « "+file.name+" ».");go()}
 function quoteExtras(){const code=encodeState();quoteCode=code.length<1200?code:'';quoteSet();
   let img='';try{R.render(scene,cam);img=`<img src="${cv.toDataURL('image/jpeg',.8)}" style="width:100%;border-radius:8px;margin-top:8px" alt="Aperçu de ma salle">`}catch(e){}
   const num=(contact.wa||'').replace(/\D/g,''),wa='https://wa.me/'+num+'?text='+encodeURIComponent(quoteBase),
     em=contact.em?'mailto:'+contact.em+'?subject='+encodeURIComponent('Demande de devis ('+(rmode==='rent'?'LOCATION':'VENTE')+') – Pyramide Record')+'&body='+encodeURIComponent(quoteText):'';
   document.getElementById('mbody').insertAdjacentHTML('beforeend',img+`<a class="cta" id="qwa" target="_blank" rel="noopener" href="${wa}">Envoyer sur WhatsApp</a><label style="display:flex;gap:8px;align-items:center;font-size:13px;margin-top:8px"><input type="checkbox" id="qatt"> Joindre le devis en PDF au message (facultatif)</label><div id="qnote" class="mini" style="color:var(--ember);display:none"></div>`+(em?`<a class="cta em" id="qem" href="${em}">Envoyer par email</a>`:'')+`<label style="display:flex;gap:8px;align-items:center;font-size:13px;margin-top:8px"><input type="checkbox" id="pcol" ${pdfColor?'checked':''}> PDF en couleurs (par défaut : économe en encre)</label><button class="cta em" id="prt" style="margin-top:8px">Enregistrer le devis en PDF</button><div class="mini">Code de ma salle (pour la retrouver plus tard) :</div><textarea readonly>${code}</textarea>`);shopCartBtn();document.getElementById('prt').onclick=()=>pvOpen(true);{const at=document.getElementById('qatt');try{at.checked=localStorage.getItem('pr_att')==='1'}catch(e){}document.getElementById('qwa').onclick=e=>{e.preventDefault();waSend(at.checked)}}document.getElementById('pcol').onchange=e=>{pdfColor=e.target.checked}}
-document.getElementById('quote').onclick=()=>{const r=totals();
+document.getElementById('quote').onclick=()=>{const r=totals();if(!document.getElementById('modal').style.display||document.getElementById('modal').style.display==='none')quoteNo='';
   let rows=r.rows.map(x=>`<tr><td>${x.s.l}${x.q>1?' ×'+x.q:''}<br><small style="color:var(--sand)">${x.o.n}${rowTag(x)}</small></td><td>${x.pr==null?'Sur demande':money(x.pr*x.q)}</td></tr>`).join('');
   r.req.filter(x=>x.startsWith('Sièges')).forEach(x=>{rows+=`<tr><td>${x}</td><td>Sur demande</td></tr>`});
   if(!r.rows.length&&!r.req.length)rows='<tr><td>Aucun matériel choisi pour le moment.</td><td></td></tr>';

@@ -14,6 +14,8 @@ html,body{height:100%;font-family:Arial,Helvetica,sans-serif;background:#0f1220;
 #hint{position:absolute;left:12px;bottom:10px;font-size:12px;color:#9aa0c0;pointer-events:none}
 #size{position:absolute;left:12px;top:12px;display:flex;gap:6px}
 button{font-family:inherit;cursor:pointer}
+.bd{font-size:10px;padding:2px 6px;border-radius:9px;margin-left:4px;white-space:nowrap}.bd.g{background:#14452a;color:#6fe3a0}.bd.b{background:#1e2a5a;color:#8fa2ff}.bd.x{background:#2a2a2a;color:#999}
+.opt.off{opacity:.4;cursor:not-allowed}
 a.cta{display:block;text-align:center;text-decoration:none;margin-top:8px;padding:11px;border-radius:10px;font-weight:bold;font-size:14px;background:#25a85a;color:#fff}a.cta.em{background:#343a6a}
 #locbox input{width:90px}#locbox .nm{max-width:190px;font-size:11px}
 .pill{background:#1c2040;border:1px solid #343a6a;color:#cfd3f0;padding:7px 11px;border-radius:18px;font-size:13px}
@@ -271,7 +273,11 @@ let local=Object.assign({},LOCAL_PRICES),contact={wa:'243819797568',em:''};
 const ADMIN=/[?&]admin=1/.test(location.search);
 try{if(ADMIN){local=Object.assign(local,JSON.parse(localStorage.getItem('pr_local')||'{}'));contact=Object.assign(contact,JSON.parse(localStorage.getItem('pr_contact')||'{}'))}}catch(e){}
 const persist=()=>{if(!ADMIN)return;try{localStorage.setItem('pr_local',JSON.stringify(local));localStorage.setItem('pr_contact',JSON.stringify(contact))}catch(e){}};
-function price(p){if(p.us==null){const v=local[p.n];return v>0?v:null}return Math.round(landed(p)*(1+mar/100)*(1+fee/100))}
+// Stock boutique : { "Nom exact du produit": { price: 123, qty: 4 } }. Le prix de la boutique l'emporte. À remplacer plus tard par les données du magasin en direct.
+const STOCK={};
+const inStock=p=>!!(STOCK[p.n]&&STOCK[p.n].qty>0&&STOCK[p.n].price>0);
+function optState(p){return inStock(p)?'stock':(price(p)==null?'soon':'order')}
+function price(p){if(inStock(p))return STOCK[p.n].price;if(p.us==null){const v=local[p.n];return v>0?v:null}return Math.round(landed(p)*(1+mar/100)*(1+fee/100))}
 const money=v=>v.toLocaleString('fr-FR')+' $';
 let qov={};
 const qty=s=>qov[rm+s.id]!=null?qov[rm+s.id]:s.q[size];
@@ -299,10 +305,11 @@ function renderOpts(){
   const s=SLOTS.find(x=>x.id===cur),q=qty(s);O.style.display='block';
   let h=`<h3>${s.l}</h3><div style="display:flex;align-items:center;gap:8px;margin:0 4px 8px;font-size:13px">Quantité <button class="pill" id="qm">−</button><b>${q}</b><button class="pill" id="qp">+ Dupliquer</button></div>`;
   s.o.forEach((o,i)=>{const pr=price(o);
-    h+=`<div class="opt ${sel[s.id]===i?'on':''}" data-i="${i}"><div>${o.n}<small>${o.d}</small></div><b>${pr==null?'Sur demande':money(pr)+(q>1?'<small>/unité</small>':'')}</b></div>`});
+    const st=optState(o),off=st==='soon'&&!ADMIN,bd={stock:'<span class="bd g">En stock</span>',order:'<span class="bd b">Sur commande</span>',soon:'<span class="bd x">Bientôt disponible</span>'}[st];
+    h+=`<div class="opt ${sel[s.id]===i?'on':''} ${off?'off':''}" data-i="${i}" data-off="${off?1:0}"><div>${o.n} ${bd}<small>${o.d}</small></div><b>${pr==null?'—':money(pr)+(q>1?'<small>/unité</small>':'')}</b></div>`});
   h+=`<div class="opt" data-i="-1"><div>Aucun / je l'ai déjà</div></div>`;
   O.innerHTML=h;document.getElementById('qm').onclick=()=>setQ(s,q-1);document.getElementById('qp').onclick=()=>setQ(s,q+1);
-  O.querySelectorAll('.opt').forEach(e=>e.onclick=()=>{const i=+e.dataset.i;if(i<0)delete sel[s.id];else sel[s.id]=i;refresh()});
+  O.querySelectorAll('.opt').forEach(e=>e.onclick=()=>{if(e.dataset.off==='1')return;const i=+e.dataset.i;if(i<0)delete sel[s.id];else sel[s.id]=i;refresh()});
 }
 const seatInfo=()=>rm==='church'?{n:seat.count,st:seat.style==='pew'&&seat.layout==='arc'?'chair':seat.style}:{n:guest.count,st:guest.style};
 function totals(){let t=0,req=[],rows=[];
@@ -313,7 +320,8 @@ function totals(){let t=0,req=[],rows=[];
   return{t,req,rows}}
 function updTotal(){const r=totals();
   document.getElementById('total').textContent=money(r.t);
-  document.getElementById('reqline').textContent=r.req.length?'+ prix sur demande : '+r.req.join(', '):'Transport et taxes inclus, aucune ligne cachée.'}
+  const sp=r.rows.filter(x=>x.pr!=null&&x.o&&inStock(x.o)).reduce((a,x)=>a+x.pr*x.q,0),oc=r.rows.filter(x=>x.pr!=null&&!(x.o&&inStock(x.o))).reduce((a,x)=>a+x.pr*x.q,0);
+  document.getElementById('reqline').textContent=(sp>0?'Disponible en boutique : '+money(sp)+' · ':'')+(oc>0&&sp>0?'Sur commande : '+money(oc)+'. ':'')+(r.req.length?'+ prix sur demande : '+r.req.join(', '):(sp>0?'':'Transport et taxes inclus, aucune ligne cachée.'))}
 
 // ===== Scène 3D =====
 const cv=document.getElementById('cv');
@@ -424,7 +432,7 @@ function chrome(){
  document.querySelectorAll('#size [data-r]').forEach(b=>b.onclick=()=>switchRoom(b.dataset.r));
  document.querySelectorAll('#sz .pill').forEach(b=>b.onclick=()=>setSize(b.dataset.k));
  document.getElementById('kits').innerHTML=Object.entries(KITS).map(([k,v])=>`<button class="pill" data-k="${k}">${v.n}</button>`).join('')+'<button class="pill" id="clr">Tout vider</button>';
- document.querySelectorAll('#kits [data-k]').forEach(b=>b.onclick=()=>{sel=Object.assign({},KITS[b.dataset.k].s);qov={};applyScr();refresh()});
+ document.querySelectorAll('#kits [data-k]').forEach(b=>b.onclick=()=>{sel={};const ks=KITS[b.dataset.k].s;for(const id in ks){const sl=SLOTS.find(z=>z.id===id),o=sl&&sl.o[ks[id]];if(o&&(optState(o)!=='soon'||ADMIN))sel[id]=ks[id]}qov={};applyScr();refresh()});
  document.getElementById('clr').onclick=()=>{sel={};refresh()};
  document.querySelector('#head h1').textContent=ROOMS[rm].h;seatUI();scrUI()}
 function seatUI(){const B=document.getElementById('seatbox');if(rm!=='church'){const so=(id,v,o)=>`<select id="${id}">${o.map(([k,l])=>`<option value="${k}" ${k==v?'selected':''}>${l}</option>`).join('')}</select>`;
@@ -459,11 +467,11 @@ function quoteExtras(){const code=encodeState();if(code.length<1200){quoteText+=
     em=contact.em?'mailto:'+contact.em+'?subject='+encodeURIComponent('Demande de devis – Pyramide Record')+'&body='+encodeURIComponent(quoteText):'';
   document.getElementById('mbody').insertAdjacentHTML('beforeend',img+`<a class="cta" target="_blank" rel="noopener" href="${wa}">Envoyer sur WhatsApp</a>`+(em?`<a class="cta em" href="${em}">Envoyer par email</a>`:'')+`<div class="mini">Code de ma salle (pour la retrouver plus tard) :</div><textarea readonly>${code}</textarea>`)}
 document.getElementById('quote').onclick=()=>{const r=totals();
-  let rows=r.rows.map(x=>`<tr><td>${x.s.l}${x.q>1?' ×'+x.q:''}<br><small style="color:#9aa0c0">${x.o.n}</small></td><td>${x.pr==null?'Sur demande':money(x.pr*x.q)}</td></tr>`).join('');
+  let rows=r.rows.map(x=>`<tr><td>${x.s.l}${x.q>1?' ×'+x.q:''}<br><small style="color:#9aa0c0">${x.o.n}${x.o&&inStock(x.o)?' · en stock':x.o&&x.o.us!=null?' · sur commande':''}</small></td><td>${x.pr==null?'Sur demande':money(x.pr*x.q)}</td></tr>`).join('');
   r.req.filter(x=>x.startsWith('Sièges')).forEach(x=>{rows+=`<tr><td>${x}</td><td>Sur demande</td></tr>`});
   if(!r.rows.length&&!r.req.length)rows='<tr><td>Aucun matériel choisi pour le moment.</td><td></td></tr>';
   document.getElementById('mbody').innerHTML=`<p style="font-size:12px;color:#9aa0c0;margin-top:6px">${SIZES[size].n}. Prix livrés à Kinshasa, transport et taxes inclus. Les prix sur demande seront confirmés après vérification du stock.</p><table>${rows}<tr><td><b>Total estimé</b></td><td><b>${money(r.t)}</b></td></tr></table><textarea id="qt" readonly></textarea>`;
-  quoteText='Demande de devis – Pyramide Record\n'+SIZES[size].n+'\n'+r.rows.map(x=>`- ${x.s.l}${x.q>1?' x'+x.q:''} : ${x.o.n} – ${x.pr==null?'prix sur demande':money(x.pr*x.q)}`).join('\n')+r.req.filter(x=>x.startsWith('Sièges')).map(x=>'\n- '+x+' – prix sur demande').join('')+`\nTotal estimé : ${money(r.t)}`;
+  quoteText='Demande de devis – Pyramide Record\n'+SIZES[size].n+'\n'+r.rows.map(x=>`- ${x.s.l}${x.q>1?' x'+x.q:''} : ${x.o.n}${x.o&&inStock(x.o)?' [en stock]':x.o&&x.o.us!=null?' [sur commande]':''} – ${x.pr==null?'prix sur demande':money(x.pr*x.q)}`).join('\n')+r.req.filter(x=>x.startsWith('Sièges')).map(x=>'\n- '+x+' – prix sur demande').join('')+`\nTotal estimé : ${money(r.t)}`;
   document.getElementById('qt').value=quoteText;document.getElementById('modal').style.display='flex';quoteExtras()};
 document.getElementById('close').onclick=()=>document.getElementById('modal').style.display='none';
 document.getElementById('copy').onclick=()=>{const t=document.getElementById('qt');t.select();

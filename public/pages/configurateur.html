@@ -78,7 +78,7 @@ textarea{width:100%;height:90px;background:var(--obsidian);color:var(--bone);bor
 #tabs button i{font-style:normal;font-size:10px;opacity:.75;display:block;font-weight:400}
 #nxt{margin:10px 0 4px}
 #rotbar{position:absolute;left:50%;transform:translateX(-50%);bottom:40px;display:none;align-items:center;gap:6px;background:var(--panel);border:1px solid var(--hair-2);border-radius:999px;padding:5px 10px;z-index:4;font-size:12px;color:var(--sand);white-space:nowrap}#rotbar span{font-weight:600;color:var(--ember);letter-spacing:.1em;text-transform:uppercase;font-size:10px}#rotbar button{background:var(--panel-2);border:1px solid var(--hair-2);color:var(--bone);border-radius:999px;padding:5px 10px;font-size:12px}#rotbar button:hover{background:var(--gold);color:#fff}#rotbar small{font-size:10px;opacity:.8}
-#rotbar{width:max-content;flex-direction:column;align-items:stretch;border-radius:14px;gap:4px;white-space:normal;max-width:94%}#rotbar .rr{display:flex;align-items:center;justify-content:center;gap:4px;flex-wrap:wrap}#rotbar.norot .rb1{display:none}#rotbar:not(.rsz) .rb3{display:none}#rotbar input{width:54px;background:var(--panel-2);color:var(--bone);border:1px solid var(--hair-2);border-radius:8px;padding:4px 6px;font-size:12px}#rotbar button:disabled{opacity:.4;pointer-events:none}#rotbar .dg{color:#e5675c}#rotbar .dg:hover{background:#c0392b;color:#fff}#rotbar .rmsg{color:var(--ember)}
+#rotbar{width:max-content;flex-direction:column;align-items:stretch;border-radius:14px;gap:4px;white-space:normal;max-width:94%}#rotbar .rr{display:flex;align-items:center;justify-content:center;gap:4px;flex-wrap:wrap}#rotbar.norot .rb1{display:none}#rotbar:not(.rsz) .rb3{display:none}#rotbar input{width:54px;background:var(--panel-2);color:var(--bone);border:1px solid var(--hair-2);border-radius:8px;padding:4px 6px;font-size:12px}#rotbar button:disabled{opacity:.4;pointer-events:none}#rotbar button.on{background:var(--ember);color:#1a1208;border-color:var(--ember)}#rotbar .dg{color:#e5675c}#rotbar .dg:hover{background:#c0392b;color:#fff}#rotbar .rmsg{color:var(--ember)}
 @media(max-width:820px){#rotbar small{display:none}#rotbar{bottom:44px;padding:4px 8px}}
 #spkbox{position:absolute;left:12px;bottom:44px;width:310px;max-height:64%;overflow:auto;background:var(--panel);border:1px solid var(--hair-2);border-radius:12px;padding:2px 8px 8px;z-index:4;font-size:12px;color:var(--bone)}#spkbox:empty{display:none}#spkbox label{display:flex;justify-content:space-between;align-items:center}#spkbox input[type=number],#spkbox select{background:var(--panel-2);color:var(--bone);border:1px solid var(--hair-2);border-radius:6px;padding:3px}
 #mapsel{position:absolute;right:12px;top:12px;display:none;gap:0;background:var(--panel);border:1px solid var(--hair-2);border-radius:10px;overflow:hidden;z-index:3}
@@ -304,7 +304,7 @@ function scrUI(){const B=document.getElementById('scrbox');
   <label>Taille ${sel('cs',scr.size,[['s','Petit (≈55″)'],['m','Moyen (≈75″)'],['l','Grand (mur LED)']])}</label></details></div>`;
   const ch=()=>{scr.layout=cl.value;scr.size=cs.value;qov={};applyScr();buildRoom();renderList()};
   ['cl','cs'].forEach(i=>document.getElementById(i).onchange=ch)}
-const offs={};let fx={},fsz={},gone={},fixt={},fsel=null,ls=null;const TOK=new Set(['mon','box','lap','mic','hp','pc','mix','stand','amp','pwr']),FOHT=new Set(['mix','box','lap','pc','amp','pwr']);let gk=0;
+const offs={};let fx={},fsz={},cdr={},gone={},fixt={},fsel=null,ls=null;const TOK=new Set(['mon','box','lap','mic','hp','pc','mix','stand','amp','pwr']),FOHT=new Set(['mix','box','lap','pc','amp','pwr']);let gk=0;
 function setFix(fi,x,z,r){dummies.forEach(d=>{if(d.on===fi.key){d.x=x;d.z=z;d.rot=r;const mm=room.children.find(o=>o.userData&&o.userData.dummy===d.id);if(mm){mm.position.x=x;mm.position.z=z;mm.rotation.y=r}}});fi.x=x;fi.z=z;fi.r=r;fi.g.position.set(x,/^u[cs]/.test(fi.key)?floorAt(x,z,0):0,z);fi.g.rotation.y=r;const c=Math.abs(Math.cos(r)),s=Math.abs(Math.sin(r));Object.assign(fi.f,{x,z,hw:c*fi.hw0+s*fi.hd0,hd:s*fi.hw0+c*fi.hd0,rot:r})}
 function mkFix(key,g,hw0,hd0,def,pew){const o=fx[rm+key]||def,{W,D}=SIZES[size],f={x:0,z:0,hw:0,hd:0,pew:!!pew,rot:0},fi={key,g,hw0,hd0,f};fixt[key]=fi;
   setFix(fi,Math.max(-W/2+.5,Math.min(W/2-.5,o[0])),Math.max(-D/2+.5,Math.min(D/2-.5,o[1])),o[2]||0);room.add(g);furn.push(f);
@@ -341,10 +341,13 @@ function mkCabin(kind,w,d,key,def){const so=fsz[rm+key];if(so){w=so[0];if(kind!=
   const wall=(x0,x1,z,hd,glass)=>{if(x1-x0<.05)return;const cx=(x0+x1)/2,hw=(x1-x0)/2;segs.push({x:cx,z,hw,hd});
     if(glass){let b=box(x1-x0,.9,hd*2,wm);b.position.set(cx,.45,z);g.add(b);b=box(x1-x0,1.2,hd*2,gm);b.position.set(cx,1.5,z);g.add(b);b=box(x1-x0,.3,hd*2,wm);b.position.set(cx,2.25,z);g.add(b)}
     else{const b=box(x1-x0,2.4,hd*2,wm);b.position.set(cx,1.2,z);g.add(b)}};
-  const fz=kind==='wall'?0:d/2;wall(-w/2,dx-dg/2,fz,.06,true);wall(dx+dg/2,w/2,fz,.06,true);
-  const lt=box(dg,.3,.12,wm);lt.position.set(dx,2.25,fz);g.add(lt);
-  if(kind==='cab'){const fl=box(w,.02,d,mat(0x2b3560));fl.position.y=.01;g.add(fl);wall(-w/2,w/2,-d/2,.06,false);
-    const sw=(x)=>{segs.push({x,z:0,hw:.06,hd:d/2});const b=box(.12,2.4,d,wm);b.position.set(x,1.2,0);g.add(b)};sw(-w/2);sw(w/2)}
+  const dl=(cdr[rm+key]||[{s:'F',o:kind==='wall'?0:w/2-.8}]).filter(q=>kind!=='wall'||q.s==='F');
+  const wallZ=(z0,z1,x)=>{if(z1-z0<.05)return;const cz=(z0+z1)/2;segs.push({x,z:cz,hw:.06,hd:(z1-z0)/2});const b=box(.12,2.4,z1-z0,wm);b.position.set(x,1.2,cz);g.add(b)};
+  const side=(s_,len,fixed,glass)=>{const os=dl.filter(q=>q.s===s_).map(q=>Math.max(-len/2+dg/2+.05,Math.min(len/2-dg/2-.05,q.o))).sort((a,b)=>a-b);let cur=-len/2;
+    const piece=(a,b)=>{if(s_==='F'||s_==='B')wall(a,b,fixed,.06,glass);else wallZ(a,b,fixed)};
+    os.forEach(o=>{piece(cur,o-dg/2);const lt=(s_==='F'||s_==='B')?box(dg,.3,.12,wm):box(.12,.3,dg,wm);if(s_==='F'||s_==='B')lt.position.set(o,2.25,fixed);else lt.position.set(fixed,2.25,o);g.add(lt);cur=o+dg/2});piece(cur,len/2)};
+  side('F',w,kind==='wall'?0:d/2,true);
+  if(kind==='cab'){const fl=box(w,.02,d,mat(0x2b3560));fl.position.y=.01;g.add(fl);side('B',w,-d/2,false);side('L',d,-w/2,false);side('R',d,w/2,false)}
   const fi=mkFix(key,g,w/2,kind==='wall'?.12:d/2,def,false);const i=furn.indexOf(fi.f);if(i>=0)furn.splice(i,1);fi.segs=segs;fi.cab=kind;return fi}
 function snapFix(fi,x,z){const {W,D}=SIZES[size],c=Math.abs(Math.cos(fi.r)),s=Math.abs(Math.sin(fi.r)),hw=c*fi.hw0+s*fi.hd0,hd=s*fi.hw0+c*fi.hd0,sn=.45,g=.08;
   if(x-hw<-W/2+sn)x=-W/2+hw+g;if(x+hw>W/2-sn)x=W/2-hw-g;if(z-hd<-D/2+sn)z=-D/2+hd+g;if(z+hd>D/2-sn)z=D/2-hd-g;return[x,z]}
@@ -471,7 +474,7 @@ ROOMS.stad.presets=[
 function applyPreset(i){const p=ROOMS[rm].presets[i];if(!p)return;two=!!p.two;
   setSize(p.size);Object.assign(seat,p.seat||{});if(p.seat)seat.count=0;Object.assign(scr,p.scr||{});Object.assign(guest,{n:0},p.guest||{});
   fx={};fsel=null;sel={};const ks=ROOMS[rm].kits[p.kit].s;for(const id in ks){const sl=SLOTS.find(z=>z.id===id),o=sl&&sl.o[ks[id]];if(o&&vis(o)&&(optState(o)!=='soon'||ADMIN))sel[id]=ks[id]}
-  qov={};fsz={};gone={};applyScr();dummies=[];dsel=null;cur=null;for(const k in offs)delete offs[k];buildRoom();renderList();seatUI();scrUI()}
+  qov={};fsz={};cdr={};gone={};applyScr();dummies=[];dsel=null;cur=null;for(const k in offs)delete offs[k];buildRoom();renderList();seatUI();scrUI()}
 function presetUI(){const v=isVen();['cvb','clb','cva'].forEach(i=>{const e=document.getElementById(i);if(e)e.style.display=v?'':'none'});const cb=document.getElementById('cvb');if(cb)cb.classList.toggle('on',covOn);const B=document.getElementById('presets'),L=ROOMS[rm].presets||[];
   B.innerHTML=(rm==='rec'||rm==='vid'||rm==='pod'?'<button class="pill'+(two?' on':'')+'" id="two" style="margin-bottom:8px">Deux salles : régie + vitre'+(rm==='rec'?' + cabine':'')+'</button>':'')+(L.length?'<div class="zone">Modèles prêts à l\'emploi</div><div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:6px">'+L.map((p,i)=>`<button class="pill" data-p="${i}">${p.n}</button>`).join('')+'</div>':'');
   const tb=document.getElementById('two');if(tb)tb.onclick=()=>{two=!two;for(const k in offs)delete offs[k];buildRoom();renderList();presetUI()};
@@ -992,6 +995,7 @@ function rotHandleUpdate(){const t=rotTarget(),bar=document.getElementById('rotb
   if(!bar)return;if(!si){bar.style.display='none';return}
   bar.style.display='flex';bar.classList.toggle('norot',!si.rot);bar.classList.toggle('rsz',!!si.rsz);
   const dp=bar.querySelector('[data-act=dup]');if(dp)dp.disabled=!!si.nodup;
+  const rb4=bar.querySelector('.rb4');if(rb4){const cb=si.fi&&isCb(ls.key);rb4.style.display=cb?'flex':'none';if(cb){const a=cdr[rm+ls.key]||[{s:'F'}],wl=si.fi.cab==='wall';const LB={F:wl?'Porte':'Face',B:'Fond',L:'Gauche',R:'Droite'};rb4.querySelectorAll('[data-door]').forEach(b=>{const on=a.some(q=>q.s===b.dataset.door);b.classList.toggle('on',on);b.textContent=(on?'✓ ':'')+LB[b.dataset.door];if(b.classList.contains('dcab'))b.style.display=wl?'none':''})}}
   if(si.rsz){const L=document.getElementById('rzL'),Wd=document.getElementById('rzW'),wall=si.fi.cab==='wall';
     if(L&&document.activeElement!==L)L.value=(si.fi.hw0*2).toFixed(2);if(Wd){Wd.disabled=wall;if(document.activeElement!==Wd)Wd.value=(si.fi.hd0*2).toFixed(2)}}}
 const eqClamp=(x,z)=>{const {W,D}=SIZES[size];return[Math.max(-W/2+.3,Math.min(W/2-.3,x)),Math.max(-D/2+.3,Math.min(D/2-.3,z))]};
@@ -1011,7 +1015,7 @@ function actDup(){const si=selInfo();if(!si||si.nodup)return;
     const off=big?fi.hd0*2+.15:.6,c=Math.cos(fi.r),sn=Math.sin(fi.r);let nx=fi.x+sn*off,nz=fi.z+c*off;
     if(big){[nx,nz]=snapFix(fi,nx,nz);if(Math.hypot(nx-fi.x,nz-fi.z)<off*.6){nx=fi.x-sn*off;nz=fi.z-c*off;[nx,nz]=snapFix(fi,nx,nz)}}
     else{const {W,D}=SIZES[size];nx=Math.max(-W/2+.5,Math.min(W/2-.5,nx));nz=Math.max(-D/2+.5,Math.min(D/2-.5,nz))}
-    const f={id:++ufn,kind,w:fi.hw0*2,d:fi.hd0*2,x:nx,z:nz,r:fi.r};uf.push(f);const nk=ufKey(f);if(fsz[rm+k])fsz[rm+nk]=fsz[rm+k].slice();
+    const f={id:++ufn,kind,w:fi.hw0*2,d:fi.hd0*2,x:nx,z:nz,r:fi.r};uf.push(f);const nk=ufKey(f);if(fsz[rm+k])fsz[rm+nk]=fsz[rm+k].slice();if(cdr[rm+k])cdr[rm+nk]=cdr[rm+k].map(q=>({...q}));
     buildRoom();fsel=nk;ls={t:'f',key:nk};chkUI();return}
   if(ls.t==='eq'){const sl=SLOTS.find(x=>x.id===ls.slot),q=qty(sl);if(q>=8){bar_msg('Maximum 8 exemplaires');return}
     const g=eqObj(),src={x:g.position.x,z:g.position.z,r:g.rotation.y,y:g.position.y,t:g.userData.tilt||0,scr:g.userData.t==='scr'};
@@ -1022,6 +1026,11 @@ function actDup(){const si=selInfo();if(!si||si.nodup)return;
   if(ls.t==='d'){const d=dummies.find(o=>o.id===ls.id),nd={id:++dn,kind:d.kind,x:d.x+.6,z:d.z,rot:d.rot||0,c:[0xd9a066,0x8d5524,0xf1c27d,0xc68642,0x6b4423][dn%5]};
     if(!freeSpot(nd,d.x+.6,d.z))return;seatFix(nd);dummies.push(nd);dsel=nd.id;ls={t:'d',id:nd.id};refresh()}}
 function bar_msg(m){const h=document.querySelector('#rotbar .rmsg');if(h){h.textContent=m;setTimeout(()=>{h.textContent=''},2200)}}
+let dActive='F';
+const cdGet=k=>{const fi=fixt[k];return cdr[rm+k]||(cdr[rm+k]=[{s:'F',o:fi.cab==='wall'?0:fi.hw0-.8}])};
+function doorRebuild(k){const sv=ls;buildRoom();ls=sv;fsel=k;afterEdit()}
+function doorTog(sd){if(!ls||ls.t!=='f'||!isCb(ls.key))return;const k=ls.key,a=cdGet(k),i=a.findIndex(q=>q.s===sd);if(i>=0){a.splice(i,1)}else{a.push({s:sd,o:0});dActive=sd}doorRebuild(k)}
+function doorNudge(dir){if(!ls||ls.t!=='f'||!isCb(ls.key))return;const k=ls.key,a=cdGet(k),q=a.find(x=>x.s===dActive)||a[0];if(!q)return;q.o+=dir*.25;doorRebuild(k)}
 function rszSet(w,d){const si=selInfo();if(!si||!si.rsz)return;const k=ls.key,fi=fixt[k],{W,D}=SIZES[size],tb=isT(k),wall=fi.cab==='wall',w0=fi.hw0*2,d0=fi.hd0*2;
   w=Math.max(tb?.4:1.2,Math.min(Math.min(8,W-1),+w||w0));d=wall?d0:Math.max(tb?.4:1.2,Math.min(tb?3:Math.min(6,D-1),+d||d0));
   if(Math.abs(w-w0)<.001&&Math.abs(d-d0)<.001)return;
@@ -1034,8 +1043,9 @@ function rszBy(which,op){const si=selInfo();if(!si||!si.rsz)return;const fi=si.f
 (function(){const V=document.getElementById('view'),B=document.createElement('div');B.id='rotbar';
  B.innerHTML='<div class="rr rb1"><span>Rotation</span><button data-d="-15" title="Tourner à gauche (Maj+R)">↺ 15°</button><button data-d="15" title="Tourner à droite (R)">↻ 15°</button><button data-a="0" title="Face au public">Face public</button><button data-a="3.14159" title="Face à la scène">Face scène</button></div>'
  +'<div class="rr rb2"><span>Objet</span><button data-act="dup" title="Dupliquer (Ctrl+D)">⧉ Dupliquer</button><button data-act="del" class="dg" title="Supprimer (Suppr)">🗑 Supprimer</button><small class="rmsg"></small></div>'
+ +'<div class="rr rb4"><span>Porte</span><button data-door="F">Face</button><button data-door="B" class="dcab">Fond</button><button data-door="L" class="dcab">Gauche</button><button data-door="R" class="dcab">Droite</button><button data-dn="-1" title="Décaler la porte">◀</button><button data-dn="1" title="Décaler la porte">▶</button></div>'
  +'<div class="rr rb3"><span>Taille (m)</span>Long. <button data-z="L-">−</button><input id="rzL" type="number" step=".1" min=".4" max="8"><button data-z="L+">+</button><button data-z="L/" title="Diviser par 2">½</button><button data-z="L*" title="Multiplier par 2">×2</button> Larg. <button data-z="W-">−</button><input id="rzW" type="number" step=".1" min=".4" max="6"><button data-z="W+">+</button><button data-z="W/" title="Diviser par 2">½</button><button data-z="W*" title="Multiplier par 2">×2</button></div>';V.appendChild(B);
- B.querySelectorAll('button').forEach(b=>b.onclick=()=>{if(b.dataset.d)rotBy(+b.dataset.d*Math.PI/180);else if(b.dataset.act==='dup')actDup();else if(b.dataset.act==='del')actDel();else if(b.dataset.z)rszBy(b.dataset.z[0],b.dataset.z[1]);else{const t=rotTarget();if(t){rotApply(+b.dataset.a);afterEdit()}}});
+ B.querySelectorAll('button').forEach(b=>b.onclick=()=>{if(b.dataset.d)rotBy(+b.dataset.d*Math.PI/180);else if(b.dataset.act==='dup')actDup();else if(b.dataset.act==='del')actDel();else if(b.dataset.z)rszBy(b.dataset.z[0],b.dataset.z[1]);else if(b.dataset.door)doorTog(b.dataset.door);else if(b.dataset.dn)doorNudge(+b.dataset.dn);else{const t=rotTarget();if(t){rotApply(+b.dataset.a);afterEdit()}}});
  const gv=()=>[document.getElementById('rzL').value,document.getElementById('rzW').value];
  ['rzL','rzW'].forEach(id=>document.getElementById(id).onchange=()=>{const [a,c]=gv();rszSet(a,c)});
  document.addEventListener('keydown',e=>{const tg=e.target&&e.target.tagName;if(tg==='INPUT'||tg==='SELECT'||tg==='TEXTAREA')return;if(e.key==='Escape'&&placeK){placeSet(placeK);return}
@@ -1379,8 +1389,8 @@ function seatUI(){const B=document.getElementById('seatbox');if(ROOMS[rm].venue)
   <div class="mini">Sièges : affichés pour visualiser la salle, non vendus.</div></details></div>`;
   const ch=()=>{seat.layout=sl.value;seat.style=ss.value;seat.rows=Math.max(1,Math.min(14,+sr.value||1));seat.aisle=+sa.value;buildRoom();renderList();scount.textContent=seat.count};
   ['sl','ss','sr','sa'].forEach(i=>document.getElementById(i).onchange=ch)}
-const encodeState=()=>btoa(unescape(encodeURIComponent(JSON.stringify({evt,hang,rmode,rdays,rfrom,rtech,rlog,uf,ufn,ven,fx,fsz,gone,two,rm,size,sel,qov,offs,dummies,seat,scr,guest,fwd,mar,fee,lvl,att,fp:fillPct,fm:fillMode,tl:tgt,tr:trim,ac:acBy,dm:ORG[rm+size]?[SIZES[size].W,SIZES[size].D]:null}))));
-function loadState(o){hang=o.hang===true?'hung':['hung','mix'].includes(o.hang)?o.hang:'floor';rmode=o.rmode==='rent'?'rent':'buy';rdays=Math.max(1,Math.min(60,+o.rdays||1));rfrom=o.rfrom||'';rtech=!!o.rtech;rlog=o.rlog!==false;evt=VOCS[o.evt]?o.evt:'church';applyVoc();uf=Array.isArray(o.uf)?o.uf:null;ufn=o.ufn||0;lvl=[1,2,3].includes(o.lvl)?o.lvl:1;ven=o.ven||{};fx=o.fx||{};fsz=o.fsz||{};gone=o.gone||{};two=!!o.two;rm=ROOMS[o.rm]?o.rm:'church';SLOTS=ROOMS[rm].slots;KITS=ROOMS[rm].kits;SIZES=ROOMS[rm].sizes;size=SIZES[o.size]?o.size:ROOMS[rm].def;sel=o.sel||{};qov=o.qov||{};resetDims();att=o.att||0;fillPct=o.fp||0;fillMode=o.fm||'sit';tgt=o.tl||90;trim=o.tr||0;for(const k in acBy)delete acBy[k];Object.assign(acBy,o.ac||{});if(o.dm&&o.dm[0]>0)setDims(o.dm[0],o.dm[1]);
+const encodeState=()=>btoa(unescape(encodeURIComponent(JSON.stringify({evt,hang,rmode,rdays,rfrom,rtech,rlog,uf,ufn,ven,fx,fsz,cdr,gone,two,rm,size,sel,qov,offs,dummies,seat,scr,guest,fwd,mar,fee,lvl,att,fp:fillPct,fm:fillMode,tl:tgt,tr:trim,ac:acBy,dm:ORG[rm+size]?[SIZES[size].W,SIZES[size].D]:null}))));
+function loadState(o){hang=o.hang===true?'hung':['hung','mix'].includes(o.hang)?o.hang:'floor';rmode=o.rmode==='rent'?'rent':'buy';rdays=Math.max(1,Math.min(60,+o.rdays||1));rfrom=o.rfrom||'';rtech=!!o.rtech;rlog=o.rlog!==false;evt=VOCS[o.evt]?o.evt:'church';applyVoc();uf=Array.isArray(o.uf)?o.uf:null;ufn=o.ufn||0;lvl=[1,2,3].includes(o.lvl)?o.lvl:1;ven=o.ven||{};fx=o.fx||{};fsz=o.fsz||{};cdr=o.cdr||{};gone=o.gone||{};two=!!o.two;rm=ROOMS[o.rm]?o.rm:'church';SLOTS=ROOMS[rm].slots;KITS=ROOMS[rm].kits;SIZES=ROOMS[rm].sizes;size=SIZES[o.size]?o.size:ROOMS[rm].def;sel=o.sel||{};qov=o.qov||{};resetDims();att=o.att||0;fillPct=o.fp||0;fillMode=o.fm||'sit';tgt=o.tl||90;trim=o.tr||0;for(const k in acBy)delete acBy[k];Object.assign(acBy,o.ac||{});if(o.dm&&o.dm[0]>0)setDims(o.dm[0],o.dm[1]);
   for(const k in offs)delete offs[k];Object.assign(offs,o.offs||{});dummies=o.dummies||[];dn=dummies.reduce((m,d)=>Math.max(m,d.id),0);
   Object.assign(seat,o.seat||{});Object.assign(scr,o.scr||{});Object.assign(guest,o.guest||{});if(o.fwd){fwd=o.fwd;document.getElementById('fwd').value=fwd}
   dsel=null;cur=null;chrome();document.querySelectorAll('#sz .pill').forEach(b=>b.classList.toggle('on',b.dataset.k===size));buildRoom();renderList()}

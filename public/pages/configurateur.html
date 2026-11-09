@@ -51,7 +51,22 @@ details input,details select{width:80px;background:#1c2040;color:#fff;border:1px
 #modal td{padding:5px 3px;border-bottom:1px solid #2a2f58;vertical-align:top}
 #modal td:last-child{text-align:right;white-space:nowrap}
 textarea{width:100%;height:90px;background:#10142b;color:#cfd3f0;border:1px solid #343a6a;border-radius:8px;padding:6px;font-size:12px;margin-top:8px}
-@media(max-width:820px){#app{grid-template-columns:1fr;grid-template-rows:42vh 1fr}#panel{border-left:0;border-top:1px solid #2a2f58}#hint{display:none}}
+#mbar{display:none}
+@media(max-width:820px){
+ html,body{height:auto}
+ #app{display:block;height:auto}
+ #view{position:sticky;top:0;z-index:5;height:48vh;height:48svh;display:flex;flex-direction:column;background:#0f1220}
+ #size{order:-1;position:static;flex:0 0 auto;padding:6px 8px;gap:5px}
+ #size>div{overflow-x:auto;flex-wrap:nowrap!important;gap:5px!important;margin-top:0!important;padding-bottom:2px}
+ #size .pill{padding:5px 10px;font-size:12px;white-space:nowrap;flex:0 0 auto}
+ #cv{flex:1;min-height:0;height:auto}
+ #panel{display:block;border-left:0;border-top:1px solid #2a2f58;padding-bottom:84px}
+ #body{overflow:visible}
+ #hint{display:none}
+ #mbar{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:20;background:#12152bf2;border-top:1px solid #2a2f58;padding:8px 12px calc(8px + env(safe-area-inset-bottom));align-items:center;justify-content:space-between;gap:10px}
+ #mbar small{display:block;font-size:11px;color:#9aa0c0}#mbar b{font-size:20px}
+ #mbar .cta{width:auto;padding:11px 18px;font-size:14px}
+}
 </style>
 </head>
 <body>
@@ -75,6 +90,7 @@ textarea{width:100%;height:90px;background:#10142b;color:#cfd3f0;border:1px soli
     </div>
   </div>
 </div>
+<div id="mbar"><div><small>Total estimé</small><b id="mtotal">0 $</b></div><button class="cta" id="mq">Voir mon devis</button></div>
 <div id="modal"><div class="box"><h2 style="font-size:17px">Récapitulatif de votre devis</h2><div id="mbody"></div>
  <button class="cta" id="copy">Copier le devis (à envoyer sur WhatsApp)</button>
  <button class="pill" id="close" style="margin-top:8px;width:100%">Fermer</button></div></div>
@@ -319,7 +335,7 @@ function totals(){let t=0,req=[],rows=[];
   if(fwd==='ps'&&rows.some(r=>r.pr!=null))t+=Math.round(5*1.392*(1+mar/100)*(1+fee/100));
   return{t,req,rows}}
 function updTotal(){const r=totals();
-  document.getElementById('total').textContent=money(r.t);
+  document.getElementById('total').textContent=money(r.t);document.getElementById('mtotal').textContent=money(r.t);
   const sp=r.rows.filter(x=>x.pr!=null&&x.o&&inStock(x.o)).reduce((a,x)=>a+x.pr*x.q,0),oc=r.rows.filter(x=>x.pr!=null&&!(x.o&&inStock(x.o))).reduce((a,x)=>a+x.pr*x.q,0);
   document.getElementById('reqline').textContent=(sp>0?'Disponible en boutique : '+money(sp)+' · ':'')+(oc>0&&sp>0?'Sur commande : '+money(oc)+'. ':'')+(r.req.length?'+ prix sur demande : '+r.req.join(', '):(sp>0?'':'Transport et taxes inclus, aucune ligne cachée.'))}
 
@@ -395,7 +411,7 @@ function buildRoom(){
   dummies.forEach(d=>{if(!valid(d,d.x,d.z)){freeSpot(d,d.x,d.z);seatFix(d)}room.add(person(d))});
   rad=ROOMS[rm].rad[size];
 }
-function cameraUpdate(){const w=cv.parentElement.clientWidth,h=cv.parentElement.clientHeight;R.setSize(w,h,false);cam.aspect=w/h;cam.updateProjectionMatrix();
+function cameraUpdate(){const w=cv.clientWidth||cv.parentElement.clientWidth,h=cv.clientHeight||cv.parentElement.clientHeight;R.setSize(w,h,false);cam.aspect=w/h;cam.updateProjectionMatrix();
   cam.position.set(rad*Math.sin(phi)*Math.sin(theta),rad*Math.cos(phi),rad*Math.sin(phi)*Math.cos(theta));cam.lookAt(0,.8,0)}
 let t0=0;function loop(t){requestAnimationFrame(loop);
   room.children.forEach(g=>{if(g.userData&&g.userData.slot){
@@ -473,6 +489,7 @@ document.getElementById('quote').onclick=()=>{const r=totals();
   document.getElementById('mbody').innerHTML=`<p style="font-size:12px;color:#9aa0c0;margin-top:6px">${SIZES[size].n}. Prix livrés à Kinshasa, transport et taxes inclus. Les prix sur demande seront confirmés après vérification du stock.</p><table>${rows}<tr><td><b>Total estimé</b></td><td><b>${money(r.t)}</b></td></tr></table><textarea id="qt" readonly></textarea>`;
   quoteText='Demande de devis – Pyramide Record\n'+SIZES[size].n+'\n'+r.rows.map(x=>`- ${x.s.l}${x.q>1?' x'+x.q:''} : ${x.o.n}${x.o&&inStock(x.o)?' [en stock]':x.o&&x.o.us!=null?' [sur commande]':''} – ${x.pr==null?'prix sur demande':money(x.pr*x.q)}`).join('\n')+r.req.filter(x=>x.startsWith('Sièges')).map(x=>'\n- '+x+' – prix sur demande').join('')+`\nTotal estimé : ${money(r.t)}`;
   document.getElementById('qt').value=quoteText;document.getElementById('modal').style.display='flex';quoteExtras()};
+document.getElementById('mq').onclick=()=>document.getElementById('quote').click();
 document.getElementById('close').onclick=()=>document.getElementById('modal').style.display='none';
 document.getElementById('copy').onclick=()=>{const t=document.getElementById('qt');t.select();
   try{navigator.clipboard.writeText(quoteText);document.getElementById('copy').textContent='Copié ✓'}catch(e){document.execCommand&&document.execCommand('copy')}};

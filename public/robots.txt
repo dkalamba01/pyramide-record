@@ -1,3 +1,6 @@
 User-agent: *
 Allow: /
+# Pages de panier et d'administration : sans intérêt pour les robots
+Disallow: /*?cart=
+Disallow: /*?admin=
 Sitemap: https://pyramidrecord.com/sitemap.xml

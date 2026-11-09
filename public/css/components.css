@@ -489,7 +489,7 @@
    components.css is already linked on every page. Only page-
    specific one-offs (if any) belong in a page's local <style>.
    ============================================================ */
-.page-hero { padding: var(--sp-8) 0 var(--sp-6); }
+.page-hero { padding-top: var(--sp-8); padding-bottom: var(--sp-6); }
 .bio-layout { display:grid; grid-template-columns:320px 1fr; gap:var(--sp-8); align-items:start; }
 .bio-photo { aspect-ratio:4/5; border-radius:var(--r-lg); overflow:hidden; border:1px solid var(--hair-2); position:sticky; top:90px; }
 .bio-photo img { width:100%; height:100%; object-fit:cover; display:block; }

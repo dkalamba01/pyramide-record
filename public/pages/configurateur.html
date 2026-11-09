@@ -1386,18 +1386,43 @@ function shopCartBtn(){if(rmode==='rent')return;const r=totals(),L=[];let tot=0;
   r.rows.forEach(x=>{const st=STOCK[x.o.n];if(st&&st.qty>0){const q=Math.min(x.q,st.qty);L.push((st.sku||st.id)+':'+q);tot+=st.price*q}});
   const box=document.getElementById('mbody');if(!box||!L.length)return;
   box.insertAdjacentHTML('beforeend','<div class="mini" style="margin-top:10px">'+L.length+' produit(s) en stock : commandez-les directement.</div><a class="cta" target="_blank" rel="noopener" href="'+SHOP_URL+'?cart='+L.join(',')+'">Commander dans la boutique ('+money(tot)+')</a>')}
-function quoteExtras(){const code=encodeState();if(code.length<1200){quoteText+='\nCode de la salle : '+code;document.getElementById('qt').value=quoteText}
+let quoteCode='';
+function buildQuote(r){const rent=rmode==='rent',z=SIZES[size],L=[],ev=rm==='church'?EVN[evt]:ROOMS[rm].n,hr='━━━━━━━━━━━━━━━',
+    dl=String(LV[lvl].dl||'').replace(/^Délai ?: ?/i,'');
+  L.push('*PYRAMIDE RECORD*','_Demande de devis · '+(rent?'Location':'Vente')+'_','');
+  if(client.n||client.t)L.push('👤 *Client* : '+[client.n,client.t].filter(Boolean).join(' · '));
+  L.push('📍 *Salle* : '+z.n+(z.W&&z.D?' ('+z.W+' × '+z.D+' m)':'')+' · '+ev);
+  L.push('⭐ *Qualité* : '+LV[lvl].n);
+  if(dl)L.push('🚚 *Délai* : '+dl);
+  if(rent)L.push('📅 *Durée* : '+rdays+' jour'+(rdays>1?'s':'')+(rfrom?' à partir du '+rfrom:''));
+  L.push('',hr,'');
+  const gs=[],gm={};r.rows.forEach(x=>{const k=x.s.z||'Matériel';if(!gm[k]){gm[k]=[];gs.push(k)}gm[k].push(x)});
+  gs.forEach(k=>{L.push('*'+k.toUpperCase()+'*');gm[k].forEach(x=>{
+    L.push('• '+x.s.l+(x.q>1?' ×'+x.q:''));
+    L.push('   _'+x.o.n+'_'+rowTag(x)+' — *'+(x.pr==null?'prix sur demande':money(x.pr*x.q))+'*')});L.push('')});
+  const sr=r.req.filter(x=>x.startsWith('Sièges'));if(sr.length){L.push('*SIÈGES*');sr.forEach(x=>L.push('• '+x+' — *prix sur demande*'));L.push('')}
+  if(!r.rows.length&&!sr.length)L.push('_Aucun matériel choisi pour le moment._','');
+  L.push(hr,'*'+(rent?'TOTAL LOCATION ('+rdays+' j)':'TOTAL ESTIMÉ')+' : '+money(r.t)+'*');
+  if(inst)L.push('+ Installation et formation par Pyramide Record (sur devis)');
+  if(rent)L.push('',rentText(r));else L.push('_Transport et taxes inclus, livraison à Kinshasa._','','_'+LVNOTE+'_');
+  L.push('','_Prix estimatifs, confirmés par notre équipe. Merci de votre confiance !_');
+  return L.join('\n')}
+function quoteSet(){quoteText=buildQuote(totals())+(quoteCode?'\n\n🔗 _Code de la salle (pour la retrouver)_ :\n'+quoteCode:'');
+  const t=document.getElementById('qt');if(t)t.value=quoteText;
+  const w=document.getElementById('qwa');if(w)w.href='https://wa.me/'+(contact.wa||'').replace(/\D/g,'')+'?text='+encodeURIComponent(quoteText);
+  const m=document.getElementById('qem');if(m&&contact.em)m.href='mailto:'+contact.em+'?subject='+encodeURIComponent('Demande de devis ('+(rmode==='rent'?'LOCATION':'VENTE')+') – Pyramide Record')+'&body='+encodeURIComponent(quoteText)}
+function quoteExtras(){const code=encodeState();quoteCode=code.length<1200?code:'';quoteSet();
   let img='';try{R.render(scene,cam);img=`<img src="${cv.toDataURL('image/jpeg',.8)}" style="width:100%;border-radius:8px;margin-top:8px" alt="Aperçu de ma salle">`}catch(e){}
   const num=(contact.wa||'').replace(/\D/g,''),wa='https://wa.me/'+num+'?text='+encodeURIComponent(quoteText),
     em=contact.em?'mailto:'+contact.em+'?subject='+encodeURIComponent('Demande de devis ('+(rmode==='rent'?'LOCATION':'VENTE')+') – Pyramide Record')+'&body='+encodeURIComponent(quoteText):'';
-  document.getElementById('mbody').insertAdjacentHTML('beforeend',img+`<a class="cta" target="_blank" rel="noopener" href="${wa}">Envoyer sur WhatsApp</a>`+(em?`<a class="cta em" href="${em}">Envoyer par email</a>`:'')+`<label style="display:flex;gap:8px;align-items:center;font-size:13px;margin-top:8px"><input type="checkbox" id="pcol" ${pdfColor?'checked':''}> PDF en couleurs (par défaut : économe en encre)</label><button class="cta em" id="prt" style="margin-top:8px">Enregistrer le devis en PDF</button><div class="mini">Code de ma salle (pour la retrouver plus tard) :</div><textarea readonly>${code}</textarea>`);shopCartBtn();document.getElementById('prt').onclick=()=>pvOpen(true);document.getElementById('pcol').onchange=e=>{pdfColor=e.target.checked}}
+  document.getElementById('mbody').insertAdjacentHTML('beforeend',img+`<a class="cta" id="qwa" target="_blank" rel="noopener" href="${wa}">Envoyer sur WhatsApp</a>`+(em?`<a class="cta em" id="qem" href="${em}">Envoyer par email</a>`:'')+`<label style="display:flex;gap:8px;align-items:center;font-size:13px;margin-top:8px"><input type="checkbox" id="pcol" ${pdfColor?'checked':''}> PDF en couleurs (par défaut : économe en encre)</label><button class="cta em" id="prt" style="margin-top:8px">Enregistrer le devis en PDF</button><div class="mini">Code de ma salle (pour la retrouver plus tard) :</div><textarea readonly>${code}</textarea>`);shopCartBtn();document.getElementById('prt').onclick=()=>pvOpen(true);document.getElementById('pcol').onchange=e=>{pdfColor=e.target.checked}}
 document.getElementById('quote').onclick=()=>{const r=totals();
   let rows=r.rows.map(x=>`<tr><td>${x.s.l}${x.q>1?' ×'+x.q:''}<br><small style="color:var(--sand)">${x.o.n}${rowTag(x)}</small></td><td>${x.pr==null?'Sur demande':money(x.pr*x.q)}</td></tr>`).join('');
   r.req.filter(x=>x.startsWith('Sièges')).forEach(x=>{rows+=`<tr><td>${x}</td><td>Sur demande</td></tr>`});
   if(!r.rows.length&&!r.req.length)rows='<tr><td>Aucun matériel choisi pour le moment.</td><td></td></tr>';
   document.getElementById('mbody').innerHTML=`<div style="font-size:13px;margin:4px 0"><b>${rmode==='rent'?'Devis de location':'Devis de vente'}</b></div><div style="display:flex;gap:6px;margin:6px 0"><input id="cn" placeholder="Votre nom" value="${client.n.replace(/"/g,'')}" style="flex:1;min-width:0;font-size:16px;padding:8px;border-radius:8px;border:1px solid var(--hair-2);background:var(--obsidian);color:var(--bone)"><input id="ct" placeholder="Téléphone / WhatsApp" value="${client.t.replace(/"/g,'')}" style="flex:1;min-width:0;font-size:16px;padding:8px;border-radius:8px;border:1px solid var(--hair-2);background:var(--obsidian);color:var(--bone)"></div><label style="display:flex;gap:8px;align-items:center;font-size:13px;margin:8px 0"><input type="checkbox" id="inst" ${inst?'checked':''}> Je souhaite l'installation et la formation par Pyramid Record (sur devis)</label><p style="font-size:12px;color:var(--sand);margin-top:6px">${SIZES[size].n}. ${LV[lvl].n}. ${LVNOTE} Sièges, écrans et mobilier sont affichés pour visualiser la salle et ne sont pas vendus. ${rmode==='rent'?rentNote():'Prix livrés à Kinshasa, transport et taxes inclus. Les prix sur demande seront confirmés après vérification du stock.'}</p><table>${rows}<tr><td><b>${rmode==='rent'?'Total location ('+rdays+' j)':'Total estimé'}</b></td><td><b>${money(r.t)}</b></td></tr>${rmode==='rent'?rentRows(r):''}</table>${rmode==='rent'?'<div style="font-size:13px;margin:10px 0 4px"><b>Conditions de location</b></div><ul style="font-size:12px;color:var(--bone);padding-left:18px;margin:0">'+RTERMS.map(x=>'<li>'+x+'</li>').join('')+'</ul>':''}<div style="font-size:13px;margin:10px 0 4px"><b>Conseils</b></div><ul style="font-size:12px;color:var(--bone);padding-left:18px;margin:0">${advice().map(a=>`<li><b>${a[0]} :</b> ${a[1]}</li>`).join('')}</ul><textarea id="qt" readonly></textarea>`;
-  quoteText='Demande de devis ('+(rmode==='rent'?'LOCATION':'VENTE')+') – Pyramide Record\n'+SIZES[size].n+'\nQualité : '+LV[lvl].n+' – '+LV[lvl].dl+'\n'+LVNOTE+'\n'+r.rows.map(x=>`- ${x.s.l}${x.q>1?' x'+x.q:''} : ${x.o.n}${rowTag(x,1)} – ${x.pr==null?'prix sur demande':money(x.pr*x.q)}`).join('\n')+r.req.filter(x=>x.startsWith('Sièges')).map(x=>'\n- '+x+' – prix sur demande').join('')+`\n${rmode==='rent'?'Total location ('+rdays+' j)':'Total estimé'} : ${money(r.t)}`+(rmode==='rent'?'\n'+rentText(r):'')+(inst?'\n+ Installation et formation par Pyramid Record (sur devis)':'');
-  document.getElementById('qt').value=quoteText;document.getElementById('modal').style.display='flex';quoteExtras();const sv=()=>{client.n=document.getElementById('cn').value;client.t=document.getElementById('ct').value;try{localStorage.setItem('pr_client',JSON.stringify(client))}catch(e){}};document.getElementById('cn').oninput=document.getElementById('ct').oninput=sv;document.getElementById('inst').onchange=e=>{sv();inst=e.target.checked;document.getElementById('quote').click()}};
+  quoteText=buildQuote(r);
+  document.getElementById('qt').value=quoteText;document.getElementById('modal').style.display='flex';quoteExtras();const sv=()=>{client.n=document.getElementById('cn').value;client.t=document.getElementById('ct').value;try{localStorage.setItem('pr_client',JSON.stringify(client))}catch(e){}if(document.getElementById('qwa'))quoteSet()};document.getElementById('cn').oninput=document.getElementById('ct').oninput=sv;document.getElementById('inst').onchange=e=>{sv();inst=e.target.checked;document.getElementById('quote').click()}};
 document.getElementById('mq').onclick=()=>document.getElementById('quote').click();
 document.getElementById('close').onclick=()=>document.getElementById('modal').style.display='none';
 document.getElementById('copy').onclick=()=>{const t=document.getElementById('qt');t.select();

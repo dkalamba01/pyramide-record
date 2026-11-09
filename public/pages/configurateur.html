@@ -369,7 +369,7 @@ const placeVen=(s,i,q,W,D)=>{if(s.back)return[0,.35,-D/2+.5];
 const We=Math.min(W,26),x=s.pos[0]*We+(q>1?(i-(q-1)/2)*((s.span||.06)*We*2/Math.max(q-1,1)):0);
   return s.pos[1]>0?[x,.35,-D/2+2.2+s.pos[1]*2.5]:[x,0,(rm==='stad'?D*.1:D/2-2.4)+(s.pos[1]+.34)*3]};
 ROOMS.amph={n:'Amphithéâtre',venue:'amph',slots:evSlots('amph'),kits:EVKITS,sizes:{s:{n:'Petit',W:22,D:22},m:{n:'Moyen',W:32,D:30},l:{n:'Grand',W:46,D:40}},def:'m',place:placeVen,rad:{s:30,m:42,l:60},rmax:90,es:{s:1,m:1.3,l:1.6},h:'Votre amphithéâtre'};
-ROOMS.balc={n:'Salle à balcons',venue:'balc',slots:evSlots('balc'),kits:EVKITS,sizes:{s:{n:'Petite',W:16,D:22},m:{n:'Moyenne',W:22,D:30},l:{n:'Grande (2 balcons)',W:30,D:40}},def:'m',place:placeVen,rad:{s:30,m:42,l:62},rmax:100,es:{s:1,m:1.2,l:1.5},h:'Votre salle à balcons'};
+ROOMS.balc={n:'Salle à balcons',venue:'balc',slots:evSlots('balc'),kits:EVKITS,sizes:{s:{n:'Petite',W:16,D:22},m:{n:'Moyenne',W:22,D:30},l:{n:'Grande',W:30,D:40}},def:'m',place:placeVen,rad:{s:30,m:42,l:62},rmax:100,es:{s:1,m:1.2,l:1.5},h:'Votre salle à balcons'};
 ROOMS.stad={n:'Stade',venue:'stad',slots:evSlots('stad'),kits:EVKITS,sizes:{s:{n:'Petit stade',W:50,D:70},m:{n:'Stade moyen',W:70,D:100},l:{n:'Grand stade',W:90,D:130}},def:'m',place:placeVen,rad:{s:100,m:140,l:190},rmax:300,es:{s:2.5,m:3.2,l:4},h:'Votre stade'};
 Object.values(ROOMS).forEach(r=>r.slots.push(SCR));
 const CHP=[
@@ -504,7 +504,8 @@ let hang='floor';
 const hangY=()=>Math.round(Math.max(3,Math.min(acv().h-1.5,8))*2)/2;
 const hungN=()=>spkList().filter(q=>q.hg).length;
 const dirC=(s,dx,dz,dy,r)=>{const t=s.tl||0;return(Math.cos(t)*(dx*s.fx+dz*s.fz)-Math.sin(t)*dy)/r};
-function offOf(g){const a=[g.position.x,g.position.z,g.rotation.y];if(g.userData&&g.userData.t==='spk'){const y=g.position.y,tl=g.userData.tilt||0;if(y>.01||hang==='hung'||tl){a.push(y);if(tl)a.push(tl)}}return a}
+const BLEV=[3.4,6.8,10.2,13.6],balN=()=>rm==='balc'?(ven.bal!=null?ven.bal:(size==='l'?2:1)):0,balLevOf=g=>{if(g.userData&&g.userData.hg)return 0;const y=g.position.y;for(let n=1;n<=4;n++)if(Math.abs(y-(BLEV[n-1]+.15))<.1)return n;return 0};
+function offOf(g){const a=[g.position.x,g.position.z,g.rotation.y];if(g.userData&&g.userData.t==='spk'){const y=g.position.y,tl=g.userData.tilt||0;if(y>.01||hang==='hung'||tl){a.push(y);if(tl)a.push(tl)}}else if(balLevOf(g))a.push(g.position.y);return a}
 const HRIG=[['Accroche des enceintes','Kit d\'accroche, élingues et sécurité (estimé)',150,20],['Levage des enceintes','Palan électrique 1 t (estimé)',450,60]];
 function hangRows(rent){const n=hungN();if(!n)return[];const rows=HRIG.map(([l,nm,b,r])=>({s:{l},o:{n:nm},q:n,pr:rent?Math.round(r*rfac(rdays)):b,site:false}));
   rows.push({s:{l:'Technicien d\'accrochage et étude de charge'},o:{n:rent?'120 $ par jour (estimé)':'Forfait (estimé)'},q:1,pr:rent?120*rdays:200,svc:true});return rows}
@@ -683,24 +684,27 @@ function seatCov(){if(!covOn||!isVen())return;const P=seatSet(9000);if(!P.length
   P.forEach((p,i)=>{m.makeTranslation(p[0],p[1]+.5,p[2]);im.setMatrixAt(i,m);c.setHex(seatRgb(covMode,L,p[0],p[2],p[1]+.6,cf));im.setColorAt(i,c)});im.instanceMatrix.needsUpdate=true;im.instanceColor.needsUpdate=true;im.userData={cov:true};room.add(im)}
 function levelBreakdown(){if(!isVen()||acv().env==='out')return null;const P=seatSet(6000);if(!P.length)return null;const L=spkList(),G=lvlGrid(),pc=a=>a.length?Math.round(100*a.filter(x=>x>=tgt-3).length/a.length):null,rows=[];
   if(G)rows.push(['Rez-de-chaussée',pc(G.v.filter((_,i)=>G.ok[i]))]);
-  const lv=y=>P.filter(p=>y(p[1])).map(p=>levelAt(L,p[0],p[2],p[1]+.6));const a=lv(y=>y<5),b=lv(y=>y>=5);if(a.length)rows.push(['Balcon 1',pc(a)]);if(b.length)rows.push(['Balcon 2',pc(b)]);return rows}
+  for(let n=1;n<=4;n++){const a=P.filter(p=>Math.round((p[1]-.5)/3.4)===n).map(p=>levelAt(L,p[0],p[2],p[1]+.6));if(a.length)rows.push(['Balcon '+n,pc(a)])}return rows}
 const lvlTxt=()=>{const r=levelBreakdown();return r&&r.length>1?r.map(x=>x[0]+' '+x[1]+' %').join(' · '):''};
 function covBuild0(){covBuild00();crowdVis();const dark=covOn&&outV();if(flRef){if(flRef.userData.c0==null)flRef.userData.c0=flRef.material.color.getHex();flRef.material.color.setHex(dark?0x1b1f35:flRef.userData.c0)}
   room.children.forEach(g=>{if(g.userData&&g.userData.pitch)g.visible=!dark});seatCov()}
 let _ssk='';
 function spkSelUI(){let B=document.getElementById('spkbox');if(!B){const a=document.getElementById('dbar');if(!a)return;B=document.createElement('div');B.id='spkbox';a.parentNode.insertBefore(B,a.nextSibling)}
-  const g=ls&&ls.t==='eq'?room.children.find(o=>o.userData&&o.userData.slot===ls.slot&&o.userData.i===ls.i&&o.userData.t==='spk'&&!o.userData.ghost):null;
-  const k=g?[g.userData.key,g.userData.tilt||0,Math.round(g.position.y*10),Math.round(g.rotation.y*100),hang].join('|'):'';if(k===_ssk)return;_ssk=k;
-  if(!g){B.innerHTML='';return}
+  const ge=ls&&ls.t==='eq'?room.children.find(o=>o.userData&&o.userData.slot===ls.slot&&o.userData.i===ls.i&&!o.userData.ghost):null,g=ge&&ge.userData.t==='spk'?ge:null,NB=balN();
+  const k=ge?[ge.userData.key,ge.userData.tilt||0,Math.round(ge.position.y*10),Math.round(ge.rotation.y*100),hang,NB].join('|'):'';if(k===_ssk)return;_ssk=k;
+  const lvHtml=o=>{if(!NB)return'';const cur=balLevOf(o);return`<div class="zone" style="margin:8px 0 4px">Niveau</div><div style="display:flex;gap:6px;flex-wrap:wrap">${[0].concat(BLEV.slice(0,NB).map((_,i)=>i+1)).map(n=>`<button class="pill ${cur===n?'on':''}" data-lv="${n}">${n?'Balcon '+n:'Sol'}</button>`).join('')}</div>`};
+  const lvBind=o=>B.querySelectorAll('[data-lv]').forEach(b=>b.onclick=()=>{const n=+b.dataset.lv,{W,D}=SIZES[size];if(n){const li=n-1,dp=li?2.6:3.4;o.position.y=BLEV[li]+.15;o.userData.hg=false;if(o.userData.tilt)o.userData.tilt=0;o.rotation.x=0;o.position.x=Math.max(-W/2+.8,Math.min(W/2-.8,o.position.x));o.position.z=D/2-.3-dp/2-.2}else{o.position.y=0;o.userData.tilt=0;o.rotation.x=0}offs[o.userData.key]=offOf(o);if(!n)offs[o.userData.key][3]=0;buildRoom();renderList();_ssk='';spkSelUI();covBuild();covRes&&covRes();updTotal()});
+  if(!ge){B.innerHTML='';return}
+  if(!g){const h=lvHtml(ge);B.innerHTML=h?`<div class="sbx" style="margin-top:8px">${h}<div class="mini">Pose cet équipement sur le niveau choisi (balcon ou sol). Vous pouvez ensuite le déplacer sur la dalle.</div></div>`:'';if(h)lvBind(ge);return}
   const idx=spkList().findIndex(q=>q.k===g.userData.key),rp=spkReport()[idx]||{},tl=g.userData.tilt||0,hg=!!g.userData.hg,az=Math.round(Math.atan2(Math.sin(g.rotation.y),Math.cos(g.rotation.y))*180/Math.PI);
   B.innerHTML=`<div class="sbx" style="margin-top:8px"><div class="zone" style="margin:0 0 4px">Enceinte ${idx+1}${rp.role?' · '+rp.role:''}</div><div style="display:flex;gap:6px;flex-wrap:wrap"><button class="pill ${hg?'':'on'}" data-p="0">Au sol / sur scène</button><button class="pill ${hg?'on':''}" data-p="1">Suspendue (${hangY()} m)</button></div>
   <label style="display:flex;gap:8px;align-items:center;margin-top:6px">Inclinaison <input id="stl" type="range" min="-20" max="60" value="${tl}" style="flex:1;width:auto"> <b id="stlv">${tl}°</b></label>
   <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:4px"><button class="pill" id="stm">−5°</button><button class="pill" id="stp">+5°</button><button class="pill" id="sta">Inclinaison conseillée${rp.tilt!=null?' ('+rp.tilt+'°)':''}</button></div>
-  <div class="mini">Inclinaison : 0° = horizontale, valeur positive = vers le bas. Orientation : ${az}° (0° = vers le fond de la salle). Pose : ${poseTxt(Object.assign({},rp,{hg,y:g.position.y}))}. Le calcul de couverture en tient compte.</div></div>`;
+  ${lvHtml(g)}<div class="mini">Inclinaison : 0° = horizontale, valeur positive = vers le bas. Orientation : ${az}° (0° = vers le fond de la salle). Pose : ${poseTxt(Object.assign({},rp,{hg,y:g.position.y}))}. Le calcul de couverture en tient compte.</div></div>`;
   const apply=()=>{offs[g.userData.key]=offOf(g);buildRoom();renderList();spkSelUI()};
   const setT=v=>{v=Math.max(-20,Math.min(60,Math.round(v)));g.userData.tilt=v;g.rotation.order='YXZ';g.rotation.x=v*Math.PI/180;offs[g.userData.key]=offOf(g);document.getElementById('stlv').textContent=v+'°';document.getElementById('stl').value=v;covBuild();covRes&&covRes();updTotal()};
   B.querySelectorAll('[data-p]').forEach(b=>b.onclick=()=>{const up=b.dataset.p==='1';g.position.y=up?hangY():0;if(!up&&g.userData.tilt)g.userData.tilt=0;g.userData.hg=up;offs[g.userData.key]=offOf(g);if(!offs[g.userData.key][3]&&up===false)offs[g.userData.key][3]=0;buildRoom();renderList();_ssk='';spkSelUI();covRes&&covRes()});
-  document.getElementById('stl').oninput=e=>setT(+e.target.value);document.getElementById('stm').onclick=()=>setT((g.userData.tilt||0)-5);document.getElementById('stp').onclick=()=>setT((g.userData.tilt||0)+5);document.getElementById('sta').onclick=()=>setT(rp.tilt||0)}
+  lvBind(g);document.getElementById('stl').oninput=e=>setT(+e.target.value);document.getElementById('stm').onclick=()=>setT((g.userData.tilt||0)-5);document.getElementById('stp').onclick=()=>setT((g.userData.tilt||0)+5);document.getElementById('sta').onclick=()=>setT(rp.tilt||0)}
 setInterval(()=>{try{spkSelUI()}catch(e){}},300);
 function covBuild(){covBuild0();spkMarks();viewApply()}
 function covBuild00(){room.children.filter(g=>g.userData&&g.userData.cov).forEach(g=>room.remove(g));const lg=document.getElementById('covleg');
@@ -807,11 +811,11 @@ function buildVenue(W,D,fl){const vn=ven,v=ROOMS[rm].venue,big=v==='stad'?4:v===
       for(let a=-A,da=1.6/r;a<=A;a+=da){const x=r*Math.sin(a),z=cz+r*Math.cos(a);if(Math.abs(x)>W/2-.5||Math.abs(a*r)<ai)continue;
         const b=box(1.7,h,step*.98,m);b.position.set(x,h/2,z);b.rotation.y=a;room.add(b);furn.push({x,z,hw:.9,hd:.6,pew:false});for(let j=0;j<3;j++)cp(x+Math.cos(a)*(j-1)*.55,h,z-Math.sin(a)*(j-1)*.55);venSeats+=3}}
     room.add(label('GRADINS',0,cz+r0+2,'#9aa0c0',big))}
-  else if(v==='balc'){[[0,-D/2],[-W/2,0],[W/2,0],[0,D/2]].forEach(([x,z],i)=>{const hh=(vn.bal!=null?vn.bal:(size==='l'?2:1))>1?8:5.5,w=box(i%3==0?W:.15,hh,i==1||i==2?D:.15,wallM());w.position.set(x,hh/2,z);room.add(w)});
+  else if(v==='balc'){[[0,-D/2],[-W/2,0],[W/2,0],[0,D/2]].forEach(([x,z],i)=>{const nb0=vn.bal!=null?vn.bal:(size==='l'?2:1),hh=nb0>1?3.4*nb0+1.2:5.5,w=box(i%3==0?W:.15,hh,i==1||i==2?D:.15,wallM());w.position.set(x,hh/2,z);room.add(w)});
     const z0=-D/2+5.5,z1=D/2-6.2,aisle=vn.aisle!=null?vn.aisle:1.6,bw=(W-2-aisle)/2,rows=vn.rows||Math.max(3,Math.floor((z1-z0)/.9)),sm=mat(0x8a6a44);
     for(let r=0;r<rows;r++){const z=z0+r*(z1-z0)/(rows-1);[-1,1].forEach(sg=>{const x=sg*(aisle/2+bw/2),b=box(bw,.45,.45,sm);b.position.set(x,.22,z);room.add(b);furn.push({x,z,hw:bw/2,hd:.25,pew:false});for(let k=0;k<Math.floor(bw/.5);k++)cp(x-bw/2+(k+.5)*.5,.5,z);venSeats+=Math.floor(bw/.5)})}
     carpet(0,(z0+z1)/2,aisle,z1-z0+1);
-    const nb=vn.bal!=null?vn.bal:(size==='l'?2:1),levels=[3.4,6.8].slice(0,nb),gm=new THREE.MeshStandardMaterial({color:0x9fd8ff,transparent:true,opacity:.25}),slm=mat(0x4a4f78,{transparent:true,opacity:.6});
+    const nb=vn.bal!=null?vn.bal:(size==='l'?2:1),levels=BLEV.slice(0,nb),gm=new THREE.MeshStandardMaterial({color:0x9fd8ff,transparent:true,opacity:.25}),slm=mat(0x4a4f78,{transparent:true,opacity:.6});
     levels.forEach((y,li)=>{const dp=li?2.6:3.4,rz=D/2-.3-dp/2,sd=li?2.4:3;
       const rear=box(W-.4,.3,dp,slm);rear.position.set(0,y,rz);room.add(rear);
       [-1,1].forEach(sg=>{const sx=sg*(W/2-.2-sd/2),sl=box(sd,.3,D-5,slm);sl.position.set(sx,y,(-D/2+4.5+D/2-.3-dp)/2);sl.scale.z=1;room.add(sl)});
@@ -1112,7 +1116,7 @@ function optSpeakers(){const sl=SLOTS.find(x=>x.id==='spk');if(!sl||!isVen())ret
     ring(0,'Façade',1,75*R2,sw/2+2.5,sd/2+2.5);
     ring(.5,'Délai',1,65*R2);ring(.78,'Délai',1,65*R2);ring(.96,'Rappel périphérique',-1,75*R2);
   }
-  if(!zr&&rm==='balc'){const nb=ven.bal!=null?ven.bal:(size==='l'?2:1);[3.4,6.8].slice(0,nb).forEach((y,li)=>{const dp=li?2.6:3.4,sdp=li?2.4:3,rail=D/2-.3-dp,zc=(4.2-dp)/2,lenz=D-5-dp-1;
+  if(!zr&&rm==='balc'){const nb=ven.bal!=null?ven.bal:(size==='l'?2:1);BLEV.slice(0,nb).forEach((y,li)=>{const dp=li?2.6:3.4,sdp=li?2.4:3,rail=D/2-.3-dp,zc=(4.2-dp)/2,lenz=D-5-dp-1;
     for(let k=0;k<=2;k++)addG('Rappel balcon',k*(W/2-3)/2,rail+.6,0,60*R2,undefined,y+.15);
     for(let k=0;k<5;k++)addG('Rappel balcon',W/2-.2-sdp+.3,zc-lenz/2+1.5+k*(lenz-3)/4,PI/2,45*R2,undefined,y+.15);
     if(!li)for(let k=0;k<=2;k++)addG('Sous balcon',k*(W/2-3)/2,rail+1.3,0,70*R2,undefined,y-1.5)})}
@@ -1130,8 +1134,8 @@ function optSpeakers(){const sl=SLOTS.find(x=>x.id==='spk');if(!sl||!isVen())ret
   const evalSet=arr=>{HB.fill(0);for(let k=0;k<n;k++){const L=10*Math.log10(I[k]+(arr?arr[k]:0)+1e-9);Lt[k]=L;HB[Math.max(0,Math.min(159,Math.round(L)))]++}
     let c=0,p=0;const th=n*.1;for(;p<159;p++){c+=HB[p];if(c>=th)break}const t=Math.max(-20,Math.min(0,Math.round(tgt-2-p)));let sc=0,good=0;for(let k=0;k<n;k++){sc+=pen(Lt[k]+t);if(Lt[k]+t>=T3)good++}return{sc,good,t}};
   let prev=0,tot=0,base=0;
-  for(let step=0;step<(rm==='balc'?26:14)&&tot<24;step++){let bs=-1e9,bi=-1;for(let c=0;c<C.length;c++){if(used.has(c))continue;const sz=G[c].sp.length;if(tot+sz>24)continue;if(G[c].sp.some(q=>chosen.some(o=>Math.hypot(o.x-q.x,o.z-q.z)<.6)))continue;if(step===0&&G[c].role!=='Façade')continue;const sc=evalSet(C[c]).sc,g0=(sc-base)/Math.pow(sz,.85)*(sz>1?1.08:1),gain=(g0>0&&hang==='mix'&&G[c].sp[0].hg)?g0*.9:g0;if(gain>bs){bs=gain;bi=c}}
-    if(bi<0)break;used.add(bi);const g=G[bi],arr=C[bi];g.sp.forEach(q=>chosen.push({x:q.x,z:q.z,th:q.th,y:q.y,tl:q.tl,role:g.role}));tot+=g.sp.length;for(let k=0;k<n;k++)I[k]+=arr[k];const ev=evalSet(null);base=ev.sc;const gg=[0,0,0],gn=[0,0,0];for(let k=0;k<n;k++){const e=pts[k][2],q=e==null?0:e>5?2:e>2.5?1:0;gn[q]++;if(Lt[k]+ev.t>=T3)gg[q]++}let cov=1;for(let q=0;q<3;q++)if(gn[q]>=8)cov=Math.min(cov,gg[q]/gn[q]);
+  for(let step=0;step<(rm==='balc'?(balN()>2?34:26):14)&&tot<24;step++){let bs=-1e9,bi=-1;for(let c=0;c<C.length;c++){if(used.has(c))continue;const sz=G[c].sp.length;if(tot+sz>24)continue;if(G[c].sp.some(q=>chosen.some(o=>Math.hypot(o.x-q.x,o.z-q.z)<.6)))continue;if(step===0&&G[c].role!=='Façade')continue;const sc=evalSet(C[c]).sc,g0=(sc-base)/Math.pow(sz,.85)*(sz>1?1.08:1),gain=(g0>0&&hang==='mix'&&G[c].sp[0].hg)?g0*.9:g0;if(gain>bs){bs=gain;bi=c}}
+    if(bi<0)break;used.add(bi);const g=G[bi],arr=C[bi];g.sp.forEach(q=>chosen.push({x:q.x,z:q.z,th:q.th,y:q.y,tl:q.tl,role:g.role}));tot+=g.sp.length;for(let k=0;k<n;k++)I[k]+=arr[k];const ev=evalSet(null);base=ev.sc;const gg=[0,0,0,0,0],gn=[0,0,0,0,0];for(let k=0;k<n;k++){const e=pts[k][2],q=e==null?0:rm==='balc'?(e<=2.5?0:Math.min(4,Math.round((e-1.1)/3.4))):e>5?2:e>2.5?1:0;gn[q]++;if(Lt[k]+ev.t>=T3)gg[q]++}let cov=1;for(let q=0;q<5;q++)if(gn[q]>=8)cov=Math.min(cov,gg[q]/gn[q]);
     if(tot>=2&&cov>=.96)break;if(step>=2&&cov-prev<.004&&cov>=.85)break;prev=cov}
   const ord={'Façade':0,'Rappel latéral':1,'Rappel périphérique':1,'Rappel arrière':1,'Délai':2,'Rappel balcon':2,'Sous balcon':2,'Autour de la zone':3};chosen.sort((a,b)=>(ord[a.role]-ord[b.role])||(a.x-b.x)||(a.z-b.z));
   const fac=chosen.filter(c=>c.role==='Façade'),ref=c=>{let d=1e9;if(fac.length){for(const f of fac)d=Math.min(d,Math.hypot(c.x-f.x,c.z-f.z))}else d=Math.hypot(c.x,c.z-(sC?0:-D/2));return d};
@@ -1176,12 +1180,12 @@ function seatUI(){const B=document.getElementById('seatbox');if(ROOMS[rm].venue)
    rng=(a,b)=>Array.from({length:b-a+1},(_,i)=>[a+i,String(a+i)]);
   let f='';
   if(v==='amph')f=`<label>Rangées ${so('v1',ven.tiers||0,[[0,'Automatique']].concat(rng(4,20)))}</label><label>Ouverture ${so('v2',ven.arc||1.35,[[.75,'Étroite'],[1.0,'Moyenne'],[1.35,'Demi-cercle']])}</label><label>Allée centrale ${so('v3',ven.aisle!=null?ven.aisle:.9,[[0,'Aucune'],[.9,'Étroite'],[1.8,'Large']])}</label>`;
-  else if(v==='balc')f=`<label>Balcons ${so('v1',ven.bal!=null?ven.bal:(size==='l'?2:1),[[0,'Aucun'],[1,'1 balcon'],[2,'2 balcons']])}</label><label>Rangées au sol ${so('v2',ven.rows||0,[[0,'Automatique']].concat(rng(3,18)))}</label><label>Allée (m) ${so('v3',ven.aisle!=null?ven.aisle:1.6,[[0,'Aucune'],[1.2,'1,2'],[1.6,'1,6'],[2.4,'2,4']])}</label>`;
+  else if(v==='balc')f=`<label>Balcons ${so('v1',ven.bal!=null?ven.bal:(size==='l'?2:1),[[0,'Aucun'],[1,'1 balcon'],[2,'2 balcons'],[3,'3 balcons'],[4,'4 balcons']])}</label><label>Rangées au sol ${so('v2',ven.rows||0,[[0,'Automatique']].concat(rng(3,18)))}</label><label>Allée (m) ${so('v3',ven.aisle!=null?ven.aisle:1.6,[[0,'Aucune'],[1.2,'1,2'],[1.6,'1,6'],[2.4,'2,4']])}</label>`;
   else f=`<label>Rangées de tribunes ${so('v1',ven.tiers||8,rng(3,14))}</label><label>Côtés ${so('v2',ven.sides||'3',[['3','3 côtés'],['2','2 côtés (latéraux)']])}</label><label>Forme ${so('v3',ven.shape||'rect',[['rect','Rectangulaire'],['round','Ronde / ovale']])}</label><label>Scène ${so('v4',ven.stage||'end',[['end','Au fond du terrain'],['center','Au centre']])}</label>`;
   B.innerHTML=`<div class="zone">Gradins du lieu</div><div class="sbx"><details><summary style="font-size:13px;cursor:pointer">Modifier les gradins (<span id="scount">${venSeats}</span> places)</summary>${f}<div style="font-size:11px;color:#9aa0c0;margin-top:6px">Structure du lieu : non incluse dans le prix.</div></details></div>`;
   const ch=()=>{const g=i=>document.getElementById(i)?+document.getElementById(i).value:0;
     if(v==='amph'){ven.tiers=g('v1')||null;ven.arc=g('v2');ven.aisle=g('v3')}
-    else if(v==='balc'){ven.bal=g('v1');ven.rows=g('v2')||null;ven.aisle=g('v3')}
+    else if(v==='balc'){ven.bal=g('v1');ven.rows=g('v2')||null;ven.aisle=g('v3');const nb=ven.bal||0;if(nb>2){const a=acv();a.h=Math.max(a.h,Math.round(3.4*nb+2.6))}for(const k in offs){const o=offs[k];if(o&&o[3]!=null&&k.indexOf(rm)===0&&k.indexOf('spk')<0)for(let n=nb+1;n<=4;n++)if(Math.abs(o[3]-(BLEV[n-1]+.15))<.1)o[3]=null}}
     else{ven.tiers=g('v1');ven.sides=document.getElementById('v2').value;const os=ven.stage,oh=ven.shape;ven.shape=document.getElementById('v3').value;ven.stage=document.getElementById('v4').value;if(os!==ven.stage){for(const k in offs)delete offs[k]}}
     buildRoom();renderList();document.getElementById('scount').textContent=venSeats};
   ['v1','v2','v3','v4'].forEach(i=>{const e=document.getElementById(i);if(e)e.onchange=ch});return}if(rm!=='church'){const so=(id,v,o)=>`<select id="${id}">${o.map(([k,l])=>`<option value="${k}" ${k==v?'selected':''}>${l}</option>`).join('')}</select>`;

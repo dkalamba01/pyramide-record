@@ -74,7 +74,7 @@ textarea{width:100%;height:90px;background:#10142b;color:#cfd3f0;border:1px soli
   <div id="view"><canvas id="cv"></canvas><div id="size"></div><a href="shop.html" style="position:absolute;right:12px;bottom:10px;font-size:12px;color:#cfd3f0;background:#1c2040;border:1px solid #343a6a;border-radius:16px;padding:6px 11px;text-decoration:none">← Retour à la boutique</a><div id="hint">Glisser un objet : le déplacer · Glisser le fond : tourner · Molette / pincer : zoom · Toucher un emplacement</div></div>
   <div id="panel">
     <div id="head"><h1>Votre salle d'église</h1><p>Choisissez un emplacement, puis le matériel. Prix tout compris, livraison à Kinshasa incluse.</p></div>
-    <div id="body"><div id="seatbox"></div><div id="scrbox"></div><div id="list"></div><div id="opts" style="display:none"></div></div>
+    <div id="body"><div id="presets"></div><div id="seatbox"></div><div id="scrbox"></div><div id="list"></div><div id="opts" style="display:none"></div></div>
     <div id="foot">
       <div id="tot"><span>Total estimé (livré)</span><b id="total">0 $</b></div>
       <div class="mini" id="reqline"></div>
@@ -278,6 +278,31 @@ const SCR={id:'scr',z:'Écran',l:'Écran mural Pyramide Record',t:'scr',back:tru
  P('Écran LED géant (mur d\'images)',null,0,'Pour grande salle, prix à confirmer'),
  P('Vidéoprojecteur + toile',null,0,'Prix à confirmer')]};
 Object.values(ROOMS).forEach(r=>r.slots.push(SCR));
+ROOMS.church.presets=[
+ {n:'Culte classique',size:'m',kit:'budget',seat:{layout:'rows',style:'pew',rows:6,aisle:1.6},scr:{layout:'center',size:'m'}},
+ {n:'Moderne en demi-cercle',size:'m',kit:'full',seat:{layout:'arc',style:'padded',rows:6,aisle:1.6},scr:{layout:'three',size:'m'}},
+ {n:'Petite assemblée',size:'s',kit:'budget',seat:{layout:'center',style:'chair',rows:4,aisle:1.2},scr:{layout:'center',size:'s'}},
+ {n:'Grande salle',size:'l',kit:'full',seat:{layout:'rows',style:'plastic',rows:9,aisle:2.4},scr:{layout:'sides',size:'l'}},
+ {n:'Extérieur',size:'l',kit:'budget',seat:{layout:'arc',style:'plastic',rows:7,aisle:2},scr:{layout:'two',size:'m'}}];
+ROOMS.rec.presets=[
+ {n:'Voix et beats (solo)',size:'s',kit:'budget',guest:{n:0},scr:{layout:'center',size:'s'}},
+ {n:'Studio complet avec invités',size:'m',kit:'full',guest:{n:4,style:'padded',layout:'row'},scr:{layout:'center',size:'m'}}];
+ROOMS.vid.presets=[
+ {n:'Interview',size:'s',kit:'budget',guest:{n:2,style:'chair',layout:'row'},scr:{layout:'center',size:'s'}},
+ {n:'Plateau avec public',size:'m',kit:'full',guest:{n:8,style:'plastic',layout:'arc'},scr:{layout:'three',size:'m'}}];
+ROOMS.pho.presets=[
+ {n:'Portrait',size:'s',kit:'budget',guest:{n:0},scr:{layout:'center',size:'s'}},
+ {n:'Studio complet',size:'m',kit:'full',guest:{n:2,style:'chair',layout:'row'},scr:{layout:'center',size:'m'}}];
+ROOMS.pod.presets=[
+ {n:'Duo',size:'s',kit:'budget',guest:{n:0},scr:{layout:'center',size:'s'}},
+ {n:'Table à quatre avec invités',size:'m',kit:'full',guest:{n:6,style:'padded',layout:'arc'},scr:{layout:'two',size:'m'}}];
+function applyPreset(i){const p=ROOMS[rm].presets[i];if(!p)return;
+  setSize(p.size);Object.assign(seat,p.seat||{});if(p.seat)seat.count=0;Object.assign(scr,p.scr||{});Object.assign(guest,{n:0},p.guest||{});
+  sel={};const ks=ROOMS[rm].kits[p.kit].s;for(const id in ks){const sl=SLOTS.find(z=>z.id===id),o=sl&&sl.o[ks[id]];if(o&&(optState(o)!=='soon'||ADMIN))sel[id]=ks[id]}
+  qov={};applyScr();dummies=[];dsel=null;cur=null;for(const k in offs)delete offs[k];buildRoom();renderList();seatUI();scrUI()}
+function presetUI(){const B=document.getElementById('presets'),L=ROOMS[rm].presets||[];
+  B.innerHTML=L.length?'<div class="zone">Modèles prêts à l\'emploi</div><div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:6px">'+L.map((p,i)=>`<button class="pill" data-p="${i}">${p.n}</button>`).join('')+'</div>':'';
+  B.querySelectorAll('[data-p]').forEach(b=>b.onclick=()=>applyPreset(+b.dataset.p))}
 let rm='church',SLOTS=CH_SLOTS,KITS=CH_KITS,SIZES=CH_SIZES;
 let size='m',sel={},cur=null,fwd='aq',mar=20,fee=3;
 
@@ -450,7 +475,7 @@ function chrome(){
  document.getElementById('kits').innerHTML=Object.entries(KITS).map(([k,v])=>`<button class="pill" data-k="${k}">${v.n}</button>`).join('')+'<button class="pill" id="clr">Tout vider</button>';
  document.querySelectorAll('#kits [data-k]').forEach(b=>b.onclick=()=>{sel={};const ks=KITS[b.dataset.k].s;for(const id in ks){const sl=SLOTS.find(z=>z.id===id),o=sl&&sl.o[ks[id]];if(o&&(optState(o)!=='soon'||ADMIN))sel[id]=ks[id]}qov={};applyScr();refresh()});
  document.getElementById('clr').onclick=()=>{sel={};refresh()};
- document.querySelector('#head h1').textContent=ROOMS[rm].h;seatUI();scrUI()}
+ document.querySelector('#head h1').textContent=ROOMS[rm].h;seatUI();scrUI();presetUI()}
 function seatUI(){const B=document.getElementById('seatbox');if(rm!=='church'){const so=(id,v,o)=>`<select id="${id}">${o.map(([k,l])=>`<option value="${k}" ${k==v?'selected':''}>${l}</option>`).join('')}</select>`;
     B.innerHTML=`<div class="zone">Sièges invités</div><div class="sbx"><details><summary style="font-size:13px;cursor:pointer">Ajouter des sièges (<span id="scount">${guest.count}</span>)</summary>
     <label>Nombre <input id="gn" type="number" min="0" max="24" value="${guest.n}"></label>

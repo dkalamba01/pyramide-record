@@ -1469,7 +1469,7 @@ function qNote(m){const n=document.getElementById('qnote');if(n){n.textContent=m
 function qCopy(){const t=document.getElementById('qt');try{navigator.clipboard.writeText(quoteText).catch(()=>{t.select();document.execCommand('copy')})}catch(e){try{t.select();document.execCommand('copy')}catch(_){}}}
 function waSend(att){try{localStorage.setItem('pr_att',att?'1':'0')}catch(e){}
   const url='https://wa.me/'+(contact.wa||'').replace(/\D/g,'')+'?text='+encodeURIComponent(quoteBase);
-  const go=()=>{const w=window.open(url,'_blank');if(!w){qCopy();qNote("WhatsApp ne s'est pas ouvert ici : le message est copié, collez-le dans WhatsApp.")}};
+  const go=()=>{qCopy();const w=window.open(url,'_blank');const n=document.getElementById('qnote');if(!w)qNote("WhatsApp ne s'est pas ouvert ici : le message est copié, collez-le dans WhatsApp.");else if(!n||n.style.display==='none')qNote("Message copié. Si WhatsApp affiche une erreur ou ne s'ouvre pas, collez-le directement dans votre conversation WhatsApp.")};
   if(!att){go();return}
   let file=null;try{R.render(scene,cam);const iu=cv.toDataURL('image/jpeg',.8);file=new File([miniPdf(quoteBase,iu,cv.width,cv.height)],'Devis-Pyramide-Record.pdf',{type:'application/pdf'})}catch(e){try{file=new File([miniPdf(quoteBase,null,0,0)],'Devis-Pyramide-Record.pdf',{type:'application/pdf'})}catch(_){}}
   if(!file){go();return}

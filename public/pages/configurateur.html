@@ -75,14 +75,14 @@ textarea{width:100%;height:90px;background:#10142b;color:#cfd3f0;border:1px soli
 </head>
 <body>
 <div id="app">
-  <div id="view"><canvas id="cv"></canvas><div id="size"></div><a href="shop.html" style="position:absolute;right:12px;bottom:10px;font-size:12px;color:#cfd3f0;background:#1c2040;border:1px solid #343a6a;border-radius:16px;padding:6px 11px;text-decoration:none">← Retour à la boutique</a><div id="hint">Glisser un objet : le déplacer · Glisser le fond : tourner · Molette / pincer : zoom · Toucher un emplacement</div></div>
+  <div id="view"><canvas id="cv"></canvas><div id="size"></div><a href="shop.html" style="position:absolute;right:12px;bottom:10px;font-size:12px;color:#cfd3f0;background:#1c2040;border:1px solid #343a6a;border-radius:16px;padding:6px 11px;text-decoration:none">← Retour à la boutique</a><div id="covleg" style="display:none;position:absolute;left:12px;bottom:34px;font-size:12px;background:#10142bdd;border:1px solid #2f3566;border-radius:8px;padding:6px 9px;color:#e8eaff;pointer-events:none;max-width:60%"></div><div id="hint">Glisser un objet : le déplacer · Glisser le fond : tourner · Molette / pincer : zoom · Toucher un emplacement</div></div>
   <div id="panel">
     <div id="head"><h1>Votre salle d'église</h1><p>Choisissez un emplacement, puis le matériel. Prix tout compris, livraison à Kinshasa incluse.</p></div>
     <div id="body"><div id="presets"></div><div id="seatbox"></div><div id="scrbox"></div><div id="list"></div><div id="opts" style="display:none"></div></div>
     <div id="foot">
       <div id="chk"></div><div id="tot"><span>Total estimé (livré)</span><b id="total">0 $</b></div>
       <div class="mini" id="reqline"></div>
-      <div id="dbar" style="display:flex;gap:6px;flex-wrap:wrap;margin:8px 0 0"><button class="pill" id="d1">+ Personne debout</button><button class="pill" id="d2">+ Personne assise</button><button class="pill" id="d3">Retirer la personne choisie</button><button class="pill" id="un">↶ Annuler</button><button class="pill" id="re">↷ Rétablir</button><button class="pill" id="d4">↻ Tourner l'élément choisi</button></div><div id="kits"></div>
+      <div id="dbar" style="display:flex;gap:6px;flex-wrap:wrap;margin:8px 0 0"><button class="pill" id="d1">+ Personne debout</button><button class="pill" id="d2">+ Personne assise</button><button class="pill" id="d3">Retirer la personne choisie</button><button class="pill" id="cvb">🔊 Couverture sonore</button><button class="pill" id="cva">Placer les enceintes</button><button class="pill" id="plt">Plan de scène (PDF)</button><button class="pill" id="un">↶ Annuler</button><button class="pill" id="re">↷ Rétablir</button><button class="pill" id="d4">↻ Tourner l'élément choisi</button></div><div id="kits"></div>
       <button class="pill" id="rst" style="width:100%;margin-bottom:8px">Remettre les objets à leur place</button><button class="cta" id="quote">Voir et demander mon devis</button>
       <div style="display:flex;gap:6px;margin-top:8px"><input id="ld" placeholder="Coller un code de salle" style="flex:1;min-width:0;background:#1c2040;color:#fff;border:1px solid #343a6a;border-radius:8px;padding:7px;font-size:12px"><button class="pill" id="ldb">Charger</button></div>
       <details id="adm" style="display:none"><summary>Paramètres (équipe Pyramide Record)</summary>
@@ -272,7 +272,8 @@ function snapWall(g,p){const {W,D}=SIZES[size],sc=g.scale.x,hw=1.6*sc+.2,ch=rm==
   else if(d==='l'){g.position.set(-(W/2-.3),0,cl(p.z,Math.max(0,D/2-hw)));g.rotation.y=Math.PI/2}
   else{g.position.set(W/2-.3,0,cl(p.z,Math.max(0,D/2-hw)));g.rotation.y=-Math.PI/2}}
 const gp=(e,y)=>{const p=new THREE.Vector3();ray(e).ray.intersectPlane(new THREE.Plane(new THREE.Vector3(0,1,0),-y),p);return p};
-function rotSel(){if(!ls)return;const a=Math.PI/4;
+function rotSel(){rotSel0();if(covOn)covBuild();chkUI()}
+function rotSel0(){if(!ls)return;const a=Math.PI/4;
   if(ls.t==='f'){const fi=fixt[ls.key];if(fi)moveFix(fi,fi.x,fi.z,fi.r+a,ls.key==='tbl'?capRiders():null)}
   else if(ls.t==='eq'){const g=room.children.find(o=>o.userData&&o.userData.slot===ls.slot&&o.userData.i===ls.i);if(g){g.rotation.y+=a;offs[g.userData.key]=[g.position.x,g.position.z,g.rotation.y]}}
   else if(ls.t==='d'){const d=dummies.find(o=>o.id===ls.id);if(d){d.rot=(d.rot||0)+a;buildRoom()}}}
@@ -359,7 +360,7 @@ function applyPreset(i){const p=ROOMS[rm].presets[i];if(!p)return;two=!!p.two;
   setSize(p.size);Object.assign(seat,p.seat||{});if(p.seat)seat.count=0;Object.assign(scr,p.scr||{});Object.assign(guest,{n:0},p.guest||{});
   fx={};fsel=null;sel={};const ks=ROOMS[rm].kits[p.kit].s;for(const id in ks){const sl=SLOTS.find(z=>z.id===id),o=sl&&sl.o[ks[id]];if(o&&(optState(o)!=='soon'||ADMIN))sel[id]=ks[id]}
   qov={};applyScr();dummies=[];dsel=null;cur=null;for(const k in offs)delete offs[k];buildRoom();renderList();seatUI();scrUI()}
-function presetUI(){const B=document.getElementById('presets'),L=ROOMS[rm].presets||[];
+function presetUI(){const v=isVen();['cvb','cva'].forEach(i=>{const e=document.getElementById(i);if(e)e.style.display=v?'':'none'});const cb=document.getElementById('cvb');if(cb)cb.classList.toggle('on',covOn);const B=document.getElementById('presets'),L=ROOMS[rm].presets||[];
   B.innerHTML=(rm==='rec'||rm==='vid'||rm==='pod'?'<button class="pill'+(two?' on':'')+'" id="two" style="margin-bottom:8px">Deux salles : régie + vitre'+(rm==='rec'?' + cabine':'')+'</button>':'')+(L.length?'<div class="zone">Modèles prêts à l\'emploi</div><div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:6px">'+L.map((p,i)=>`<button class="pill" data-p="${i}">${p.n}</button>`).join('')+'</div>':'');
   const tb=document.getElementById('two');if(tb)tb.onclick=()=>{two=!two;for(const k in offs)delete offs[k];buildRoom();renderList();presetUI()};
   B.querySelectorAll('[data-p]').forEach(b=>b.onclick=()=>applyPreset(+b.dataset.p))}
@@ -429,6 +430,7 @@ function checks(){const out=[],act=id=>{const sl=SLOTS.find(x=>x.id===id);return
   if(sp&&seats>0&&qty(sp)>0&&seats/qty(sp)>150)out.push(['w','Environ '+Math.round(seats/qty(sp))+' places par enceinte : prévoyez plus d\'enceintes ou des modèles plus puissants'+(ROOMS[rm].venue?' (système line array).':'.')]);
   if(has('cam')&&!has('cap')&&!has('ai')&&!has('lap'))out.push(['i','Caméra sans ordinateur ni carte de capture : la diffusion en direct ne sera pas possible.']);
   if((spkOn||micOn)&&!has('pwr'))out.push(['i','Pensez à l\'alimentation de secours : les coupures de courant peuvent interrompre le son.']);
+  const cg=covGrid();if(cg&&cg.spread>15)out.push(['w','Le son sera environ '+Math.round(cg.spread)+' dB plus faible au fond qu\'à l\'avant. Ajoutez des enceintes, des enceintes de retard, ou essayez « Placer les enceintes ».']);else if(cg&&cg.spread>9)out.push(['i','Écart de volume d\'environ '+Math.round(cg.spread)+' dB dans la salle : voyez la carte « Couverture sonore ».']);
   const r=totals();if(r.rows.length&&r.req.length)out.push(['i',r.req.length+' élément(s) sans prix : le total est incomplet, il sera confirmé dans le devis.']);
   return out}
 function chkUI(){const B=document.getElementById('chk');if(!B)return;const c=checks();B.innerHTML=c.length?'<div class="zone">Vérification de la configuration</div>'+c.map(([l,m])=>`<div class="chk ${l}">${l==='w'?'⚠':'ℹ'} ${m}</div>`).join(''):''}
@@ -486,7 +488,39 @@ function partition(W,D,zw,lc,ls_){const wm=mat(0x3a4170),gm=new THREE.MeshStanda
       [[-W/2,dA],[dB,gA],[gB,W/2]].forEach(([a,b])=>furn.push({x:(a+b)/2,z:zw,hw:(b-a)/2,hd:.12}));
       furn.push({x:(gA+gB)/2,z:zw,hw:(gB-gA)/2,hd:.12});
       room.add(label(lc[0],lc[1],lc[2],'#8fa2ff'));room.add(label('VITRE',(gA+gB)/2,zw-.5,'#9fd8ff'));room.add(label(ls_[0],ls_[1],ls_[2],'#6fe3a0'));room.add(label('PORTE',(dA+dB)/2,zw-.5,'#f2b632'))}
-let venSeats=0,ven={};
+let venSeats=0,ven={},covOn=false;
+const isVen=()=>rm==='church'||!!ROOMS[rm].venue;
+function spkList(){return room.children.filter(g=>g.userData&&g.userData.t==='spk'&&!g.userData.ghost).map(g=>({x:g.position.x,z:g.position.z,fx:Math.sin(g.rotation.y),fz:Math.cos(g.rotation.y)}))}
+function covGrid(){const L=spkList(),{W,D}=SIZES[size];if(!L.length||!isVen())return null;
+  const A={x0:-W/2+.5,x1:W/2-.5,z0:-D/2+3.6,z1:D/2-.5},cell=Math.max(.5,Math.max(W,D)/70),nx=Math.max(2,Math.floor((A.x1-A.x0)/cell)),nz=Math.max(2,Math.floor((A.z1-A.z0)/cell)),v=[];
+  for(let j=0;j<nz;j++)for(let i=0;i<nx;i++){const x=A.x0+(i+.5)*(A.x1-A.x0)/nx,z=A.z0+(j+.5)*(A.z1-A.z0)/nz;let I=0;
+    for(const s of L){const dx=x-s.x,dz=z-s.z,r=Math.max(1.5,Math.hypot(dx,dz)),d=(dx*s.fx+dz*s.fz)/r;I+=(.1+.9*Math.pow(Math.max(d,0),2))/(r*r)}
+    v.push(10*Math.log10(I))}
+  const so=v.slice().sort((a,b)=>a-b),p=q=>so[Math.floor(q*(so.length-1))];return{v,nx,nz,A,ref:p(.9),spread:p(.9)-p(.1)}}
+function covBuild(){room.children.filter(g=>g.userData&&g.userData.cov).forEach(g=>room.remove(g));const lg=document.getElementById('covleg');
+  if(!covOn){lg.style.display='none';return}lg.style.display='block';const G=covGrid();
+  if(!G){lg.textContent=isVen()?'Choisissez des enceintes pour voir la couverture.':'';return}
+  const c=document.createElement('canvas');c.width=G.nx;c.height=G.nz;const x=c.getContext('2d');
+  for(let j=0;j<G.nz;j++)for(let i=0;i<G.nx;i++){const dev=G.ref-G.v[j*G.nx+i];x.fillStyle=dev<4?'rgba(60,200,120,.6)':dev<8?'rgba(235,210,60,.6)':dev<12?'rgba(240,140,50,.6)':'rgba(220,60,60,.6)';x.fillRect(i,j,1,1)}
+  const t=new THREE.CanvasTexture(c);t.magFilter=THREE.LinearFilter;const m=new THREE.Mesh(new THREE.PlaneGeometry(G.A.x1-G.A.x0,G.A.z1-G.A.z0),new THREE.MeshBasicMaterial({map:t,transparent:true,depthWrite:false}));
+  m.rotation.x=-Math.PI/2;m.position.set((G.A.x0+G.A.x1)/2,.05,(G.A.z0+G.A.z1)/2);m.userData={cov:true};room.add(m);
+  lg.innerHTML='Couverture sonore · écart '+Math.round(G.spread)+' dB<br><span style="color:#3cc878">■</span> homogène <span style="color:#ebd23c">■</span> un peu faible <span style="color:#f08c32">■</span> faible <span style="color:#dc3c3c">■</span> très faible'}
+function autoSpk(){const sl=SLOTS.find(x=>x.id==='spk');if(!sl||sel.spk==null)return;const n=qty(sl),{W,D}=SIZES[size],sw=Math.min(W*.8,rm==='stad'?30:26),z=-D/2+3.15;
+  for(let i=0;i<n;i++){const t=n>1?i/(n-1)-.5:0,x=t*(sw-2),tx=t*sw*.35,tz=D*.15;offs[rm+'spk'+i]=[x,z,Math.atan2(tx-x,tz-z)]}buildRoom();renderList()}
+function plotOpen(){const {W,D}=SIZES[size],S=Math.min(680/W,760/D),px=v=>(v+W/2)*S+20,pz=v=>(v+D/2)*S+20,ven=isVen();
+  let svg=`<svg xmlns="http://www.w3.org/2000/svg" width="${Math.round(W*S+40)}" height="${Math.round(D*S+40)}" style="background:#fff;border:1px solid #999;max-width:100%;height:auto"><rect x="20" y="20" width="${W*S}" height="${D*S}" fill="#f6f6f6" stroke="#333" stroke-width="2"/>`;
+  if(ven){const sw=rm==='church'?W*.8:Math.min(W*.8,rm==='stad'?30:26);svg+=`<rect x="${px(-sw/2)}" y="${pz(-D/2)}" width="${sw*S}" height="${3.2*S}" fill="#e9dcc2" stroke="#8a6a44"/><text x="${px(0)}" y="${pz(-D/2)+12}" font-size="11" text-anchor="middle" fill="#6b4f33">SCÈNE</text>`}
+  const list=[],mics=[];let n=0;
+  room.children.filter(g=>g.userData&&g.userData.slot&&!g.userData.ghost).forEach(g=>{const sl=SLOTS.find(x=>x.id===g.userData.slot),o=sl&&sel[sl.id]!=null?sl.o[sel[sl.id]]:null;if(!o)return;n++;const t=g.userData.t,x=px(g.position.x),y=pz(g.position.z),rot=-g.rotation.y*180/Math.PI;
+    let sym;if(t==='spk')sym=`<polygon points="-9,-7 9,-7 0,9" fill="#e5484d" stroke="#700" transform="translate(${x} ${y}) rotate(${rot})"/>`;
+    else if(t==='mic'||t==='stand')sym=`<circle cx="${x}" cy="${y}" r="8" fill="#dbe7ff" stroke="#3b5bdb"/>`;
+    else if(t==='scr')sym=`<rect x="${-1.6*S*g.scale.x}" y="-3" width="${3.2*S*g.scale.x}" height="6" fill="#222" transform="translate(${x} ${y}) rotate(${g.rotation.y*180/Math.PI})"/>`;
+    else sym=`<rect x="${x-9}" y="${y-7}" width="18" height="14" fill="#ddd" stroke="#555" transform="rotate(${rot} ${x} ${y})"/>`;
+    svg+=sym+`<text x="${x}" y="${y+4}" font-size="10" text-anchor="middle" font-weight="bold" fill="#111">${n}</text>`;list.push([n,sl.l,o.n]);if(t==='mic')mics.push([sl.l,o.n])});
+  Object.values(fixt).forEach(fi=>{const x=px(fi.x),y=pz(fi.z),deg=-fi.r*180/Math.PI;svg+=`<rect x="${x-fi.hw0*S}" y="${y-fi.hd0*S}" width="${fi.hw0*2*S}" height="${fi.hd0*2*S}" fill="${fi.key==='tbl'?'#e6d3b3':'#f0f0f0'}" stroke="#8a6a44" transform="rotate(${deg} ${x} ${y})"/>`});
+  svg+='</svg>';const esc=t=>String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;');
+  const html='<html><head><meta charset="utf-8"><title>Plan de scène – Pyramid Record</title><style>body{font-family:Arial,sans-serif;max-width:760px;margin:20px auto;padding:0 14px;color:#111}table{border-collapse:collapse;width:100%;font-size:13px;margin:8px 0}td,th{border-bottom:1px solid #ccc;padding:4px 6px;text-align:left}h3{margin:18px 0 4px}</style></head><body><h2>Plan de scène et fiche technique</h2><p>'+esc(ROOMS[rm].n)+' · '+esc(SIZES[size].n)+' ('+W+' × '+D+' m)</p>'+svg+'<h3>Équipement</h3><table><tr><th>N°</th><th>Élément</th><th>Modèle</th></tr>'+list.map(r=>`<tr><td>${r[0]}</td><td>${esc(r[1])}</td><td>${esc(r[2])}</td></tr>`).join('')+'</table>'+(mics.length?'<h3>Liste des entrées (canaux)</h3><table><tr><th>Canal</th><th>Source</th><th>Micro</th></tr>'+mics.map((m,i)=>`<tr><td>CH${i+1}</td><td>${esc(m[0])}</td><td>${esc(m[1])}</td></tr>`).join('')+'</table>':'')+'<p style="font-size:12px;color:#555">Plan indicatif généré par le configurateur Pyramid Record · pyramidrecord.com</p><script>setTimeout(function(){print()},400)<\/script></body></html>';
+  const w=window.open('','_blank');if(!w)return;w.document.write(html);w.document.close()}
 function buildVenue(W,D,fl){const vn=ven,v=ROOMS[rm].venue,big=v==='stad'?4:v==='amph'&&size==='l'?1.6:1,sw=Math.min(W*.8,v==='stad'?30:26);venSeats=0;
   const stage=box(sw,.35,3.2,mat(0x4a3f2c));stage.position.set(0,.17,-D/2+1.7);room.add(stage);
   const fz=v==='stad'?D*.1+.8:D/2-.7;
@@ -556,6 +590,7 @@ function buildRoom(){
   if(rm!=='church'&&!ROOMS[rm].venue)buildGuests(W,D);
   dummies.forEach(d=>{if(!valid(d,d.x,d.z)){freeSpot(d,d.x,d.z);seatFix(d)}room.add(person(d))});
   rad=ROOMS[rm].rad[size];
+  covBuild();
 }
 function cameraUpdate(){const w=cv.clientWidth||cv.parentElement.clientWidth,h=cv.clientHeight||cv.parentElement.clientHeight;R.setSize(w,h,false);cam.aspect=w/h;cam.updateProjectionMatrix();
   cam.position.set(rad*Math.sin(phi)*Math.sin(theta),rad*Math.cos(phi),rad*Math.sin(phi)*Math.cos(theta));cam.lookAt(0,.8,0)}
@@ -582,7 +617,7 @@ cv.addEventListener('pointermove',e=>{if(!pts.has(e.pointerId))return;const p=pt
   else if(pts.size===2){const d=dist();if(pd)rad=Math.max(6,Math.min(ROOMS[rm].rmax||45,rad*pd/d));pd=d}});
 const dist=()=>{const a=[...pts.values()];return Math.hypot(a[0][0]-a[1][0],a[0][1]-a[1][1])};
 cv.addEventListener('pointerup',e=>{const was=pts.size===1&&moved<6;pts.delete(e.pointerId);
-  if(was&&drag){if(drag.fix){fsel=drag.fix;dsel=null}else if(drag.dummy){dsel=drag.dummy;fsel=null}else{fsel=null;pick(drag.slot)}}drag=null;cv.style.cursor='grab'});
+  if(was&&drag){if(drag.fix){fsel=drag.fix;dsel=null}else if(drag.dummy){dsel=drag.dummy;fsel=null}else{fsel=null;pick(drag.slot)}}drag=null;cv.style.cursor='grab';if(covOn)covBuild();chkUI()});
 cv.addEventListener('pointercancel',e=>pts.delete(e.pointerId));
 cv.addEventListener('wheel',e=>{e.preventDefault();rad=Math.max(6,Math.min(ROOMS[rm].rmax||45,rad*(1+e.deltaY*.001)))},{passive:false});
 
@@ -656,7 +691,7 @@ document.getElementById('close').onclick=()=>document.getElementById('modal').st
 document.getElementById('copy').onclick=()=>{const t=document.getElementById('qt');t.select();
   try{navigator.clipboard.writeText(quoteText);document.getElementById('copy').textContent='Copié ✓'}catch(e){document.execCommand&&document.execCommand('copy')}};
 
-chrome();document.getElementById('d1').onclick=()=>spawn('stand');document.getElementById('d2').onclick=()=>spawn('sit');document.getElementById('d4').onclick=rotSel;
+chrome();document.getElementById('d1').onclick=()=>spawn('stand');document.getElementById('d2').onclick=()=>spawn('sit');document.getElementById('d4').onclick=rotSel;document.getElementById('cvb').onclick=()=>{covOn=!covOn;document.getElementById('cvb').classList.toggle('on',covOn);covBuild()};document.getElementById('cva').onclick=autoSpk;document.getElementById('plt').onclick=plotOpen;
 {let last=encodeState(),pend=last,pt=0,hist=[],fut=[],busy=false;
  const load=c=>{busy=true;try{loadState(JSON.parse(decodeURIComponent(escape(atob(c)))))}catch(e){}last=pend=encodeState();busy=false};
  setInterval(()=>{if(busy)return;const c=encodeState(),n=Date.now();if(c!==pend){pend=c;pt=n}else if(pend!==last&&n-pt>=350){hist.push(last);if(hist.length>60)hist.shift();last=pend;fut=[]}},150);

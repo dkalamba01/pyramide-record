@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="night">
+<script>(function(){try{var t=localStorage.getItem('pr-theme');if(t==='day'||t==='night'){document.documentElement.setAttribute('data-theme',t);}}catch(e){}})();</script>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Outils audio gratuits — Pyramide Record · Kinshasa</title>
+<meta name="description" content="Outils audio gratuits : générateur de fréquences, métronome, fréquences des notes, détecteur de larsen et calculateur de retard pour sonorisateurs et musiciens.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;1,9..144,400&family=Archivo:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/tokens.css?v=2">
+<link rel="stylesheet" href="../css/components.css?v=2">
+<style>
+  .page-hero { padding: var(--sp-8) 0 var(--sp-5); }
+  .page-hero h1 { font-family:var(--font-display); font-weight:400; font-size:var(--fs-h1); line-height:var(--lh-tight); max-width:16ch; margin:var(--sp-3) 0 var(--sp-4); }
+  .page-hero .lede { max-width:640px; }
+
+  .store-embed { position:relative; border:1px solid var(--hair-2); border-radius:var(--r-lg); overflow:hidden; background:var(--panel); }
+  .store-embed iframe { width:100%; height:600px; border:0; display:block; overflow:hidden; }
+
+  .iris-loading {
+    position:absolute; inset:0; z-index:2;
+    display:flex; flex-direction:column; align-items:center; justify-content:center; gap:var(--sp-3);
+    background:var(--panel); color:var(--sand);
+    transition:opacity var(--dur-slow) var(--ease-out);
+  }
+  .iris-loading .eq { height:28px; gap:4px; }
+  .iris-loading .eq b { width:5px; background:var(--gold); }
+  .iris-loading__label { font-size:var(--fs-xs); letter-spacing:var(--ls-wide); text-transform:uppercase; color:var(--sand); }
+  .iris-loading.is-hidden { opacity:0; pointer-events:none; }
+</style>
+<link rel="icon" type="image/png" href="../assets/images/logo.png">
+<link rel="apple-touch-icon" href="../assets/images/logo.png">
+<link rel="canonical" href="https://pyramidrecord.com/pages/outils.html">
+<meta name="theme-color" content="#0D131C">
+<meta property="og:title" content="Outils audio gratuits — Pyramide Record">
+<meta property="og:description" content="Outils audio gratuits pour sonorisateurs et musiciens.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://pyramidrecord.com/pages/outils.html">
+<meta property="og:image" content="https://pyramidrecord.com/assets/images/logo.png">
+<meta property="og:locale" content="fr_FR">
+<meta property="og:site_name" content="Pyramide Record">
+<meta name="twitter:card" content="summary_large_image">
+<style>
+.tools{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px}
+.tool{border:1px solid var(--hair-2,#2a3344);border-radius:16px;padding:20px;background:var(--panel,#111826)}
+.tool h2{font-family:var(--font-display);font-weight:400;font-size:22px;margin:0 0 6px}
+.tool p.d{font-size:14px;opacity:.75;margin:0 0 14px}
+.tool label{display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:14px;margin:8px 0}
+.tool input[type=number],.tool select{font-size:16px;padding:6px 8px;border-radius:8px;border:1px solid var(--hair-2,#2a3344);background:transparent;color:inherit;width:110px}
+.tool input[type=range]{flex:1}
+.tool .row{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
+.tool .chip{font-size:14px;padding:8px 12px;border-radius:999px;border:1px solid var(--hair-2,#2a3344);background:transparent;color:inherit;cursor:pointer}
+.tool .chip.on{background:var(--gold,#f2b632);color:#111}
+.tool .big{font-size:34px;font-weight:600;margin:6px 0}
+.tool canvas{width:100%;height:110px;border-radius:8px;background:#0b0f18}
+.beats{display:flex;gap:8px;margin:10px 0}.beats i{width:18px;height:18px;border-radius:50%;background:#2a3344;display:block}.beats i.on{background:var(--gold,#f2b632)}
+.ntab{width:100%;border-collapse:collapse;font-size:14px}.ntab td,.ntab th{padding:5px 8px;border-bottom:1px solid var(--hair-2,#2a3344);text-align:left}
+.ntab tr.hl td{background:rgba(242,182,50,.15)}
+</style>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Outils audio gratuits — Pyramide Record",
+  "description": "Outils audio gratuits pour sonorisateurs et musiciens.",
+  "url": "https://pyramidrecord.com/pages/outils.html",
+  "isPartOf": { "@type": "WebSite", "name": "Pyramide Record", "url": "https://pyramidrecord.com" }
+}
+</script>
+</head>
+<body>
+<a href="#main" class="skip-link" style="position:absolute;left:-9999px;top:0;background:var(--crimson);color:#fff;padding:10px 16px;z-index:200;" onfocus="this.style.left='8px';this.style.top='8px'" onblur="this.style.left='-9999px'">Aller au contenu</a>
+
+<header class="header">
+  <nav class="nav wrap" aria-label="Navigation principale">
+    <a class="nav__logo" href="../index.html" aria-label="Pyramide Record — accueil"><img src="../assets/images/logo.png" alt="Pyramide Record"></a>
+    <button class="nav__burger" id="burger" aria-label="Ouvrir le menu" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
+        <div class="nav__menu" id="menu">
+      <a class="nav__link" href="studio.html">Studio</a>
+      <a class="nav__link" href="services.html">Services</a>
+      <a class="nav__link" href="discography.html">Discographie</a>
+      <a class="nav__link" href="promo.html">Nos Artistes</a>
+      <a class="nav__link" href="academy.html">Academy</a>
+      <a class="nav__link" href="blog.html">Blog</a>
+      <div class="nav__dropdown" id="nav-more">
+        <button class="nav__link nav__dropdown-toggle" aria-expanded="false" aria-haspopup="true">
+          Plus <svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+        <div class="nav__dropdown-menu">
+          <a class="nav__dropdown-link" href="gallery.html">Galerie</a>
+          <a class="nav__dropdown-link" href="shop.html" aria-current="page">Boutique</a>
+          <a class="nav__dropdown-link" href="configurateur.html">Configurateur 3D</a>
+          <a class="nav__dropdown-link" href="about.html">À Propos</a>
+          <a class="nav__dropdown-link" href="contact.html">Contact</a>
+        </div>
+      </div>
+      <a class="nav__link nav__account" href="portal.html"><svg class="nav__account-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 12a4.5 4.5 0 100-9 4.5 4.5 0 000 9zm-7 9c0-3.6 3.5-6.2 7-6.2s7 2.6 7 6.2"/></svg><span>Espace Client</span></a>
+      <button class="nav__theme-toggle" id="theme-toggle" type="button" aria-label="Basculer entre le mode jour et nuit">
+        <svg class="nav__theme-icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 12.5A9 9 0 1111.5 3 7 7 0 0021 12.5z"/></svg>
+        <svg class="nav__theme-icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2.5M12 19.5V22M4.2 4.2l1.8 1.8M18 18l1.8 1.8M2 12h2.5M19.5 12H22M4.2 19.8L6 18M18 6l1.8-1.8"/></svg>
+      </button>
+      <a class="nav__cta" href="booking.html">Réserver</a>
+    </div>
+  </nav>
+</header>
+
+<main id="main">
+  <section class="page-hero wrap">
+    <p class="eyebrow">Outils gratuits</p>
+    <h1>Des outils audio pour sonorisateurs et musiciens.</h1>
+    <p class="lede">Générateur de fréquences, métronome, fréquences des notes, détecteur de larsen et calculateur de retard : directement dans votre navigateur, sans installation.</p>
+  </section>
+  <section class="section-sm wrap">
+    <div class="tools">
+
+      <div class="tool" id="t-tone"><h2>Générateur de fréquences</h2><p class="d">Pour tester des enceintes, régler une salle ou accorder à l'oreille. Baissez le volume avant de démarrer.</p>
+        <div class="big"><span id="tf">440</span> Hz</div>
+        <input type="range" id="tfs" min="0" max="1000" value="500" aria-label="Fréquence" style="width:100%">
+        <div class="row" id="tq"></div>
+        <label>Forme <select id="tw"><option value="sine">Sinus</option><option value="triangle">Triangle</option><option value="square">Carré</option><option value="sawtooth">Dent de scie</option></select></label>
+        <label>Volume <input type="range" id="tv" min="0" max="100" value="10"></label>
+        <button class="btn" id="tgo">Démarrer</button></div>
+
+      <div class="tool" id="t-met"><h2>Métronome</h2><p class="d">Pour les batteurs, les chorales et les répétitions.</p>
+        <div class="big"><span id="mb">100</span> bpm</div>
+        <input type="range" id="mbs" min="30" max="240" value="100" aria-label="Tempo" style="width:100%">
+        <label>Temps par mesure <select id="mn"><option>2</option><option>3</option><option selected>4</option><option>6</option><option>8</option></select></label>
+        <div class="beats" id="mbeats"></div>
+        <div class="row"><button class="btn" id="mgo">Démarrer</button><button class="chip" id="mtap">Tap tempo</button></div></div>
+
+      <div class="tool" id="t-note"><h2>Fréquences des notes</h2><p class="d">Quelle est la fréquence du Do de la 4ème octave ? Le La4 sert de référence.</p>
+        <label>Octave <select id="no"></select></label><label>La4 (Hz) <input type="number" id="nA" value="440" min="415" max="466"></label>
+        <table class="ntab" id="nt"></table></div>
+
+      <div class="tool" id="t-lar"><h2>Détecteur de larsen</h2><p class="d">Le larsen est le sifflement du micro. Montez le volume jusqu'au sifflement : l'outil trouve la fréquence et la bande de l'égaliseur à baisser.</p>
+        <div class="big" id="lf">— Hz</div><p id="ls" class="d">Appuyez sur Démarrer et autorisez le micro.</p>
+        <canvas id="lc" width="600" height="110"></canvas>
+        <div class="row"><button class="btn" id="lgo">Démarrer</button></div></div>
+
+      <div class="tool" id="t-del"><h2>Calculateur de retard</h2><p class="d">Pour les enceintes de retard (delay) d'une grande salle ou d'un stade : le temps que met le son pour parcourir la distance.</p>
+        <label>Distance (m) <input type="number" id="dd" value="20" min="0" step="0.5"></label>
+        <label>Température (°C) <input type="number" id="dt" value="28" min="-10" max="50"></label>
+        <label><span>Ajouter ~10 ms (le son semble venir de la scène)</span><input type="checkbox" id="dh" checked></label>
+        <div class="big"><span id="dr">0</span> ms</div><p class="d" id="dn"></p></div>
+
+    </div>
+  </section>
+  <section class="section-sm wrap"><div style="border:1px solid var(--hair-2,#2a3344);border-radius:16px;padding:28px;text-align:center">
+    <p class="eyebrow">Allez plus loin</p><h2>Composez votre salle ou votre studio en 3D</h2>
+    <p class="lede">Placez le matériel, voyez la couverture sonore et le prix total livré à Kinshasa, puis demandez votre devis.</p>
+    <p style="margin-top:18px"><a class="btn" href="configurateur.html">Ouvrir le configurateur 3D</a></p></div></section>
+</main>
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer__grid">
+      <div>
+        <div class="footer__logo"><img loading="lazy" decoding="async" src="../assets/images/logo.png" alt="Pyramide Record"></div>
+        <p class="footer__addr">13ème Rue Limete Industriel, Kinshasa, RD Congo<br>+243 819 797 568 · info@pyramidrecord.com</p>
+      </div>
+      <div class="footer__socials">
+        <a href="#" aria-label="Facebook"><svg viewBox="0 0 24 24"><path d="M13 3h4v4h-4a1 1 0 00-1 1v3h5l-1 4h-4v8h-4v-8H8v-4h4V7a4 4 0 014-4z"/></svg></a>
+        <a href="#" aria-label="Instagram"><svg viewBox="0 0 24 24"><path d="M12 7a5 5 0 100 10 5 5 0 000-10zm0 8a3 3 0 110-6 3 3 0 010 6zm5-9a1 1 0 100 2 1 1 0 000-2zM7 2h10a5 5 0 015 5v10a5 5 0 01-5 5H7a5 5 0 01-5-5V7a5 5 0 015-5zm0 2a3 3 0 00-3 3v10a3 3 0 003 3h10a3 3 0 003-3V7a3 3 0 00-3-3z"/></svg></a>
+        <a href="#" aria-label="LinkedIn"><svg viewBox="0 0 24 24"><path d="M6.94 5a2 2 0 11-4 0 2 2 0 014 0zM7 8.48H3V21h4zm6.32 0H9.34V21h3.94v-6.57c0-3.66 4.77-4 4.77 0V21H22v-7.93c0-6.17-7.06-5.94-8.72-2.91z"/></svg></a>
+        <a href="#" aria-label="YouTube"><svg viewBox="0 0 24 24"><path d="M23 12s0-3.5-.45-5.2a2.8 2.8 0 00-2-2C18.9 4.4 12 4.4 12 4.4s-6.9 0-8.55.4a2.8 2.8 0 00-2 2C1 8.5 1 12 1 12s0 3.5.45 5.2a2.8 2.8 0 002 2c1.65.4 8.55.4 8.55.4s6.9 0 8.55-.4a2.8 2.8 0 002-2C23 15.5 23 12 23 12zm-13 3.5v-7l6 3.5z"/></svg></a>
+      </div>
+    </div>
+    <div class="footer__note">© 2025 Pyramide Record — Tous droits réservés · Kinshasa, RD Congo</div>
+  </div>
+</footer>
+
+
+<script src="../js/main.js"></script>
+<script>
+(function(){
+var $=function(i){return document.getElementById(i)},AC=window.AudioContext||window.webkitAudioContext,ctx=null;
+function ac(){if(!ctx)ctx=new AC();if(ctx.state==='suspended')ctx.resume();return ctx}
+/* générateur */
+var osc=null,gain=null,tf=440;
+function fromSlider(v){return Math.round(20*Math.pow(1000,v/1000))}
+function setF(f){tf=Math.max(20,Math.min(20000,f));$('tf').textContent=tf;if(osc)osc.frequency.value=tf;$('tfs').value=Math.round(Math.log(tf/20)/Math.log(1000)*1000)}
+$('tfs').oninput=function(){setF(fromSlider(+this.value))};
+[50,100,440,1000,3000,6000,10000].forEach(function(f){var b=document.createElement('button');b.className='chip';b.textContent=f>=1000?(f/1000)+' kHz':f+' Hz';b.onclick=function(){setF(f)};$('tq').appendChild(b)});
+$('tw').onchange=function(){if(osc)osc.type=this.value};
+$('tv').oninput=function(){if(gain)gain.gain.value=Math.pow(+this.value/100,2)*.5};
+$('tgo').onclick=function(){if(osc){osc.stop();osc=null;this.textContent='Démarrer';return}var c=ac();osc=c.createOscillator();gain=c.createGain();osc.type=$('tw').value;osc.frequency.value=tf;gain.gain.value=Math.pow(+$('tv').value/100,2)*.5;osc.connect(gain);gain.connect(c.destination);osc.start();this.textContent='Arrêter'};
+setF(440);
+/* métronome */
+var bpm=100,run=false,nextT=0,beat=0,timer=null,taps=[];
+function drawBeats(){var n=+$('mn').value,h='';for(var i=0;i<n;i++)h+='<i id="mbt'+i+'"></i>';$('mbeats').innerHTML=h}
+function click(t,acc){var c=ac(),o=c.createOscillator(),g=c.createGain();o.frequency.value=acc?1500:1000;g.gain.setValueAtTime(.4,t);g.gain.exponentialRampToValueAtTime(.001,t+.05);o.connect(g);g.connect(c.destination);o.start(t);o.stop(t+.06)}
+function sched(){var c=ac(),n=+$('mn').value;while(nextT<c.currentTime+.15){click(nextT,beat%n===0);(function(b,t){setTimeout(function(){var all=$('mbeats').children;for(var i=0;i<all.length;i++)all[i].className=i===b%n?'on':''},Math.max(0,(t-c.currentTime)*1000))})(beat,nextT);nextT+=60/bpm;beat++}}
+function setB(v){bpm=Math.max(30,Math.min(240,Math.round(v)));$('mb').textContent=bpm;$('mbs').value=bpm}
+$('mbs').oninput=function(){setB(+this.value)};$('mn').onchange=function(){drawBeats();beat=0};
+$('mgo').onclick=function(){if(run){run=false;clearInterval(timer);this.textContent='Démarrer';drawBeats();return}run=true;beat=0;nextT=ac().currentTime+.05;timer=setInterval(sched,25);this.textContent='Arrêter'};
+$('mtap').onclick=function(){var n=Date.now();taps=taps.filter(function(t){return n-t<2500});taps.push(n);if(taps.length>1){var s=0;for(var i=1;i<taps.length;i++)s+=taps[i]-taps[i-1];setB(60000/(s/(taps.length-1)))}};
+drawBeats();
+/* notes */
+var NN=['Do','Do♯','Ré','Ré♯','Mi','Fa','Fa♯','Sol','Sol♯','La','La♯','Si'];
+for(var o=0;o<=8;o++){var op=document.createElement('option');op.value=o;op.textContent=o;if(o===4)op.selected=true;$('no').appendChild(op)}
+function notes(){var oc=+$('no').value,a=+$('nA').value||440,h='<tr><th>Note</th><th>Fréquence</th></tr>';
+ for(var i=0;i<12;i++){var m=12*(oc+1)+i,f=a*Math.pow(2,(m-69)/12);h+='<tr'+(m===60?' class="hl"':'')+'><td>'+NN[i]+oc+'</td><td>'+f.toFixed(2)+' Hz</td></tr>'}$('nt').innerHTML=h}
+$('no').onchange=notes;$('nA').oninput=notes;notes();
+/* larsen */
+var BANDS=[31.5,40,50,63,80,100,125,160,200,250,315,400,500,630,800,1000,1250,1600,2000,2500,3150,4000,5000,6300,8000,10000,12500,16000],stream=null,an=null,raf=0;
+function band(f){var b=BANDS[0],d=1e9;BANDS.forEach(function(x){var e=Math.abs(Math.log(f/x));if(e<d){d=e;b=x}});return b}
+function fmt(f){return f>=1000?(f/1000).toString().replace('.',',')+' kHz':f.toString().replace('.',',')+' Hz'}
+$('lgo').onclick=function(){var btn=this;if(stream){stream.getTracks().forEach(function(t){t.stop()});stream=null;cancelAnimationFrame(raf);btn.textContent='Démarrer';return}
+ if(!navigator.mediaDevices){$('ls').textContent='Micro non disponible sur ce navigateur.';return}
+ navigator.mediaDevices.getUserMedia({audio:{echoCancellation:false,noiseSuppression:false,autoGainControl:false}}).then(function(s){stream=s;var c=ac(),src=c.createMediaStreamSource(s);an=c.createAnalyser();an.fftSize=8192;an.smoothingTimeConstant=.6;src.connect(an);btn.textContent='Arrêter';$('ls').textContent='Écoute… montez le volume jusqu\'au sifflement.';
+  var data=new Float32Array(an.frequencyBinCount),cv=$('lc'),g=cv.getContext('2d'),held=0,heldF=0;
+  (function loop(){raf=requestAnimationFrame(loop);an.getFloatFrequencyData(data);var hz=c.sampleRate/an.fftSize,lo=Math.floor(80/hz),hi=Math.floor(12000/hz),mx=-200,mi=0;
+   for(var i=lo;i<hi;i++)if(data[i]>mx){mx=data[i];mi=i}
+   g.fillStyle='#0b0f18';g.fillRect(0,0,cv.width,cv.height);g.fillStyle='#f2b632';
+   var lg=Math.log(12000/80);for(var x=0;x<cv.width;x++){var f=80*Math.exp(lg*x/cv.width),k=Math.round(f/hz),v=Math.max(0,(data[k]+100)/70);g.fillRect(x,cv.height*(1-Math.min(1,v)),1,cv.height*Math.min(1,v))}
+   var now=Date.now();if(mx>-45){held=now;heldF=mi*hz}
+   if(now-held<4000&&heldF>0){$('lf').textContent=Math.round(heldF)+' Hz';$('ls').innerHTML='Bande de l\'égaliseur à baisser : <b>'+fmt(band(heldF))+'</b> (essayez −3 à −6 dB).'}
+  })()}).catch(function(){$('ls').textContent='Accès au micro refusé. Autorisez-le dans votre navigateur.'})};
+/* retard */
+function delay(){var d=+$('dd').value||0,t=+$('dt').value,c=331.3+.606*(isNaN(t)?20:t),ms=d/c*1000+($('dh').checked?10:0);$('dr').textContent=ms.toFixed(1).replace('.',',');$('dn').textContent='Vitesse du son : '+c.toFixed(0)+' m/s. Réglez le retard de l\'enceinte à cette valeur.'}
+['dd','dt','dh'].forEach(function(i){$(i).oninput=delay;$(i).onchange=delay});delay();
+})();
+</script>
+</body>
+</html>

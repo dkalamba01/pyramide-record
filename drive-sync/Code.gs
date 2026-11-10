@@ -32,13 +32,21 @@ function doPost(e) {
     if (!d.key || d.key !== P.getProperty('SECRET')) return out({ ok: false, error: 'clé invalide' });
     if (!d.no || !d.pdf) return out({ ok: false, error: 'données manquantes' });
     const fac = d.type === 'facture';
+    const year = String(d.year || new Date().getFullYear());
     const root = DriveApp.getFolderById(P.getProperty('FOLDER_ID'));
-    const folder = sub(root, fac ? 'Factures' : 'Devis');
-    // un seul PDF par document : on remplace l'ancienne version
-    const prefix = (fac ? 'Facture' : 'Devis') + '-Pyramide-Record_' + d.no;
-    const it = folder.getFiles();
-    while (it.hasNext()) { const x = it.next(); if (x.getName().indexOf(prefix) === 0) x.setTrashed(true); }
-    const file = folder.createFile(Utilities.newBlob(Utilities.base64Decode(d.pdf), 'application/pdf', d.fname || (prefix + '.pdf')));
+    const folder = sub(sub(root, fac ? 'Factures' : 'Devis'), year);   // Devis/2026/ ou Factures/2026/
+    const slug = d.slug ? '_' + d.slug : '';
+    let name;
+    if (fac) {
+      // factures : une nouvelle version datée à chaque fois, jamais remplacée
+      name = d.no + slug + '_' + (d.stamp || Utilities.formatDate(new Date(), Session.getScriptTimeZone(), 'yyyy-MM-dd_HH\'h\'mm')) + '.pdf';
+    } else {
+      // devis : un seul PDF par devis, remplacé à chaque enregistrement
+      name = d.no + slug + '.pdf';
+      const it = folder.getFiles();
+      while (it.hasNext()) { const x = it.next(); if (x.getName().indexOf(d.no + '_') === 0 || x.getName() === d.no + '.pdf') x.setTrashed(true); }
+    }
+    const file = folder.createFile(Utilities.newBlob(Utilities.base64Decode(d.pdf), 'application/pdf', name));
     // registre
     const ss = SpreadsheetApp.openById(P.getProperty('SHEET_ID'));
     const sh = ss.getSheetByName('Documents') || ss.getSheets()[0].setName('Documents');

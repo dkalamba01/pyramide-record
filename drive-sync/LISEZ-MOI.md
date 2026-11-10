@@ -14,8 +14,12 @@
 6. Dans le constructeur de devis : **Enregistrés** → **Liaison Drive** → collez le code. À faire sur chaque appareil de l'équipe.
 7. Partagez le dossier Drive avec votre équipe (clic droit → Partager).
 
-Ensuite, chaque « Enregistrer » envoie le PDF dans `Devis/` ou `Factures/` et met à jour le registre.
-Un seul PDF par document : il est remplacé à chaque nouvel enregistrement.
+Ensuite, tout est automatique :
+- Devis : `Devis/2026/DEV-2026-003_Davis.pdf` — un seul PDF par devis, remplacé à chaque enregistrement.
+- Factures : `Factures/2026/FAC-2026-002_Davis_2026-11-10_14h19.pdf` — une nouvelle version datée à la création, au PDF et à l'envoi WhatsApp (seulement si la facture a changé). Jamais remplacée.
+- Le registre (Google Sheet) garde une ligne par document, avec le lien vers le dernier PDF.
+
+Mise à jour du script plus tard : collez le nouveau Code.gs, puis Déployer > Gérer les déploiements > Modifier > Nouvelle version (le code de liaison reste valable).
 
 Désactiver sur un appareil : Liaison Drive → écrire 0.
 Si la clé fuit : dans le script, supprimez la propriété SECRET (Paramètres du projet), relancez setup puis liaison, et redistribuez le nouveau code.

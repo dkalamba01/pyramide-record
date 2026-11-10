@@ -29,6 +29,7 @@ function doGet() { return out({ ok: true, msg: 'Pyramide Record sync' }); }
 function doPost(e) {
   try {
     const d = JSON.parse(e.postData.contents);
+    if (d.act === 'lead') return lead(d);   // public : téléchargements des visiteurs (sans clé)
     if (!d.key || d.key !== P.getProperty('SECRET')) return out({ ok: false, error: 'clé invalide' });
     if (!d.no || !d.pdf) return out({ ok: false, error: 'données manquantes' });
     const fac = d.type === 'facture';
@@ -66,3 +67,50 @@ function doPost(e) {
 
 function sub(parent, name) { const it = parent.getFoldersByName(name); return it.hasNext() ? it.next() : parent.createFolder(name); }
 function out(o) { return ContentService.createTextOutput(JSON.stringify(o)).setMimeType(ContentService.MimeType.JSON); }
+
+/* ---------- Visiteurs du configurateur public : dossier + registre séparés ---------- */
+function leadsSetup() {
+  if (P.getProperty('LEADS_FOLDER_ID')) return;
+  const folder = DriveApp.createFolder('Pyramide Record – Téléchargements visiteurs');
+  const ss = SpreadsheetApp.create('Pyramide Record – Visiteurs (leads)');
+  DriveApp.getFileById(ss.getId()).moveTo(folder);
+  P.setProperties({ LEADS_FOLDER_ID: folder.getId(), LEADS_SHEET_ID: ss.getId() });
+}
+
+function lead(d) {
+  if (d.hp) return out({ ok: true });                                   // champ piège : robot
+  if (!d.pdf || String(d.pdf).length > 8000000) return out({ ok: false, error: 'pdf' });
+  const given = String(d.given) === '1';
+  const digits = String(d.phone || '').replace(/\D/g, '');
+  if (given && (digits.length < 8 || digits.length > 15)) return out({ ok: false, error: 'numéro' });
+  // limites anti-spam : 40 envois par heure au total, 4 par numéro et par heure
+  const cache = CacheService.getScriptCache(), hour = Utilities.formatDate(new Date(), 'UTC', 'yyyyMMddHH');
+  const kg = 'lg' + hour, kp = 'lp' + hour + digits;
+  const ng = Number(cache.get(kg) || 0), np = given ? Number(cache.get(kp) || 0) : 0;
+  if (ng >= 40 || np >= 4) return out({ ok: false, error: 'limite' });
+  cache.put(kg, String(ng + 1), 3700); if (given) cache.put(kp, String(np + 1), 3700);
+  const lock = LockService.getScriptLock(); lock.waitLock(20000);
+  try {
+    leadsSetup();
+    const clean = t => String(t || '').replace(/[\r\n\t]+/g, ' ').slice(0, 120);
+    const safe = t => clean(t).normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^A-Za-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 24);
+    const stamp = /^[0-9_h-]{8,20}$/.test(d.stamp || '') ? d.stamp : Utilities.formatDate(new Date(), Session.getScriptTimeZone(), "yyyy-MM-dd_HH'h'mm");
+    const who = given ? (safe(d.name) || 'visiteur') + '_+' + digits : 'ANONYME';
+    const name = stamp + '_' + who + '.pdf';
+    const folder = sub(DriveApp.getFolderById(P.getProperty('LEADS_FOLDER_ID')), stamp.slice(0, 7));   // un sous-dossier par mois
+    const file = folder.createFile(Utilities.newBlob(Utilities.base64Decode(d.pdf), 'application/pdf', name));
+    const ss = SpreadsheetApp.openById(P.getProperty('LEADS_SHEET_ID'));
+    let sh = ss.getSheetByName('Visiteurs') || ss.getSheets()[0].setName('Visiteurs');
+    if (sh.getLastRow() === 0) {
+      const H = ['Date', 'A donné ses coordonnées', 'Nom', 'WhatsApp', 'Écrire', 'Salle', 'Dimensions', 'Formule', 'Total estimé ($)', 'N° devis', 'PDF', 'Statut', 'Code de la salle'];
+      sh.appendRow(H);
+      sh.getRange(1, 1, 1, H.length).setFontWeight('bold').setBackground('#0D131C').setFontColor('#F0EBE1');
+      sh.setFrozenRows(1);
+      sh.getRange(2, 12, 1000, 1).setDataValidation(SpreadsheetApp.newDataValidation().requireValueInList(['Nouveau', 'Contacté', 'Devis envoyé', 'Gagné', 'Perdu'], true).build());
+    }
+    sh.appendRow([new Date(), given ? 'Oui' : 'Non', given ? clean(d.name) : '', given ? '+' + digits : '',
+      given ? '=HYPERLINK("https://wa.me/' + digits + '";"WhatsApp")' : '', clean(d.room), clean(d.size), clean(d.mode),
+      Number(d.totalNum) || 0, clean(d.no), '=HYPERLINK("' + file.getUrl() + '";"Ouvrir")', 'Nouveau', String(d.code || '').slice(0, 20000)]);
+    return out({ ok: true });
+  } finally { lock.releaseLock(); }
+}

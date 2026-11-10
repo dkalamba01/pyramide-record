@@ -260,10 +260,12 @@ const T3=o=>Object.assign(o,{tier:3});
 const INS_SLOTS=[
  {id:'gtr',z:'Instruments',l:'Guitare / basse',t:'gtr',q:Q(0,0),pos:[.3,.15],o:[P('Yamaha FG800 (acoustique)',200,3.5,'Guitare acoustique, bon son pour débuter'),P('Squier Affinity Stratocaster',250,4,'Guitare électrique, à brancher à un ampli'),P('Squier Affinity Precision Bass',230,4.5,'Basse électrique'),T3(NA('Guitare locale (Kinshasa)'))]},
  {id:'drm',z:'Instruments',l:'Batterie',t:'drm',q:Q(0,0),pos:[.28,.3],o:[P('Alesis Nitro Mesh (batterie électronique)',380,14,'Silencieuse, se branche à l\'ordinateur'),P('Pearl Roadshow 5 fûts (acoustique)',560,30,'Batterie complète avec cymbales'),T3(NA('Batterie locale (Kinshasa)'))]},
+ {id:'dmic',z:'Instruments',l:'Micros de batterie',t:'dmic',q:Q(0,0),pos:[0,.55],o:[P('Kit micros de batterie (modèle à confirmer)',null,0,'Grosse caisse, caisse claire, toms et deux micros d\'ambiance, bientôt disponible')]},
+ {id:'dcage',z:'Instruments',l:'Cage en verre pour batterie',t:'dcage',q:Q(0,0),pos:[0,.55],o:[P('Cage en verre pour batterie (modèle à confirmer)',null,0,'Isole le bruit de la batterie du reste de la salle, bientôt disponible')]},
  {id:'pno',z:'Instruments',l:'Piano numérique',t:'pno',q:Q(0,0),pos:[-.3,.3],o:[P('Yamaha P-45 (88 touches)',450,11.5,'Touches lestées, pour jouer et enregistrer'),P('Casio CDP-S160',480,11,'Fin et léger, bon toucher')]},
  {id:'perc',z:'Instruments',l:'Percussions (congas, djembé)',t:'perc',q:Q(0,0),pos:[.1,.35],o:[P('Djembé Meinl 12″',120,4,'Percussion traditionnelle'),P('LP Aspire congas (paire)',380,14,'Deux congas avec supports')]},
  {id:'wnd',z:'Instruments',l:'Saxophone / trompette',t:'wnd',q:Q(0,0),pos:[-.1,.35],o:[P('Yamaha YAS-280 (saxophone alto)',1600,5,'Pour étudiants et musiciens'),P('Yamaha YTR-2330 (trompette)',900,3,'Trompette en si bémol')]}];
-CH_SLOTS.push(...INS_SLOTS.map(x=>Object.assign({},x,{ins:true,q:{s:0,m:0,l:0},pos:{gtr:[.3,.2],drm:[0,.55],pno:[-.34,.3],perc:[.16,.38],wnd:[-.16,.42]}[x.id]||[0,.3]})));
+CH_SLOTS.push(...INS_SLOTS.map(x=>Object.assign({},x,{ins:true,q:{s:0,m:0,l:0},pos:{gtr:[.3,.2],drm:[0,.55],dmic:[0,.55],dcage:[0,.55],pno:[-.34,.3],perc:[.16,.38],wnd:[-.16,.42]}[x.id]||[0,.3]})));
 REC_SLOTS.push(...INS_SLOTS);POD_SLOTS.push(...INS_SLOTS.map(x=>Object.assign({},x,{pos:[x.pos[0],x.pos[1]-.1]})));
 REC_SLOTS.push({id:'amb',z:'Éclairage',l:'Lumière d\'ambiance (LED)',t:'light',q:Q(0,0),pos:[-.4,.2],span:.1,o:[LED]});
 POD_SLOTS.push({id:'amb',z:'Éclairage',l:'Lumière pour la vidéo (LED)',t:'light',q:Q(0,0),pos:[.4,.15],span:.1,o:[LED]});
@@ -375,7 +377,7 @@ function placeAt(x,z){if(uf===null)uf=ufDef();const {W,D}=SIZES[size];x=Math.max
 function seatOn(){const fi=fixt[fsel];if(!fi||!/^(uc|us|g|stool)/.test(fsel)){alert('Choisissez d\'abord une chaise ou un tabouret en cliquant dessus.');return}if(dummies.some(d=>d.on===fsel))return;const d={id:++dn,kind:'sit',x:fi.x,z:fi.z,rot:fi.r,on:fsel,c:[0xd9a066,0x8d5524,0xf1c27d,0xc68642,0x6b4423][dn%5]};dummies.push(d);dsel=d.id;buildRoom();chkUI()}
 function delF(){if(!fsel||uf===null)return;const n=uf.length;uf=uf.filter(f=>ufKey(f)!==fsel);if(uf.length===n)return;dummies=dummies.filter(d=>d.on!==fsel);delete fx[rm+fsel];fsel=null;ls=null;buildRoom();chkUI()}
 let drag=null;let dummies=[],dsel=null,furn=[],dn=0;
-const HS={pulp:[.35,.28],spk:[.3,.25],mon:[.25,.2],mic:[.12,.12],stand:[.2,.2],kbd:[.6,.22],piano:[.9,.8],mix:[.5,.4],amp:[.3,.2],pwr:[.2,.15],cam:[.15,.15],tri:[.25,.25],light:[.3,.3],bg:[1.2,.15],scr:[1.7,.3],box:[.15,.15],lap:[.2,.15],hp:[.12,.12],pc:[.3,.25],gtr:[.25,.2],drm:[.95,.85],pno:[.75,.25],perc:[.4,.2],wnd:[.2,.3]};
+const HS={pulp:[.35,.28],spk:[.3,.25],mon:[.25,.2],mic:[.12,.12],stand:[.2,.2],kbd:[.6,.22],piano:[.9,.8],mix:[.5,.4],amp:[.3,.2],pwr:[.2,.15],cam:[.15,.15],tri:[.25,.25],light:[.3,.3],bg:[1.2,.15],scr:[1.7,.3],box:[.15,.15],lap:[.2,.15],hp:[.12,.12],pc:[.3,.25],gtr:[.25,.2],drm:[.95,.85],dmic:[1.05,.9],dcage:[1.4,1.25],pno:[.75,.25],perc:[.4,.2],wnd:[.2,.3]};
 const eqBoxes=()=>room.children.filter(g=>g.userData&&g.userData.slot).map(g=>{const t=SLOTS.find(s=>s.id===g.userData.slot).t;let h=HS[t]||[.2,.2];if(t==='scr'){const k=g.scale.x;h=[h[0]*k,h[1]];if(Math.abs(Math.sin(g.rotation.y))>.5)h=[h[1],h[0]]}return{x:g.position.x,z:g.position.z,hw:h[0],hd:h[1]}});
 const hitC=(x,z,r,b)=>{const dx=Math.max(Math.abs(x-b.x)-b.hw,0),dz=Math.max(Math.abs(z-b.z)-b.hd,0);return dx*dx+dz*dz<r*r};
 function valid(d,x,z){const {W,D}=SIZES[size],r=.28;if(Math.abs(x)>W/2-.3||Math.abs(z)>D/2-.3)return false;
@@ -662,7 +664,7 @@ function setOn(g,on){const p=g.children[0];if(!p)return;p.children.forEach(c=>{i
 function product(t,ghost){
   if(t==='mix'||(rm==='pod'&&(t==='mic'||t==='stand')))return productV(t,ghost);
   const p=product0(t,ghost),ry=PROT[t];if(ry){const w=new THREE.Group();p.rotation.y=ry;w.add(p);return w}return p}
-const PROT={kbd:Math.PI,pno:Math.PI,drm:Math.PI,piano:-Math.PI/2};
+const PROT={kbd:Math.PI,pno:Math.PI,drm:Math.PI,dmic:Math.PI,dcage:Math.PI,piano:-Math.PI/2};
 function productV(t,ghost){const g=new THREE.Group(),mk=(c,o)=>ghost?mat(0x8fa2ff,{transparent:true,opacity:.28}):mat(c,o||{});
   const fl=product0(t,ghost);fl.userData.tv='f';g.add(fl);const tb=new THREE.Group();tb.userData.tv='t';g.add(tb);
   const add=(o,x,y,z)=>{o.position.set(x,y,z);tb.add(o)},cy=(r1,r2,h,c,seg)=>new THREE.Mesh(new THREE.CylinderGeometry(r1,r2,h,seg||12),mk(c));
@@ -730,6 +732,26 @@ function buildInstr(t,g,ghost){
     for(let i=0;i<16;i++){const y=.80+.56*(1-Math.pow(2,-i/12))/(1-Math.pow(2,-16/12))*1.0;bx(.046,.0022,.004,0xd0d3d8,0,y,.0225,CH);if([2,4,6,8].includes(i))cy(.004,.004,.002,0xf2eede,0,y+.016,.0225,Math.PI/2,0,{},8)}
     bx(.082,.17,.024,0x25170e,0,1.52,0);bx(.048,.007,.012,0xf2eede,0,1.42,.014);[-1,1].forEach(s=>[0,1,2].forEach(i=>{cy(.007,.007,.026,0xc4c8d0,s*.048,1.46+i*.045,-.004,0,Math.PI/2,CH,10);cy(.011,.011,.006,0xe6e8ee,s*.063,1.46+i*.045,-.004,0,Math.PI/2,CH,10)}));
     for(let k=0;k<6;k++)bx(.0014,.99,.0014,0xe4e4e4,-.0105+k*.0042,.91,.0245+.012,CH);break}
+  case'dmic':{const CHR=0xb9bdc7,BK=0x1c1c1c,GR=0x9a9da5;
+    cy(.017,.017,.1,BK,0,.27,-.5,Math.PI/2,0,{},12);cy(.02,.02,.02,GR,0,.27,-.44,Math.PI/2,0,CH,12);rod(0,.01,-.62,0,.27,-.55,.006,CHR,CH);tripod(0,-.62,.12,.2,.006,CHR);
+    cy(.017,.017,.1,BK,-.2,.72,-.17,0,0,{},12);rod(-.2,.78,-.17,-.2,.64,-.28,.005,CHR,CH);
+    cy(.017,.017,.1,BK,.22,.76,-.17,0,0,{},12);rod(.22,.82,-.17,.22,.68,-.28,.005,CHR,CH);
+    cy(.017,.017,.1,BK,.6,.72,.2,0,0,{},12);rod(.6,.78,.2,.6,.64,.3,.005,CHR,CH);
+    cy(.017,.017,.1,BK,-.5,.7,.3,0,0,{},12);rod(-.5,.76,.3,-.5,.5,.55,.005,CHR,CH);tripod(-.5,.55,.5,.2,.006,CHR);
+    [-1,1].forEach(k=>{rod(k*.95,.01,.05,k*.95,1.62,.05,.008,CHR,CH);tripod(k*.95,.05,.1,.3,.007,CHR);rod(k*.95,1.62,.05,k*.62,1.68,.05,.007,CHR,CH);cy(.014,.014,.14,BK,k*.62,1.62,.05,0,0,{},12);cy(.012,.012,.02,GR,k*.62,1.54,.05,0,0,CH,12)});break}
+  case'dcage':{const FR=0x15171c,hw=1.3,z0=-.75,z1=1.4,h=1.85,cxo=.05,cz=(z0+z1)/2,gm=ghost?M(0):new THREE.MeshStandardMaterial({color:0xbfe3ff,transparent:true,opacity:.16,roughness:.05,metalness:0,side:THREE.DoubleSide,depthWrite:false});
+    const pane=(w,hh,x,y,z,ry)=>{const m=new THREE.Mesh(new THREE.PlaneGeometry(w,hh),gm);m.rotation.y=ry||0;m.renderOrder=5;add(m,x,y,z)};
+    const L=cxo-hw,R=cxo+hw;
+    pane(2*hw,h,cxo,h/2,z0,0);
+    pane(z1-z0,h,R,h/2,cz,Math.PI/2);
+    pane(2*hw,h,cxo,h/2,z1,0);
+    pane(.5-z0,h,L,h/2,(z0+.5)/2,Math.PI/2);
+    [[L,z0],[R,z0],[L,z1],[R,z1],[L,.5]].forEach(([x,z])=>bx(.05,h,.05,FR,x,h/2,z,CH));
+    bx(2*hw+.05,.05,.05,FR,cxo,h,z0,CH);bx(2*hw+.05,.05,.05,FR,cxo,h,z1,CH);bx(.05,.05,z1-z0,FR,R,h,cz,CH);bx(.05,.05,z1-z0,FR,L,h,cz,CH);
+    bx(2*hw+.05,.05,.05,FR,cxo,.03,z0,CH);bx(2*hw+.05,.05,.05,FR,cxo,.03,z1,CH);bx(.05,.05,z1-z0,FR,R,.03,cz,CH);bx(.05,.05,z1-z0,FR,L,.03,cz,CH);
+    bx(2*hw+.05,.04,.04,FR,cxo,.95,z0,CH);bx(2*hw+.05,.04,.04,FR,cxo,.95,z1,CH);bx(.04,.04,z1-z0,FR,R,.95,cz,CH);
+    bx(.04,.04,.5-z0,FR,L,.95,(z0+.5)/2,CH);
+    break}
   case'drm':{const RED=0x7a1424,CHR=0xb9bdc7;
     cy(.95,.95,.01,0x2d2626,0,.005,.1,0,0,{roughness:.95},40);
     const kick=drum(0,.27,-.12,.23,.42,RED,{front:true,rx:Math.PI/2});
@@ -766,7 +788,7 @@ function product0(t,ghost){
   switch(t){
    case'spk':add(box(.55,.85,.45,m()),0,.43,0);if(!ghost){const cn=new THREE.Mesh(new THREE.CylinderGeometry(.17,.17,.02,20),mat(0x555555));cn.rotation.x=Math.PI/2;add(cn,0,.4,.23)}break;
    case'pulp':{add(box(.6,1.05,.45,m()),0,.52,0);const tp=box(.72,.05,.5,m());tp.rotation.x=-.35;add(tp,0,1.1,0);break}
-   case'kbd':case'pno':case'piano':case'gtr':case'drm':case'perc':case'wnd':buildInstr(t,g,ghost);break;
+   case'kbd':case'pno':case'piano':case'gtr':case'drm':case'dmic':case'dcage':case'perc':case'wnd':buildInstr(t,g,ghost);break;
    case'mon':{const gm=new THREE.BoxGeometry(.5,.3,.36),ps=gm.attributes.position;for(let i=0;i<ps.count;i++)if(ps.getY(i)>0&&ps.getZ(i)>0)ps.setY(i,-.05);gm.computeVertexNormals();const w=new THREE.Mesh(gm,mk(0x1d1d22));add(w,0,.15,0);cy(.09,.09,.02,0x555a66,0,.2,.15,Math.PI/2-.55);cy(.03,.03,.02,0x222222,0,.2,.16,Math.PI/2-.55);break}
    case'mic':{tripod(0,0,.5,1.3);cy(.009,.009,.45,0x222,0,1.34,.2,Math.PI/2-.15,0,6);cy(.022,.022,.17,0x1c1c1c,0,1.32,.44,Math.PI/2);cy(.03,.025,.05,0xaaaaaa,0,1.32,.54,Math.PI/2);break}
    case'stand':{tripod(0,0,.5,1.25);cy(.01,.01,.3,0x222,0,1.27,.12,Math.PI/2,0,6);break}

@@ -60,6 +60,9 @@
 
 .chk label{justify-content:flex-start;margin:5px 0}.chk h3{font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--gold,#f2b632);margin:14px 0 4px}
 @media print{body.pr-chk header,body.pr-chk nav,body.pr-chk footer,body.pr-chk .page-hero,body.pr-chk .tool:not(#t-chk),body.pr-chk .section-sm:last-of-type,body.pr-chk .no-print{display:none!important}body.pr-chk,body.pr-chk .tool{background:#fff!important;color:#000!important}body.pr-chk .tool{border:0}}
+.flt{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 18px}.flt .chip{font-size:14px;padding:8px 14px;border-radius:999px;border:1px solid var(--hair-2,#2a3344);background:transparent;color:inherit;cursor:pointer}.flt .chip.on{background:var(--gold,#f2b632);color:#111}
+.tool .shr{float:right;font-size:12px;padding:5px 10px;margin:-2px 0 0 8px}.tool .go{display:inline-block;margin-top:8px;font-size:14px;color:var(--gold,#f2b632)}
+.nrg .it{display:flex;align-items:center;gap:8px;margin:6px 0;font-size:14px}.nrg .it span{flex:1}.nrg .it input{width:68px!important}.nrg .cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:0 24px}
 .tool.wide{grid-column:1/-1}.tool .res{margin:10px 0;padding:10px 12px;border-radius:10px;background:rgba(242,182,50,.12);font-size:14px}.tool .res.bad{background:rgba(220,70,50,.18)}.tool .res.ok{background:rgba(70,170,110,.18)}
 .tool input[type=text],.tool textarea{font-size:16px;padding:8px;border-radius:8px;border:1px solid var(--hair-2,#2a3344);background:transparent;color:inherit;width:100%;box-sizing:border-box}
 .tool .meter{height:14px;border-radius:7px;background:#2a3344;overflow:hidden;margin:8px 0}.tool .meter i{display:block;height:100%;width:0;background:var(--gold,#f2b632);transition:width .08s}
@@ -120,12 +123,13 @@
   <section class="page-hero wrap">
     <p class="eyebrow">Outils gratuits</p>
     <h1>Des outils audio pour sonorisateurs et musiciens.</h1>
-    <p class="lede">Accordeur, calculateur d'enceintes et d'ampli, sonomètre, transposeur d'accords, acoustique de salle, générateur de fréquences, métronome, détecteur de larsen, checklist d'événement et plus : directement dans votre navigateur, sans installation.</p>
+    <p class="lede">Accordeur, calculateur d'enceintes et d'ampli, sonomètre, transposeur d'accords, acoustique de salle, générateur de fréquences, métronome, détecteur de larsen, énergie et batterie, checklist d'événement, estimateur de budget et plus : directement dans votre navigateur, sans installation.</p>
   </section>
   <section class="section-sm wrap">
+    <div class="flt" id="flt"><button class="chip on" data-f="">Tous</button><button class="chip" data-f="nrg">Énergie</button><button class="chip" data-f="snd">Son</button><button class="chip" data-f="mus">Musique</button><button class="chip" data-f="rm">Salle et budget</button></div>
     <div class="tools">
 
-      <div class="tool" id="t-tone"><h2>Générateur de fréquences</h2><p class="d">Pour tester des enceintes, régler une salle ou accorder à l'oreille. Baissez le volume avant de démarrer.</p>
+      <div class="tool" id="t-tone" data-c="snd"><h2>Générateur de fréquences</h2><p class="d">Pour tester des enceintes, régler une salle ou accorder à l'oreille. Baissez le volume avant de démarrer.</p>
         <div class="big"><span id="tf">440</span> Hz</div>
         <input type="range" id="tfs" min="0" max="1000" value="500" aria-label="Fréquence" style="width:100%">
         <div class="row" id="tq"></div>
@@ -133,56 +137,56 @@
         <label>Volume <input type="range" id="tv" min="0" max="100" value="10"></label>
         <button class="btn" id="tgo">Démarrer</button></div>
 
-      <div class="tool" id="t-met"><h2>Métronome</h2><p class="d">Pour les batteurs, les chorales et les répétitions.</p>
+      <div class="tool" id="t-met" data-c="mus"><h2>Métronome</h2><p class="d">Pour les batteurs, les chorales et les répétitions.</p>
         <div class="big"><span id="mb">100</span> bpm</div>
         <input type="range" id="mbs" min="30" max="240" value="100" aria-label="Tempo" style="width:100%">
         <label>Temps par mesure <select id="mn"><option>2</option><option>3</option><option selected>4</option><option>6</option><option>8</option></select></label>
         <div class="beats" id="mbeats"></div>
         <div class="row"><button class="btn" id="mgo">Démarrer</button><button class="chip" id="mtap">Tap tempo</button></div></div>
 
-      <div class="tool" id="t-note"><h2>Fréquences des notes</h2><p class="d">Quelle est la fréquence du Do de la 4ème octave ? Le La4 sert de référence.</p>
+      <div class="tool" id="t-note" data-c="mus"><h2>Fréquences des notes</h2><p class="d">Quelle est la fréquence du Do de la 4ème octave ? Le La4 sert de référence.</p>
         <label>Octave <select id="no"></select></label><label>La4 (Hz) <input type="number" id="nA" value="440" min="415" max="466"></label>
         <table class="ntab" id="nt"></table></div>
 
-      <div class="tool" id="t-lar"><h2>Détecteur de larsen</h2><p class="d">Le larsen est le sifflement du micro. Montez le volume jusqu'au sifflement : l'outil trouve la fréquence et la bande de l'égaliseur à baisser.</p>
+      <div class="tool" id="t-lar" data-c="snd"><h2>Détecteur de larsen</h2><p class="d">Le larsen est le sifflement du micro. Montez le volume jusqu'au sifflement : l'outil trouve la fréquence et la bande de l'égaliseur à baisser.</p>
         <div class="big" id="lf">— Hz</div><p id="ls" class="d">Appuyez sur Démarrer et autorisez le micro.</p>
         <canvas id="lc" width="600" height="110"></canvas>
         <div class="row"><button class="btn" id="lgo">Démarrer</button></div></div>
 
-      <div class="tool" id="t-del"><h2>Calculateur de retard</h2><p class="d">Pour les enceintes de retard (delay) d'une grande salle ou d'un stade : le temps que met le son pour parcourir la distance.</p>
+      <div class="tool" id="t-del" data-c="snd"><h2>Calculateur de retard</h2><p class="d">Pour les enceintes de retard (delay) d'une grande salle ou d'un stade : le temps que met le son pour parcourir la distance.</p>
         <label>Distance (m) <input type="number" id="dd" value="20" min="0" step="0.5"></label>
         <label>Température (°C) <input type="number" id="dt" value="28" min="-10" max="50"></label>
         <label><span>Ajouter ~10 ms (le son semble venir de la scène)</span><input type="checkbox" id="dh" checked></label>
         <div class="big"><span id="dr">0</span> ms</div><p class="d" id="dn"></p></div>
 
-      <div class="tool" id="t-tun"><h2>Accordeur chromatique</h2><p class="d">Chantez ou jouez une note près du micro : l'outil affiche la note et l'écart en cents.</p>
+      <div class="tool" id="t-tun" data-c="mus"><h2>Accordeur chromatique</h2><p class="d">Chantez ou jouez une note près du micro : l'outil affiche la note et l'écart en cents.</p>
         <div class="big"><span id="un">—</span> <small id="uh" style="font-size:14px;opacity:.7"></small></div>
         <div class="needle"><b></b><i id="uneedle"></i></div><p class="d" id="uc">Appuyez sur Démarrer et autorisez le micro.</p>
         <label>La4 (Hz) <input type="number" id="uA" value="440" min="415" max="466"></label>
         <div class="row"><button class="btn" id="ugo">Démarrer</button></div></div>
 
-      <div class="tool" id="t-amp"><h2>Enceintes et ampli : impédance</h2><p class="d">Peut-on brancher plusieurs enceintes sur un ampli sans le brûler ? Entrez les valeurs écrites derrière vos appareils.</p>
+      <div class="tool" id="t-amp" data-c="snd"><h2>Enceintes et ampli : impédance</h2><p class="d">Peut-on brancher plusieurs enceintes sur un ampli sans le brûler ? Entrez les valeurs écrites derrière vos appareils.</p>
         <label>Nombre d'enceintes <input type="number" id="an" value="2" min="1" max="16"></label>
         <label>Impédance d'une enceinte (Ω) <select id="az"><option>4</option><option selected>8</option><option>16</option></select></label>
         <label>Branchement <select id="aw"><option value="p">En parallèle</option><option value="s">En série</option></select></label>
         <label>Charge minimale de l'ampli (Ω) <select id="am"><option>2</option><option selected>4</option><option>8</option></select></label>
         <label>Puissance de l'ampli à cette charge (W) <input type="number" id="ap" value="300" min="1"></label>
         <label>Puissance d'une enceinte, RMS (W) <input type="number" id="ar" value="300" min="1"></label>
-        <div class="big"><span id="at">0</span> Ω</div><div class="res" id="av"></div></div>
+        <div class="big"><span id="at">0</span> Ω</div><div class="res" id="av"></div><a class="go" href="shop.html">Voir les amplis et enceintes →</a></div>
 
-      <div class="tool" id="t-spl"><h2>Sonomètre</h2><p class="d">Mesure indicative du niveau sonore avec le micro du téléphone. Pour une mesure précise, utilisez un vrai sonomètre.</p>
+      <div class="tool" id="t-spl" data-c="snd"><h2>Sonomètre</h2><p class="d">Mesure indicative du niveau sonore avec le micro du téléphone. Pour une mesure précise, utilisez un vrai sonomètre.</p>
         <div class="big"><span id="sv">—</span> dB</div><div class="meter"><i id="sm"></i></div><p class="d" id="ss">Appuyez sur Démarrer et autorisez le micro.</p>
         <label>Étalonnage (dB) <input type="number" id="so" value="90" min="60" max="130"></label>
         <div class="row"><button class="btn" id="sgo">Démarrer</button></div>
         <p class="d">Repères : conversation 60 dB · circulation 80 dB · au-delà de 85 dB une exposition longue est dangereuse · concert 100 à 110 dB.</p></div>
 
-      <div class="tool" id="t-trn"><h2>Transposeur d'accords</h2><p class="d">Écrivez la grille (par exemple <i>Do Sol Lam Fa</i> ou <i>C G Am F</i>) et choisissez de combien de demi-tons monter ou descendre.</p>
+      <div class="tool" id="t-trn" data-c="mus"><h2>Transposeur d'accords</h2><p class="d">Écrivez la grille (par exemple <i>Do Sol Lam Fa</i> ou <i>C G Am F</i>) et choisissez de combien de demi-tons monter ou descendre.</p>
         <textarea id="xi" rows="3">Do Sol Lam Fa</textarea>
         <label>Demi-tons <select id="xs"></select></label>
         <div class="big" id="xo" style="font-size:24px"></div>
         <p class="d" id="xc"></p></div>
 
-      <div class="tool" id="t-rt"><h2>Acoustique de la salle (réverbération)</h2><p class="d">Estime le temps de réverbération (RT60). Trop long : la parole est confuse. Trop court : le son est sec.</p>
+      <div class="tool" id="t-rt" data-c="rm"><h2>Acoustique de la salle (réverbération)</h2><p class="d">Estime le temps de réverbération (RT60). Trop long : la parole est confuse. Trop court : le son est sec.</p>
         <label>Longueur (m) <input type="number" id="rl" value="20" min="2"></label>
         <label>Largeur (m) <input type="number" id="rw" value="12" min="2"></label>
         <label>Hauteur (m) <input type="number" id="rh" value="5" min="2"></label>
@@ -190,14 +194,47 @@
         <label>Sol <select id="rf"></select></label>
         <label>Plafond <select id="rc"></select></label>
         <label>Personnes présentes <input type="number" id="rp" value="100" min="0"></label>
-        <div class="big"><span id="rr">0</span> s</div><div class="res" id="rv"></div></div>
+        <div class="big"><span id="rr">0</span> s</div><div class="res" id="rv"></div><a class="go" href="configurateur.html">Essayer votre salle en 3D →</a></div>
 
-      <div class="tool wide chk" id="t-chk"><h2>Checklist matériel pour un événement</h2><p class="d">Cochez ce que vous avez déjà. Imprimez-la ou gardez-la sur le téléphone. Elle se souvient de vos coches.</p>
+      <div class="tool wide nrg" id="t-nrg" data-c="nrg"><h2>Énergie : puissance, batterie, groupe</h2><p class="d">Additionnez la consommation de votre matériel, puis voyez la batterie ou le groupe électrogène qu'il vous faut. Réseau 220 V.</p>
+        <div class="cols"><div>
+        <div class="it"><span>Enceinte active</span><input type="number" class="nq" value="2" min="0"><input type="number" class="nw" value="300" min="0"> W</div>
+        <div class="it"><span>Table de mixage</span><input type="number" class="nq" value="1" min="0"><input type="number" class="nw" value="40" min="0"> W</div>
+        <div class="it"><span>Ampli de puissance</span><input type="number" class="nq" value="0" min="0"><input type="number" class="nw" value="600" min="0"> W</div>
+        <div class="it"><span>Micros sans fil (récepteur)</span><input type="number" class="nq" value="0" min="0"><input type="number" class="nw" value="10" min="0"> W</div>
+        <div class="it"><span>Ordinateur portable</span><input type="number" class="nq" value="0" min="0"><input type="number" class="nw" value="60" min="0"> W</div>
+        <div class="it"><span>Projecteur ou écran</span><input type="number" class="nq" value="0" min="0"><input type="number" class="nw" value="250" min="0"> W</div>
+        <div class="it"><span>Éclairage LED</span><input type="number" class="nq" value="0" min="0"><input type="number" class="nw" value="100" min="0"> W</div>
+        <div class="it"><span>Ventilateur</span><input type="number" class="nq" value="0" min="0"><input type="number" class="nw" value="70" min="0"> W</div>
+        <div class="it"><span>Autre</span><input type="number" class="nq" value="0" min="0"><input type="number" class="nw" value="100" min="0"> W</div></div>
+        <div>
+        <label>Durée nécessaire (heures) <input type="number" id="nh" value="4" min="0.5" step="0.5"></label>
+        <label>Capacité de la batterie (Wh) <input type="number" id="nb" value="256" min="1"></label>
+        <label>Puissance max. de la batterie (W) <input type="number" id="nm" value="300" min="1"></label>
+        <label>Carburant du groupe <select id="nf"><option value="0.4">Essence</option><option value="0.3">Diesel</option></select></label>
+        <p class="d" style="font-size:12px;margin:2px 0 8px">Exemple : EcoFlow River 2 = 256 Wh, 300 W.</p>
+        <div class="res" id="nr"></div></div></div>
+        <a class="go" href="shop.html">Voir les stations d'énergie et onduleurs →</a></div>
+
+      <div class="tool" id="t-lrg" data-c="snd"><h2>Distance de sécurité du larsen</h2><p class="d">Combien de volume avant le sifflement ? Mesurez les quatre distances, en mètres.</p>
+        <label>Bouche → micro (m) <input type="number" id="g0" value="0.15" min="0.02" step="0.01"></label>
+        <label>Micro → enceinte (m) <input type="number" id="g1" value="4" min="0.3" step="0.1"></label>
+        <label>Enceinte → auditeur (m) <input type="number" id="g2" value="8" min="0.3" step="0.1"></label>
+        <label>Orateur → auditeur (m) <input type="number" id="g3" value="10" min="0.3" step="0.1"></label>
+        <div class="big"><span id="gr">0</span> dB</div><div class="res" id="gv"></div></div>
+
+      <div class="tool" id="t-bud" data-c="rm"><h2>Estimateur de budget</h2><p class="d">Trois réponses et on vous propose un pack de départ, à ajuster ensuite en 3D.</p>
+        <label>Projet <select id="bt" style="width:auto"><option value="ch">Église / culte</option><option value="cf">Mariage / conférence</option><option value="pd">Studio podcast</option><option value="rc">Studio d'enregistrement</option><option value="vd">Studio vidéo</option></select></label>
+        <label id="bpl">Personnes dans la salle <input type="number" id="bp" value="150" min="1"></label>
+        <label>Votre budget ($) <input type="number" id="bb" value="3000" min="0" step="100"></label>
+        <div class="res" id="bv"></div><a class="go" id="bgo" href="configurateur.html">Ouvrir ce pack dans le configurateur 3D →</a></div>
+
+      <div class="tool wide chk" id="t-chk" data-c="rm"><h2>Checklist matériel pour un événement</h2><p class="d">Cochez ce que vous avez déjà. Imprimez-la ou gardez-la sur le téléphone. Elle se souvient de vos coches.</p>
         <label class="no-print">Type d'événement <select id="ke" style="width:auto"><option value="eg">Église / culte</option><option value="mr">Mariage / conférence</option><option value="co">Concert / plein air</option></select></label>
         <div id="kl"></div>
         <div class="row no-print"><button class="btn" id="kp">Imprimer</button><button class="chip" id="kr">Tout décocher</button></div></div>
 
-      <div class="tool wide" id="t-cab"><h2>Guide des câbles et connecteurs</h2><p class="d">Lequel utiliser, pour quoi.</p>
+      <div class="tool wide" id="t-cab" data-c="snd"><h2>Guide des câbles et connecteurs</h2><p class="d">Lequel utiliser, pour quoi.</p>
         <table class="g"><tr><th>Connecteur</th><th>Usage</th><th>À savoir</th></tr>
         <tr><td>XLR</td><td>Micros, sorties de table vers enceintes actives</td><td>Symétrique : longues distances sans bruit.</td></tr>
         <tr><td>Jack 6,35 mm TS (2 contacts)</td><td>Guitare, basse, clavier</td><td>Non symétrique : gardez-le court (moins de 6 m).</td></tr>
@@ -207,7 +244,7 @@
         <tr><td>Câble d'enceinte</td><td>Ampli vers enceinte passive</td><td>Jamais un câble d'instrument. Section 2,5 mm² ou plus sur plus de 10 m.</td></tr>
         <tr><td>Multipaire (snake)</td><td>Plusieurs micros de la scène vers la table</td><td>Choisissez au moins 2 voies de plus que nécessaire.</td></tr></table></div>
 
-      <div class="tool wide" id="t-mix"><h2>Aide-mémoire du mixage</h2><p class="d">Où chercher dans l'égaliseur quand un instrument se plaint.</p>
+      <div class="tool wide" id="t-mix" data-c="snd"><h2>Aide-mémoire du mixage</h2><p class="d">Où chercher dans l'égaliseur quand un instrument se plaint.</p>
         <table class="g"><tr><th>Source</th><th>Corps</th><th>Boue à réduire</th><th>Présence</th><th>Brillance</th></tr>
         <tr><td>Voix</td><td>100 à 250 Hz</td><td>250 à 400 Hz</td><td>2 à 5 kHz</td><td>8 à 12 kHz</td></tr>
         <tr><td>Grosse caisse</td><td>60 à 100 Hz</td><td>250 à 400 Hz</td><td>2 à 5 kHz (attaque)</td><td>—</td></tr>
@@ -367,6 +404,41 @@ function chkDraw(){var ev=$('ke').value,st={};try{st=JSON.parse(localStorage.get
  [].forEach.call($('kl').querySelectorAll('input'),function(c){c.onchange=function(){var o={};try{o=JSON.parse(localStorage.getItem('pr_chk')||'{}')}catch(e){}if(c.checked)o[c.dataset.k]=1;else delete o[c.dataset.k];try{localStorage.setItem('pr_chk',JSON.stringify(o))}catch(e){}}})}
 $('ke').onchange=chkDraw;$('kr').onclick=function(){try{localStorage.removeItem('pr_chk')}catch(e){}chkDraw()};
 $('kp').onclick=function(){document.body.classList.add('pr-chk');window.print();setTimeout(function(){document.body.classList.remove('pr-chk')},500)};chkDraw();
+
+/* énergie */
+function nrg(){var q=document.querySelectorAll('#t-nrg .nq'),w=document.querySelectorAll('#t-nrg .nw'),W=0,i;for(i=0;i<q.length;i++)W+=(+q[i].value||0)*(+w[i].value||0);
+ var h=+$('nh').value||1,wh=+$('nb').value||0,mx=+$('nm').value||0,pk=W*1.3,A=W/220,need=W*h/.85,run=W?wh*.85/W:0,kva=pk/.8/1000,SZ=[1,2,3,5,7.5,10,15,20,30,40,60],g=SZ.filter(function(x){return x>=kva})[0]||Math.ceil(kva),L=W/1000*h*(+$('nf').value),f=function(x,d){return x.toFixed(d==null?1:d).replace('.',',')};
+ function dur(x){var m=Math.round(x*60);return m>=60?Math.floor(m/60)+' h '+('0'+(m%60)).slice(-2):m+' min'}
+ var o='<b>Consommation : '+Math.round(W)+' W</b> ('+f(A)+' A). Avec 30 % de marge : '+Math.round(pk)+' W.';
+ if(!W){$('nr').className='res';$('nr').innerHTML='Ajoutez du matériel (quantité plus grande que 0).';return}
+ o+='<br>🔋 Pour '+h+' h, il faut une batterie d\'au moins <b>'+Math.round(need)+' Wh</b>. Votre batterie de '+wh+' Wh tient environ <b>'+dur(run)+'</b>.';
+ var bad=0;if(mx&&W>mx){o+='<br>⚠️ Votre batterie ne peut délivrer que '+mx+' W : trop faible pour ce matériel.';bad=1}
+ o+='<br>⚡ Groupe électrogène conseillé : <b>'+g+' kVA</b> minimum.<br>⛽ Environ <b>'+f(L)+' L</b> pour '+h+' h (estimation).';
+ $('nr').className='res'+(bad?' bad':'');$('nr').innerHTML=o}
+[].forEach.call(document.querySelectorAll('#t-nrg input,#t-nrg select'),function(e){e.oninput=nrg;e.onchange=nrg});nrg();
+/* larsen distance */
+function lrg(){var d0=+$('g0').value||.1,d1=+$('g1').value||1,d2=+$('g2').value||1,ds=+$('g3').value||1,L=function(x){return Math.log(x)/Math.LN10},
+ pag=20*(L(d1)+L(ds)-L(d0)-L(d2))-6,e=$('gv');$('gr').textContent=pag.toFixed(1).replace('.',',');
+ var gain=20*L(ds/d0)-0,need=Math.max(0,20*L(ds/d0)-0);
+ var tip='Rapprocher le micro de la bouche de moitié ajoute 6 dB. Éloigner le micro de l\'enceinte de moitié en ajoute 6 aussi.';
+ if(pag>=12){e.className='res ok';e.innerHTML='Bonne marge : le son sera fort avant le larsen. '+tip}
+ else if(pag>=0){e.className='res';e.innerHTML='Marge juste. Le larsen arrive vite quand vous montez. '+tip}
+ else{e.className='res bad';e.innerHTML='Le larsen arrivera avant d\'avoir assez de volume. Rapprochez le micro de la bouche, éloignez-le des enceintes ou placez les enceintes devant le micro. '+tip}}
+['g0','g1','g2','g3'].forEach(function(i){$(i).oninput=lrg});lrg();
+/* budget */
+var PK={ch:[[100,0,'Petite église',2300],[250,1,'Église moyenne',3200],[1e9,2,'Grande église + direct',6600]],cf:[[1e9,3,'Conférence / mariage (location)',340]],pd:[[1e9,4,'Studio podcast',2000]],rc:[[1e9,5,'Studio débutant',1300]],vd:[[1e9,6,'Studio vidéo',1100]]};
+function bud(){var t=$('bt').value,n=+$('bp').value||1,B=+$('bb').value||0,L=PK[t],P=L.filter(function(x){return n<=x[0]})[0]||L[L.length-1];
+ $('bpl').style.display=(t==='ch'||t==='cf')?'':'none';var e=$('bv'),pr=P[3],loc=t==='cf';
+ var h='Pack conseillé : <b>'+P[2]+'</b>, environ <b>'+pr.toLocaleString('fr-FR')+' $</b>'+(loc?' par jour de location':'')+' (estimation).';
+ if(B>=pr){e.className='res ok';h+='<br>Votre budget couvre ce pack'+(B>pr*1.5?' avec de la marge : vous pouvez ajouter des options.':'.')}
+ else if(!loc){e.className='res bad';h+='<br>Le budget est un peu juste. Choisissez le kit budget, ou louez le matériel pour un événement ponctuel.'}
+ else{e.className='res';h+='<br>Vérifiez la durée de location dans le configurateur.'}
+ e.innerHTML=h+'<br><small>Prix exact et ajustements dans le configurateur.</small>';$('bgo').href='configurateur.html?pack='+P[1]}
+['bt','bp','bb'].forEach(function(i){$(i).oninput=bud;$(i).onchange=bud});bud();
+/* filtres, partage, hors ligne */
+[].forEach.call(document.querySelectorAll('#flt .chip'),function(b){b.onclick=function(){[].forEach.call(document.querySelectorAll('#flt .chip'),function(x){x.classList.toggle('on',x===b)});[].forEach.call(document.querySelectorAll('.tool'),function(t){t.style.display=(!b.dataset.f||t.dataset.c===b.dataset.f)?'':'none'})}});
+[].forEach.call(document.querySelectorAll('.tool'),function(t){var a=document.createElement('a');a.className='chip shr no-print';a.textContent='Partager';a.href='#';a.onclick=function(e){e.preventDefault();var u='https://pyramidrecord.com/pages/outils.html#'+t.id,m=t.querySelector('h2').textContent+' (gratuit) : '+u;window.open('https://wa.me/?text='+encodeURIComponent(m),'_blank')};t.insertBefore(a,t.firstChild)});
+if('serviceWorker' in navigator&&location.protocol.indexOf('http')===0)navigator.serviceWorker.register('/sw-outils.js').catch(function(){});
 })();
 </script>
 </body>

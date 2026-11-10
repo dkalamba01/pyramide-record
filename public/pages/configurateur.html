@@ -521,7 +521,7 @@ function loadCatalog(){if(!/^https?:/.test(location.protocol))return;
     Object.values(ROOMS).forEach(R=>(R.slots||[]).forEach(sl=>sl.o.forEach(o=>{if(seen.has(o.n))return;seen.add(o.n);n++;const c=catMatch(o);
       if(c&&c.price>0){STOCK[o.n]={qty:c.quantityAvailable||0,price:Math.round(c.price),id:c.productId,sku:c.sku||null}}else catInfo.un.push(o.n)})));
     catInfo.n=n;catInfo.m=Object.keys(STOCK).length;window.__catalog={CATALOG,STOCK,unmatched:catInfo.un};
-    try{renderList();if(typeof refresh==='function')refresh()}catch(e){}}).catch(()=>{})}
+    try{renderList();if(typeof refresh==='function')refresh()}catch(e){}}).catch(()=>{}).then(()=>{if(window.__packGo)window.__packGo()})}
 const inStock=p=>!!(STOCK[p.n]&&STOCK[p.n].qty>0&&STOCK[p.n].price>0);
 function optState(p){return inStock(p)?'stock':(price(p)==null?'soon':'order')}
 function price(p){if(inStock(p))return STOCK[p.n].price;if(p.us==null){const v=local[p.n];return v>0?v:null}return Math.round(landed(p)*(1+mar/100)*(1+fee/100))}
@@ -1775,6 +1775,7 @@ if(b)b.onclick=()=>{const n=eff()==='day'?'night':'day';root.setAttribute('data-
 try{matchMedia('(prefers-color-scheme: light)').addEventListener('change',sync)}catch(e){}
 setTimeout(sync,50);setTimeout(sync,600);
 })();
+(function(){const m=/[?&]pack=(\d+)/.exec(location.search);if(m&&PACKS[+m[1]]){let d=0;window.__packGo=()=>{if(d)return;d=1;try{applyPack(+m[1])}catch(e){}};setTimeout(window.__packGo,3500)}})();
 loadCatalog();
 </script>
 </body>

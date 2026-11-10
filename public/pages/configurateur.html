@@ -169,7 +169,7 @@ textarea{width:100%;height:90px;background:var(--obsidian);color:var(--bone);bor
   <div id="qbdocw"><div class="qbg" id="qhead"></div><div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center"><button class="b" id="qtog">Catalogue</button><button class="b" id="qfree">+ Ligne libre</button><span class="mini">Glissez un produit du catalogue ici, ou touchez +</span></div><div id="qblines"></div><div class="qbt" id="qbt"></div><div class="qbg" style="margin-top:12px"><label class="w2">Note pour le client (facultatif)<textarea id="qnote" rows="2"></textarea></label></div><div style="display:flex;gap:6px;flex-wrap:wrap;margin:10px 0"><button class="b pr" id="qsave">Enregistrer</button><button class="b" id="qwa">Envoyer sur WhatsApp</button><button class="b" id="qcp">Copier le texte</button><button class="b" id="qpdf">PDF</button><button class="b" id="qdup">Dupliquer</button><button class="b" id="qinv">Convertir en facture</button></div><div id="qhist" class="mini"></div></div></div>
  </div>
 </div>
-<div class="qbm" id="qlm"><div><div style="display:flex;gap:6px;margin-bottom:8px"><input id="qls" placeholder="Chercher (client, numéro)" style="flex:1"><button class="b" id="qlx">Fermer</button></div><div style="display:flex;gap:6px;margin-bottom:8px;flex-wrap:wrap"><button class="b" id="qex">Exporter (sauvegarde)</button><label class="b" style="cursor:pointer">Importer<input id="qfi" type="file" accept=".json" style="display:none"></label></div><div id="qll"></div></div></div>
+<div class="qbm" id="qlm"><div><div style="display:flex;gap:6px;margin-bottom:8px"><input id="qls" placeholder="Chercher (client, numéro)" style="flex:1"><button class="b" id="qlx">Fermer</button></div><div style="display:flex;gap:6px;margin-bottom:8px;flex-wrap:wrap"><button class="b" id="qex">Exporter (sauvegarde)</button><button class="b" id="qdrv">Liaison Drive</button><label class="b" style="cursor:pointer">Importer<input id="qfi" type="file" accept=".json" style="display:none"></label></div><div id="qll"></div></div></div>
 <div class="qbm" id="qim"><div><h3 style="margin:0 0 6px">Importer un code de salle</h3><p class="mini">Collez le « code de la salle » reçu du client dans son message WhatsApp. Les produits choisis arrivent dans le devis.</p><textarea id="qic" rows="3" style="width:100%"></textarea><div style="display:flex;gap:6px;margin-top:8px"><button class="b pr" id="qiok">Importer</button><button class="b" id="qix">Annuler</button></div><p id="qie" class="mini" style="color:#e66"></p></div></div>
 <div id="qbtoast"></div>
 <div id="modal"><div class="box"><h2 style="font-size:17px">Récapitulatif de votre devis</h2><div id="mbody"></div>
@@ -1890,7 +1890,18 @@ function diff(a,b){const o=[];if(!a)return['Création'];
  am.forEach(l=>o.push('Retrait : '+l.n));return o}
 function ensureNo(){if(!cur.no)cur.no=nextNo(cur.type)}
 function save(quiet){ensureNo();const prev=snap?JSON.parse(snap):null,ch=diff(prev,cur),now=Date.now();cur.updated=now;cur.hist=cur.hist||[];ch.forEach(m=>cur.hist.push({t:now,m}));delete cur.dirty;
- const i=docs.findIndex(x=>x.id===cur.id),c=JSON.parse(JSON.stringify(cur));if(i>=0)docs[i]=c;else docs.unshift(c);if(!sv())return false;snap=JSON.stringify(cur);rHead();rHist();if(!quiet)toast('Enregistré : '+cur.no);return true}
+ const i=docs.findIndex(x=>x.id===cur.id),c=JSON.parse(JSON.stringify(cur));if(i>=0)docs[i]=c;else docs.unshift(c);if(!sv())return false;snap=JSON.stringify(cur);rHead();rHist();driveQueue(c);if(!quiet)toast('Enregistré : '+cur.no);return true}
+/* Enregistrement automatique dans Google Drive (Apps Script) */
+const LSDRV='pr_drive';let drvT={};
+function drvCfg(){try{const j=JSON.parse(atob(localStorage.getItem(LSDRV)||''));return j.u&&j.k?j:null}catch(e){return null}}
+function drvB64(blob){return new Promise((ok,ko)=>{const r=new FileReader();r.onload=()=>ok(String(r.result).split(',')[1]);r.onerror=ko;r.readAsDataURL(blob)})}
+async function driveSync(d){const c=drvCfg();if(!c||!d.lines.length)return;
+ try{const T=tot(d),blob=miniPdf(pdfData(d),null,0,0),pdf=await drvB64(blob);
+  const res=await fetch(c.u,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({key:c.k,no:d.no,type:d.type,date:new Date(d.created).toLocaleDateString('fr-FR'),client:d.client.n||'',phone:d.client.t||'',subject:d.subject||'',status:d.status||'',total:T.total,fname:fname(d),pdf})});
+  const j=await res.json();if(j.ok)toast('Enregistré dans Drive ✓ '+d.no);else toast('Drive : '+(j.error||'échec')+' (réessayez en enregistrant)')}
+ catch(e){toast('Drive injoignable : le document reste enregistré ici. Réessayez en enregistrant.')}}
+function driveQueue(d){if(!drvCfg())return;clearTimeout(drvT[d.id]);const c=JSON.parse(JSON.stringify(d));drvT[d.id]=setTimeout(()=>driveSync(c),3000)}
+$('qdrv').onclick=()=>{const c=drvCfg(),v=prompt(c?'Liaison Drive active. Collez un nouveau code pour la remplacer, ou écrivez 0 pour la désactiver.':'Collez le code de liaison Drive (donné par l\'administrateur).','');if(v===null)return;const t=v.trim();if(t==='0'){localStorage.removeItem(LSDRV);toast('Liaison Drive désactivée');return}if(!t)return;try{const j=JSON.parse(atob(t));if(!j.u||!j.k)throw 0;localStorage.setItem(LSDRV,t);toast('Liaison Drive activée');driveQueue(cur)}catch(e){toast('Code de liaison invalide.')}};
 $('qsave').onclick=()=>save();
 function setDoc(d){cur=JSON.parse(JSON.stringify(d));snap=docs.some(x=>x.id===d.id)?JSON.stringify(d):null;renderDoc()}
 $('qnew').onclick=()=>{if(cur&&cur.dirty&&!confirm('Quitter sans enregistrer les changements ?'))return;setDoc(newDoc())};

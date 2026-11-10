@@ -1490,7 +1490,7 @@ function loadState(o){hang=o.hang===true?'hung':['hung','mix'].includes(o.hang)?
   for(const k in offs)delete offs[k];Object.assign(offs,o.offs||{});dummies=o.dummies||[];dn=dummies.reduce((m,d)=>Math.max(m,d.id),0);
   Object.assign(seat,o.seat||{});Object.assign(scr,o.scr||{});Object.assign(guest,o.guest||{});if(o.fwd){fwd=o.fwd;document.getElementById('fwd').value=fwd}
   dsel=null;cur=null;chrome();document.querySelectorAll('#sz .pill').forEach(b=>b.classList.toggle('on',b.dataset.k===size));buildRoom();renderList()}
-function switchRoom(k){uf=null;two=false;fx={};ven={};fsel=null;qov={};scr.layout='center';dummies=[];dsel=null;rm=k;SLOTS=ROOMS[k].slots;KITS=ROOMS[k].kits;SIZES=ROOMS[k].sizes;sel={};cur=null;chrome();setSize(ROOMS[k].def)}
+function switchRoom(k){uf=null;two=false;fx={};ven={};fsel=null;qov={};scr.layout='center';dummies=[];dsel=null;rm=k;SLOTS=ROOMS[k].slots;KITS=ROOMS[k].kits;SIZES=ROOMS[k].sizes;size=ROOMS[k].def;sel={};cur=null;chrome();setSize(ROOMS[k].def)}
 const setP=()=>{fwd=document.getElementById('fwd').value;mar=+document.getElementById('mar').value||0;fee=+document.getElementById('fee').value||0;renderList()};
 ['fwd','mar','fee'].forEach(i=>document.getElementById(i).onchange=setP);
 let quoteText='',inst=false;

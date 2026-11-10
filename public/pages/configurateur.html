@@ -263,8 +263,8 @@ const T3=o=>Object.assign(o,{tier:3});
 const INS_SLOTS=[
  {id:'gtr',z:'Instruments',l:'Guitare / basse',t:'gtr',q:Q(0,0),pos:[.3,.15],o:[P('Yamaha FG800 (acoustique)',200,3.5,'Guitare acoustique, bon son pour débuter'),P('Squier Affinity Stratocaster',250,4,'Guitare électrique, à brancher à un ampli'),P('Squier Affinity Precision Bass',230,4.5,'Basse électrique'),T3(NA('Guitare locale (Kinshasa)'))]},
  {id:'drm',z:'Instruments',l:'Batterie',t:'drm',q:Q(0,0),pos:[.28,.3],o:[P('Alesis Nitro Mesh (batterie électronique)',380,14,'Silencieuse, se branche à l\'ordinateur'),P('Pearl Roadshow 5 fûts (acoustique)',560,30,'Batterie complète avec cymbales'),T3(NA('Batterie locale (Kinshasa)'))]},
- {id:'dmic',z:'Instruments',l:'Micros de batterie',t:'dmic',q:Q(0,0),pos:[0,.55],o:[P('Kit micros de batterie (modèle à confirmer)',null,0,'Grosse caisse, caisse claire, toms et deux micros d\'ambiance, bientôt disponible')]},
- {id:'dcage',z:'Instruments',l:'Cage en verre pour batterie',t:'dcage',q:Q(0,0),pos:[0,.55],o:[P('Cage en verre pour batterie (modèle à confirmer)',null,0,'Isole le bruit de la batterie du reste de la salle, bientôt disponible')]},
+ {id:'dmic',z:'Instruments',l:'Micros de batterie',t:'dmic',req:true,q:Q(0,0),pos:[0,.55],o:[P('Kit micros de batterie (modèle à confirmer)',null,0,'Grosse caisse, caisse claire, toms et deux micros d\'ambiance, bientôt disponible')]},
+ {id:'dcage',z:'Instruments',l:'Cage en verre pour batterie',t:'dcage',req:true,q:Q(0,0),pos:[0,.55],o:[P('Cage en verre pour batterie (modèle à confirmer)',null,0,'Isole le bruit de la batterie du reste de la salle, bientôt disponible')]},
  {id:'pno',z:'Instruments',l:'Piano numérique',t:'pno',q:Q(0,0),pos:[-.3,.3],o:[P('Yamaha P-45 (88 touches)',450,11.5,'Touches lestées, pour jouer et enregistrer'),P('Casio CDP-S160',480,11,'Fin et léger, bon toucher')]},
  {id:'perc',z:'Instruments',l:'Percussions (congas, djembé)',t:'perc',q:Q(0,0),pos:[.1,.35],o:[P('Djembé Meinl 12″',120,4,'Percussion traditionnelle'),P('LP Aspire congas (paire)',380,14,'Deux congas avec supports')]},
  {id:'wnd',z:'Instruments',l:'Saxophone / trompette',t:'wnd',q:Q(0,0),pos:[-.1,.35],o:[P('Yamaha YAS-280 (saxophone alto)',1600,5,'Pour étudiants et musiciens'),P('Yamaha YTR-2330 (trompette)',900,3,'Trompette en si bémol')]}];
@@ -566,9 +566,10 @@ function renderOpts(){
   const s=SLOTS.find(x=>x.id===cur),q=qty(s);O.style.display='block';
   let h=`<h3>${s.l}</h3><div style="display:flex;align-items:center;gap:8px;margin:0 4px 8px;font-size:13px">Quantité <button class="pill" id="qm">−</button><b>${q}</b><button class="pill" id="qp">+ Dupliquer</button></div>`;
   s.o.forEach((o,i)=>{if(!vis(o))return;const pr=price(o);
+    if(rmode==='rent'&&!DECO.has(s.id)&&s.req){h+=`<div class="opt ${sel[s.id]===i?'on':''}" data-i="${i}" data-off="0"><div>${o.n} <span class="bd b">Prix sur demande</span><small>${o.d}</small></div><b>—</b></div>`;return}
     if(rmode==='rent'&&!DECO.has(s.id)){const rd=rentDay(s,o);h+=`<div class="opt ${sel[s.id]===i?'on':''} ${rd?'':'off'}" data-i="${i}" data-off="${rd?0:1}"><div>${o.n} ${rd?(rd.site?'<span class="bd g">Catalogue location</span>':'<span class="bd b">Tarif estimé</span>'):'<span class="bd x">Bientôt disponible</span>'}<small>${o.d}</small></div><b>${rd?money(rd.p)+'<small>/jour</small>':'—'}</b></div>`;return}
     if(DECO.has(s.id)){h+=`<div class="opt ${sel[s.id]===i?'on':''}" data-i="${i}" data-off="0"><div>${o.n}<small>${o.d}</small></div><b><small>non vendu</small></b></div>`;return}
-    const st=optState(o),off=st==='soon'&&!ADMIN,bd={stock:'<span class="bd g">En stock</span>',order:'<span class="bd b">Sur commande</span>',soon:'<span class="bd x">Bientôt disponible</span>'}[st];
+    const st=optState(o),off=st==='soon'&&!ADMIN&&!s.req,bd={stock:'<span class="bd g">En stock</span>',order:'<span class="bd b">Sur commande</span>',soon:s.req?'<span class="bd b">Prix sur demande</span>':'<span class="bd x">Bientôt disponible</span>'}[st];
     h+=`<div class="opt ${sel[s.id]===i?'on':''} ${off?'off':''}" data-i="${i}" data-off="${off?1:0}"><div>${o.n} ${bd}${o.tier>1?`<span class="bd b">${LV[o.tier].n}</span>`:''}<small>${o.d}</small></div><b>${pr==null?'—':money(pr)+(q>1?'<small>/unité</small>':'')}</b></div>`});
   h+=`<div class="opt" data-i="-1"><div>Aucun / je l'ai déjà</div></div>`;
   O.innerHTML=h;document.getElementById('qm').onclick=()=>setQ(s,q-1);document.getElementById('qp').onclick=()=>setQ(s,q+1);
@@ -608,7 +609,10 @@ function totalsRent(){let t=0,req=[],rows=[],val=0,units=0;
   if(rows.length){if(rlog){const lg=Math.min(600,50+3*units);t+=lg;rows.push({s:{l:'Livraison, installation et reprise (Kinshasa)'},o:{n:'Forfait'},q:1,pr:lg,svc:true})}
     if(rtech){const tc=80*rdays;t+=tc;rows.push({s:{l:'Technicien son sur place'},o:{n:'80 $ par jour'},q:1,pr:tc,svc:true})}}
   return{t,req,rows,rent:{caution:Math.round(val*.3/10)*10,acompte:Math.round(t*.5)}}}
-function rowTag(x,br){if(rmode==='rent'){if(x.svc)return'';const t='location '+rdays+' j'+(x.site?'':', tarif estimé');return br?' ['+t+']':' · '+t}
+const CGSH={round:'ronde',sq:'carrée',oct:'octogonale',half:'demi-ronde'};
+function cageTag(x){if(!x.s||x.s.t!=='dcage')return'';const L=[];for(let i=0;i<(x.q||1);i++){const c=cgOf(rm+x.s.id+i);L.push('cage '+CGSH[c.sh]+' '+c.w.toFixed(1)+'×'+c.d.toFixed(1)+' m, h '+c.h.toFixed(1)+' m')}return L.join(' / ')}
+function rowTag(x,br){const b=rowTag0(x,br),c=cageTag(x);return c?(br?' ['+c+']':' · '+c)+b:b}
+function rowTag0(x,br){if(rmode==='rent'){if(x.svc)return'';const t='location '+rdays+' j'+(x.site?'':', tarif estimé');return br?' ['+t+']':' · '+t}
   const a=x.o&&inStock(x.o)?'en stock':x.o&&x.o.us!=null?'sur commande':'';return a?(br?' ['+a+']':' · '+a):''}
 const rentNote=()=>'Location '+rperiod()+'. Matériel du stock Pyramide Record, sans transport d\'importation ni taxes, sous réserve de disponibilité aux dates demandées. Une caution remboursable et un acompte sont demandés. Les tarifs marqués « estimé » sont confirmés dans le devis final.';
 const rentRows=r=>`<tr><td>Acompte à la réservation (50 %)</td><td>${money(r.rent.acompte)}</td></tr><tr><td>Caution remboursable (non incluse dans le total)</td><td>${money(r.rent.caution)}</td></tr>`;
@@ -1118,7 +1122,7 @@ function selInfo(){if(!ls)return null;
   return null}
 function selLabel(){if(!ls)return null;
   if(ls.t==='eq'){const sl=SLOTS.find(x=>x.id===ls.slot);if(!sl)return null;const q=qty(sl),o=sel[sl.id]!=null?sl.o[sel[sl.id]]:null;let pr='';
-    if(DECO.has(sl.id))pr='';else if(!o)pr='Non choisi';else if(rmode==='rent'){const rd=rentDay(sl,o);pr=rd?money(rd.p)+'/jour':'Bientôt disponible'}else{const st=optState(o),p=price(o);pr=st==='soon'?'Bientôt disponible':p==null?'Sur demande':money(p)+(q>1?'/unité':'')}
+    if(DECO.has(sl.id))pr='';else if(!o)pr='Non choisi';else if(rmode==='rent'){const rd=rentDay(sl,o);pr=rd?money(rd.p)+'/jour':(sl.req?'Prix sur demande':'Bientôt disponible')}else{const st=optState(o),p=price(o);pr=st==='soon'?(sl.req?'Prix sur demande':'Bientôt disponible'):p==null?'Sur demande':money(p)+(q>1?'/unité':'')}
     return{name:sl.l+(q>1?' '+(ls.i+1)+' sur '+q:''),sub:[o&&o.n,pr].filter(Boolean).join(' · '),go:true,nav:q>1}}
   if(ls.t==='f'){const k=ls.key,fi=fixt[k];return{name:isT(k)?'Table':isCb(k)?(fi&&fi.cab==='wall'?'Cloison':'Cabine'):/^(us|stool)/.test(k)?'Tabouret':'Chaise',sub:'',go:false,nav:false}}
   if(ls.t==='d')return{name:'Personne',sub:'',go:false,nav:false};return null}

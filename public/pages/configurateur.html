@@ -46,9 +46,10 @@ a.cta{display:block;text-align:center;text-decoration:none;margin-top:8px;paddin
 .zone{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ember);margin:10px 2px 5px}
 .slot{display:flex;justify-content:space-between;gap:8px;align-items:center;padding:9px 10px;margin-bottom:5px;background:var(--panel-2);border:1px solid var(--hair-2);border-radius:9px;cursor:pointer;font-size:13px}
 .slot.sel{border-color:var(--ember);background:var(--panel-3)}
+#dvsum .dvg{margin:10px 0 4px;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ember)}#dvsum .dvr{display:flex;justify-content:space-between;gap:10px;align-items:flex-start;padding:7px 2px;border-bottom:1px solid var(--hair-2);font-size:13px}#dvsum .dvr small{display:block;color:var(--sand);font-size:11.5px;margin-top:2px}#dvsum .dvt{font-weight:700;font-size:15px;border-bottom:0;border-top:2px solid var(--hair-2);margin-top:8px;padding-top:10px}
 @keyframes slf{0%{box-shadow:0 0 0 0 #E8A55299}100%{box-shadow:0 0 0 12px #E8A55200}}.slot.flash{animation:slf .9s ease-out 2}
 #rotbar .rb0{gap:6px}#rotbar .rnm{text-transform:none;letter-spacing:0;font-size:13px;font-weight:600;color:var(--bone);text-align:left;max-width:60vw}#rotbar .rnm small{display:block;font-weight:400;color:var(--sand);font-size:11px}#rotbar.min .rb0 [data-go],#rotbar.min .rb0 [data-nav]{display:none}#rotbar.min .rnm small{display:none}
-@media(max-width:820px){#spkbox:not(.open){display:none!important}}
+@media(max-width:820px){#foot #quote{display:none}#spkbox:not(.open){display:none!important}}
 .slot small{display:block;color:var(--sand);font-size:11px;margin-top:2px}
 .slot b{white-space:nowrap}
 .chk{font-size:12px;border-radius:8px;padding:6px 8px;margin:4px 0;line-height:1.35}.chk.w{background:var(--panel-2);color:var(--ember);border-left:3px solid var(--ember)}.chk.i{background:var(--panel-2);color:var(--sand)}
@@ -123,7 +124,7 @@ textarea{width:100%;height:90px;background:var(--obsidian);color:var(--bone);bor
   <div id="panel">
     <div id="head"><div><h1>Votre salle d'église</h1><p>Choisissez un emplacement, puis le matériel. Prix estimés, livraison à Kinshasa. Droits de douane à confirmer.</p></div><button id="thm" title="Mode jour / nuit" aria-label="Mode jour / nuit">☾</button></div>
     <div id="tabs"></div>
-    <div id="body"><div id="lvlbox"></div><div id="dimbox"></div><div id="fillbox"></div><div id="covbox"></div><div id="acbox"></div><div id="presets"></div><div id="catbox"></div><div id="seatbox"></div><div id="scrbox"></div><div id="list"></div><div id="opts" style="display:none"></div></div>
+    <div id="body"><div id="dvsum"></div><div id="lvlbox"></div><div id="dimbox"></div><div id="fillbox"></div><div id="covbox"></div><div id="acbox"></div><div id="presets"></div><div id="catbox"></div><div id="seatbox"></div><div id="scrbox"></div><div id="list"></div><div id="opts" style="display:none"></div></div>
     <div id="foot">
       <div id="chk"></div><div id="tot"><span>Total estimé</span><b id="total">0 $</b></div>
       <div class="mini" id="reqline"></div>
@@ -649,7 +650,16 @@ function checks(){const out=[],act=id=>{const sl=SLOTS.find(x=>x.id===id);return
   const r=totals();if(r.rows.length&&r.req.length)out.push(['i',r.req.length+' élément(s) sans prix : le total est incomplet, il sera confirmé dans le devis.']);
   return out}
 function chkUI(){const B=document.getElementById('chk');if(!B)return;const c=checks();B.innerHTML=c.length?'<div class="zone">Vérification de la configuration</div>'+c.map(([l,m])=>`<div class="chk ${l}">${l==='w'?'⚠':'ℹ'} ${m}</div>`).join(''):''}
-function updTotal(){chkUI();const r=totals();
+function devisUI(r){const B=document.getElementById('dvsum');if(!B)return;const go=k=>`<button class="pill" data-go="${k}">`;
+  if(!r.rows.length){B.innerHTML='<div class="zone">Votre sélection</div><div class="mini" style="margin:6px 0 10px">Rien n\'est choisi pour le moment. Passez à l\'étape « 2 · Matériel » pour ajouter du matériel : le récapitulatif et le total apparaîtront ici.</div>'+go('mat')+'Choisir du matériel</button>';B.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>setTab(b.dataset.go));return}
+  const G={};r.rows.forEach(x=>{const z=(x.s&&x.s.z)||'Autres';(G[z]=G[z]||[]).push(x)});
+  let h='<div class="zone">Récapitulatif de votre sélection</div>';
+  for(const z in G){h+=`<div class="dvg">${z}</div>`+G[z].map(x=>`<div class="dvr"><div>${x.s.l}${x.q>1?' ×'+x.q:''}<small>${x.o&&x.o.n?x.o.n:''}${cageTag(x)?' · '+cageTag(x):''}</small></div><b>${x.pr==null?'<span class="req">Sur demande</span>':money(x.pr*x.q)}</b></div>`).join('')}
+  h+=`<div class="dvr dvt"><div>${rmode==='rent'?'Total location ('+rdays+' j)':'Total estimé'}</div><b>${money(r.t)}</b></div>`;
+  if(r.req.length)h+=`<div class="mini" style="margin:6px 0">Prix sur demande, non inclus dans le total : ${r.req.join(', ')}.</div>`;
+  h+='<div class="mini" style="margin:6px 0 10px">Livraison à Kinshasa estimée. Droits de douane et dédouanement à confirmer. Le devis final confirme chaque prix.</div><div style="display:flex;gap:6px;flex-wrap:wrap"><button class="pill on" data-q="1">Voir et demander mon devis</button>'+go('mat')+'Modifier le matériel</button>'+go('salle')+'Modifier la salle</button></div>';
+  B.innerHTML=h;B.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>setTab(b.dataset.go));const q=B.querySelector('[data-q]');if(q)q.onclick=()=>document.getElementById('quote').click()}
+function updTotal(){chkUI();const r=totals();devisUI(r);
   document.getElementById('total').textContent=money(r.t);document.getElementById('mtotal').textContent=money(r.t);document.querySelector('#tot span').textContent=rmode==='rent'?'Total location ('+rdays+' j)':'Total estimé';
   const sp=r.rows.filter(x=>x.pr!=null&&x.o&&inStock(x.o)).reduce((a,x)=>a+x.pr*x.q,0),oc=r.rows.filter(x=>x.pr!=null&&!(x.o&&inStock(x.o))).reduce((a,x)=>a+x.pr*x.q,0);
   if(r.rent){document.getElementById('reqline').textContent='Acompte 50 % : '+money(r.rent.acompte)+' · Caution remboursable : '+money(r.rent.caution)+(r.req.length?' · prix sur demande : '+r.req.join(', '):'');return}
@@ -1717,7 +1727,7 @@ window.__t={switchRoom,pick,sel:()=>sel,setSize,totals};
 // ===== Onglets, étapes et sélecteur de carte =====
 (function(){
 const TABS=[['salle','1 · Salle'],['mat','2 · Matériel'],['son','3 · Son'],['plan','4 · Plan'],['devis','5 · Devis']];
-const MAP={lvlbox:'mat',catbox:'mat',list:'mat',opts:'mat',kits:'mat',dimbox:'salle',fillbox:'salle',presets:'salle',seatbox:'salle',scrbox:'salle',covbox:'son',acbox:'son',dbar:'plan',mobd:'plan',rst:'plan',adm:'plan',chk:'devis'};
+const MAP={dvsum:'devis',lvlbox:'mat',catbox:'mat',list:'mat',opts:'mat',kits:'mat',dimbox:'salle',fillbox:'salle',presets:'salle',seatbox:'salle',scrbox:'salle',covbox:'son',acbox:'son',dbar:'plan',mobd:'plan',rst:'plan',adm:'plan',chk:'devis'};
 const P=document.getElementById('panel');let cur='salle';
 Object.keys(MAP).forEach(i=>{const e=document.getElementById(i);if(e)e.setAttribute('data-tab',MAP[i])});
 const ld=document.getElementById('ld');if(ld&&ld.parentElement)ld.parentElement.setAttribute('data-tab','plan');

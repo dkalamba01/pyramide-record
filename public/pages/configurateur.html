@@ -1895,12 +1895,18 @@ function save(quiet){ensureNo();const prev=snap?JSON.parse(snap):null,ch=diff(pr
 const LSDRV='pr_drive';let drvT={};
 function drvCfg(){try{const j=JSON.parse(atob(localStorage.getItem(LSDRV)||''));return j.u&&j.k?j:null}catch(e){return null}}
 function drvB64(blob){return new Promise((ok,ko)=>{const r=new FileReader();r.onload=()=>ok(String(r.result).split(',')[1]);r.onerror=ko;r.readAsDataURL(blob)})}
-async function driveSync(d){const c=drvCfg();if(!c||!d.lines.length)return;
- try{const T=tot(d),blob=miniPdf(pdfData(d),null,0,0),pdf=await drvB64(blob);
-  const res=await fetch(c.u,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({key:c.k,no:d.no,type:d.type,date:new Date(d.created).toLocaleDateString('fr-FR'),client:d.client.n||'',phone:d.client.t||'',subject:d.subject||'',status:d.status||'',total:T.total,fname:fname(d),pdf})});
-  const j=await res.json();if(j.ok)toast('Enregistré dans Drive ✓ '+d.no);else toast('Drive : '+(j.error||'échec')+' (réessayez en enregistrant)')}
+function drvSig(d){return JSON.stringify([d.lines,d.client,d.reb,d.note,d.status,d.subject,d.quality,d.type,d.no])}
+function drvSigs(){try{return JSON.parse(localStorage.getItem('pr_drv_sig')||'{}')}catch(e){return{}}}
+async function driveSync(d){const c=drvCfg();if(!c||!d.lines.length||!d.no)return;
+ const sg=drvSig(d),S=drvSigs();if(S[d.id]===sg)return;
+ try{const T=tot(d),blob=miniPdf(pdfData(d),null,0,0),pdf=await drvB64(blob),n=new Date(),z=x=>String(x).padStart(2,'0'),
+   slug=String(d.client.n||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^A-Za-z0-9]+/g,'-').replace(/^-+|-+$/g,'').slice(0,24),
+   stamp=n.getFullYear()+'-'+z(n.getMonth()+1)+'-'+z(n.getDate())+'_'+z(n.getHours())+'h'+z(n.getMinutes());
+  const res=await fetch(c.u,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({key:c.k,no:d.no,type:d.type,year:new Date(d.created).getFullYear(),slug,stamp,date:new Date(d.created).toLocaleDateString('fr-FR'),client:d.client.n||'',phone:d.client.t||'',subject:d.subject||'',status:d.status||'',total:T.total,pdf})});
+  const j=await res.json();if(j.ok){const S2=drvSigs();S2[d.id]=sg;try{localStorage.setItem('pr_drv_sig',JSON.stringify(S2))}catch(e){}toast('Enregistré dans Drive ✓ '+d.no)}else toast('Drive : '+(j.error||'échec')+' (réessayez en enregistrant)')}
  catch(e){toast('Drive injoignable : le document reste enregistré ici. Réessayez en enregistrant.')}}
-function driveQueue(d){if(!drvCfg())return;clearTimeout(drvT[d.id]);const c=JSON.parse(JSON.stringify(d));drvT[d.id]=setTimeout(()=>driveSync(c),3000)}
+/* devis : à chaque enregistrement ; factures : seulement à la création, au PDF et à l'envoi WhatsApp (une version datée à chaque fois) */
+function driveQueue(d,force){if(!drvCfg())return;if(d.type==='facture'&&!force)return;clearTimeout(drvT[d.id]);const c=JSON.parse(JSON.stringify(d));drvT[d.id]=setTimeout(()=>driveSync(c),3000)}
 $('qdrv').onclick=()=>{const c=drvCfg(),v=prompt(c?'Liaison Drive active. Collez un nouveau code pour la remplacer, ou écrivez 0 pour la désactiver.':'Collez le code de liaison Drive (donné par l\'administrateur).','');if(v===null)return;const t=v.trim();if(t==='0'){localStorage.removeItem(LSDRV);toast('Liaison Drive désactivée');return}if(!t)return;try{const j=JSON.parse(atob(t));if(!j.u||!j.k)throw 0;localStorage.setItem(LSDRV,t);toast('Liaison Drive activée');driveQueue(cur)}catch(e){toast('Code de liaison invalide.')}};
 $('qsave').onclick=()=>save();
 function setDoc(d){cur=JSON.parse(JSON.stringify(d));snap=docs.some(x=>x.id===d.id)?JSON.stringify(d):null;renderDoc()}
@@ -1908,7 +1914,7 @@ $('qnew').onclick=()=>{if(cur&&cur.dirty&&!confirm('Quitter sans enregistrer les
 $('qdup').onclick=()=>{const d=JSON.parse(JSON.stringify(cur));d.id=uid('d');d.no='';d.status=d.type==='facture'?'à payer':'brouillon';d.created=Date.now();d.hist=[];d.lines.forEach(l=>l.id=uid('l'));setDoc(d);dirty();toast('Copie créée : enregistrez-la pour lui donner un numéro')};
 $('qinv').onclick=()=>{if(!cur.lines.length){toast('Ajoutez d\'abord des lignes.');return}if(!confirm('Convertir ce devis en facture ? Le devis passe à « accepté ». Vous pourrez modifier la facture.'))return;
  cur.status='accepté';if(!save(true))return;cur.hist.push({t:Date.now(),m:'Converti en facture'});const qi=docs.findIndex(x=>x.id===cur.id);docs[qi]=JSON.parse(JSON.stringify(cur));
- const f=JSON.parse(JSON.stringify(cur));f.id=uid('d');f.type='facture';f.ref=cur.no;f.no=nextNo('facture');f.status='à payer';f.created=Date.now();f.updated=Date.now();f.hist=[{t:Date.now(),m:'Créée depuis le devis '+cur.no}];f.lines.forEach(l=>l.id=uid('l'));delete f.dirty;docs.unshift(f);sv();setDoc(docs[0]);toast('Facture '+f.no+' créée')};
+ const f=JSON.parse(JSON.stringify(cur));f.id=uid('d');f.type='facture';f.ref=cur.no;f.no=nextNo('facture');f.status='à payer';f.created=Date.now();f.updated=Date.now();f.hist=[{t:Date.now(),m:'Créée depuis le devis '+cur.no}];f.lines.forEach(l=>l.id=uid('l'));delete f.dirty;docs.unshift(f);sv();setDoc(docs[0]);driveQueue(docs[0],true);toast('Facture '+f.no+' créée')};
 /* sorties : texte WhatsApp et PDF */
 function notes(d){const fac=d.type==='facture',v=new Date(d.created);v.setDate(v.getDate()+(d.days||QTERMS.days));const o=[];
  if(!fac)o.push('Livraison à Kinshasa estimée. Droits de douane et dédouanement à confirmer.',LVNOTE,'Offre valable '+d.days+' jours, jusqu\'au '+v.toLocaleDateString('fr-FR')+'.');
@@ -1928,9 +1934,9 @@ function pdfData(d){const T=tot(d),fac=d.type==='facture';
 function fname(d){const sl=String(d.client.n||'').normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^A-Za-z0-9]+/g,'-').replace(/^-+|-+$/g,'').slice(0,24);return(d.type==='facture'?'Facture':'Devis')+'-Pyramide-Record_'+d.no+(sl?'_'+sl:'')+'.pdf'}
 function mkPdf(){if(!cur.lines.length){toast('Ajoutez d\'abord des lignes.');return null}if(!save(true))return null;try{return new File([miniPdf(pdfData(cur),null,0,0)],fname(cur),{type:'application/pdf'})}catch(e){toast('Erreur PDF : '+e.message);return null}}
 function dl(f){const a=document.createElement('a');a.href=URL.createObjectURL(f);a.download=f.name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},4000)}
-$('qpdf').onclick=()=>{const f=mkPdf();if(f){dl(f);toast('PDF créé : '+f.name)}};
+$('qpdf').onclick=()=>{const f=mkPdf();if(f){driveQueue(cur,true);dl(f);toast('PDF créé : '+f.name)}};
 $('qcp').onclick=()=>{if(!save(true))return;try{navigator.clipboard.writeText(docText(cur)).then(()=>toast('Texte copié'))}catch(e){toast('Copie impossible ici')}};
-$('qwa').onclick=()=>{if(!cur.lines.length){toast('Ajoutez d\'abord des lignes.');return}if(!save(true))return;const t=docText(cur),n=(cur.client.t||'').replace(/\D/g,''),url='https://wa.me/'+n+'?text='+encodeURIComponent(t);
+$('qwa').onclick=()=>{if(!cur.lines.length){toast('Ajoutez d\'abord des lignes.');return}if(!save(true))return;driveQueue(cur,true);const t=docText(cur),n=(cur.client.t||'').replace(/\D/g,''),url='https://wa.me/'+n+'?text='+encodeURIComponent(t);
  try{navigator.clipboard.writeText(t)}catch(e){}
  if(cur.status==='brouillon'){cur.status='envoyé';save(true);rHead()}
  const w=window.open(url,'_blank');if(!w)toast('WhatsApp ne s\'est pas ouvert : le message est copié, collez-le dans WhatsApp.');else if(!n)toast('Pas de numéro : choisissez le contact dans WhatsApp.')};

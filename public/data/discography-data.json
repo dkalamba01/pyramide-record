@@ -3,6 +3,24 @@
   "_image_naming_convention": "Filename = artist-slug_title-slug.jpg (lowercase, spaces to hyphens, no accents/special characters). Example: for 'ADORER MALGRE TOUT MINISTRIES' by Mike Flor Mulumba, use: mike-flor-mulumba_adorer-malgre-tout-ministries.jpg — square images work best (they get cropped to a 1:1 square automatically).",
   "releases": [
     {
+      "title": "Il est tellement bon",
+      "artist": "Sharon Mbungu Akinseye feat Thethe Makabi M.",
+      "genre": "gospel",
+      "type": "studio",
+      "role": "Enregistrement · Mixage · Album Na Ndimi",
+      "link": "https://www.youtube.com/watch?v=QUTHPo0fBSc",
+      "image": ""
+    },
+    {
+      "title": "Na Ndimi",
+      "artist": "Sharon Mbungu Akinseye",
+      "genre": "gospel",
+      "type": "studio",
+      "role": "Enregistrement · Mixage · Album Na Ndimi",
+      "link": "https://www.youtube.com/watch?v=M23oYgwSZzc",
+      "image": ""
+    },
+    {
       "title": "Ciel sur Terre",
       "artist": "Hatthie Kashoba",
       "genre": "gospel",

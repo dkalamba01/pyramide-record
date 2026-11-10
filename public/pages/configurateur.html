@@ -363,6 +363,7 @@ function ufDef(){const {W,D}=SIZES[size],L=[],id=()=>++ufn;
   if(rm==='rec')L.push({id:id(),kind:'chair',x:-W*.12,z:-.3*D+.85,r:Math.PI});
   if(rm==='pod'){const N=size==='s'?2:4,ns=Math.ceil(N/2);for(let k=0;k<N;k++){const sd=k%2,ix=Math.floor(k/2);L.push({id:id(),kind:'chair',x:(ix-(ns-1)/2)*.9,z:sd?-.95:.95,r:sd?0:Math.PI})}}
   return L}
+let _cg=null;const cgOf=key=>{const a=fsz[key];return a?{w:a[0],d:a[1],h:a[2],sh:a[3]}:{w:3,d:3,h:2,sh:'round'}};
 const stH=k=>{const a=fsz[rm+k];return a&&a[0]>=.3&&a[0]<=.8?a[0]:.66};
 function stoolMesh(h){const st=new THREE.Group(),wm=mat(0x8a6a44),sc=new THREE.Mesh(new THREE.CylinderGeometry(.2,.2,.06,16),wm);sc.position.y=h;st.add(sc);
   [[-.12,-.12],[.12,-.12],[-.12,.12],[.12,.12]].forEach(([a,b])=>{const l=new THREE.Mesh(new THREE.CylinderGeometry(.015,.015,h,6),mat(0x555555));l.position.set(a,h/2,b);st.add(l)});return st}
@@ -741,18 +742,22 @@ function buildInstr(t,g,ghost){
     cy(.017,.017,.1,BK,.6,.72,.2,0,0,{},12);rod(.6,.78,.2,.6,.64,.3,.005,CHR,CH);
     cy(.017,.017,.1,BK,-.5,.7,.3,0,0,{},12);rod(-.5,.76,.3,-.5,.5,.55,.005,CHR,CH);tripod(-.5,.55,.5,.2,.006,CHR);
     [-1,1].forEach(k=>{rod(k*.95,.01,.05,k*.95,1.62,.05,.008,CHR,CH);tripod(k*.95,.05,.1,.3,.007,CHR);rod(k*.95,1.62,.05,k*.62,1.68,.05,.007,CHR,CH);cy(.014,.014,.14,BK,k*.62,1.62,.05,0,0,{},12);cy(.012,.012,.02,GR,k*.62,1.54,.05,0,0,CH,12)});break}
-  case'dcage':{const FR=0x15171c,hw=1.3,z0=-.75,z1=1.4,h=1.85,cxo=.05,cz=(z0+z1)/2,gm=ghost?M(0):new THREE.MeshStandardMaterial({color:0xbfe3ff,transparent:true,opacity:.16,roughness:.05,metalness:0,side:THREE.DoubleSide,depthWrite:false});
-    const pane=(w,hh,x,y,z,ry)=>{const m=new THREE.Mesh(new THREE.PlaneGeometry(w,hh),gm);m.rotation.y=ry||0;m.renderOrder=5;add(m,x,y,z)};
-    const L=cxo-hw,R=cxo+hw;
-    pane(2*hw,h,cxo,h/2,z0,0);
-    pane(z1-z0,h,R,h/2,cz,Math.PI/2);
-    pane(2*hw,h,cxo,h/2,z1,0);
-    pane(.5-z0,h,L,h/2,(z0+.5)/2,Math.PI/2);
-    [[L,z0],[R,z0],[L,z1],[R,z1],[L,.5]].forEach(([x,z])=>bx(.05,h,.05,FR,x,h/2,z,CH));
-    bx(2*hw+.05,.05,.05,FR,cxo,h,z0,CH);bx(2*hw+.05,.05,.05,FR,cxo,h,z1,CH);bx(.05,.05,z1-z0,FR,R,h,cz,CH);bx(.05,.05,z1-z0,FR,L,h,cz,CH);
-    bx(2*hw+.05,.05,.05,FR,cxo,.03,z0,CH);bx(2*hw+.05,.05,.05,FR,cxo,.03,z1,CH);bx(.05,.05,z1-z0,FR,R,.03,cz,CH);bx(.05,.05,z1-z0,FR,L,.03,cz,CH);
-    bx(2*hw+.05,.04,.04,FR,cxo,.95,z0,CH);bx(2*hw+.05,.04,.04,FR,cxo,.95,z1,CH);bx(.04,.04,z1-z0,FR,R,.95,cz,CH);
-    bx(.04,.04,.5-z0,FR,L,.95,(z0+.5)/2,CH);
+  case'dcage':{const FR=0x15171c,cg=Object.assign({w:3,d:3,h:2,sh:'round'},_cg||{}),hw=cg.w/2,hd=cg.d/2,h=cg.h,cxo=.05,cz=.3,PI=Math.PI,
+    gm=ghost?M(0):new THREE.MeshStandardMaterial({color:0xbfe3ff,transparent:true,opacity:.16,roughness:.05,metalness:0,side:THREE.DoubleSide,depthWrite:false});
+    let base=[];
+    if(cg.sh==='sq')base=[[-hw,-hd],[hw,-hd],[hw,hd],[-hw,hd]];
+    else if(cg.sh==='oct'){for(let i=0;i<8;i++){const a=i*PI/4+PI/8;base.push([Math.sin(a)*hw*1.082,Math.cos(a)*hd*1.082])}}
+    else if(cg.sh==='half'){for(let k=0;k<=16;k++){const a=PI*k/16;base.push([hw*Math.cos(a),-hd+2*hd*Math.sin(a)])}}
+    else{const N=Math.max(24,Math.round(PI*(hw+hd)/.35/2)*2);for(let i=0;i<N;i++){const a=i*2*PI/N;base.push([Math.sin(a)*hw,Math.cos(a)*hd])}}
+    const segs=[];for(let i=0;i<base.length;i++){const p0=base[i],p1=base[(i+1)%base.length],len=Math.hypot(p1[0]-p0[0],p1[1]-p0[1]),n=Math.max(1,Math.ceil(len/.6));for(let k=0;k<n;k++){const a=k/n,b2=(k+1)/n;segs.push({x0:p0[0]+(p1[0]-p0[0])*a,z0:p0[1]+(p1[1]-p0[1])*a,x1:p0[0]+(p1[0]-p0[0])*b2,z1:p0[1]+(p1[1]-p0[1])*b2,corner:k===0&&cg.sh!=='round'})}}
+    const tx=-hw*.8,tz=hd*.6;let di=0,dm=1e9;segs.forEach((q,i)=>{const d=Math.hypot((q.x0+q.x1)/2-tx,(q.z0+q.z1)/2-tz);if(d<dm){dm=d;di=i}});
+    const door=new Set();segs.forEach((q,i)=>{if(Math.hypot((q.x0+q.x1)/2-(segs[di].x0+segs[di].x1)/2,(q.z0+q.z1)/2-(segs[di].z0+segs[di].z1)/2)<=.62)door.add(i)});
+    const post=(x,z)=>bx(.05,h,.05,FR,cxo+x,h/2,cz+z,CH);
+    segs.forEach((q,i)=>{const dx=q.x1-q.x0,dz=q.z1-q.z0,len=Math.hypot(dx,dz),th=Math.atan2(-dz,dx),mx=cxo+(q.x0+q.x1)/2,mz=cz+(q.z0+q.z1)/2,prev=door.has((i+segs.length-1)%segs.length);
+      if(door.has(i)){const nx=door.has((i+1)%segs.length);if(!prev)post(q.x0,q.z0);if(!nx)post(q.x1,q.z1);return}
+      const pn=new THREE.Mesh(new THREE.PlaneGeometry(len,h),gm);pn.rotation.y=th;pn.renderOrder=5;add(pn,mx,h/2,mz);
+      [h,.03,.95].forEach(y=>{const r=box(len+.02,.04,.04,M(FR,CH));r.rotation.y=th;add(r,mx,y,mz)});
+      if(q.corner||(cg.sh==='round'&&i%3===0))post(q.x0,q.z0)});
     break}
   case'drm':{const RED=0x7a1424,CHR=0xb9bdc7;
     cy(.95,.95,.01,0x2d2626,0,.005,.1,0,0,{roughness:.95},40);
@@ -1060,8 +1065,8 @@ function buildRoom(){
     for(let i=0;i<q;i++){
       const g=new THREE.Group();
       {const pp=ROOMS[rm].place(s,i,q,W,D),cl=(v,m)=>Math.max(-m,Math.min(m,v));g.position.set(cl(pp[0],W/2-.6),pp[1],cl(pp[2],D/2-.6));if(pp[3]!=null)g.rotation.y=pp[3]}if(s.t==='scr'){const e=scrPos(i,q,W,D);g.position.set(e[0],e[1],e[2]);g.rotation.y=e[3];g.scale.setScalar(SCS[scr.size])}const of=offs[rm+s.id+i];if(of){g.position.x=of[0];g.position.z=of[1];if(of[2]!=null)g.rotation.y=of[2];if(of[3]!=null)g.position.y=of[3]}if(s.t==='spk'&&hang==='hung'&&(!of||of[3]==null))g.position.y=hangY();const tl0=s.t==='spk'&&of&&of[4]!=null?of[4]:0;if(tl0){g.rotation.order='YXZ';g.rotation.x=tl0*Math.PI/180}if(s.t!=='scr'&&s.t!=='spk'&&!(of&&of[3]!=null))g.position.y=floorAt(g.position.x,g.position.z,0);if(TOK.has(s.t)&&onT(g.position.x,g.position.z))g.position.y=.78;
-      const ghost=!o&&!DECO.has(s.id);const pr0=product(o&&s.t==='lap'&&/PC de bureau/.test(o.n)?'pc':s.t,ghost);g.add(pr0);const rl0=s.t==='spk'&&of&&of[5]?of[5]:0;if(rl0)applyRoll(pr0,g,rl0);setOn(g,TOK.has(s.t)&&onT(g.position.x,g.position.z));
-            const hit2=s.t==='scr'?box(3.3,1.9,.6,new THREE.MeshBasicMaterial({visible:false})):(()=>{const h=HS[s.t]||[.3,.3];return box(Math.max(.5,h[0]*2+.15),1.6,Math.max(.5,h[1]*2+.15),new THREE.MeshBasicMaterial({visible:false}))})();hit2.position.y=s.t==='scr'?1.9:.8;hit2.userData.slot=s.id;hit2.userData.i=i;g.add(hit2);markers.push(hit2);
+      const ghost=!o&&!DECO.has(s.id);_cg=s.t==='dcage'?cgOf(rm+s.id+i):null;const pr0=product(o&&s.t==='lap'&&/PC de bureau/.test(o.n)?'pc':s.t,ghost);g.add(pr0);const rl0=s.t==='spk'&&of&&of[5]?of[5]:0;if(rl0)applyRoll(pr0,g,rl0);setOn(g,TOK.has(s.t)&&onT(g.position.x,g.position.z));
+            const hit2=s.t==='scr'?box(3.3,1.9,.6,new THREE.MeshBasicMaterial({visible:false})):s.t==='dcage'?(()=>{const c=cgOf(rm+s.id+i),b=box(c.w,.06,c.d,new THREE.MeshBasicMaterial({visible:false}));b.position.set(-.05,.03,-.3);return b})():(()=>{const h=HS[s.t]||[.3,.3];return box(Math.max(.5,h[0]*2+.15),1.6,Math.max(.5,h[1]*2+.15),new THREE.MeshBasicMaterial({visible:false}))})();if(s.t!=='dcage')hit2.position.y=s.t==='scr'?1.9:.8;hit2.userData.slot=s.id;hit2.userData.i=i;g.add(hit2);markers.push(hit2);
       if(ROOMS[rm].es&&s.t!=='scr')g.scale.setScalar(ROOMS[rm].es[size]);g.userData={slot:s.id,ghost,i,key:rm+s.id+i,t:s.t,tilt:tl0,roll:rl0,rel:g.position.y-floorAt(g.position.x,g.position.z,g.position.y),hg:s.t==='spk'&&g.position.y-floorAt(g.position.x,g.position.z,g.position.y)>2.4&&!BLEV.some(b=>Math.abs(g.position.y-b-.15)<.1)};
       if(s.t==='spk'&&g.userData.rel>.25&&!BLEV.some(b=>Math.abs(g.position.y-b-.15)<.1)){const sc=ROOMS[rm].es?ROOMS[rm].es[size]:1,y=g.position.y,stg=new THREE.Group();stg.userData.stg=1;stg.rotation.x=-tl0*Math.PI/180;
         if(g.userData.hg&&acv().env!=='out'){const ln=Math.max(1.2,Math.min((acv().h-y-.2)/sc,40)),rod=new THREE.Mesh(new THREE.CylinderGeometry(.025,.025,ln,6),mat(0x9aa0c0));rod.position.y=.8+ln/2;stg.add(rod);const br=box(.7,.06,.06,mat(0x9aa0c0));br.position.y=.8+ln;stg.add(br)}
@@ -1104,8 +1109,8 @@ function rotDrag(e){const t=rotTarget();if(!t)return;const p3=new THREE.Vector3(
   rotApply(rotSnap(Math.atan2(p3.x-t.x,p3.z-t.z)),drag.riders)}
 const eqObj=()=>{if(!ls||ls.t!=='eq')return null;const L=room.children.filter(o=>o.userData&&o.userData.slot===ls.slot&&o.userData.i===ls.i);return L.find(o=>!o.userData.ghost)||L[0]||null};
 function selInfo(){if(!ls)return null;
-  if(ls.t==='f'){const fi=fixt[ls.key];if(!fi)return null;return{rot:true,rsz:isT(ls.key)||isCb(ls.key),rhs:/^(us|stool)/.test(ls.key),fi}}
-  if(ls.t==='eq'){const g=eqObj();if(!g)return null;return{rot:g.userData.t!=='scr'}}
+  if(ls.t==='f'){const fi=fixt[ls.key];if(!fi)return null;return{rot:true,snap:!ROOMS[rm].venue,rsz:isT(ls.key)||isCb(ls.key),rhs:/^(us|stool)/.test(ls.key),fi}}
+  if(ls.t==='eq'){const g=eqObj();if(!g)return null;return{rot:g.userData.t!=='scr',cage:g.userData.t==='dcage',snap:SNAPT.has(g.userData.t)&&!ROOMS[rm].venue}}
   if(ls.t==='d'){const d=dummies.find(o=>o.id===ls.id);if(!d)return null;return{rot:!d.on,nodup:!!d.on}}
   return null}
 function rotHandleUpdate(){const t=rotTarget(),bar=document.getElementById('rotbar'),si=selInfo();
@@ -1115,6 +1120,8 @@ function rotHandleUpdate(){const t=rotTarget(),bar=document.getElementById('rotb
   bar.style.display='flex';bar.classList.toggle('norot',!si.rot);bar.classList.toggle('rsz',!!si.rsz);
   const dp=bar.querySelector('[data-act=dup]');if(dp)dp.disabled=!!si.nodup;
   const rb4=bar.querySelector('.rb4');if(rb4){const cb=si.fi&&isCb(ls.key);rb4.style.display=cb?'flex':'none';if(cb){const a=cdr[rm+ls.key]||[{s:'F'}],wl=si.fi.cab==='wall';const LB={F:wl?'Porte':'Face',B:'Fond',L:'Gauche',R:'Droite'};rb4.querySelectorAll('[data-door]').forEach(b=>{const on=a.some(q=>q.s===b.dataset.door);b.classList.toggle('on',on);b.textContent=(on?'✓ ':'')+LB[b.dataset.door];if(b.classList.contains('dcab'))b.style.display=wl?'none':''})}}
+  {const wb=bar.querySelector('[data-act=wall]');if(wb)wb.style.display=si.snap?'':'none';
+   const r6=bar.querySelector('.rb6'),r7=bar.querySelector('.rb7');if(r6&&r7){r6.style.display=r7.style.display=si.cage?'flex':'none';if(si.cage){const g=eqObj(),c=cgOf(g.userData.key);r6.querySelectorAll('[data-cs]').forEach(b=>b.classList.toggle('on',b.dataset.cs===c.sh));document.getElementById('cgw').textContent=c.w.toFixed(1);document.getElementById('cgd').textContent=c.d.toFixed(1);document.getElementById('cgh').textContent=c.h.toFixed(1)}}}
   {const rb5=bar.querySelector('.rb5');if(rb5){rb5.style.display=si.rhs?'flex':'none';if(si.rhs){const v=document.getElementById('rzH');if(v&&document.activeElement!==v)v.value=Math.round(stH(ls.key)*100)}}}
   if(si.rsz){const L=document.getElementById('rzL'),Wd=document.getElementById('rzW'),wall=si.fi.cab==='wall';
     if(L&&document.activeElement!==L)L.value=(si.fi.hw0*2).toFixed(2);if(Wd){Wd.disabled=wall;if(document.activeElement!==Wd)Wd.value=(si.fi.hd0*2).toFixed(2)}}}
@@ -1139,7 +1146,7 @@ function actDup(){const si=selInfo();if(!si||si.nodup)return;
     buildRoom();fsel=nk;ls={t:'f',key:nk};chkUI();return}
   if(ls.t==='eq'){const sl=SLOTS.find(x=>x.id===ls.slot),q=qty(sl);if(q>=8){bar_msg('Maximum 8 exemplaires');return}
     const g=eqObj(),src={x:g.position.x,z:g.position.z,r:g.rotation.y,y:g.position.y,t:g.userData.tilt||0,ro:g.userData.roll||0,scr:g.userData.t==='scr'};
-    qov[rm+sl.id]=q+1;buildRoom();
+    qov[rm+sl.id]=q+1;if(fsz[g.userData.key])fsz[rm+sl.id+q]=fsz[g.userData.key].slice();buildRoom();
     const L=room.children.filter(o=>o.userData&&o.userData.slot===sl.id&&o.userData.i===q),n=L.find(o=>!o.userData.ghost)||L[0];
     if(n&&!src.scr){const [x,z]=eqClamp(src.x+Math.cos(src.r)*.7,src.z-Math.sin(src.r)*.7);n.position.set(x,src.y,z);n.rotation.y=src.r;n.userData.tilt=src.t;n.userData.roll=src.ro;offs[n.userData.key]=offOf(n);buildRoom()}
     ls={t:'eq',slot:sl.id,i:q};renderList();afterEdit();return}
@@ -1158,17 +1165,32 @@ function rszSet(w,d){const si=selInfo();if(!si||!si.rsz)return;const k=ls.key,fi
   moveFix(fi,fi.x,fi.z,fi.r,rid);
   fsz[rm+k]=[w,d];const u=uf&&uf.find(f=>ufKey(f)===k);if(u){u.w=w;u.d=d}
   const sv=ls;buildRoom();ls=sv;fsel=k;afterEdit()}
+const SNAPT=new Set(['pulp','spk','piano','pno','kbd','amp','pwr','mix','dcage','drm','perc','box']);
+function eqHalf(g){const t=g.userData.t,c0=t==='dcage'?cgOf(g.userData.key):null,h=c0?[c0.w/2,c0.d/2]:(HS[t]||[.3,.3]),sc=g.scale.x||1,r=g.rotation.y,c=Math.abs(Math.cos(r)),s=Math.abs(Math.sin(r));return[(c*h[0]+s*h[1])*sc,(s*h[0]+c*h[1])*sc]}
+function wallSnapPos(x,z,hw,hd){const {W,D}=SIZES[size],sn=.45,g=.04;if(x-hw<-W/2+sn)x=-W/2+hw+g;else if(x+hw>W/2-sn)x=W/2-hw-g;if(z-hd<-D/2+sn)z=-D/2+hd+g;else if(z+hd>D/2-sn)z=D/2-hd-g;return[x,z]}
+function actWall(){if(!ls||ROOMS[rm].venue)return;const {W,D}=SIZES[size],gp_=.04;let x,z,hw,hd,apply;
+  if(ls.t==='f'){const fi=fixt[ls.key];if(!fi)return;const c=Math.abs(Math.cos(fi.r)),s=Math.abs(Math.sin(fi.r));hw=c*fi.hw0+s*fi.hd0;hd=s*fi.hw0+c*fi.hd0;x=fi.x;z=fi.z;apply=(nx,nz)=>moveFix(fi,nx,nz,fi.r,(isT(fi.key)||isCb(fi.key))?capRiders(fi):null)}
+  else if(ls.t==='eq'){const g=eqObj();if(!g)return;[hw,hd]=eqHalf(g);x=g.position.x;z=g.position.z;apply=(nx,nz)=>{g.position.x=nx;g.position.z=nz;if(g.userData.t==='spk')g.position.y=floorAt(nx,nz,g.position.y)+(g.userData.rel||0);offs[g.userData.key]=offOf(g)}}
+  else return;
+  const w=[[x-hw+W/2,'L'],[W/2-(x+hw),'R'],[z-hd+D/2,'B'],[D/2-(z+hd),'F']].sort((a,b)=>a[0]-b[0])[0][1];let nx=x,nz=z;
+  if(w==='L')nx=-W/2+hw+gp_;else if(w==='R')nx=W/2-hw-gp_;else if(w==='B')nz=-D/2+hd+gp_;else nz=D/2-hd-gp_;
+  apply(nx,nz);if(covOn)covBuild();spkMarks();chkUI();_ssk='';bar_msg('Collé au mur')}
+function cgSet(patch){if(!ls||ls.t!=='eq')return;const g=eqObj();if(!g||g.userData.t!=='dcage')return;const k=g.userData.key,c=Object.assign(cgOf(k),patch);
+  c.w=Math.max(1.8,Math.min(6,Math.round(c.w*10)/10));c.d=Math.max(1.8,Math.min(6,Math.round(c.d*10)/10));c.h=Math.max(1.4,Math.min(2.8,Math.round(c.h*10)/10));fsz[k]=[c.w,c.d,c.h,c.sh];const sv=ls;buildRoom();ls=sv;afterEdit()}
+function cgBy(v){const g=eqObj();if(!g)return;const c=cgOf(g.userData.key),k=v[0],d=v[1]==='+'?.2:-.2;cgSet({[k]:c[k]+d})}
 function shSet(cm){if(!ls||ls.t!=='f'||!/^(us|stool)/.test(ls.key))return;const k=ls.key,h=Math.max(30,Math.min(80,Math.round(+cm||66)))/100;if(Math.abs(h-stH(k))<.001)return;fsz[rm+k]=[h,0];const sv=ls;buildRoom();ls=sv;fsel=k;afterEdit()}
 function shBy(v){if(!ls)return;const c=Math.round(stH(ls.key)*100);shSet(v==='-'?c-5:v==='+'?c+5:+v)}
 function rszBy(which,op){const si=selInfo();if(!si||!si.rsz)return;const fi=si.fi;let w=fi.hw0*2,d=fi.hd0*2,v=which==='L'?w:d;
   v=op==='-'?v-.1:op==='+'?v+.1:op==='/'?v/2:v*2;if(which==='L')w=v;else d=v;rszSet(w,d)}
 (function(){const V=document.getElementById('view'),B=document.createElement('div');B.id='rotbar';
  B.innerHTML='<div class="rr rb0"><button data-min="1" id="rbmin">▾ Réduire</button></div><div class="rr rb1"><span>Rotation</span><button data-d="-15" title="Tourner à gauche (Maj+R)">↺ 15°</button><button data-d="15" title="Tourner à droite (R)">↻ 15°</button><button data-a="0" title="Face au public">Face public</button><button data-a="3.14159" title="Face à la scène">Face scène</button></div>'
- +'<div class="rr rb2"><span>Objet</span><button data-act="dup" title="Dupliquer (Ctrl+D)">⧉ Dupliquer</button><button data-act="del" class="dg" title="Supprimer (Suppr)">🗑 Supprimer</button><small class="rmsg"></small></div>'
+ +'<div class="rr rb2"><span>Objet</span><button data-act="dup" title="Dupliquer (Ctrl+D)">⧉ Dupliquer</button><button data-act="wall" title="Coller au mur le plus proche">⇥ Coller au mur</button><button data-act="del" class="dg" title="Supprimer (Suppr)">🗑 Supprimer</button><small class="rmsg"></small></div>'
  +'<div class="rr rb4"><span>Porte</span><button data-door="F">Face</button><button data-door="B" class="dcab">Fond</button><button data-door="L" class="dcab">Gauche</button><button data-door="R" class="dcab">Droite</button><button data-dn="-1" title="Décaler la porte">◀</button><button data-dn="1" title="Décaler la porte">▶</button></div>'
+ +'<div class="rr rb6"><span>Cage</span><button data-cs="round">◯ Ronde</button><button data-cs="sq">▢ Carrée</button><button data-cs="oct">⬡ Octogone</button><button data-cs="half">◗ Demi-ronde</button></div>'
+ +'<div class="rr rb7"><span>Taille (m)</span>Larg. <button data-cz="w-">−</button><b id="cgw"></b><button data-cz="w+">+</button> Prof. <button data-cz="d-">−</button><b id="cgd"></b><button data-cz="d+">+</button> Haut. <button data-cz="h-">−</button><b id="cgh"></b><button data-cz="h+">+</button></div>'
  +'<div class="rr rb5"><span>Hauteur</span><button data-sh="-">−</button><input id="rzH" type="number" step="5" min="30" max="80"> cm <button data-sh="+">+</button><button data-sh="45">Bas</button><button data-sh="66">Standard</button></div>'
  +'<div class="rr rb3"><span>Taille (m)</span>Long. <button data-z="L-">−</button><input id="rzL" type="number" step=".1" min=".4" max="8"><button data-z="L+">+</button><button data-z="L/" title="Diviser par 2">½</button><button data-z="L*" title="Multiplier par 2">×2</button> Larg. <button data-z="W-">−</button><input id="rzW" type="number" step=".1" min=".4" max="6"><button data-z="W+">+</button><button data-z="W/" title="Diviser par 2">½</button><button data-z="W*" title="Multiplier par 2">×2</button></div>';V.appendChild(B);
- B.querySelectorAll('button').forEach(b=>b.onclick=()=>{if(b.dataset.min){B.classList.toggle('min');b.textContent=B.classList.contains('min')?'✎ Modifier ▴':'▾ Réduire'}else if(b.dataset.d)rotBy(+b.dataset.d*Math.PI/180);else if(b.dataset.act==='dup')actDup();else if(b.dataset.act==='del')actDel();else if(b.dataset.z)rszBy(b.dataset.z[0],b.dataset.z[1]);else if(b.dataset.sh)shBy(b.dataset.sh);else if(b.dataset.door)doorTog(b.dataset.door);else if(b.dataset.dn)doorNudge(+b.dataset.dn);else{const t=rotTarget();if(t){rotApply(+b.dataset.a);afterEdit()}}});
+ B.querySelectorAll('button').forEach(b=>b.onclick=()=>{if(b.dataset.min){B.classList.toggle('min');b.textContent=B.classList.contains('min')?'✎ Modifier ▴':'▾ Réduire'}else if(b.dataset.d)rotBy(+b.dataset.d*Math.PI/180);else if(b.dataset.act==='dup')actDup();else if(b.dataset.act==='del')actDel();else if(b.dataset.act==='wall')actWall();else if(b.dataset.cs)cgSet({sh:b.dataset.cs});else if(b.dataset.cz)cgBy(b.dataset.cz);else if(b.dataset.z)rszBy(b.dataset.z[0],b.dataset.z[1]);else if(b.dataset.sh)shBy(b.dataset.sh);else if(b.dataset.door)doorTog(b.dataset.door);else if(b.dataset.dn)doorNudge(+b.dataset.dn);else{const t=rotTarget();if(t){rotApply(+b.dataset.a);afterEdit()}}});
  const gv=()=>[document.getElementById('rzL').value,document.getElementById('rzW').value];
  document.getElementById('rzH').onchange=e=>shSet(+e.target.value);
  ['rzL','rzW'].forEach(id=>document.getElementById(id).onchange=()=>{const [a,c]=gv();rszSet(a,c)});
@@ -1198,7 +1220,7 @@ cv.addEventListener('pointermove',e=>{if(!pts.has(e.pointerId))return;const p=pt
   else if(drag&&drag.fix&&pts.size===1){if(moved>6){const p3=new THREE.Vector3(),{W,D}=SIZES[size],fi=fixt[drag.fix];ray(e).ray.intersectPlane(new THREE.Plane(new THREE.Vector3(0,1,0),-.5),p3);
     if(p3&&fi){let nx=Math.max(-W/2+.5,Math.min(W/2-.5,p3.x+drag.ox)),nz=Math.max(-D/2+.5,Math.min(D/2-.5,p3.z+drag.oz));if(isT(fi.key)||isCb(fi.key))[nx,nz]=snapFix(fi,nx,nz);moveFix(fi,nx,nz,fi.r,drag.riders)}}}
   else if(drag&&pts.size===1){if(moved>6){const p3=new THREE.Vector3();ray(e).ray.intersectPlane(new THREE.Plane(new THREE.Vector3(0,1,0),-drag.py),p3);
-    const {W,D}=SIZES[size],g=drag.g;if(p3){if(g.userData.t==='scr')snapWall(g,p3);else{const x=Math.max(-W/2+.3,Math.min(W/2-.3,p3.x+drag.ox)),z=Math.max(-D/2+.3,Math.min(D/2-.3,p3.z+drag.oz));g.position.x=x;g.position.z=z;const on=TOK.has(g.userData.t)&&!!onT(x,z);g.position.y=on?.78:(g.userData.t==='spk'?floorAt(x,z,g.position.y)+(g.userData.rel||0):balLevOf(g)?g.position.y:floorAt(x,z,0));setOn(g,on);if(g.userData.t==='spk'||g.userData.t==='mon')spkMarks()}
+    const {W,D}=SIZES[size],g=drag.g;if(p3){if(g.userData.t==='scr')snapWall(g,p3);else{let x=Math.max(-W/2+.3,Math.min(W/2-.3,p3.x+drag.ox)),z=Math.max(-D/2+.3,Math.min(D/2-.3,p3.z+drag.oz));if(SNAPT.has(g.userData.t)&&!ROOMS[rm].venue){const hh=eqHalf(g);[x,z]=wallSnapPos(x,z,hh[0],hh[1])}g.position.x=x;g.position.z=z;const on=TOK.has(g.userData.t)&&!!onT(x,z);g.position.y=on?.78:(g.userData.t==='spk'?floorAt(x,z,g.position.y)+(g.userData.rel||0):balLevOf(g)?g.position.y:floorAt(x,z,0));setOn(g,on);if(g.userData.t==='spk'||g.userData.t==='mon')spkMarks()}
       offs[g.userData.key]=offOf(g)}}}
   else if(pts.size===1){theta-=dx*.006;phi=Math.max(.25,Math.min(1.45,phi-dy*.005))}
   else if(pts.size===2){const d=dist();if(pd)rad=Math.max(6,Math.min(ROOMS[rm].rmax||45,rad*pd/d));pd=d}});

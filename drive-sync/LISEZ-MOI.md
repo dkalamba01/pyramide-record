@@ -23,3 +23,17 @@ Mise à jour du script plus tard : collez le nouveau Code.gs, puis Déployer > G
 
 Désactiver sur un appareil : Liaison Drive → écrire 0.
 Si la clé fuit : dans le script, supprimez la propriété SECRET (Paramètres du projet), relancez setup puis liaison, et redistribuez le nouveau code.
+
+## Visiteurs du configurateur public (leads)
+
+Le script gère aussi les téléchargements des visiteurs. Rien à lancer en plus : le dossier **Pyramide Record – Téléchargements visiteurs** et son registre **Visiteurs (leads)** se créent tout seuls au premier envoi.
+
+1. Collez le nouveau Code.gs, puis Déployer > Gérer les déploiements > Modifier > **Nouvelle version** (l'adresse `/exec` ne change pas).
+2. Donnez l'adresse `/exec` à Claude : elle est inscrite dans la page publique (constante `LEAD_URL`).
+
+Ensuite, chaque PDF du configurateur public (bouton « Enregistrer le devis en PDF » ou « Joindre le devis en PDF » sur WhatsApp) ouvre un petit formulaire facultatif :
+- **Continuer** : nom + WhatsApp → ligne « Oui » dans le registre, PDF nommé `2026-11-10_14h19_Davis_+243….pdf`.
+- **Passer** : le PDF est quand même téléchargé ; ligne « Non », PDF nommé `…_ANONYME.pdf`.
+- Le registre contient : date, coordonnées données (Oui/Non), nom, WhatsApp, lien « Écrire », salle, dimensions, formule, total, n° de devis, PDF, statut (menu déroulant) et code de la salle (à coller dans « Importer un code de salle » du constructeur).
+- Les PDF sont rangés par mois. Les membres de l'équipe (code d'accès saisi ou ?admin=1) ne voient jamais le formulaire.
+- Protections : champ piège anti-robot, numéro contrôlé, 4 envois par numéro et 40 au total par heure, PDF limité en taille.

@@ -1742,7 +1742,33 @@ function miniPdf(d,imgUrl,iw,ih){
   return new Blob(chunks,{type:'application/pdf'})}
 function qNote(m){const n=document.getElementById('qnote');if(n){n.textContent=m;n.style.display='block'}}
 function qCopy(){const t=document.getElementById('qt');try{navigator.clipboard.writeText(quoteText).catch(()=>{t.select();document.execCommand('copy')})}catch(e){try{t.select();document.execCommand('copy')}catch(_){}}}
-function waSend(att){try{localStorage.setItem('pr_att',att?'1':'0')}catch(e){}
+/* Visiteurs : formulaire facultatif avant le PDF + copie dans Drive/Sheet (Apps Script). Mettre l'adresse …/exec dans LEAD_URL. */
+const LEAD_URL='';
+const qa=v=>String(v||'').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;');
+function leadStaff(){try{return ADMIN||!!localStorage.getItem('pr_qb_hash')}catch(e){return ADMIN}}
+function leadSend(given){try{
+  let img=null,iw=0,ih=0;try{R.render(scene,cam);img=cv.toDataURL('image/jpeg',.8);iw=cv.width;ih=cv.height}catch(e){}
+  const r=totals(),d=quoteData(r),blob=miniPdf(d,img,iw,ih),n=new Date(),z=x=>String(x).padStart(2,'0'),
+    base={act:'lead',hp:(document.getElementById('ldh')||{}).value||'',given:given?1:0,name:given?client.n:'',phone:given?client.t:'',no:d.no,
+    stamp:n.getFullYear()+'-'+z(n.getMonth()+1)+'-'+z(n.getDate())+'_'+z(n.getHours())+'h'+z(n.getMinutes()),
+    room:(rm==='church'?'Église':ROOMS[rm].n),size:d.salle,mode:d.mode,total:d.total,totalNum:Math.round(r.t||0),code:(()=>{try{return encodeState()}catch(e){return''}})()};
+  new Promise((ok,ko)=>{const f=new FileReader();f.onload=()=>ok(String(f.result).split(',')[1]);f.onerror=ko;f.readAsDataURL(blob)}).then(pdf=>{base.pdf=pdf;fetch(LEAD_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(base)}).catch(()=>{})}).catch(()=>{})}catch(e){}}
+function leadAsk(go){
+  if(!LEAD_URL||leadStaff()){go();return}
+  const old=document.getElementById('ldm');if(old)old.remove();
+  const o=document.createElement('div');o.id='ldm';o.style.cssText='position:fixed;inset:0;z-index:300;background:rgba(5,7,20,.82);display:flex;align-items:center;justify-content:center;padding:12px';
+  const wa=(contact.wa||'').replace(/\D/g,''),tel=wa?'+'+wa.slice(0,3)+' '+wa.slice(3,5)+' '+wa.slice(5,8)+' '+wa.slice(8):'',
+    inp='width:100%;font-size:16px;padding:9px;border-radius:8px;border:1px solid var(--hair-2);background:var(--obsidian);color:var(--bone);margin:4px 0;font-family:inherit';
+  o.innerHTML='<div style="background:var(--panel);color:var(--bone);border:1px solid var(--hair-2);border-radius:12px;max-width:380px;width:100%;padding:18px"><h3 style="margin:0 0 6px;font-family:var(--font-display);font-weight:500;font-size:19px">Recevoir votre devis</h3><p style="margin:0 0 8px;font-size:13px;color:var(--sand)">Laissez votre nom et votre numéro : nous vous répondons sur WhatsApp avec un devis précis. C\'est facultatif.</p>'
+   +'<input id="ldn" placeholder="Votre nom" autocomplete="name" value="'+qa(client.n)+'" style="'+inp+'"><input id="ldt" placeholder="Numéro WhatsApp (avec indicatif)" inputmode="tel" autocomplete="tel" value="'+qa(client.t)+'" style="'+inp+'">'
+   +'<input id="ldh" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;height:0;opacity:0"><div id="lde" style="color:var(--crimson);font-size:12px;min-height:16px"></div>'
+   +'<button id="ldy" class="cta" style="width:100%;margin-top:4px">Continuer</button><button id="ldx" style="width:100%;margin-top:8px;background:none;border:0;color:var(--sand);text-decoration:underline;font-size:14px;padding:8px">Passer, télécharger sans mes coordonnées</button>'
+   +'<p style="margin:10px 0 0;font-size:11px;color:var(--ash);line-height:1.45">Une copie de votre document est conservée par Pyramide Record. Vos coordonnées servent uniquement à vous répondre, jamais à les revendre.'+(tel?' Contact : '+tel+'.':'')+'</p></div>';
+  document.body.appendChild(o);const g=id=>document.getElementById(id);
+  g('ldy').onclick=()=>{const n=g('ldn').value.trim(),t=g('ldt').value.trim();if(!n||t.replace(/\D/g,'').length<8||t.replace(/\D/g,'').length>15){g('lde').textContent='Entrez votre nom et un numéro valide, ou touchez « Passer ».';return}
+    client.n=n;client.t=t;try{localStorage.setItem('pr_client',JSON.stringify(client))}catch(e){}const a=document.getElementById('cn'),b=document.getElementById('ct');if(a)a.value=n;if(b)b.value=t;leadSend(true);o.remove();go()};
+  g('ldx').onclick=()=>{leadSend(false);o.remove();go()}}
+function waSend(att,ok){if(att&&!ok){leadAsk(()=>waSend(att,1));return}try{localStorage.setItem('pr_att',att?'1':'0')}catch(e){}
   const url='https://wa.me/'+(contact.wa||'').replace(/\D/g,'')+'?text='+encodeURIComponent(quoteBase);
   const go=()=>{qCopy();const w=window.open(url,'_blank');const n=document.getElementById('qnote');if(!w)qNote("WhatsApp ne s'est pas ouvert ici : le message est copié, collez-le dans WhatsApp.");else if(!n||n.style.display==='none')qNote("Message copié. Si WhatsApp affiche une erreur ou ne s'ouvre pas, collez-le directement dans votre conversation WhatsApp.")};
   if(!att){go();return}
@@ -1755,7 +1781,7 @@ function quoteExtras(){const code=encodeState();quoteCode=code.length<1200?code:
   let img='';try{R.render(scene,cam);img=`<img src="${cv.toDataURL('image/jpeg',.8)}" style="width:100%;border-radius:8px;margin-top:8px" alt="Aperçu de ma salle">`}catch(e){}
   const num=(contact.wa||'').replace(/\D/g,''),wa='https://wa.me/'+num+'?text='+encodeURIComponent(quoteBase),
     em=contact.em?'mailto:'+contact.em+'?subject='+encodeURIComponent('Demande de devis ('+(rmode==='rent'?'LOCATION':'VENTE')+') – Pyramide Record')+'&body='+encodeURIComponent(quoteText):'';
-  document.getElementById('mbody').insertAdjacentHTML('beforeend',img+`<a class="cta" id="qwa" target="_blank" rel="noopener" href="${wa}">Envoyer sur WhatsApp</a><label style="display:flex;gap:8px;align-items:center;font-size:13px;margin-top:8px"><input type="checkbox" id="qatt"> Joindre le devis en PDF au message (facultatif)</label><div id="qnote" class="mini" style="color:var(--ember);display:none"></div>`+(em?`<a class="cta em" id="qem" href="${em}">Envoyer par email</a>`:'')+`<label style="display:flex;gap:8px;align-items:center;font-size:13px;margin-top:8px"><input type="checkbox" id="pcol" ${pdfColor?'checked':''}> PDF en couleurs (par défaut : économe en encre)</label><button class="cta em" id="prt" style="margin-top:8px">Enregistrer le devis en PDF</button><div class="mini">Code de ma salle (pour la retrouver plus tard) :</div><textarea readonly>${code}</textarea>`);shopCartBtn();document.getElementById('prt').onclick=()=>pvOpen(true);{const at=document.getElementById('qatt');try{at.checked=localStorage.getItem('pr_att')==='1'}catch(e){}document.getElementById('qwa').onclick=e=>{e.preventDefault();waSend(at.checked)}}document.getElementById('pcol').onchange=e=>{pdfColor=e.target.checked}}
+  document.getElementById('mbody').insertAdjacentHTML('beforeend',img+`<a class="cta" id="qwa" target="_blank" rel="noopener" href="${wa}">Envoyer sur WhatsApp</a><label style="display:flex;gap:8px;align-items:center;font-size:13px;margin-top:8px"><input type="checkbox" id="qatt"> Joindre le devis en PDF au message (facultatif)</label><div id="qnote" class="mini" style="color:var(--ember);display:none"></div>`+(em?`<a class="cta em" id="qem" href="${em}">Envoyer par email</a>`:'')+`<label style="display:flex;gap:8px;align-items:center;font-size:13px;margin-top:8px"><input type="checkbox" id="pcol" ${pdfColor?'checked':''}> PDF en couleurs (par défaut : économe en encre)</label><button class="cta em" id="prt" style="margin-top:8px">Enregistrer le devis en PDF</button><div class="mini">Code de ma salle (pour la retrouver plus tard) :</div><textarea readonly>${code}</textarea>`);shopCartBtn();document.getElementById('prt').onclick=()=>leadAsk(()=>pvOpen(true));{const at=document.getElementById('qatt');try{at.checked=localStorage.getItem('pr_att')==='1'}catch(e){}document.getElementById('qwa').onclick=e=>{e.preventDefault();waSend(at.checked)}}document.getElementById('pcol').onchange=e=>{pdfColor=e.target.checked}}
 document.getElementById('quote').onclick=()=>{const r=totals();if(!document.getElementById('modal').style.display||document.getElementById('modal').style.display==='none')quoteNo='';
   let rows=r.rows.map(x=>`<tr><td>${x.s.l}${x.q>1?' ×'+x.q:''}<br><small style="color:var(--sand)">${x.o.n}${rowTag(x)}</small></td><td>${x.pr==null?'Sur demande':money(x.pr*x.q)}</td></tr>`).join('');
   r.req.filter(x=>x.startsWith('Sièges')).forEach(x=>{rows+=`<tr><td>${x}</td><td>Sur demande</td></tr>`});

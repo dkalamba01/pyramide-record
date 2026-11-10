@@ -1213,9 +1213,9 @@ function dimUI(){const B=document.getElementById('dimbox');if(!B)return;const {W
   <label>Personnes attendues <input id="dp" type="number" min="0" max="20000" step="1" value="${att||''}" placeholder="ex. 300"></label>
   <button class="pill" id="drs" style="margin-top:6px">Taille d'origine</button>
   <div class="mini" id="dinfo" style="margin-top:6px"></div></details></div>`;
-  const dm=()=>{const w=Math.max(3,Math.min(150,+dw.value||W)),d=Math.max(3,Math.min(200,+dd.value||D));setDims(w,d);fx={};for(const k in offs)delete offs[k];dimInfo.note='';buildRoom();renderList();seatUI();dimInfo()};
+  const dm=()=>{try{dm0()}catch(e){console.error(e);resetDims();att=0;dimInfo.note='Dimensions invalides : retour à la taille d\'origine.';try{buildRoom();renderList();seatUI();dimUI()}catch(e2){}}},dm0=()=>{const w=Math.max(3,Math.min(150,+dw.value||W)),d=Math.max(3,Math.min(200,+dd.value||D));setDims(w,d);fx={};for(const k in offs)delete offs[k];dimInfo.note='';buildRoom();renderList();seatUI();dimInfo()};
   dw.onchange=dd.onchange=dm;
-  dp.onchange=()=>{att=Math.max(0,Math.min(20000,Math.round(+dp.value||0)));fitPeople()};
+  dp.onchange=()=>{att=Math.max(0,Math.min(20000,Math.round(+dp.value||0)));try{fitPeople()}catch(e){console.error(e);att=0;dimInfo.note='Valeur trop grande pour cette salle : retour à la taille d\'origine.';try{resetDims();fx={};buildRoom();renderList();seatUI();dimUI()}catch(e2){}}};
   drs.onclick=()=>{resetDims();att=0;fx={};for(const k in offs)delete offs[k];dimInfo.note='';buildRoom();renderList();seatUI();dimUI()};
   dimInfo()}
 function fitPeople(){const n=att;dimInfo.note='';if(!(n>0)){dimUI();return}

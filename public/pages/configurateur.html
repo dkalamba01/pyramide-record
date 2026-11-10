@@ -1632,14 +1632,14 @@ function shopCartBtn(){if(rmode==='rent')return;const r=totals(),L=[];let tot=0;
   const box=document.getElementById('mbody');if(!box||!L.length)return;
   box.insertAdjacentHTML('beforeend','<div class="mini" style="margin-top:10px">'+L.length+' produit(s) en stock : commandez-les directement.</div><a class="cta" target="_blank" rel="noopener" href="'+SHOP_URL+'?cart='+L.join(',')+'">Commander dans la boutique ('+money(tot)+')</a>')}
 let quoteCode='',quoteBase='',quoteNo='';
-function buildQuote(r){const rent=rmode==='rent',z=SIZES[size],L=[],ev=rm==='church'?EVN[evt]:ROOMS[rm].n,hr='━━━━━━━━━━━━━━━',
+function buildQuote(r){const rent=rmode==='rent',z=SIZES[size],L=[],ev=rm==='church'?EVN[evt]:ROOMS[rm].n,hr='— — — — — — — — —',
     dl=String(LV[lvl].dl||'').replace(/^Délai ?: ?/i,'');
   L.push('*PYRAMIDE RECORD*','_Demande de devis · '+(rent?'Location':'Vente')+' · n° '+quoteNo_()+'_','');
-  if(client.n||client.t)L.push('👤 *Client* : '+[client.n,client.t].filter(Boolean).join(' · '));
-  L.push('📍 *Salle* : '+z.n+(z.W&&z.D?' ('+z.W+' × '+z.D+' m)':'')+' · '+ev);
-  L.push('⭐ *Qualité* : '+LV[lvl].n);
-  if(dl)L.push('🚚 *Délai* : '+dl);
-  if(rent)L.push('📅 *Durée* : '+rdays+' jour'+(rdays>1?'s':'')+(rfrom?' à partir du '+rfrom:''));
+  if(client.n||client.t)L.push('*Client* : '+[client.n,client.t].filter(Boolean).join(' · '));
+  L.push('*Salle* : '+z.n+(z.W&&z.D?' ('+z.W+' × '+z.D+' m)':'')+' · '+ev);
+  L.push('*Qualité* : '+LV[lvl].n);
+  if(dl)L.push('*Délai* : '+dl);
+  if(rent)L.push('*Durée* : '+rdays+' jour'+(rdays>1?'s':'')+(rfrom?' à partir du '+rfrom:''));
   L.push('',hr,'');
   const gs=[],gm={};r.rows.forEach(x=>{const k=x.s.z||'Matériel';if(!gm[k]){gm[k]=[];gs.push(k)}gm[k].push(x)});
   gs.forEach(k=>{L.push('*'+k.toUpperCase()+'*');gm[k].forEach(x=>{
@@ -1830,11 +1830,12 @@ const net=l=>l.u==null?null:r2(l.u*(1-(l.reb||0)/100)),lt=l=>l.u==null?0:r2(net(
 function tot(d){const sub=r2(d.lines.reduce((a,l)=>a+lt(l),0)),gr=r2(sub*(d.reb||0)/100);return{sub,gr,total:r2(sub-gr),req:d.lines.filter(l=>l.u==null).length}}
 /* code d'accès */
 async function hsh(s){try{const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode('pr|'+s));return[...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('')}catch(e){let h=5381;for(const c of 'pr|'+s)h=((h<<5)+h+c.charCodeAt(0))|0;return 'x'+h}}
-function gate(){const has=localStorage.getItem(LSH);$('qgm').textContent=has?'Entrez votre code d\'accès.':'Première utilisation : créez un code d\'accès (6 caractères minimum). Il protège les devis enregistrés sur cet appareil.';$('qgp').value='';$('qge').textContent='';$('qbgate').style.display='block';$('qbapp').style.display='none'}
-$('qgo').onclick=async()=>{const v=$('qgp').value,has=localStorage.getItem(LSH);if(!has){if(v.length<6){$('qge').textContent='6 caractères minimum.';return}localStorage.setItem(LSH,await hsh(v));unlock()}else if(await hsh(v)===has)unlock();else $('qge').textContent='Code incorrect.'};
+const TEAM=['79b0e4bf0d04cf3f55b7474cd1a0c31e560fd89cf052e3772bf0c0504a52a662','x-981581615'];
+function gate(){$('qgm').textContent='Réservé à l\'équipe Pyramide Record. Entrez le code d\'accès équipe.';$('qgp').value='';$('qge').textContent='';$('qbgate').style.display='block';$('qbapp').style.display='none'}
+$('qgo').onclick=async()=>{const h=await hsh($('qgp').value.trim());if(TEAM.includes(h)){try{localStorage.setItem(LSH,h)}catch(e){}unlock()}else $('qge').textContent='Code incorrect.'};
 $('qgp').onkeydown=e=>{if(e.key==='Enter')$('qgo').click()};$('qgx').onclick=close;
 function unlock(){try{sessionStorage.setItem('pr_qb_ok','1')}catch(e){}$('qbgate').style.display='none';$('qbapp').style.display='flex';start()}
-function open(){$('qb').style.display='flex';let ok=0;try{ok=sessionStorage.getItem('pr_qb_ok')}catch(e){}if(ok&&localStorage.getItem(LSH)){$('qbgate').style.display='none';$('qbapp').style.display='flex';start()}else gate()}
+function open(){$('qb').style.display='flex';let ok=0;try{ok=sessionStorage.getItem('pr_qb_ok')}catch(e){}if(ok&&TEAM.includes(localStorage.getItem(LSH))){$('qbgate').style.display='none';$('qbapp').style.display='flex';start()}else gate()}
 function close(){$('qb').style.display='none'}$('qcl').onclick=close;
 /* catalogue */
 function buildCat(){const seen=new Set();cat=[];Object.keys(ROOMS).forEach(k=>{const R=ROOMS[k];(R.slots||[]).forEach(s=>s.o.forEach(o=>{if(seen.has(o.n))return;seen.add(o.n);cat.push({o,n:o.n,d:o.d||'',t:o.tier||1,z:(R.n||k)+' · '+s.l})}))})}
@@ -1901,10 +1902,10 @@ $('qinv').onclick=()=>{if(!cur.lines.length){toast('Ajoutez d\'abord des lignes.
 function notes(d){const fac=d.type==='facture',v=new Date(d.created);v.setDate(v.getDate()+(d.days||QTERMS.days));const o=[];
  if(!fac)o.push('Livraison à Kinshasa estimée. Droits de douane et dédouanement à confirmer.',LVNOTE,'Offre valable '+d.days+' jours, jusqu\'au '+v.toLocaleDateString('fr-FR')+'.');
  else if(d.ref)o.push('Facture établie suite au devis '+d.ref+'.');if(d.pay)o.push(d.pay);if(fac&&d.status==='payée')o.push('Facture acquittée. Merci.');return o}
-function docText(d){const T=tot(d),L=[],fac=d.type==='facture',hr='━━━━━━━━━━━━━━━';
+function docText(d){const T=tot(d),L=[],fac=d.type==='facture',hr='— — — — — — — — —';
  L.push('*PYRAMIDE RECORD*','_'+(fac?'Facture':'Devis')+' n° '+d.no+'_','');
- if(d.client.n||d.client.t)L.push('👤 *Client* : '+[d.client.n,d.client.t].filter(Boolean).join(' · '));
- if(d.subject)L.push('📌 *Objet* : '+d.subject);L.push('⭐ *Qualité* : '+LV[d.quality].n,'',hr,'');
+ if(d.client.n||d.client.t)L.push('*Client* : '+[d.client.n,d.client.t].filter(Boolean).join(' · '));
+ if(d.subject)L.push('*Objet* : '+d.subject);L.push('*Qualité* : '+LV[d.quality].n,'',hr,'');
  d.lines.forEach(l=>{L.push('• '+(l.n||'Article')+(l.q>1?' ×'+l.q:''));const p=l.u==null?'prix sur demande':(l.reb?'~'+fm(l.u*l.q)+'~ ':'')+fm(lt(l));L.push('   _'+(l.d?l.d+' · ':'')+TL[l.t]+'_ — *'+p+'*')});
  L.push('',hr);if(d.reb>0)L.push('Sous-total : '+fm(T.sub),'Remise '+d.reb+' % : − '+fm(T.gr));L.push('*'+(fac?'TOTAL À PAYER':'TOTAL')+' : '+fm(T.total)+'*');
  if(T.req)L.push('_'+T.req+' article(s) sur demande, non inclus._');

@@ -11,7 +11,7 @@
    - Qui a accès : **Tout le monde** (la clé secrète protège l'accès)
    → **Déployer**, autorisez si demandé.
 5. Choisissez la fonction **liaison** → **Exécuter** → ouvrez **Journal d'exécution** : copiez le long « CODE DE LIAISON ».
-6. Dans le constructeur de devis : **Enregistrés** → **Liaison Drive** → collez le code. À faire sur chaque appareil de l'équipe.
+6. Dans le constructeur de devis : **Enregistrés** → **Liaison Drive** → collez le code, puis un espace, puis l'adresse publique du déploiement (celle qui se termine par `/exec`, visible dans Déployer > Gérer les déploiements > Copier). Le code seul contient l'adresse de TEST (`/dev`), qui ne marche pas. À faire sur chaque appareil de l'équipe.
 7. Partagez le dossier Drive avec votre équipe (clic droit → Partager).
 
 Ensuite, tout est automatique :

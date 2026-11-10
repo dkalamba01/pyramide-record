@@ -1241,6 +1241,7 @@ cv.addEventListener('pointermove',e=>{if(!pts.has(e.pointerId))return;const p=pt
   else if(pts.size===1){theta-=dx*.006;phi=Math.max(.25,Math.min(1.45,phi-dy*.005))}
   else if(pts.size===2){const d=dist();if(pd)rad=Math.max(6,Math.min(ROOMS[rm].rmax||45,rad*pd/d));pd=d}});
 let _sd='';
+document.addEventListener('keydown',e=>{if(e.key!=='Escape')return;const a=document.getElementById('pvx'),pv=document.getElementById('pvm'),m=document.getElementById('modal'),c=document.getElementById('close');if(pv&&pv.offsetParent!==null&&getComputedStyle(pv).display!=='none'&&a){a.click();return}if(m&&getComputedStyle(m).display!=='none'&&c)c.click()});
 const dist=()=>{const a=[...pts.values()];return Math.hypot(a[0][0]-a[1][0],a[0][1]-a[1][1])};
 cv.addEventListener('pointerup',e=>{const was=pts.size===1&&moved<6;pts.delete(e.pointerId);
   if(was&&placeK&&!(drag&&drag.rot)){const q=gp(e,0);if(q&&Math.abs(q.x)<1e3){placeAt(q.x,q.z);drag=null;cv.style.cursor='crosshair';chkUI();return}}

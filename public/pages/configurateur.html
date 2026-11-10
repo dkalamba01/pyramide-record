@@ -31,6 +31,7 @@ select option{background:var(--panel);color:var(--bone)}
 #cv{width:100%;height:100%;display:block;touch-action:none;cursor:grab}
 #hint{position:absolute;left:12px;bottom:10px;font-size:12px;color:var(--sand);pointer-events:none}
 #size{position:absolute;left:12px;top:12px;display:flex;gap:6px}
+#szt{display:none}
 button{font-family:inherit;cursor:pointer}
 .bd{font-size:10px;padding:2px 6px;border-radius:9px;margin-left:4px;white-space:nowrap}.bd.g{background:var(--whatsapp-bg);color:var(--success)}.bd.b{background:var(--steel-deepest);color:var(--gold-deep)}.bd.x{background:#2a2a2a;color:#999}
 .opt.off{opacity:.4;cursor:not-allowed}
@@ -94,7 +95,11 @@ textarea{width:100%;height:90px;background:var(--obsidian);color:var(--bone);bor
  #panel{max-width:100vw;overflow-x:hidden}
  #app{display:block;height:auto}
  #view{position:sticky;top:0;z-index:5;height:48vh;height:48svh;display:flex;flex-direction:column;background:var(--obsidian)}
- #size{order:-1;position:static;flex:0 0 auto;padding:6px 8px;gap:5px}
+ #size{position:absolute;left:0;right:0;top:0;z-index:6;padding:6px 8px;gap:5px;max-height:100%;overflow:auto;pointer-events:none}
+ #size>*{pointer-events:auto}
+ #szt{display:inline-flex!important;align-self:flex-start;max-width:100%;background:#10142bcc;border:1px solid var(--hair-2);color:var(--bone);border-radius:16px;padding:5px 11px;font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+ #size:not(.open)>*:not(#szt){display:none!important}
+ #size.open{background:var(--panel);pointer-events:auto;padding-bottom:10px}
  #size>div{overflow:visible;flex-wrap:wrap!important;gap:4px!important;margin-top:0!important;padding-bottom:2px}
  #size .pill{padding:4px 9px;font-size:11.5px;white-space:nowrap;flex:0 0 auto}
  #cv{flex:1;min-height:0;height:auto}
@@ -1176,9 +1181,15 @@ function refresh(){buildRoom();renderList()}
 function setSize(k){if(placeK)placeSet(placeK);uf=null;resetDims();att=0;dimInfo.note='';size=k;fx={};ven={};fsel=null;qov={};applyScr();seat.rows=null;dummies=[];dsel=null;document.querySelectorAll('#sz .pill').forEach(b=>b.classList.toggle('on',b.dataset.k===k));
   if(cur&&!active().some(s=>s.id===cur))cur=null;refresh();seatUI();dimUI()}
 function chrome(){
- document.getElementById('size').innerHTML='<div class="mini" style="margin:0 0 4px">Type d\'événement</div><div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:6px">'+Object.entries(EVN).map(([k,l])=>`<button class="pill ${rm==="church"&&evt===k?"on":""}" data-e="${k}">${l}</button>`).join('')+'</div><div style="display:flex;gap:6px;flex-wrap:wrap">'+Object.entries(ROOMS).filter(([k])=>!HIDR.includes(k)).map(([k,v])=>`<button class="pill ${k===rm?'on':''}" data-r="${k}">${v.n}</button>`).join('')+'</div>'
+ document.getElementById('size').innerHTML='<button id="szt" type="button"></button><div class="mini" style="margin:0 0 4px">Type d\'événement</div><div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:6px">'+Object.entries(EVN).map(([k,l])=>`<button class="pill ${rm==="church"&&evt===k?"on":""}" data-e="${k}">${l}</button>`).join('')+'</div><div style="display:flex;gap:6px;flex-wrap:wrap">'+Object.entries(ROOMS).filter(([k])=>!HIDR.includes(k)).map(([k,v])=>`<button class="pill ${k===rm?'on':''}" data-r="${k}">${v.n}</button>`).join('')+'</div>'
   +'<div id="rentbox"></div><div id="sz" style="display:flex;gap:6px;flex-wrap:wrap;margin-top:6px">'+Object.entries(SIZES).map(([k,v])=>`<button class="pill" data-k="${k}">${v.n}</button>`).join('')+'</div>';
  document.getElementById('size').style.flexDirection='column';
+ {const z=document.getElementById('size'),t=document.getElementById('szt');
+  const sum=()=>{t.textContent=(z.classList.contains('open')?'✕ Fermer':'⚙ '+[...z.querySelectorAll('.pill.on')].map(b=>b.textContent.trim()).join(' · ')+' ▾')};
+  t.onclick=()=>{z.classList.toggle('open');sum()};
+  z.addEventListener('click',e=>{if(e.target.closest('.pill'))setTimeout(sum,50)});
+  if(!window._szo){window._szo=new MutationObserver(()=>{const t2=document.getElementById('szt');if(t2)sum()});window._szo.observe(z,{subtree:true,attributes:true,attributeFilter:['class']})}
+  sum()}
  document.querySelectorAll('#size [data-r]').forEach(b=>b.onclick=()=>switchRoom(b.dataset.r));
  document.querySelectorAll('#size [data-e]').forEach(b=>b.onclick=()=>setEvt(b.dataset.e));
  document.querySelectorAll('#sz .pill').forEach(b=>b.onclick=()=>setSize(b.dataset.k));

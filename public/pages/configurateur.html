@@ -363,11 +363,13 @@ function ufDef(){const {W,D}=SIZES[size],L=[],id=()=>++ufn;
   if(rm==='rec')L.push({id:id(),kind:'chair',x:-W*.12,z:-.3*D+.85,r:Math.PI});
   if(rm==='pod'){const N=size==='s'?2:4,ns=Math.ceil(N/2);for(let k=0;k<N;k++){const sd=k%2,ix=Math.floor(k/2);L.push({id:id(),kind:'chair',x:(ix-(ns-1)/2)*.9,z:sd?-.95:.95,r:sd?0:Math.PI})}}
   return L}
+const stH=k=>{const a=fsz[rm+k];return a&&a[0]>=.3&&a[0]<=.8?a[0]:.66};
+function stoolMesh(h){const st=new THREE.Group(),wm=mat(0x8a6a44),sc=new THREE.Mesh(new THREE.CylinderGeometry(.2,.2,.06,16),wm);sc.position.y=h;st.add(sc);
+  [[-.12,-.12],[.12,-.12],[-.12,.12],[.12,.12]].forEach(([a,b])=>{const l=new THREE.Mesh(new THREE.CylinderGeometry(.015,.015,h,6),mat(0x555555));l.position.set(a,h/2,b);st.add(l)});return st}
 function buildUF(){if(uf===null)uf=ufDef();uf.forEach(f=>{const k=ufKey(f),def=[f.x,f.z,f.r||0];
   if(f.kind==='table')mkTable(f.w,f.d,def,k);else if(f.kind==='cabin'||f.kind==='wall')mkCabin(f.kind==='wall'?'wall':'cab',f.w,f.d,k,def);
   else if(f.kind==='chair')mkFix(k,chairMesh('chair'),.3,.3,def,true);
-  else{const st=new THREE.Group(),wm=mat(0x8a6a44);const sc=new THREE.Mesh(new THREE.CylinderGeometry(.2,.2,.06,16),wm);sc.position.y=.66;st.add(sc);
-    [[-.12,-.12],[.12,-.12],[-.12,.12],[.12,.12]].forEach(([a,b])=>{const l=new THREE.Mesh(new THREE.CylinderGeometry(.015,.015,.66,6),mat(0x555555));l.position.set(a,.33,b);st.add(l)});mkFix(k,st,.22,.22,def,true)}})}
+  else mkFix(k,stoolMesh(stH(k)),.22,.22,def,true)})}
 function addF(kind,w,d){if(kind==='cabin'||kind==='wall'){if(uf===null)uf=ufDef()}if(uf===null)uf=ufDef();const n=uf.length,f={id:++ufn,kind,w,d,x:((n%5)-2)*.8,z:Math.floor(n/5)*.9,r:0};uf.push(f);const k=ufKey(f);buildRoom();fsel=k;ls={t:'f',key:k};dsel=null;chkUI()}
 let placeK=null;
 function placeSet(k){placeK=placeK===k?null:k;const h=document.getElementById('phint');['pch','pchf'].forEach(i=>{const b=document.getElementById(i);if(b){b.classList.toggle('on',placeK==='chair');b.innerHTML=b.id==='pchf'?(placeK==='chair'?'✔<span class="lbl"> Terminé</span><span class="lbd"> · touchez le sol pour poser</span>':'🪑<span class="lbl"> Poser des chaises</span>'):(placeK==='chair'?'✔ Terminé (chaises)':'🪑 Poser des chaises')}});
@@ -1043,9 +1045,7 @@ function buildRoom(){
   else {
     [[0,-D/2],[-W/2,0],[W/2,0],[0,D/2]].forEach(([x,z],i)=>{const w=box(i%3==0&&i<3?W:(i==3?W:.15),3,i==1||i==2?D:.15,mat(0x23284a,{transparent:true,opacity:.5}));w.position.set(x,1.5,z);room.add(w)});
     if(rm==='rec'){mkTable(W*.55,.9,[0,-.3*D-.1,0]);
-    {const st=new THREE.Group(),wm=mat(0x8a6a44);const sc=new THREE.Mesh(new THREE.CylinderGeometry(.2,.2,.06,16),wm);sc.position.y=.66;st.add(sc);
-     [[-.12,-.12],[.12,-.12],[-.12,.12],[.12,.12]].forEach(([a,b])=>{const l=new THREE.Mesh(new THREE.CylinderGeometry(.015,.015,.66,6),mat(0x555555));l.position.set(a,.33,b);st.add(l)});
-     mkFix('stool',st,.22,.22,[.28*W,Math.min(.43*D,D/2-.6),0],true)}
+    mkFix('stool',stoolMesh(stH('stool')),.22,.22,[.28*W,Math.min(.43*D,D/2-.6),0],true)
     if(!two){const cab=box(W*.38,2.4,D*.34,new THREE.MeshStandardMaterial({color:0x8fa2ff,transparent:true,opacity:.12}));cab.position.set(.28*W,1.2,.25*D);room.add(cab);
     room.add(label('RÉGIE',0,-D/2+.5,'#8fa2ff'));room.add(label('CABINE VOIX',.28*W,D/2-.6,'#6fe3a0'));}
     else partition(W,D,.12*D,['SALLE DE RÉGIE',0,-D/2+.5],['CABINE VOIX',0,D/2-.6])}
@@ -1104,7 +1104,7 @@ function rotDrag(e){const t=rotTarget();if(!t)return;const p3=new THREE.Vector3(
   rotApply(rotSnap(Math.atan2(p3.x-t.x,p3.z-t.z)),drag.riders)}
 const eqObj=()=>{if(!ls||ls.t!=='eq')return null;const L=room.children.filter(o=>o.userData&&o.userData.slot===ls.slot&&o.userData.i===ls.i);return L.find(o=>!o.userData.ghost)||L[0]||null};
 function selInfo(){if(!ls)return null;
-  if(ls.t==='f'){const fi=fixt[ls.key];if(!fi)return null;return{rot:true,rsz:isT(ls.key)||isCb(ls.key),fi}}
+  if(ls.t==='f'){const fi=fixt[ls.key];if(!fi)return null;return{rot:true,rsz:isT(ls.key)||isCb(ls.key),rhs:/^(us|stool)/.test(ls.key),fi}}
   if(ls.t==='eq'){const g=eqObj();if(!g)return null;return{rot:g.userData.t!=='scr'}}
   if(ls.t==='d'){const d=dummies.find(o=>o.id===ls.id);if(!d)return null;return{rot:!d.on,nodup:!!d.on}}
   return null}
@@ -1115,6 +1115,7 @@ function rotHandleUpdate(){const t=rotTarget(),bar=document.getElementById('rotb
   bar.style.display='flex';bar.classList.toggle('norot',!si.rot);bar.classList.toggle('rsz',!!si.rsz);
   const dp=bar.querySelector('[data-act=dup]');if(dp)dp.disabled=!!si.nodup;
   const rb4=bar.querySelector('.rb4');if(rb4){const cb=si.fi&&isCb(ls.key);rb4.style.display=cb?'flex':'none';if(cb){const a=cdr[rm+ls.key]||[{s:'F'}],wl=si.fi.cab==='wall';const LB={F:wl?'Porte':'Face',B:'Fond',L:'Gauche',R:'Droite'};rb4.querySelectorAll('[data-door]').forEach(b=>{const on=a.some(q=>q.s===b.dataset.door);b.classList.toggle('on',on);b.textContent=(on?'✓ ':'')+LB[b.dataset.door];if(b.classList.contains('dcab'))b.style.display=wl?'none':''})}}
+  {const rb5=bar.querySelector('.rb5');if(rb5){rb5.style.display=si.rhs?'flex':'none';if(si.rhs){const v=document.getElementById('rzH');if(v&&document.activeElement!==v)v.value=Math.round(stH(ls.key)*100)}}}
   if(si.rsz){const L=document.getElementById('rzL'),Wd=document.getElementById('rzW'),wall=si.fi.cab==='wall';
     if(L&&document.activeElement!==L)L.value=(si.fi.hw0*2).toFixed(2);if(Wd){Wd.disabled=wall;if(document.activeElement!==Wd)Wd.value=(si.fi.hd0*2).toFixed(2)}}}
 const eqClamp=(x,z)=>{const {W,D}=SIZES[size];return[Math.max(-W/2+.3,Math.min(W/2-.3,x)),Math.max(-D/2+.3,Math.min(D/2-.3,z))]};
@@ -1157,15 +1158,19 @@ function rszSet(w,d){const si=selInfo();if(!si||!si.rsz)return;const k=ls.key,fi
   moveFix(fi,fi.x,fi.z,fi.r,rid);
   fsz[rm+k]=[w,d];const u=uf&&uf.find(f=>ufKey(f)===k);if(u){u.w=w;u.d=d}
   const sv=ls;buildRoom();ls=sv;fsel=k;afterEdit()}
+function shSet(cm){if(!ls||ls.t!=='f'||!/^(us|stool)/.test(ls.key))return;const k=ls.key,h=Math.max(30,Math.min(80,Math.round(+cm||66)))/100;if(Math.abs(h-stH(k))<.001)return;fsz[rm+k]=[h,0];const sv=ls;buildRoom();ls=sv;fsel=k;afterEdit()}
+function shBy(v){if(!ls)return;const c=Math.round(stH(ls.key)*100);shSet(v==='-'?c-5:v==='+'?c+5:+v)}
 function rszBy(which,op){const si=selInfo();if(!si||!si.rsz)return;const fi=si.fi;let w=fi.hw0*2,d=fi.hd0*2,v=which==='L'?w:d;
   v=op==='-'?v-.1:op==='+'?v+.1:op==='/'?v/2:v*2;if(which==='L')w=v;else d=v;rszSet(w,d)}
 (function(){const V=document.getElementById('view'),B=document.createElement('div');B.id='rotbar';
  B.innerHTML='<div class="rr rb0"><button data-min="1" id="rbmin">▾ Réduire</button></div><div class="rr rb1"><span>Rotation</span><button data-d="-15" title="Tourner à gauche (Maj+R)">↺ 15°</button><button data-d="15" title="Tourner à droite (R)">↻ 15°</button><button data-a="0" title="Face au public">Face public</button><button data-a="3.14159" title="Face à la scène">Face scène</button></div>'
  +'<div class="rr rb2"><span>Objet</span><button data-act="dup" title="Dupliquer (Ctrl+D)">⧉ Dupliquer</button><button data-act="del" class="dg" title="Supprimer (Suppr)">🗑 Supprimer</button><small class="rmsg"></small></div>'
  +'<div class="rr rb4"><span>Porte</span><button data-door="F">Face</button><button data-door="B" class="dcab">Fond</button><button data-door="L" class="dcab">Gauche</button><button data-door="R" class="dcab">Droite</button><button data-dn="-1" title="Décaler la porte">◀</button><button data-dn="1" title="Décaler la porte">▶</button></div>'
+ +'<div class="rr rb5"><span>Hauteur</span><button data-sh="-">−</button><input id="rzH" type="number" step="5" min="30" max="80"> cm <button data-sh="+">+</button><button data-sh="45">Bas</button><button data-sh="66">Standard</button></div>'
  +'<div class="rr rb3"><span>Taille (m)</span>Long. <button data-z="L-">−</button><input id="rzL" type="number" step=".1" min=".4" max="8"><button data-z="L+">+</button><button data-z="L/" title="Diviser par 2">½</button><button data-z="L*" title="Multiplier par 2">×2</button> Larg. <button data-z="W-">−</button><input id="rzW" type="number" step=".1" min=".4" max="6"><button data-z="W+">+</button><button data-z="W/" title="Diviser par 2">½</button><button data-z="W*" title="Multiplier par 2">×2</button></div>';V.appendChild(B);
- B.querySelectorAll('button').forEach(b=>b.onclick=()=>{if(b.dataset.min){B.classList.toggle('min');b.textContent=B.classList.contains('min')?'✎ Modifier ▴':'▾ Réduire'}else if(b.dataset.d)rotBy(+b.dataset.d*Math.PI/180);else if(b.dataset.act==='dup')actDup();else if(b.dataset.act==='del')actDel();else if(b.dataset.z)rszBy(b.dataset.z[0],b.dataset.z[1]);else if(b.dataset.door)doorTog(b.dataset.door);else if(b.dataset.dn)doorNudge(+b.dataset.dn);else{const t=rotTarget();if(t){rotApply(+b.dataset.a);afterEdit()}}});
+ B.querySelectorAll('button').forEach(b=>b.onclick=()=>{if(b.dataset.min){B.classList.toggle('min');b.textContent=B.classList.contains('min')?'✎ Modifier ▴':'▾ Réduire'}else if(b.dataset.d)rotBy(+b.dataset.d*Math.PI/180);else if(b.dataset.act==='dup')actDup();else if(b.dataset.act==='del')actDel();else if(b.dataset.z)rszBy(b.dataset.z[0],b.dataset.z[1]);else if(b.dataset.sh)shBy(b.dataset.sh);else if(b.dataset.door)doorTog(b.dataset.door);else if(b.dataset.dn)doorNudge(+b.dataset.dn);else{const t=rotTarget();if(t){rotApply(+b.dataset.a);afterEdit()}}});
  const gv=()=>[document.getElementById('rzL').value,document.getElementById('rzW').value];
+ document.getElementById('rzH').onchange=e=>shSet(+e.target.value);
  ['rzL','rzW'].forEach(id=>document.getElementById(id).onchange=()=>{const [a,c]=gv();rszSet(a,c)});
  document.addEventListener('keydown',e=>{const tg=e.target&&e.target.tagName;if(tg==='INPUT'||tg==='SELECT'||tg==='TEXTAREA')return;if(e.key==='Escape'&&placeK){placeSet(placeK);return}
   if((e.key==='r'||e.key==='R')&&rotTarget()){e.preventDefault();rotBy((e.shiftKey?-15:15)*Math.PI/180)}

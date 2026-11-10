@@ -58,6 +58,8 @@
 .beats{display:flex;gap:8px;margin:10px 0}.beats i{width:18px;height:18px;border-radius:50%;background:#2a3344;display:block}.beats i.on{background:var(--gold,#f2b632)}
 .ntab{width:100%;border-collapse:collapse;font-size:14px}.ntab td,.ntab th{padding:5px 8px;border-bottom:1px solid var(--hair-2,#2a3344);text-align:left}
 
+.chk label{justify-content:flex-start;margin:5px 0}.chk h3{font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--gold,#f2b632);margin:14px 0 4px}
+@media print{body.pr-chk header,body.pr-chk nav,body.pr-chk footer,body.pr-chk .page-hero,body.pr-chk .tool:not(#t-chk),body.pr-chk .section-sm:last-of-type,body.pr-chk .no-print{display:none!important}body.pr-chk,body.pr-chk .tool{background:#fff!important;color:#000!important}body.pr-chk .tool{border:0}}
 .tool.wide{grid-column:1/-1}.tool .res{margin:10px 0;padding:10px 12px;border-radius:10px;background:rgba(242,182,50,.12);font-size:14px}.tool .res.bad{background:rgba(220,70,50,.18)}.tool .res.ok{background:rgba(70,170,110,.18)}
 .tool input[type=text],.tool textarea{font-size:16px;padding:8px;border-radius:8px;border:1px solid var(--hair-2,#2a3344);background:transparent;color:inherit;width:100%;box-sizing:border-box}
 .tool .meter{height:14px;border-radius:7px;background:#2a3344;overflow:hidden;margin:8px 0}.tool .meter i{display:block;height:100%;width:0;background:var(--gold,#f2b632);transition:width .08s}
@@ -118,7 +120,7 @@
   <section class="page-hero wrap">
     <p class="eyebrow">Outils gratuits</p>
     <h1>Des outils audio pour sonorisateurs et musiciens.</h1>
-    <p class="lede">Accordeur, calculateur d'enceintes et d'ampli, sonomètre, transposeur d'accords, acoustique de salle, générateur de fréquences, métronome, détecteur de larsen et plus : directement dans votre navigateur, sans installation.</p>
+    <p class="lede">Accordeur, calculateur d'enceintes et d'ampli, sonomètre, transposeur d'accords, acoustique de salle, générateur de fréquences, métronome, détecteur de larsen, checklist d'événement et plus : directement dans votre navigateur, sans installation.</p>
   </section>
   <section class="section-sm wrap">
     <div class="tools">
@@ -189,6 +191,11 @@
         <label>Plafond <select id="rc"></select></label>
         <label>Personnes présentes <input type="number" id="rp" value="100" min="0"></label>
         <div class="big"><span id="rr">0</span> s</div><div class="res" id="rv"></div></div>
+
+      <div class="tool wide chk" id="t-chk"><h2>Checklist matériel pour un événement</h2><p class="d">Cochez ce que vous avez déjà. Imprimez-la ou gardez-la sur le téléphone. Elle se souvient de vos coches.</p>
+        <label class="no-print">Type d'événement <select id="ke" style="width:auto"><option value="eg">Église / culte</option><option value="mr">Mariage / conférence</option><option value="co">Concert / plein air</option></select></label>
+        <div id="kl"></div>
+        <div class="row no-print"><button class="btn" id="kp">Imprimer</button><button class="chip" id="kr">Tout décocher</button></div></div>
 
       <div class="tool wide" id="t-cab"><h2>Guide des câbles et connecteurs</h2><p class="d">Lequel utiliser, pour quoi.</p>
         <table class="g"><tr><th>Connecteur</th><th>Usage</th><th>À savoir</th></tr>
@@ -348,6 +355,18 @@ function rt(){var L=+$('rl').value||1,W=+$('rw').value||1,H=+$('rh').value||1,V=
  else{c='res';h='Salle très sèche : idéale pour la parole et le studio, moins pour le chant d\'assemblée.'}
  e.className=c;e.innerHTML=h+'<br><small>Estimation à 500 Hz par la formule de Sabine : une aide, pas une mesure.</small>'}
 ['rl','rw','rh','rm','rf','rc','rp'].forEach(function(i){$(i).oninput=rt;$(i).onchange=rt});rt();
+
+/* checklist */
+var KL={Son:['Enceintes (et pieds ou supports)','Table de mixage','Ampli(s) si enceintes passives','Micros avec pinces','Pieds de micro','Câbles XLR (ajoutez 30 % de réserve)','Boîte de direct (DI) pour clavier et guitare','Casque de contrôle'],
+ 'Énergie':['Rallonges et multiprises (avec parafoudre)','Alimentation de secours ou stabilisateur','Gaffer (adhésif de scène)','Lampe frontale'],
+ 'Dépannage':['Piles neuves pour micros sans fil','Jack, XLR et Speakon de rechange','Adaptateurs (RCA, mini-jack, jack 6,35)','Câble USB et chargeurs','Petit tournevis et pince','Bouchons d\'oreilles'],
+ Extras:{eg:['Micro de rechange pour le pasteur','Clavier ou piano avec sa pédale de sustain','Écran ou projecteur pour les chants'],mr:['Micro cravate ou serre-tête','Micro sans fil à main (2)','Pupitre ou pied de présentation','Câble HDMI et adaptateur d\'ordinateur'],co:['Retours de scène (wedges)','Enceintes de basses (subs)','Éclairage de scène','Protection contre la pluie pour le matériel','Barrières ou ruban de sécurité']}};
+function chkDraw(){var ev=$('ke').value,st={};try{st=JSON.parse(localStorage.getItem('pr_chk')||'{}')}catch(e){}
+ var h='',n=0;function sec(t,a){h+='<h3>'+t+'</h3>';a.forEach(function(x){var id=t+'|'+x;h+='<label><input type="checkbox" data-k="'+id.replace(/"/g,'&quot;')+'"'+(st[id]?' checked':'')+'> '+x+'</label>'})}
+ ['Son','Énergie','Dépannage'].forEach(function(t){sec(t,KL[t])});sec('Pour cet événement',KL.Extras[ev]);$('kl').innerHTML=h;
+ [].forEach.call($('kl').querySelectorAll('input'),function(c){c.onchange=function(){var o={};try{o=JSON.parse(localStorage.getItem('pr_chk')||'{}')}catch(e){}if(c.checked)o[c.dataset.k]=1;else delete o[c.dataset.k];try{localStorage.setItem('pr_chk',JSON.stringify(o))}catch(e){}}})}
+$('ke').onchange=chkDraw;$('kr').onclick=function(){try{localStorage.removeItem('pr_chk')}catch(e){}chkDraw()};
+$('kp').onclick=function(){document.body.classList.add('pr-chk');window.print();setTimeout(function(){document.body.classList.remove('pr-chk')},500)};chkDraw();
 })();
 </script>
 </body>

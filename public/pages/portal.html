@@ -215,6 +215,35 @@
     }
   })();
 
+  /* Onglet équipe : « Devis Pyramide Record » (constructeur de devis du configurateur).
+     Visible seulement sur un appareil où l'équipe a déjà créé son code, ou avec ?equipe=1. */
+  (function () {
+    var show = /[?&]equipe=1/.test(location.search);
+    try { if (localStorage.getItem('pr_qb_hash')) show = true; } catch (e) {}
+    var embed = document.getElementById('iris-embed');
+    if (!show || !embed) return;
+    var bar = document.createElement('div');
+    bar.style.cssText = 'display:flex;gap:8px;flex-wrap:wrap;margin:0 0 14px';
+    bar.innerHTML = '<button type="button" class="btn" id="pt-iris">Espace Client</button>' +
+                    '<button type="button" class="btn btn--ghost" id="pt-qb">Devis Pyramide Record (équipe)</button>';
+    embed.parentNode.insertBefore(bar, embed);
+    var holder = document.createElement('div');
+    holder.id = 'qb-embed'; holder.style.display = 'none';
+    holder.innerHTML = '<iframe title="Constructeur de devis Pyramide Record" style="width:100%;height:82vh;min-height:640px;border:1px solid var(--hair-2);border-radius:var(--r-lg);display:block"></iframe>';
+    embed.parentNode.insertBefore(holder, embed.nextSibling);
+    var fr = holder.querySelector('iframe'), loaded = false;
+    function pick(qb) {
+      embed.style.display = qb ? 'none' : 'block';
+      holder.style.display = qb ? 'block' : 'none';
+      document.getElementById('pt-iris').className = 'btn' + (qb ? ' btn--ghost' : '');
+      document.getElementById('pt-qb').className = 'btn' + (qb ? '' : ' btn--ghost');
+      if (qb && !loaded) { fr.src = 'configurateur.html?admin=1&qb=only'; loaded = true; }
+    }
+    document.getElementById('pt-iris').onclick = function () { pick(false); };
+    document.getElementById('pt-qb').onclick = function () { pick(true); };
+    if (/[?&]tab=devis/.test(location.search)) pick(true);
+  })();
+
   /* Auto-resize listener (matches the widget's postMessage contract,
      same as booking.html / shop.html) */
   window.addEventListener('message', function (e) {

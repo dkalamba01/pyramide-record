@@ -1743,7 +1743,7 @@ function miniPdf(d,imgUrl,iw,ih){
 function qNote(m){const n=document.getElementById('qnote');if(n){n.textContent=m;n.style.display='block'}}
 function qCopy(){const t=document.getElementById('qt');try{navigator.clipboard.writeText(quoteText).catch(()=>{t.select();document.execCommand('copy')})}catch(e){try{t.select();document.execCommand('copy')}catch(_){}}}
 /* Visiteurs : formulaire facultatif avant le PDF + copie dans Drive/Sheet (Apps Script). Mettre l'adresse …/exec dans LEAD_URL. */
-const LEAD_URL='';
+const LEAD_URL='https://script.google.com/macros/s/AKfycbyS1ZD7kSmeVMED-QmJ3A3lKzlSsirAzn5kuW-8k6ahf5aJV7sbm3JA0WVoPB7ZcVcD/exec';
 const qa=v=>String(v||'').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;');
 function leadStaff(){try{return ADMIN||!!localStorage.getItem('pr_qb_hash')}catch(e){return ADMIN}}
 function leadSend(given){try{

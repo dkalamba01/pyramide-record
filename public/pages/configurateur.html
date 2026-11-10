@@ -70,23 +70,24 @@ details label{display:flex;justify-content:space-between;align-items:center;marg
 #seatbox select,#acbox select{width:170px}
 #acbox input{width:80px}
 details input,details select{width:80px;background:var(--panel-2);color:var(--bone);border:1px solid var(--hair-2);border-radius:6px;padding:4px}
-#qbbtn{position:fixed;top:54px;right:12px;z-index:30;display:none;font:600 13px var(--font-body,inherit);padding:8px 12px;border-radius:999px;border:1px solid var(--ember);background:var(--obsidian);color:var(--ember);cursor:pointer}
-#qb{position:fixed;inset:0;z-index:60;background:var(--obsidian);color:var(--bone);display:none;flex-direction:column;font-size:14px}
-#qb *{box-sizing:border-box}#qb input,#qb select,#qb textarea{font-size:16px;padding:7px 8px;border-radius:8px;border:1px solid var(--hair-2);background:transparent;color:inherit;min-width:0}
-#qb button{font:inherit;cursor:pointer}#qb .b{padding:8px 12px;border-radius:999px;border:1px solid var(--hair-2);background:transparent;color:inherit}#qb .b.on,#qb .b.pr{background:var(--ember);color:#111;border-color:var(--ember);font-weight:600}
-#qbtop{display:flex;gap:8px;align-items:center;flex-wrap:wrap;padding:10px 12px;border-bottom:1px solid var(--hair-2)}#qbtop h2{margin:0 auto 0 0;font-size:18px;font-weight:600}
-#qbmain{flex:1;display:flex;min-height:0}#qbcatw{width:340px;border-right:1px solid var(--hair-2);display:flex;flex-direction:column;min-height:0}#qbdocw{flex:1;overflow:auto;padding:12px;min-width:0}
+#qbbtn{position:fixed;top:54px;right:12px;z-index:30;display:none;font:600 13px var(--font-body);padding:7px 12px;border-radius:18px;border:1px solid var(--gold);background:var(--panel-2);color:var(--bone);cursor:pointer}
+#qb{position:fixed;inset:0;z-index:60;background:var(--obsidian);color:var(--bone);display:none;flex-direction:column;font-size:14px;font-family:var(--font-body)}
+#qb *{box-sizing:border-box}#qb input,#qb select,#qb textarea{font-size:16px;padding:7px 8px;border-radius:var(--r-md);border:1px solid var(--hair-2);background:var(--panel);color:var(--bone);min-width:0;font-family:inherit}#qb input:focus,#qb select:focus,#qb textarea:focus{outline:2px solid var(--gold);outline-offset:0}#qb ::placeholder{color:var(--ash)}
+#qb button{font:inherit;cursor:pointer}#qb .b{padding:7px 12px;border-radius:18px;font-size:13px;border:1px solid var(--hair-2);background:var(--panel-2);color:var(--bone)}#qb .b:hover{border-color:var(--gold)}#qb .b.on{background:var(--gold);color:#fff;border-color:var(--gold);font-weight:600}#qb .b.pr{background:var(--crimson);color:#fff;border-color:var(--crimson);font-weight:600;letter-spacing:.1em;text-transform:uppercase;border-radius:var(--r-sm);font-size:12px;padding:9px 14px}#qb .b.pr:hover{background:var(--crimson-bright)}
+#qbtop{display:flex;gap:8px;align-items:center;flex-wrap:wrap;padding:10px 12px;border-bottom:1px solid var(--hair-2);background:var(--panel)}#qbtop h2{margin:0 auto 0 0;font-family:var(--font-display);font-size:21px;font-weight:400;letter-spacing:.01em}
+#qbmain{flex:1;display:flex;min-height:0}#qbcatw{width:340px;border-right:1px solid var(--hair-2);display:flex;flex-direction:column;min-height:0;background:var(--panel)}#qbdocw{flex:1;overflow:auto;padding:12px;min-width:0}
 #qbcatw .h{padding:10px;display:flex;flex-direction:column;gap:8px}#qbcat{overflow:auto;flex:1;padding:0 10px 10px}
-.qbi{display:flex;gap:8px;align-items:center;justify-content:space-between;padding:8px;border:1px solid var(--hair-2);border-radius:10px;margin-bottom:6px;cursor:grab}.qbi small{display:block;color:var(--sand);font-size:11.5px}.qbi .qbp{white-space:nowrap;font-weight:600}.qbi button{width:32px;height:32px;border-radius:50%;border:1px solid var(--ember);background:transparent;color:var(--ember);font-size:18px;line-height:1}
+.qbi{display:flex;gap:8px;align-items:center;justify-content:space-between;padding:8px;border:1px solid var(--hair-2);border-radius:var(--r-lg);margin-bottom:6px;cursor:grab;background:var(--panel-2)}.qbi:hover{border-color:var(--gold)}.qbi .tx{flex:1;min-width:0}.qbimg{width:44px;height:44px;object-fit:cover;border-radius:8px;background:var(--panel-3);flex:0 0 auto}.qbi small{display:block;color:var(--sand);font-size:11.5px}.qbi .qbp{white-space:nowrap;font-weight:600}.qbi button{width:32px;height:32px;border-radius:50%;border:1px solid var(--gold);background:transparent;color:var(--gold-bright);font-size:18px;line-height:1;flex:0 0 auto}
 .qbg{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin-bottom:10px}.qbg label{display:flex;flex-direction:column;gap:3px;font-size:12px;color:var(--sand)}.qbg label.w2{grid-column:span 2}
-#qblines{min-height:60px;border:1px dashed var(--hair-2);border-radius:12px;padding:6px;margin:8px 0}#qblines.over{border-color:var(--ember);background:rgba(233,158,51,.08)}
-.qbl{display:grid;grid-template-columns:auto 1fr auto;gap:6px 8px;align-items:center;padding:8px;border:1px solid var(--hair-2);border-radius:10px;margin-bottom:6px;background:var(--panel-3)}.qbl.drop{border-top:3px solid var(--ember)}
-.qbl .h{cursor:grab;color:var(--sand);user-select:none}.qbl .n{grid-column:2/3;font-weight:600}.qbl .x{grid-column:3/4;border:0;background:transparent;color:#e66;font-size:20px}
-.qbl .r2{grid-column:1/4;display:flex;gap:6px;flex-wrap:wrap;align-items:flex-end}.qbl .r2 label{display:flex;flex-direction:column;font-size:11px;color:var(--sand);gap:2px}.qbl .r2 input{width:84px}.qbl .r2 select{width:118px}.qbl .r2 .dd{flex:1;min-width:150px}.qbl .r2 .dd input{width:100%}.qbl .lt{margin-left:auto;font-weight:700;white-space:nowrap}.qbl .mk{color:var(--ember);font-size:12px}
-.qbt{margin-left:auto;max-width:340px;font-size:14px}.qbt div{display:flex;justify-content:space-between;padding:3px 0}.qbt .g{font-size:18px;font-weight:700;border-top:2px solid var(--hair-2);margin-top:4px;padding-top:6px}
-.qbm{position:fixed;inset:0;background:#000b;z-index:70;display:none;align-items:center;justify-content:center;padding:12px}.qbm>div{background:var(--obsidian);border:1px solid var(--hair-2);border-radius:14px;max-width:560px;width:100%;max-height:88vh;overflow:auto;padding:14px}
-.qdr{padding:9px;border:1px solid var(--hair-2);border-radius:10px;margin-bottom:6px;cursor:pointer;display:flex;justify-content:space-between;gap:8px}.qdr small{color:var(--sand);display:block}.qst{font-size:11px;padding:2px 8px;border-radius:999px;border:1px solid var(--hair-2);white-space:nowrap}
-#qbtoast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);background:#222;color:#fff;padding:10px 16px;border-radius:10px;z-index:90;display:none;max-width:90vw;font-size:14px}
+#qblines{min-height:60px;border:1px dashed var(--hair-2);border-radius:var(--r-lg);padding:6px;margin:8px 0}#qblines.over{border-color:var(--gold);background:var(--panel-2)}
+.qbl{display:grid;grid-template-columns:auto auto 1fr auto;gap:6px 8px;align-items:center;padding:8px;border:1px solid var(--hair-2);border-radius:var(--r-lg);margin-bottom:6px;background:var(--panel)}.qbl.drop{border-top:3px solid var(--gold)}.qbl .qbimg{width:40px;height:40px}.qbl .qbimg.no{display:none}
+.qbl .h{cursor:grab;color:var(--sand);user-select:none}.qbl .n{font-weight:600}.qbl .x{border:0;background:transparent;color:var(--crimson-bright);font-size:20px}
+.qbl .r2{grid-column:1/5;display:flex;gap:6px;flex-wrap:wrap;align-items:flex-end}.qbl .r2 label{display:flex;flex-direction:column;font-size:11px;color:var(--sand);gap:2px}.qbl .r2 input{width:84px}.qbl .r2 select{width:118px}.qbl .r2 .dd{flex:1;min-width:150px}.qbl .r2 .dd input{width:100%}.qbl .lt{margin-left:auto;font-weight:700;white-space:nowrap}.qbl .mk{color:var(--ember);font-size:13px}
+.qbt{margin-left:auto;max-width:340px;font-size:14px}.qbt div{display:flex;justify-content:space-between;padding:3px 0}.qbt .g{font-family:var(--font-display);font-size:22px;font-weight:400;border-top:2px solid var(--hair-2);margin-top:4px;padding-top:6px}
+.qbm{position:fixed;inset:0;background:#000b;z-index:70;display:none;align-items:center;justify-content:center;padding:12px}.qbm>div{background:var(--panel);border:1px solid var(--hair-2);border-radius:var(--r-lg);max-width:560px;width:100%;max-height:88vh;overflow:auto;padding:14px}
+.qdr{padding:9px;border:1px solid var(--hair-2);border-radius:var(--r-lg);background:var(--panel-2);margin-bottom:6px;cursor:pointer;display:flex;justify-content:space-between;gap:8px}.qdr small{color:var(--sand);display:block}.qst{font-size:11px;padding:2px 8px;border-radius:999px;border:1px solid var(--hair-2);white-space:nowrap}
+#qbtoast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);background:var(--panel-3);color:var(--bone);border:1px solid var(--hair-2);padding:10px 16px;border-radius:10px;z-index:90;display:none;max-width:90vw;font-size:14px}
+body.qbonly #app,body.qbonly #site{display:none!important}body.qbonly #qcl,body.qbonly #qgx{display:none}
 @media(max-width:820px){#qbmain{flex-direction:column}#qbcatw{width:100%;border-right:0;border-bottom:1px solid var(--hair-2);max-height:42vh}#qbmain.hc #qbcatw{display:none}.qbt{max-width:none}}
 #modal{position:fixed;inset:0;background:#000a;display:none;align-items:center;justify-content:center;padding:14px;z-index:9}
 #modal .box{background:var(--panel);border:1px solid var(--hair-2);border-radius:14px;max-width:520px;width:100%;max-height:90vh;overflow:auto;padding:16px}
@@ -540,6 +541,7 @@ const persist=()=>{if(!ADMIN)return;try{localStorage.setItem('pr_local',JSON.str
 const STOCK={};
 const CAT_URL='https://irisfinancial.tech/api/public/storefront/catalog?orgId=cmptnogcb0000v3v17tq2blhr',SHOP_URL='https://pyramidrecord.com/pages/shop.html';
 let CATALOG=[],catInfo={n:0,m:0,un:[]};
+function imgOf(c){let u=c.imageUrl||c.image||c.thumbnailUrl||c.thumbnail||c.photoUrl||c.photo||c.primaryImage||c.mainImage||'';if(!u&&Array.isArray(c.images)&&c.images.length){const f=c.images[0];u=typeof f==='string'?f:(f&&(f.url||f.src||f.imageUrl))||''}if(u&&typeof u==='object')u=u.url||u.src||'';u=String(u||'');return/^https?:\/\//.test(u)?u:''}
 const nzc=t=>String(t||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/\([^)]*\)/g,' ').replace(/[^a-z0-9]+/g,'');
 function catMatch(p){const a=nzc(p.n);if(!a)return null;let best=null,bd=1e9;
   for(const c of CATALOG){if(c.type!=='SALE')continue;const b=nzc(c.name);if(!b)continue;
@@ -549,9 +551,9 @@ function catMatch(p){const a=nzc(p.n);if(!a)return null;let best=null,bd=1e9;
 function loadCatalog(){if(!/^https?:/.test(location.protocol))return;
   fetch(CAT_URL).then(r=>r.ok?r.json():Promise.reject()).then(j=>{CATALOG=(j&&j.products)||[];const seen=new Set();let n=0;
     Object.values(ROOMS).forEach(R=>(R.slots||[]).forEach(sl=>sl.o.forEach(o=>{if(seen.has(o.n))return;seen.add(o.n);n++;const c=catMatch(o);
-      if(c&&c.price>0){STOCK[o.n]={qty:c.quantityAvailable||0,price:Math.round(c.price),id:c.productId,sku:c.sku||null}}else catInfo.un.push(o.n)})));
+      if(c&&c.price>0){STOCK[o.n]={qty:c.quantityAvailable||0,price:Math.round(c.price),id:c.productId,sku:c.sku||null,img:imgOf(c)}}else catInfo.un.push(o.n)})));
     catInfo.n=n;catInfo.m=Object.keys(STOCK).length;window.__catalog={CATALOG,STOCK,unmatched:catInfo.un};
-    try{renderList();if(typeof refresh==='function')refresh()}catch(e){}}).catch(()=>{}).then(()=>{if(window.__packGo)window.__packGo()})}
+    try{renderList();if(typeof refresh==='function')refresh()}catch(e){}}).catch(()=>{}).then(()=>{if(window.__qbRefresh)window.__qbRefresh();if(window.__packGo)window.__packGo()})}
 const inStock=p=>!!(STOCK[p.n]&&STOCK[p.n].qty>0&&STOCK[p.n].price>0);
 function optState(p){return inStock(p)?'stock':(price(p)==null?'soon':'order')}
 function price(p){if(inStock(p))return STOCK[p.n].price;if(p.us==null){const v=local[p.n];return v>0?v:null}return Math.round(landed(p)*(1+mar/100)*(1+fee/100))}
@@ -1813,6 +1815,7 @@ loadCatalog();
 /* ===== Constructeur de devis (admin) ===== */
 (function(){
 const $=id=>document.getElementById(id),LSD='pr_docs',LSC='pr_cnt',LSH='pr_qb_hash',TL={1:'1re qualité',2:'2e qualité',3:'3e qualité'},CAP=30;
+const imgFor=n=>{const s=STOCK[n];return s&&s.img||''};
 const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const r2=v=>Math.round(v*100)/100,pn=v=>{const n=parseFloat(String(v).replace(',','.'));return isFinite(n)?n:null};
 const fm=v=>v==null?'Sur demande':r2(v).toLocaleString('fr-FR',{maximumFractionDigits:2})+' $';
@@ -1836,12 +1839,12 @@ function close(){$('qb').style.display='none'}$('qcl').onclick=close;
 /* catalogue */
 function buildCat(){const seen=new Set();cat=[];Object.keys(ROOMS).forEach(k=>{const R=ROOMS[k];(R.slots||[]).forEach(s=>s.o.forEach(o=>{if(seen.has(o.n))return;seen.add(o.n);cat.push({o,n:o.n,d:o.d||'',t:o.tier||1,z:(R.n||k)+' · '+s.l})}))})}
 function renderCat(){const q=nzc($('qsr').value),L=cat.filter(x=>x.t<=tier&&(!q||nzc(x.n+x.z).includes(q)));
- $('qcn').textContent=L.length+' produit'+(L.length>1?'s':'')+' (qualité jusqu\'à '+TL[tier]+')';
- $('qbcat').innerHTML=L.slice(0,150).map(x=>{const i=cat.indexOf(x),p=price(x.o),st=optState(x.o);return`<div class="qbi" draggable="true" data-i="${i}"><div><b>${esc(x.n)}</b><small>${esc(x.z)} · ${TL[x.t]}${st==='stock'?' · en stock':''}</small></div><div class="qbp">${fm(p)}</div><button data-add="${i}" aria-label="Ajouter">+</button></div>`}).join('')||'<div class="mini">Aucun produit.</div>';
+ const ni=Object.values(STOCK).filter(x=>x.img).length,nc=(window.__catalog&&window.__catalog.CATALOG||[]).length;$('qcn').textContent=L.length+' produit'+(L.length>1?'s':'')+' (qualité jusqu\'à '+TL[tier]+')'+(nc?(ni?' · photos : '+ni+' produit(s)':' · aucune photo dans le catalogue de la boutique'):'');
+ $('qbcat').innerHTML=L.slice(0,150).map(x=>{const i=cat.indexOf(x),p=price(x.o),st=optState(x.o);const im=imgFor(x.n);return`<div class="qbi" draggable="true" data-i="${i}">${im?`<img class="qbimg" loading="lazy" alt="" src="${esc(im)}">`:''}<div class="tx"><b>${esc(x.n)}</b><small>${esc(x.z)} · ${TL[x.t]}${st==='stock'?' · en stock':''}</small></div><div class="qbp">${fm(p)}</div><button data-add="${i}" aria-label="Ajouter">+</button></div>`}).join('')||'<div class="mini">Aucun produit.</div>';
  $('qbcat').querySelectorAll('[data-add]').forEach(b=>b.onclick=()=>addCat(+b.dataset.add));
  $('qbcat').querySelectorAll('.qbi').forEach(e=>e.ondragstart=ev=>{ev.dataTransfer.setData('text/plain','c:'+e.dataset.i);ev.dataTransfer.effectAllowed='copy'})}
 $('qsr').oninput=renderCat;$('qtier').onchange=()=>{tier=+$('qtier').value;renderCat()};
-function mkLine(x){const p=x?price(x.o):0;return{id:uid('l'),n:x?x.n:'',n0:x?x.n:null,d:x?x.d:'',q:1,u:p,u0:x?p:null,t:x?x.t:cur.quality,reb:0,free:!x}}
+function mkLine(x){const p=x?price(x.o):0;return{id:uid('l'),img:x?imgFor(x.n):'',n:x?x.n:'',n0:x?x.n:null,d:x?x.d:'',q:1,u:p,u0:x?p:null,t:x?x.t:cur.quality,reb:0,free:!x}}
 function addCat(i,at){const x=cat[i];if(!x)return;const l=mkLine(x);at==null||at>cur.lines.length?cur.lines.push(l):cur.lines.splice(at,0,l);dirty();rLines();toast('Ajouté : '+x.n)}
 $('qfree').onclick=()=>{cur.lines.push(mkLine(null));dirty();rLines()};
 /* document */
@@ -1854,7 +1857,7 @@ function rHead(){const d=cur,ro=d.type==='facture';
  $('qhead').querySelectorAll('[data-f]').forEach(e=>e.oninput=e.onchange=()=>{const f=e.dataset.f,v=e.value;if(f==='cn')d.client.n=v;else if(f==='ct')d.client.t=v;else if(f==='ce')d.client.e=v;else if(f==='sj')d.subject=v;else if(f==='ql'){d.quality=+v;tier=Math.max(tier,+v);$('qtier').value=tier;renderCat()}else if(f==='rb'){let n=pn(v)||0;if(n>CAP){n=CAP;e.value=CAP;toast('Remise limitée à '+CAP+' %')}d.reb=Math.max(0,n);rTot()}else if(f==='st')d.status=v;else if(f==='dy')d.days=Math.max(1,parseInt(v)||QTERMS.days);else if(f==='py')d.pay=v;dirty()})}
 $('qnote').oninput=()=>{cur.note=$('qnote').value;dirty()};
 const chg=l=>l.free||l.u!==l.u0||(l.n0!=null&&l.n!==l.n0);
-function lineHtml(l){return`<div class="qbl" draggable="true" data-id="${l.id}"><span class="h">⋮⋮</span><input class="n" data-k="n" placeholder="Désignation" value="${esc(l.n)}"><button class="x" data-k="x" aria-label="Retirer">×</button><div class="r2"><label class="dd">Description<input data-k="d" value="${esc(l.d)}"></label><label>Qté<input data-k="q" inputmode="numeric" value="${l.q}"></label><label>Prix unitaire $<input data-k="u" inputmode="decimal" placeholder="Sur demande" value="${l.u==null?'':l.u}"></label><label>Remise %<input data-k="r" inputmode="decimal" value="${l.reb||''}"></label><label>Qualité<select data-k="t">${[1,2,3].map(t=>`<option value="${t}"${l.t===t?' selected':''}>${TL[t]}</option>`).join('')}</select></label><span class="lt"></span><button class="b" data-k="up" aria-label="Monter">▲</button><button class="b" data-k="dn" aria-label="Descendre">▼</button>${chg(l)?'<span class="mk" title="Modifié à la main (invisible pour le client)">✎</span>':''}</div></div>`}
+function lineHtml(l){return`<div class="qbl" draggable="true" data-id="${l.id}"><span class="h">⋮⋮</span>${l.img?`<img class="qbimg" loading="lazy" alt="" src="${esc(l.img)}">`:'<span></span>'}<input class="n" data-k="n" placeholder="Désignation" value="${esc(l.n)}"><button class="x" data-k="x" aria-label="Retirer">×</button><div class="r2"><label class="dd">Description<input data-k="d" value="${esc(l.d)}"></label><label>Qté<input data-k="q" inputmode="numeric" value="${l.q}"></label><label>Prix unitaire $<input data-k="u" inputmode="decimal" placeholder="Sur demande" value="${l.u==null?'':l.u}"></label><label>Remise %<input data-k="r" inputmode="decimal" value="${l.reb||''}"></label><label>Qualité<select data-k="t">${[1,2,3].map(t=>`<option value="${t}"${l.t===t?' selected':''}>${TL[t]}</option>`).join('')}</select></label><span class="lt"></span><button class="b" data-k="up" aria-label="Monter">▲</button><button class="b" data-k="dn" aria-label="Descendre">▼</button>${chg(l)?'<span class="mk" title="Modifié à la main (invisible pour le client)">✎</span>':''}</div></div>`}
 function lineTot(e,l){e.querySelector('.lt').textContent=l.u==null?'Sur demande':fm(lt(l))}
 function rLines(){const B=$('qblines');B.innerHTML=cur.lines.map(lineHtml).join('')||'<div class="mini" style="padding:14px;text-align:center">Aucune ligne. Glissez un produit ici ou touchez + dans le catalogue.</div>';
  B.querySelectorAll('.qbl').forEach(e=>{const l=cur.lines.find(x=>x.id===e.dataset.id);lineTot(e,l);
@@ -1935,8 +1938,9 @@ $('qiok').onclick=()=>{try{let c=$('qic').value.trim();const m=c.match(/[A-Za-z0
   if([1,2,3].includes(o.lvl))cur.quality=o.lvl;dirty();$('qim').style.display='none';renderDoc();toast(n+' produit(s) importé(s) depuis la salle « '+(R.n||o.rm)+' »')}catch(e){$('qie').textContent='Code non reconnu. Collez le code de la salle tel qu\'il est dans le message.'}};
 $('qtog').onclick=()=>$('qbmain').classList.toggle('hc');
 function start(){ld();buildCat();$('qtier').value=tier;renderCat();if(!cur)setDoc(newDoc());if(window.innerWidth<=820)$('qbmain').classList.add('hc')}
-const b=$('qbbtn');if(ADMIN){b.style.display='block';b.onclick=open;const a=document.getElementById('adm');if(a)a.querySelector('summary').insertAdjacentHTML('afterend','<button class="pill" id="qbbtn2" type="button" style="margin:6px 0">📋 Ouvrir le constructeur de devis</button>');const b2=$('qbbtn2');if(b2)b2.onclick=open;if(/[?&]qb=1/.test(location.search))setTimeout(open,300)}
+const b=$('qbbtn');if(ADMIN){b.style.display='block';b.onclick=open;const a=document.getElementById('adm');if(a)a.querySelector('summary').insertAdjacentHTML('afterend','<button class="pill" id="qbbtn2" type="button" style="margin:6px 0">📋 Ouvrir le constructeur de devis</button>');const b2=$('qbbtn2');if(b2)b2.onclick=open;if(/[?&]qb=only/.test(location.search))document.body.classList.add('qbonly');if(/[?&]qb=(1|only)/.test(location.search))setTimeout(open,300)}
 window.addEventListener('beforeunload',e=>{if(cur&&cur.dirty&&$('qb').style.display==='flex'){e.preventDefault();e.returnValue=''}});
+window.__qbRefresh=()=>{if(cur&&$('qb').style.display==='flex')renderCat()};
 window.__qb={tot,docText,pdfData,get cur(){return cur},open,docs:()=>docs};
 })();
 </script>

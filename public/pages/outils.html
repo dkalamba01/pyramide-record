@@ -57,6 +57,12 @@
 .tool canvas{width:100%;height:110px;border-radius:8px;background:#0b0f18}
 .beats{display:flex;gap:8px;margin:10px 0}.beats i{width:18px;height:18px;border-radius:50%;background:#2a3344;display:block}.beats i.on{background:var(--gold,#f2b632)}
 .ntab{width:100%;border-collapse:collapse;font-size:14px}.ntab td,.ntab th{padding:5px 8px;border-bottom:1px solid var(--hair-2,#2a3344);text-align:left}
+
+.tool.wide{grid-column:1/-1}.tool .res{margin:10px 0;padding:10px 12px;border-radius:10px;background:rgba(242,182,50,.12);font-size:14px}.tool .res.bad{background:rgba(220,70,50,.18)}.tool .res.ok{background:rgba(70,170,110,.18)}
+.tool input[type=text],.tool textarea{font-size:16px;padding:8px;border-radius:8px;border:1px solid var(--hair-2,#2a3344);background:transparent;color:inherit;width:100%;box-sizing:border-box}
+.tool .meter{height:14px;border-radius:7px;background:#2a3344;overflow:hidden;margin:8px 0}.tool .meter i{display:block;height:100%;width:0;background:var(--gold,#f2b632);transition:width .08s}
+.tool .needle{position:relative;height:26px;border-radius:13px;background:#2a3344;margin:10px 0}.tool .needle i{position:absolute;top:2px;width:4px;height:22px;border-radius:2px;background:var(--gold,#f2b632);left:50%;transition:left .1s}.tool .needle b{position:absolute;left:50%;top:0;width:2px;height:26px;background:#46aa6e}
+.tool table.g{width:100%;border-collapse:collapse;font-size:13.5px}.tool table.g td,.tool table.g th{padding:6px 8px;border-bottom:1px solid var(--hair-2,#2a3344);text-align:left;vertical-align:top}
 .ntab tr.hl td{background:rgba(242,182,50,.15)}
 </style>
 
@@ -112,7 +118,7 @@
   <section class="page-hero wrap">
     <p class="eyebrow">Outils gratuits</p>
     <h1>Des outils audio pour sonorisateurs et musiciens.</h1>
-    <p class="lede">Générateur de fréquences, métronome, fréquences des notes, détecteur de larsen et calculateur de retard : directement dans votre navigateur, sans installation.</p>
+    <p class="lede">Accordeur, calculateur d'enceintes et d'ampli, sonomètre, transposeur d'accords, acoustique de salle, générateur de fréquences, métronome, détecteur de larsen et plus : directement dans votre navigateur, sans installation.</p>
   </section>
   <section class="section-sm wrap">
     <div class="tools">
@@ -146,6 +152,64 @@
         <label>Température (°C) <input type="number" id="dt" value="28" min="-10" max="50"></label>
         <label><span>Ajouter ~10 ms (le son semble venir de la scène)</span><input type="checkbox" id="dh" checked></label>
         <div class="big"><span id="dr">0</span> ms</div><p class="d" id="dn"></p></div>
+
+      <div class="tool" id="t-tun"><h2>Accordeur chromatique</h2><p class="d">Chantez ou jouez une note près du micro : l'outil affiche la note et l'écart en cents.</p>
+        <div class="big"><span id="un">—</span> <small id="uh" style="font-size:14px;opacity:.7"></small></div>
+        <div class="needle"><b></b><i id="uneedle"></i></div><p class="d" id="uc">Appuyez sur Démarrer et autorisez le micro.</p>
+        <label>La4 (Hz) <input type="number" id="uA" value="440" min="415" max="466"></label>
+        <div class="row"><button class="btn" id="ugo">Démarrer</button></div></div>
+
+      <div class="tool" id="t-amp"><h2>Enceintes et ampli : impédance</h2><p class="d">Peut-on brancher plusieurs enceintes sur un ampli sans le brûler ? Entrez les valeurs écrites derrière vos appareils.</p>
+        <label>Nombre d'enceintes <input type="number" id="an" value="2" min="1" max="16"></label>
+        <label>Impédance d'une enceinte (Ω) <select id="az"><option>4</option><option selected>8</option><option>16</option></select></label>
+        <label>Branchement <select id="aw"><option value="p">En parallèle</option><option value="s">En série</option></select></label>
+        <label>Charge minimale de l'ampli (Ω) <select id="am"><option>2</option><option selected>4</option><option>8</option></select></label>
+        <label>Puissance de l'ampli à cette charge (W) <input type="number" id="ap" value="300" min="1"></label>
+        <label>Puissance d'une enceinte, RMS (W) <input type="number" id="ar" value="300" min="1"></label>
+        <div class="big"><span id="at">0</span> Ω</div><div class="res" id="av"></div></div>
+
+      <div class="tool" id="t-spl"><h2>Sonomètre</h2><p class="d">Mesure indicative du niveau sonore avec le micro du téléphone. Pour une mesure précise, utilisez un vrai sonomètre.</p>
+        <div class="big"><span id="sv">—</span> dB</div><div class="meter"><i id="sm"></i></div><p class="d" id="ss">Appuyez sur Démarrer et autorisez le micro.</p>
+        <label>Étalonnage (dB) <input type="number" id="so" value="90" min="60" max="130"></label>
+        <div class="row"><button class="btn" id="sgo">Démarrer</button></div>
+        <p class="d">Repères : conversation 60 dB · circulation 80 dB · au-delà de 85 dB une exposition longue est dangereuse · concert 100 à 110 dB.</p></div>
+
+      <div class="tool" id="t-trn"><h2>Transposeur d'accords</h2><p class="d">Écrivez la grille (par exemple <i>Do Sol Lam Fa</i> ou <i>C G Am F</i>) et choisissez de combien de demi-tons monter ou descendre.</p>
+        <textarea id="xi" rows="3">Do Sol Lam Fa</textarea>
+        <label>Demi-tons <select id="xs"></select></label>
+        <div class="big" id="xo" style="font-size:24px"></div>
+        <p class="d" id="xc"></p></div>
+
+      <div class="tool" id="t-rt"><h2>Acoustique de la salle (réverbération)</h2><p class="d">Estime le temps de réverbération (RT60). Trop long : la parole est confuse. Trop court : le son est sec.</p>
+        <label>Longueur (m) <input type="number" id="rl" value="20" min="2"></label>
+        <label>Largeur (m) <input type="number" id="rw" value="12" min="2"></label>
+        <label>Hauteur (m) <input type="number" id="rh" value="5" min="2"></label>
+        <label>Murs <select id="rm"></select></label>
+        <label>Sol <select id="rf"></select></label>
+        <label>Plafond <select id="rc"></select></label>
+        <label>Personnes présentes <input type="number" id="rp" value="100" min="0"></label>
+        <div class="big"><span id="rr">0</span> s</div><div class="res" id="rv"></div></div>
+
+      <div class="tool wide" id="t-cab"><h2>Guide des câbles et connecteurs</h2><p class="d">Lequel utiliser, pour quoi.</p>
+        <table class="g"><tr><th>Connecteur</th><th>Usage</th><th>À savoir</th></tr>
+        <tr><td>XLR</td><td>Micros, sorties de table vers enceintes actives</td><td>Symétrique : longues distances sans bruit.</td></tr>
+        <tr><td>Jack 6,35 mm TS (2 contacts)</td><td>Guitare, basse, clavier</td><td>Non symétrique : gardez-le court (moins de 6 m).</td></tr>
+        <tr><td>Jack 6,35 mm TRS (3 contacts)</td><td>Entrées et sorties symétriques, casque</td><td>Ne le confondez pas avec un câble stéréo non symétrique.</td></tr>
+        <tr><td>Speakon</td><td>Ampli vers enceinte passive</td><td>Verrouille et évite les contacts. Préférez-le au jack pour les enceintes.</td></tr>
+        <tr><td>RCA</td><td>Lecteurs, ordinateur, petites tables</td><td>Non symétrique, niveau grand public.</td></tr>
+        <tr><td>Câble d'enceinte</td><td>Ampli vers enceinte passive</td><td>Jamais un câble d'instrument. Section 2,5 mm² ou plus sur plus de 10 m.</td></tr>
+        <tr><td>Multipaire (snake)</td><td>Plusieurs micros de la scène vers la table</td><td>Choisissez au moins 2 voies de plus que nécessaire.</td></tr></table></div>
+
+      <div class="tool wide" id="t-mix"><h2>Aide-mémoire du mixage</h2><p class="d">Où chercher dans l'égaliseur quand un instrument se plaint.</p>
+        <table class="g"><tr><th>Source</th><th>Corps</th><th>Boue à réduire</th><th>Présence</th><th>Brillance</th></tr>
+        <tr><td>Voix</td><td>100 à 250 Hz</td><td>250 à 400 Hz</td><td>2 à 5 kHz</td><td>8 à 12 kHz</td></tr>
+        <tr><td>Grosse caisse</td><td>60 à 100 Hz</td><td>250 à 400 Hz</td><td>2 à 5 kHz (attaque)</td><td>—</td></tr>
+        <tr><td>Caisse claire</td><td>150 à 250 Hz</td><td>400 à 800 Hz</td><td>3 à 6 kHz</td><td>8 à 10 kHz</td></tr>
+        <tr><td>Basse</td><td>50 à 100 Hz</td><td>200 à 400 Hz</td><td>700 Hz à 1 kHz</td><td>2 à 4 kHz (clarté)</td></tr>
+        <tr><td>Guitare</td><td>100 à 250 Hz</td><td>300 à 500 Hz</td><td>2 à 4 kHz</td><td>6 à 10 kHz</td></tr>
+        <tr><td>Piano / clavier</td><td>80 à 200 Hz</td><td>300 à 500 Hz</td><td>2 à 5 kHz</td><td>8 à 12 kHz</td></tr>
+        <tr><td>Chorale</td><td>150 à 300 Hz</td><td>300 à 500 Hz</td><td>3 à 5 kHz</td><td>8 à 10 kHz</td></tr></table>
+        <p class="d" style="margin-top:8px">Coupez le grave inutile (filtre passe-haut vers 80 à 100 Hz) sur toutes les voix et instruments sans basses. Réduisez plutôt que d'augmenter.</p></div>
 
     </div>
   </section>
@@ -222,6 +286,68 @@ $('lgo').onclick=function(){var btn=this;if(stream){stream.getTracks().forEach(f
 /* retard */
 function delay(){var d=+$('dd').value||0,t=+$('dt').value,c=331.3+.606*(isNaN(t)?20:t),ms=d/c*1000+($('dh').checked?10:0);$('dr').textContent=ms.toFixed(1).replace('.',',');$('dn').textContent='Vitesse du son : '+c.toFixed(0)+' m/s. Réglez le retard de l\'enceinte à cette valeur.'}
 ['dd','dt','dh'].forEach(function(i){$(i).oninput=delay;$(i).onchange=delay});delay();
+
+/* accordeur */
+var uStream=null,uRaf=0,uBuf=null;
+function pitch(b,sr){var n=b.length,rms=0,i;for(i=0;i<n;i++)rms+=b[i]*b[i];if(Math.sqrt(rms/n)<.01)return -1;
+ var minL=Math.floor(sr/1200),maxL=Math.floor(sr/60),best=-1,bc=0,c=new Float32Array(maxL+2);
+ for(var l=minL;l<=maxL+1;l++){var s=0;for(i=0;i<n-l;i++)s+=b[i]*b[i+l];c[l]=s}
+ var c0=0;for(i=0;i<n;i++)c0+=b[i]*b[i];
+ for(l=minL+1;l<=maxL;l++){if(c[l]>c[l-1]&&c[l]>=c[l+1]&&c[l]>.9*c0*.55&&c[l]>bc*1.0){if(c[l]>bc){bc=c[l];best=l}}}
+ if(best<0)return -1;var thr=bc*.9;for(l=minL+1;l<=maxL;l++)if(c[l]>c[l-1]&&c[l]>=c[l+1]&&c[l]>=thr){best=l;break}
+ var a=c[best-1],bb=c[best],cc=c[best+1],d=a-2*bb+cc,sh=d?.5*(a-cc)/d:0;return sr/(best+sh)}
+function showNote(f){var a=+$('uA').value||440,m=12*Math.log(f/a)/Math.LN2+69,r=Math.round(m),cents=Math.round((m-r)*100);
+ $('un').textContent=NN[((r%12)+12)%12]+(Math.floor(r/12)-1);$('uh').textContent=f.toFixed(1)+' Hz';
+ $('uneedle').style.left=(50+Math.max(-50,Math.min(50,cents))*.9-.5)+'%';
+ $('uc').textContent=Math.abs(cents)<=5?'Juste ✓':(cents<0?'Trop bas de '+(-cents)+' cents : montez':'Trop haut de '+cents+' cents : descendez')}
+window._showNote=showNote;window._pitch=pitch;
+$('ugo').onclick=function(){var btn=this;if(uStream){uStream.getTracks().forEach(function(t){t.stop()});uStream=null;cancelAnimationFrame(uRaf);btn.textContent='Démarrer';return}
+ if(!navigator.mediaDevices){$('uc').textContent='Micro non disponible sur ce navigateur.';return}
+ navigator.mediaDevices.getUserMedia({audio:{echoCancellation:false,noiseSuppression:false,autoGainControl:false}}).then(function(s){uStream=s;var c=ac(),src=c.createMediaStreamSource(s),an=c.createAnalyser();an.fftSize=4096;src.connect(an);btn.textContent='Arrêter';$('uc').textContent='Écoute… jouez une note.';var b=new Float32Array(an.fftSize),last=0;
+  (function loop(){uRaf=requestAnimationFrame(loop);an.getFloatTimeDomainData(b);var f=pitch(b,c.sampleRate);if(f>0){last=Date.now();showNote(f)}else if(Date.now()-last>1500){$('un').textContent='—';$('uh').textContent='';$('uc').textContent='Écoute… jouez une note.'}})()}).catch(function(){$('uc').textContent='Accès au micro refusé. Autorisez-le dans votre navigateur.'})};
+/* ampli */
+function amp(){var n=Math.max(1,+$('an').value||1),z=+$('az').value,m=+$('am').value,w=$('aw').value,P=+$('ap').value||0,R=+$('ar').value||0,t=w==='p'?z/n:z*n,e=$('av');
+ $('at').textContent=(Math.round(t*100)/100).toString().replace('.',',');var h='',cls='ok';
+ if(t<m-1e-9){cls='bad';h='<b>Danger.</b> La charge ('+t.toFixed(2).replace('.',',')+' Ω) est sous le minimum de l\'ampli ('+m+' Ω) : il va chauffer et peut griller. '+(w==='p'?'Branchez moins d\'enceintes par canal ou utilisez des enceintes de plus forte impédance.':'')}
+ else{h='Charge acceptable pour l\'ampli.';var each=P/n;
+  if(each>R*2){cls='bad';h+=' <b>Attention :</b> chaque enceinte recevrait environ '+Math.round(each)+' W pour '+R+' W supportés : risque de destruction.'}
+  else if(each>R){cls='';h+=' Chaque enceinte reçoit environ '+Math.round(each)+' W pour '+R+' W RMS : ne montez pas à fond.'}
+  else h+=' Chaque enceinte reçoit environ '+Math.round(each)+' W pour '+R+' W supportés.';
+  if(w==='s'&&n>1)h+=' Le montage en série coupe tout si une enceinte lâche.'}
+ e.className='res '+cls;e.innerHTML=h}
+['an','az','aw','am','ap','ar'].forEach(function(i){$(i).oninput=amp;$(i).onchange=amp});amp();
+/* sonomètre */
+var sStream=null,sRaf=0;
+$('sgo').onclick=function(){var btn=this;if(sStream){sStream.getTracks().forEach(function(t){t.stop()});sStream=null;cancelAnimationFrame(sRaf);btn.textContent='Démarrer';return}
+ if(!navigator.mediaDevices){$('ss').textContent='Micro non disponible sur ce navigateur.';return}
+ navigator.mediaDevices.getUserMedia({audio:{echoCancellation:false,noiseSuppression:false,autoGainControl:false}}).then(function(s){sStream=s;var c=ac(),src=c.createMediaStreamSource(s),an=c.createAnalyser();an.fftSize=2048;src.connect(an);btn.textContent='Arrêter';var b=new Float32Array(an.fftSize),sm=0;
+  (function loop(){sRaf=requestAnimationFrame(loop);an.getFloatTimeDomainData(b);var r=0;for(var i=0;i<b.length;i++)r+=b[i]*b[i];r=Math.sqrt(r/b.length);var db=Math.max(0,Math.min(140,20*Math.log(Math.max(r,1e-5))/Math.LN10+(+$('so').value||90)));sm=sm?sm*.85+db*.15:db;
+   $('sv').textContent=Math.round(sm);$('sm').style.width=Math.min(100,sm/120*100)+'%';$('ss').textContent=sm>100?'Très fort : protection auditive recommandée.':sm>85?'Fort : limitez la durée d\'exposition.':'Niveau acceptable.'})()}).catch(function(){$('ss').textContent='Accès au micro refusé. Autorisez-le dans votre navigateur.'})};
+/* transposeur */
+var FR=['Do','Do#','Ré','Ré#','Mi','Fa','Fa#','Sol','Sol#','La','La#','Si'],EN=['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'];
+for(var k=-11;k<=11;k++){var o2=document.createElement('option');o2.value=k;o2.textContent=(k>0?'+':'')+k;if(k===0)o2.selected=true;$('xs').appendChild(o2)}
+var RX=/^(Do|Re|Ré|Mi|Fa|Sol|La|Si|[A-G])([#♯b♭]?)(.*)$/i;
+function idx(r,a){var l=r.toLowerCase(),fr=['do','re','ré','mi','fa','sol','la','si'],i=fr.indexOf(l),base;
+ if(i>=0)base=[0,2,2,4,5,7,9,11][i];else base={c:0,d:2,e:4,f:5,g:7,a:9,b:11}[l];
+ if(a==='#'||a==='♯')base++;else if(a==='b'||a==='♭')base--;return((base%12)+12)%12}
+function trans(){var n=+$('xs').value,out=[];
+ $('xi').value.split(/(\s+|\/)/).forEach(function(t){if(!t.trim()||t==='/'||/^\s+$/.test(t)){out.push(t);return}
+  var m=RX.exec(t);if(!m){out.push(t);return}var fr=/^(do|re|ré|mi|fa|sol|la|si)$/i.test(m[1]);
+  if(!fr&&m[1].length===1&&/^[a-g]$/.test(m[1])&&m[3]&&!/^(m|maj|min|dim|aug|sus|add|\d|\+|-|°)/i.test(m[3])){out.push(t);return}
+  var i=(idx(m[1],m[2])+n+120)%12;out.push((fr?FR[i]:EN[i])+m[3])});
+ $('xo').textContent=out.join('');var cp=n>0?'':'';$('xc').textContent=n===0?'Aucun changement.':'Transposé de '+(n>0?'+':'')+n+' demi-ton'+(Math.abs(n)>1?'s':'')+'.'}
+$('xi').oninput=trans;$('xs').onchange=trans;trans();
+/* acoustique */
+var MAT={m:[['Béton ou brique enduite',.03],['Tôle',.08],['Bois',.1],['Rideaux lourds',.55],['Panneaux acoustiques',.8]],f:[['Carrelage ou béton',.02],['Bois',.1],['Moquette',.3]],c:[['Béton ou tôle',.05],['Bois',.1],['Faux plafond en fibre',.6]]};
+[['rm','m',0],['rf','f',0],['rc','c',0]].forEach(function(x){MAT[x[1]].forEach(function(v,i){var o3=document.createElement('option');o3.value=v[1];o3.textContent=v[0];$(x[0]).appendChild(o3)})});
+function rt(){var L=+$('rl').value||1,W=+$('rw').value||1,H=+$('rh').value||1,V=L*W*H,A=2*(L+W)*H*(+$('rm').value)+L*W*(+$('rf').value)+L*W*(+$('rc').value)+(+$('rp').value||0)*.45,t=.161*V/A;
+ $('rr').textContent=t.toFixed(1).replace('.',',');var e=$('rv'),h,c='res ok';
+ if(t>2.2){c='res bad';h='Trop réverbérée : la parole sera confuse. Ajoutez des rideaux, des panneaux ou un faux plafond.'}
+ else if(t>1.8){c='res';h='Un peu longue. Correct pour le chant, difficile pour la parole.'}
+ else if(t>=.6){h='Bonne plage pour une salle de culte, de conférence ou de concert acoustique (0,6 à 1,8 s).'}
+ else{c='res';h='Salle très sèche : idéale pour la parole et le studio, moins pour le chant d\'assemblée.'}
+ e.className=c;e.innerHTML=h+'<br><small>Estimation à 500 Hz par la formule de Sabine : une aide, pas une mesure.</small>'}
+['rl','rw','rh','rm','rf','rc','rp'].forEach(function(i){$(i).oninput=rt;$(i).onchange=rt});rt();
 })();
 </script>
 </body>

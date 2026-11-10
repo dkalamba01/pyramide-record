@@ -1907,7 +1907,12 @@ async function driveSync(d){const c=drvCfg();if(!c||!d.lines.length||!d.no)retur
  catch(e){toast('Drive injoignable : le document reste enregistré ici. Réessayez en enregistrant.')}}
 /* devis : à chaque enregistrement ; factures : seulement à la création, au PDF et à l'envoi WhatsApp (une version datée à chaque fois) */
 function driveQueue(d,force){if(!drvCfg())return;if(d.type==='facture'&&!force)return;clearTimeout(drvT[d.id]);const c=JSON.parse(JSON.stringify(d));drvT[d.id]=setTimeout(()=>driveSync(c),3000)}
-$('qdrv').onclick=()=>{const c=drvCfg(),v=prompt(c?'Liaison Drive active. Collez un nouveau code pour la remplacer, ou écrivez 0 pour la désactiver.':'Collez le code de liaison Drive (donné par l\'administrateur).','');if(v===null)return;const t=v.trim();if(t==='0'){localStorage.removeItem(LSDRV);toast('Liaison Drive désactivée');return}if(!t)return;try{const j=JSON.parse(atob(t));if(!j.u||!j.k)throw 0;localStorage.setItem(LSDRV,t);toast('Liaison Drive activée');driveQueue(cur)}catch(e){toast('Code de liaison invalide.')}};
+$('qdrv').onclick=()=>{const c=drvCfg(),v=prompt(c?'Liaison Drive active. Collez l\'adresse publique (…/exec) pour la corriger, un nouveau code pour la remplacer, ou 0 pour la désactiver.':'Collez le code de liaison Drive (donné par l\'administrateur). Vous pouvez y ajouter, après un espace, l\'adresse publique du déploiement (…/exec).','');if(v===null)return;const t=v.trim();if(t==='0'){localStorage.removeItem(LSDRV);toast('Liaison Drive désactivée');return}if(!t)return;
+ try{const tk=t.split(/\s+/),url=tk.find(x=>/^https:\/\/script\.google\.com\/macros\/s\/[^\s]+\/exec$/.test(x)),code=tk.find(x=>x!==url);let j;
+  if(code){j=JSON.parse(atob(code));if(!j.u||!j.k)throw 0}else if(url&&c)j={u:c.u,k:c.k};else throw 0;
+  if(url)j.u=url;
+  if(/\/dev$/.test(j.u)){toast('Ce lien se termine par /dev (test privé). Collez l\'adresse publique qui se termine par /exec.');return}
+  localStorage.setItem(LSDRV,btoa(JSON.stringify(j)));toast('Liaison Drive activée');driveQueue(cur)}catch(e){toast('Code de liaison invalide.')}};
 $('qsave').onclick=()=>save();
 function setDoc(d){cur=JSON.parse(JSON.stringify(d));snap=docs.some(x=>x.id===d.id)?JSON.stringify(d):null;renderDoc()}
 $('qnew').onclick=()=>{if(cur&&cur.dirty&&!confirm('Quitter sans enregistrer les changements ?'))return;setDoc(newDoc())};

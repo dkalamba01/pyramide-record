@@ -20,7 +20,7 @@ function setup() {
 function liaison() {
   const url = ScriptApp.getService().getUrl();
   if (!url) { Logger.log('Déployez d\'abord le script (Déployer > Nouveau déploiement > Application Web).'); return; }
-  Logger.log('CODE DE LIAISON (à coller dans le constructeur, bouton « Liaison Drive ») :\n' +
+  Logger.log('CODE DE LIAISON (à coller dans le constructeur, bouton « Liaison Drive », suivi d\'un espace et de l\'adresse publique …/exec du déploiement) :\n' +
     Utilities.base64Encode(JSON.stringify({ u: url, k: P.getProperty('SECRET') })));
 }
 

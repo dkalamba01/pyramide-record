@@ -9,7 +9,7 @@
       "type": "studio",
       "role": "Enregistrement · Mixage · Album Na Ndimi",
       "link": "https://www.youtube.com/watch?v=QUTHPo0fBSc",
-      "image": "sharon-mbungu-akinseye_na-ndimi.jpg",
+      "image": "sharon-mbungu-akinseye_il-est-tellement-bon.jpg",
       "album": "na-ndimi"
     },
     {
@@ -766,7 +766,9 @@
               "name": "Thethe Makabi M.",
               "slug": "thethe-makabi-m"
             }
-          ]
+          ],
+          "image": "sharon-mbungu-akinseye_il-est-tellement-bon.jpg",
+          "poster": "sharon-mbungu-akinseye_il-est-tellement-bon-affiche.jpg"
         },
         {
           "n": 3,

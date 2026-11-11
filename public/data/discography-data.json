@@ -9,7 +9,8 @@
       "type": "studio",
       "role": "Enregistrement · Mixage · Album Na Ndimi",
       "link": "https://www.youtube.com/watch?v=QUTHPo0fBSc",
-      "image": "sharon-mbungu-akinseye_na-ndimi.jpg"
+      "image": "sharon-mbungu-akinseye_na-ndimi.jpg",
+      "album": "na-ndimi"
     },
     {
       "title": "Na Ndimi",
@@ -18,7 +19,8 @@
       "type": "studio",
       "role": "Enregistrement · Mixage · Album Na Ndimi",
       "link": "https://www.youtube.com/watch?v=M23oYgwSZzc",
-      "image": "sharon-mbungu-akinseye_na-ndimi.jpg"
+      "image": "sharon-mbungu-akinseye_na-ndimi.jpg",
+      "album": "na-ndimi"
     },
     {
       "title": "Ciel sur Terre",
@@ -733,6 +735,93 @@
       "role": "Captation · Mastering",
       "link": "https://youtu.be/lib39vLWmbc",
       "image": "pasteur-lifoko-du-ciel_celebration-toda-raba.jpg"
+    }
+  ],
+  "albums": [
+    {
+      "id": "na-ndimi",
+      "title": "Na Ndimi",
+      "artist": "Sharon Mbungu Akinseye",
+      "artistSlug": "sharon-mbungu-akinseye",
+      "genre": "gospel",
+      "type": "studio",
+      "role": "Enregistrement · Mixage",
+      "date": "2026-11-21",
+      "cover": "sharon-mbungu-akinseye_na-ndimi.jpg",
+      "poster": "sharon-mbungu-akinseye_na-ndimi-playlist.jpg",
+      "tracks": [
+        {
+          "n": 1,
+          "title": "Na Ndimi",
+          "play": "Na Ndimi",
+          "clip": true
+        },
+        {
+          "n": 2,
+          "title": "Il est tellement bon",
+          "play": "Il est tellement bon",
+          "clip": true,
+          "feat": [
+            {
+              "name": "Thethe Makabi M.",
+              "slug": "thethe-makabi-m"
+            }
+          ]
+        },
+        {
+          "n": 3,
+          "title": "Christ"
+        },
+        {
+          "n": 4,
+          "title": "Parle moi",
+          "feat": [
+            {
+              "name": "Deodato Bikindo"
+            }
+          ]
+        },
+        {
+          "n": 5,
+          "title": "Ya nga na Yo"
+        },
+        {
+          "n": 6,
+          "title": "Elohim",
+          "feat": [
+            {
+              "name": "Matthieu Lys Mangenda"
+            }
+          ]
+        },
+        {
+          "n": 7,
+          "title": "Mon adoration"
+        },
+        {
+          "n": 8,
+          "title": "Alingi nga"
+        },
+        {
+          "n": 9,
+          "title": "Shukrani"
+        },
+        {
+          "n": 10,
+          "title": "Ngasa",
+          "feat": [
+            {
+              "name": "Billy Nuée",
+              "slug": "billy-nuee"
+            }
+          ]
+        },
+        {
+          "n": null,
+          "bonus": true,
+          "title": "Yembela"
+        }
+      ]
     }
   ]
 }

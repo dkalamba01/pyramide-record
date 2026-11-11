@@ -19,7 +19,7 @@
       "type": "studio",
       "role": "Enregistrement · Mixage · Album Na Ndimi",
       "link": "https://www.youtube.com/watch?v=M23oYgwSZzc",
-      "image": "sharon-mbungu-akinseye_na-ndimi.jpg",
+      "image": "sharon-mbungu-akinseye_na-ndimi-titre.jpg",
       "album": "na-ndimi"
     },
     {
@@ -754,7 +754,8 @@
           "n": 1,
           "title": "Na Ndimi",
           "play": "Na Ndimi",
-          "clip": true
+          "clip": true,
+          "image": "sharon-mbungu-akinseye_na-ndimi-titre.jpg"
         },
         {
           "n": 2,

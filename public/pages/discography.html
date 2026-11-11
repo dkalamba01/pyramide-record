@@ -54,6 +54,7 @@
   .album__tracks { list-style:none; margin:var(--sp-4) 0 0; padding:0; border-top:1px solid var(--hair); }
   .album__track { display:grid; grid-template-columns:52px 1fr auto; align-items:center; gap:var(--sp-3); padding:10px 0; border-bottom:1px solid var(--hair); font-size:var(--fs-sm); }
   .album__n { color:var(--ash); font-size:var(--fs-xs); letter-spacing:var(--ls-wide); text-transform:uppercase; }
+  .album__thumb { width:44px; height:44px; border-radius:var(--r-sm); object-fit:cover; border:1px solid var(--hair-2); vertical-align:middle; margin-right:10px; }
   .album__tt { display:flex; flex-direction:column; gap:2px; min-width:0; }
   .album__name { color:var(--ash); }
   .album__track.is-out .album__name { color:var(--bone); font-weight:500; }
@@ -418,7 +419,7 @@
           return f.slug ? '<a class="album__feat" href="artists/' + f.slug + '.html">' + f.name + '</a>' : f.name;
         }).join(', ');
         return '<li class="album__track' + (ok ? ' is-out' : '') + '"><span class="album__n">' + (t.bonus ? 'Bonus' : t.n) + '</span>' +
-          '<span class="album__tt"><span class="album__name">' + t.title + '</span>' + (feat ? '<span class="album__ft">feat. ' + feat + '</span>' : '') + '</span>' +
+          '<span class="album__tt"><span class="album__name">' + (t.image ? (t.poster ? '<a href="../assets/images/discography/' + t.poster + '" target="_blank" rel="noopener" title="Voir l\'affiche">' : '') + '<img class="album__thumb" src="../assets/images/discography/' + t.image + '" alt="" loading="lazy">' + (t.poster ? '</a>' : '') : '') + t.title + '</span>' + (feat ? '<span class="album__ft">feat. ' + feat + '</span>' : '') + '</span>' +
           (ok ? '<span class="album__play" data-play-index="' + idx + '" role="button" tabindex="0">' + PLAY_ICON + ' Écouter</span>' : '<span class="album__soon">Bientôt</span>') + '</li>';
       }).join('');
       if (names.indexOf(al.artist) === -1) names.unshift(al.artist);

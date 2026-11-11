@@ -42,6 +42,30 @@
   .catalog-section-header:first-child { padding-top: 0; border-top: 0; margin-top: 0; }
   .catalog-section-header h2 { font-family: var(--font-display); font-weight: 400; font-size: var(--fs-h3); color: var(--bone); }
   .catalog-section-header.is-hidden { display: none; }
+  /* Album group (several tracks under one cover) */
+  .release.album { grid-column:1 / -1; display:grid; grid-template-columns:minmax(200px,300px) 1fr; gap:var(--sp-6); background:var(--panel); border:1px solid var(--hair-2); border-radius:var(--r-lg); padding:var(--sp-5); }
+  .album__cover { position:relative; aspect-ratio:1; border-radius:var(--r-md); overflow:hidden; align-self:start; }
+  .album__cover img { width:100%; height:100%; object-fit:cover; display:block; }
+  .album__eyebrow { font-size:var(--fs-eyebrow); letter-spacing:var(--ls-wide); text-transform:uppercase; color:var(--ember); margin-bottom:var(--sp-2); }
+  .album__title { font-family:var(--font-display); font-weight:400; font-size:clamp(26px,3.4vw,36px); color:var(--bone); line-height:1.15; }
+  .album__by { color:var(--sand); margin-top:var(--sp-1); font-size:var(--fs-sm); }
+  .album__by a { color:var(--sand); text-decoration:underline; text-decoration-color:var(--hair-2); text-underline-offset:3px; }
+  .album__meta { color:var(--ash); font-size:var(--fs-xs); letter-spacing:var(--ls-wide); text-transform:uppercase; margin-top:var(--sp-2); }
+  .album__tracks { list-style:none; margin:var(--sp-4) 0 0; padding:0; border-top:1px solid var(--hair); }
+  .album__track { display:grid; grid-template-columns:52px 1fr auto; align-items:center; gap:var(--sp-3); padding:10px 0; border-bottom:1px solid var(--hair); font-size:var(--fs-sm); }
+  .album__n { color:var(--ash); font-size:var(--fs-xs); letter-spacing:var(--ls-wide); text-transform:uppercase; }
+  .album__tt { display:flex; flex-direction:column; gap:2px; min-width:0; }
+  .album__name { color:var(--ash); }
+  .album__track.is-out .album__name { color:var(--bone); font-weight:500; }
+  .album__track.is-out .album__n { color:var(--ember); }
+  .album__ft { color:var(--ash); font-size:var(--fs-xs); }
+  .album__feat { color:var(--sand); text-decoration:underline; text-decoration-color:var(--hair-2); text-underline-offset:2px; }
+  .album__play { display:inline-flex; align-items:center; gap:6px; color:var(--gold-bright); font-size:var(--fs-xs); letter-spacing:var(--ls-wide); text-transform:uppercase; cursor:pointer; white-space:nowrap; }
+  .album__play svg { width:14px; height:14px; fill:currentColor; }
+  .album__play:hover { text-decoration:underline; }
+  .album__soon { color:var(--ash); font-size:var(--fs-xs); letter-spacing:var(--ls-wide); text-transform:uppercase; opacity:.7; }
+  .album__poster { display:inline-block; margin-top:var(--sp-3); font-size:var(--fs-xs); color:var(--sand); text-decoration:underline; text-decoration-color:var(--hair-2); text-underline-offset:3px; }
+  @media(max-width:820px){ .release.album { grid-template-columns:1fr; padding:var(--sp-4); } .album__cover { max-width:280px; } }
   .release { position:relative; }
   .release.is-hidden { display:none; }
   .release__art { aspect-ratio:1; border-radius:var(--r-md); margin-bottom:var(--sp-2); position:relative; overflow:hidden; }
@@ -378,6 +402,45 @@
 
     var allReleases = [];
 
+    function renderAlbum(al){
+      var idxOf = function(t){ for (var i=0;i<allReleases.length;i++){ if (allReleases[i].album===al.id && allReleases[i].title===t) return i; } return -1; };
+      var d = new Date(al.date + 'T12:00:00'), out = 0, names = [];
+      var released = d <= new Date();
+      var dtxt = d.toLocaleDateString('fr-FR', { day:'numeric', month:'long', year:'numeric' });
+      var rows = al.tracks.map(function(t){
+        var idx = t.play ? idxOf(t.play) : -1;
+        var ok = idx > -1 && allReleases[idx].link;
+        if (ok) {
+          out++;
+          allReleases[idx].artist.split(/\s+feat\.?\s+|\s+&\s+/i).forEach(function(n){ n = n.trim(); if (n && names.indexOf(n) === -1) names.push(n); });
+        }
+        var feat = (t.feat || []).map(function(f){
+          return f.slug ? '<a class="album__feat" href="artists/' + f.slug + '.html">' + f.name + '</a>' : f.name;
+        }).join(', ');
+        return '<li class="album__track' + (ok ? ' is-out' : '') + '"><span class="album__n">' + (t.bonus ? 'Bonus' : t.n) + '</span>' +
+          '<span class="album__tt"><span class="album__name">' + t.title + '</span>' + (feat ? '<span class="album__ft">feat. ' + feat + '</span>' : '') + '</span>' +
+          (ok ? '<span class="album__play" data-play-index="' + idx + '" role="button" tabindex="0">' + PLAY_ICON + ' Écouter</span>' : '<span class="album__soon">Bientôt</span>') + '</li>';
+      }).join('');
+      if (names.indexOf(al.artist) === -1) names.unshift(al.artist);
+      var el = document.createElement('div');
+      el.className = 'release album';
+      el.setAttribute('data-genre', al.genre);
+      el.setAttribute('data-type', al.type);
+      el.setAttribute('data-artists', names.join('|'));
+      el.innerHTML =
+        '<div class="album__cover"><img src="../assets/images/discography/' + al.cover + '" alt="Album ' + al.title + ' — ' + al.artist + '" loading="lazy" decoding="async">' +
+        '<div class="release__badge"><span class="release__tag ' + GENRE_TAG_CLASS[al.genre] + '">' + GENRE_LABEL[al.genre] + '</span></div></div>' +
+        '<div><div class="album__eyebrow">Album · ' + (released ? 'sorti' : 'sortie') + ' le ' + dtxt + '</div>' +
+        '<h3 class="album__title">' + al.title + '</h3>' +
+        '<div class="album__by"><a href="artists/' + al.artistSlug + '.html">' + al.artist + '</a></div>' +
+        '<div class="album__meta">' + al.role + ' · ' + out + ' titre' + (out > 1 ? 's' : '') + ' disponible' + (out > 1 ? 's' : '') + ' sur ' + al.tracks.length + '</div>' +
+        '<ol class="album__tracks">' + rows + '</ol>' +
+        (al.poster ? '<a class="album__poster" href="../assets/images/discography/' + al.poster + '" target="_blank" rel="noopener">Voir l\'affiche de l\'album →</a>' : '') +
+        '</div>';
+      return el;
+    }
+
+
     fetch('../data/discography-data.json')
       .then(function(r){ return r.json(); })
       .then(function(data){
@@ -387,9 +450,10 @@
 
         // Group by genre rather than showing raw JSON order — keeps Gospel,
         // Non Gospel, and Divers visually separated even in the "Tout" view.
-        var gospelItems = data.releases.filter(function(r){ return r.genre === 'gospel'; });
-        var nonGospelItems = data.releases.filter(function(r){ return r.genre === 'non-gospel'; });
-        var diversItems = data.releases.filter(function(r){ return r.genre === 'divers'; });
+        var gospelItems = data.releases.filter(function(r){ return r.genre === 'gospel' && !r.album; });
+        var nonGospelItems = data.releases.filter(function(r){ return r.genre === 'non-gospel' && !r.album; });
+        var diversItems = data.releases.filter(function(r){ return r.genre === 'divers' && !r.album; });
+        var albumsFor = function(g){ return (data.albums || []).filter(function(a){ return a.genre === g; }); };
 
         function appendSectionHeader(label, genreKey){
           var header = document.createElement('div');
@@ -399,8 +463,9 @@
           catalog.appendChild(header);
         }
 
-        if (gospelItems.length) {
+        if (gospelItems.length || albumsFor('gospel').length) {
           appendSectionHeader('Gospel', 'gospel');
+          albumsFor('gospel').forEach(function(al){ catalog.appendChild(renderAlbum(al)); });
           gospelItems.forEach(function(item){
             var i = data.releases.indexOf(item);
             catalog.appendChild(renderCard(item, i));

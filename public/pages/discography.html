@@ -43,7 +43,7 @@
   .catalog-section-header h2 { font-family: var(--font-display); font-weight: 400; font-size: var(--fs-h3); color: var(--bone); }
   .catalog-section-header.is-hidden { display: none; }
   /* Album group (several tracks under one cover) */
-  .release.album { grid-column:1 / -1; display:grid; grid-template-columns:minmax(200px,300px) 1fr; gap:var(--sp-6); background:var(--panel); border:1px solid var(--hair-2); border-radius:var(--r-lg); padding:var(--sp-5); }
+  .release.album { grid-column:1 / -1; display:grid; grid-template-columns:minmax(160px,210px) 1fr; gap:var(--sp-5); background:var(--panel); border:1px solid var(--hair-2); border-radius:var(--r-lg); padding:var(--sp-5); }
   .album__cover { position:relative; aspect-ratio:1; border-radius:var(--r-md); overflow:hidden; align-self:start; }
   .album__cover img { width:100%; height:100%; object-fit:cover; display:block; }
   .album__eyebrow { font-size:var(--fs-eyebrow); letter-spacing:var(--ls-wide); text-transform:uppercase; color:var(--ember); margin-bottom:var(--sp-2); }
@@ -56,7 +56,7 @@
   .album__n { color:var(--ash); font-size:var(--fs-xs); letter-spacing:var(--ls-wide); text-transform:uppercase; }
   .album__thumb { width:44px; height:44px; border-radius:var(--r-sm); object-fit:cover; border:1px solid var(--hair-2); vertical-align:middle; margin-right:10px; }
   .album__tt { display:flex; flex-direction:column; gap:2px; min-width:0; }
-  .album__name { color:var(--ash); }
+  .album__name { color:var(--ash); display:flex; align-items:center; }
   .album__track.is-out .album__name { color:var(--bone); font-weight:500; }
   .album__track.is-out .album__n { color:var(--ember); }
   .album__ft { color:var(--ash); font-size:var(--fs-xs); }
@@ -65,6 +65,8 @@
   .album__play svg { width:14px; height:14px; fill:currentColor; }
   .album__play:hover { text-decoration:underline; }
   .album__soon { color:var(--ash); font-size:var(--fs-xs); letter-spacing:var(--ls-wide); text-transform:uppercase; opacity:.7; }
+  .album__tracks:not(.open) .album__track:not(.is-out) { display:none; }
+  .album__more { margin-top:var(--sp-3); background:none; border:0; padding:0; font:inherit; font-size:var(--fs-xs); letter-spacing:var(--ls-wide); text-transform:uppercase; color:var(--sand); text-decoration:underline; text-decoration-color:var(--hair-2); text-underline-offset:3px; cursor:pointer; margin-right:var(--sp-4); }
   .album__poster { display:inline-block; margin-top:var(--sp-3); font-size:var(--fs-xs); color:var(--sand); text-decoration:underline; text-decoration-color:var(--hair-2); text-underline-offset:3px; }
   @media(max-width:820px){ .release.album { grid-template-columns:1fr; padding:var(--sp-4); } .album__cover { max-width:280px; } }
   .release { position:relative; }
@@ -436,8 +438,14 @@
         '<div class="album__by"><a href="artists/' + al.artistSlug + '.html">' + al.artist + '</a></div>' +
         '<div class="album__meta">' + al.role + ' · ' + out + ' titre' + (out > 1 ? 's' : '') + ' disponible' + (out > 1 ? 's' : '') + ' sur ' + al.tracks.length + '</div>' +
         '<ol class="album__tracks">' + rows + '</ol>' +
+        (out < al.tracks.length ? '<button type="button" class="album__more">Voir les ' + (al.tracks.length - out) + ' titres à venir</button>' : '') +
         (al.poster ? '<a class="album__poster" href="../assets/images/discography/' + al.poster + '" target="_blank" rel="noopener">Voir l\'affiche de l\'album →</a>' : '') +
         '</div>';
+      var mb = el.querySelector('.album__more');
+      if (mb) mb.addEventListener('click', function(){
+        var ol = el.querySelector('.album__tracks'), o = ol.classList.toggle('open');
+        mb.textContent = o ? 'Masquer les titres à venir' : 'Voir les ' + (al.tracks.length - out) + ' titres à venir';
+      });
       return el;
     }
 

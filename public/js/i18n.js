@@ -15,7 +15,7 @@
  */
 (function () {
   'use strict';
-  var ENABLED = false;
+  var ENABLED = true;
   var SUPPORTED = ['fr', 'en'];
   var FR_REGION = ['ln', 'kg', 'sw', 'lua', 'rw', 'rn', 'mg', 'wo', 'bm', 'ff', 'ktu', 'lu'];
   var STORE = 'pr-lang';

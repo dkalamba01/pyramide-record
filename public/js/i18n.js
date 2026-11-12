@@ -88,7 +88,7 @@
       x.send();
     };
     get('en.json', function (d) { dict = d; });
-    get('en-js.json', function (d) { dyn = d; });
+    get('en-js.json', function (d) { dyn = d; buildPats(); });
   }
 
   /* ---- Runtime translation of JavaScript-generated text -------------------------------
@@ -101,13 +101,37 @@
     if (lang !== 'en') return n;
     var parts = n.split(','), ip = parts[0].replace(/[\u00a0\u202f ]/g, ','), dp = parts.length > 1 ? parts[1] : null;
     if (parts.length > 2) return n;
+    if (dp !== null && dp.length === 3 && !/[\u00a0\u202f ]/.test(parts[0])) return n; /* already English thousands */
     return dp === null ? ip : ip + '.' + dp;
+  }
+  /* Template entries: keys containing {} match any text; the captured text is translated on its own. */
+  var pats = [];
+  function buildPats() {
+    pats = [];
+    Object.keys(dyn).forEach(function (k) {
+      if (k.indexOf('{}') < 0) return;
+      var src = k.replace(/[.*+?^$()|[\]\\]/g, '\\$&').replace(/\{\}/g, '\u0001').replace(/#/g, '\u0002');
+      src = src.replace(/\u0001/g, '(.+?)').replace(/\u0002/g, '(\\d{1,3}(?:[\\u00a0\\u202f ]\\d{3})+(?:,\\d+)?|\\d+(?:[.,]\\d+)?)');
+      pats.push({ re: new RegExp('^' + src + '$'), k: k, v: dyn[k] });
+    });
+    pats.sort(function (a, b) { return b.k.length - a.k.length; });
+  }
+  function trPat(core, lang) {
+    var i, m, p, ci, order, out;
+    for (i = 0; i < pats.length; i++) {
+      p = pats[i]; m = p.re.exec(core); if (!m) continue;
+      ci = 1; order = p.k.match(/\{\}|#/g) || [];
+      out = []; order.forEach(function (t) { var c = m[ci++]; out.push(t === '#' ? numEn(c, lang) : tr(c, lang)); });
+      ci = 0;
+      return p.v.replace(/\{\}|#/g, function () { return out[ci++]; });
+    }
+    return null;
   }
   function trCore(core, lang) {
     var nums = [], key = core.replace(/\s+/g, ' ').replace(NUM, function (n) { nums.push(n); return '#'; });
     var v = dyn[key];
     if (v === undefined) v = dyn[core.replace(/\s+/g, ' ')];
-    if (v === undefined) return null;
+    if (v === undefined) { return pats.length ? trPat(core.replace(/\s+/g, ' '), lang) : null; }
     var i = 0;
     return v.replace(/#/g, function () { var n = nums[i++]; return n === undefined ? '#' : numEn(n, lang); });
   }
@@ -118,15 +142,67 @@
     var core = m[2]; if (!core) return str;
     var v = trCore(core, lang);
     if (v !== null) return m[1] + v + m[3];
-    /* piecewise fallback: translate the parts around separators, keep the rest */
-    var parts = core.split(/(\s*[\u00b7\u2014:()+\u2192|]\s*|\s\u00d7\s?(?=\d))/), hit = false, i, t;
-    if (parts.length < 3) return str;
+    if (window.__trDebug && /[A-Za-z\u00c0-\u00ff]{3}/.test(core)) (window.__trMiss = window.__trMiss || {})[core] = 1;
+    /* fallback 1: sentence by sentence ('. ' and '; ' boundaries), each sentence may itself fall back to pieces */
+    var sp = core.split(/(\s*[.;]\s+)/), hit0 = false, j, one;
+    if (sp.length > 1) {
+      for (j = 0; j < sp.length; j += 2) {
+        one = trOne(sp[j], lang);
+        if (one !== sp[j]) { sp[j] = one; hit0 = true; }
+      }
+      if (hit0) { for (j = 1; j < sp.length; j += 2) sp[j] = sp[j].replace(/^\s+;/, ';'); return m[1] + sp.join('') + m[3]; }
+    }
+    one = trOne(core, lang);
+    return one !== core ? m[1] + one + m[3] : str;
+  }
+  /* one sentence: whole lookup (with/without trailing period), then piecewise around separators */
+  function trOne(core0, lang) {
+    var mm = /^(\s*)([\s\S]*?)(\s*)$/.exec(core0), core = mm[2];
+    if (!core) return core0;
+    return mm[1] + trOne2(core, lang) + mm[3];
+  }
+  function trOne2(core, lang) {
+    var dot = /[.]$/.test(core) ? '.' : '', c = dot ? core.slice(0, -1) : core, v = trCore(c, lang);
+    if (v !== null) return v + dot;
+    v = trCore(core, lang); if (v !== null) return v;
+    var parts = splitTop(c), hit = false, i, t;
+    if (parts.length < 3) parts = null;
+    if (parts) {
+      for (i = 0; i < parts.length; i += 2) {
+        if (!parts[i].trim()) continue;
+        t = trPart(parts[i].trim(), lang);
+        if (t !== null) { parts[i] = parts[i].replace(parts[i].trim(), function () { return t; }); hit = true; }
+      }
+      for (i = 1; i < parts.length; i += 2) parts[i] = parts[i].replace(/^\s*:\s*$/, ': ');
+      if (hit) return parts.join('') + dot;
+    }
+    t = trPart(c, lang);
+    return t !== null ? t + dot : core;
+  }
+  var SEP = /^(\s*[\u00b7\u2014\u2013:+\u2192|]\s*|\s\u00d7\s?(?=\d))/;
+  /* split at separators that are NOT inside parentheses; returns [text, sep, text, ...] */
+  function splitTop(c) {
+    var out = [], depth = 0, cur = '', i = 0, m, ch;
+    while (i < c.length) {
+      ch = c.charAt(i);
+      if (ch === '(') depth++; else if (ch === ')') depth = Math.max(0, depth - 1);
+      if (!depth && (m = SEP.exec(c.slice(i))) && m[0].trim() !== '' && cur) { out.push(cur, m[0]); cur = ''; i += m[0].length; continue; }
+      cur += ch; i++;
+    }
+    out.push(cur);
+    return out;
+  }
+  /* a piece: whole lookup, else split around parentheses */
+  function trPart(c, lang) {
+    var v = trCore(c, lang); if (v !== null) return v;
+    var parts = c.split(/(\s*[()]\s*)/), hit = false, i, t;
+    if (parts.length < 3) return null;
     for (i = 0; i < parts.length; i += 2) {
       if (!parts[i].trim()) continue;
       t = trCore(parts[i].trim(), lang);
       if (t !== null) { parts[i] = parts[i].replace(parts[i].trim(), function () { return t; }); hit = true; }
     }
-    return hit ? m[1] + parts.join('') + m[3] : str;
+    return hit ? parts.join('') : null;
   }
   var SKIP = { SCRIPT: 1, STYLE: 1, TEXTAREA: 1, NOSCRIPT: 1, CODE: 1 };
   var TATTR = ['title', 'placeholder', 'aria-label', 'alt', 'data-tip'];
@@ -174,13 +250,18 @@
   function trText(text, lang) {
     lang = eff(lang); if (lang !== 'en' || text == null) return text;
     return String(text).split('\n').map(function (l) {
-      var w = tr(l, 'en'); if (w !== l) return w;
+      var w;
+      if (!/[*_~]/.test(l)) { w = tr(l, 'en'); if (w !== l) return tidy(w); }
       /* split on WhatsApp markers and separators, translate each piece */
-      return l.split(/(\s[\u2014\u00b7]\s|\s:\s|:\s|[*_~])/).map(function (p, i) {
-        return i % 2 ? p : tr(p, 'en');
-      }).join('');
+      return tidy(l.split(/(\s[\u2014\u00b7]\s|\s:\s|:\s|[*_~])/).map(function (p, i) {
+        if (i % 2) return p;
+        var b = /^(\s*[\u2022\u25aa\u25e6]\s+)([\s\S]*)$/.exec(p);
+        return b ? b[1] + tr(b[2], 'en') : tr(p, 'en');
+      }).join(''));
     }).join('\n');
   }
+  /* English typography: "word :" -> "word:" */
+  function tidy(l) { return l.replace(/([*_~)\w\u00e0-\u00ff]) :(?=\s|$)/g, '$1:'); }
   function deep(o, lang) {
     lang = eff(lang); if (lang !== 'en') return o;
     if (typeof o === 'string') return trText(o, lang);

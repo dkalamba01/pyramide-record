@@ -549,10 +549,16 @@ function catMatch(p){const a=nzc(p.n);if(!a)return null;let best=null,bd=1e9;
     if(c.sku&&p.sku&&c.sku===p.sku)return c;
     if(a===b||(a.length>=6&&b.length>=6&&(a.includes(b)||b.includes(a)))){const d=Math.abs(a.length-b.length);if(d<bd){bd=d;best=c}}}
   return best}
+// Niveau de qualité venant d'Iris Financial : 1, 2, 3 ; vide ou 0 = « Non classé » (proposé à tous les niveaux, origine à confirmer)
+const qRaw=c=>c.qualityTier!=null?c.qualityTier:c.quality_tier!=null?c.quality_tier:c.quality;
+const qOf=c=>{const v=parseInt(qRaw(c),10);return v>=1&&v<=3?v:0};
+let qClassified=false;
 function loadCatalog(){if(!/^https?:/.test(location.protocol))return;
   fetch(CAT_URL).then(r=>r.ok?r.json():Promise.reject()).then(j=>{CATALOG=(j&&j.products)||[];const seen=new Set();let n=0;
+    // on ne tient compte du niveau que si au moins un produit a déjà été classé 1, 2 ou 3 dans Iris Financial
+    qClassified=CATALOG.some(c=>{const v=parseInt(qRaw(c),10);return v>=1&&v<=3});
     Object.values(ROOMS).forEach(R=>(R.slots||[]).forEach(sl=>sl.o.forEach(o=>{if(seen.has(o.n))return;seen.add(o.n);n++;const c=catMatch(o);
-      if(c&&c.price>0){STOCK[o.n]={qty:c.quantityAvailable||0,price:Math.round(c.price),id:c.productId,sku:c.sku||null,img:imgOf(c)}}else catInfo.un.push(o.n)})));
+      if(c&&c.price>0){STOCK[o.n]={qty:c.quantityAvailable||0,price:Math.round(c.price),id:c.productId,sku:c.sku||null,img:imgOf(c)};if(qClassified){const t=qOf(c);o.tier=t}}else catInfo.un.push(o.n)})));
     catInfo.n=n;catInfo.m=Object.keys(STOCK).length;window.__catalog={CATALOG,STOCK,unmatched:catInfo.un};
     try{renderList();if(typeof refresh==='function')refresh()}catch(e){}}).catch(()=>{}).then(()=>{if(window.__qbRefresh)window.__qbRefresh();if(window.__packGo)window.__packGo()})}
 const inStock=p=>!!(STOCK[p.n]&&STOCK[p.n].qty>0&&STOCK[p.n].price>0);
@@ -566,7 +572,8 @@ const LV={1:{n:'Première qualité',d:'Marques de confiance, provenant des État
  2:{n:'Deuxième qualité',d:'Tout ce qu\'il y a en première qualité, plus des marques connues au bon rapport qualité-prix, dont du matériel venu du Japon.',dl:'Délai : à confirmer'},
  3:{n:'Troisième qualité',d:'Tout ce qu\'il y a en deuxième qualité, plus la plupart du matériel venu de Chine et du matériel vendu à Kinshasa. Disponibilité et qualité variables.',dl:'Délai : à confirmer'}};
 const LVNOTE='Selon la qualité choisie, le pays d\'origine change : le délai de livraison et le coût du transport changent aussi, et le prix final peut être ajusté à la commande.';
-const vis=o=>(o.tier||1)<=lvl;
+const tierOf=o=>o.tier==null?1:o.tier;
+const vis=o=>tierOf(o)<=lvl;
 const HID=new Set(['cam','tri','amb','bkl','led','ref','stl','bg','cap','sd','bat']),DECO=new Set(['scr']),HIDR=['vid','pho'];
 const qty=s=>HID.has(s.id)?0:qov[rm+s.id]!=null?qov[rm+s.id]:s.q[size];
 const active=()=>SLOTS.filter(s=>qty(s)>0);
@@ -645,7 +652,7 @@ function totalsRent(){let t=0,req=[],rows=[],val=0,units=0;
   return{t,req,rows,rent:{caution:Math.round(val*.3/10)*10,acompte:Math.round(t*.5)}}}
 const CGSH={round:'ronde',sq:'carrée',oct:'octogonale',half:'demi-ronde'};
 function cageTag(x){if(!x.s||x.s.t!=='dcage')return'';const L=[];for(let i=0;i<(x.q||1);i++){const c=cgOf(rm+x.s.id+i);L.push('cage '+CGSH[c.sh]+' '+c.w.toFixed(1)+'×'+c.d.toFixed(1)+' m, h '+c.h.toFixed(1)+' m')}return L.join(' / ')}
-function rowTag(x,br){const b=rowTag0(x,br),c=cageTag(x);return c?(br?' ['+c+']':' · '+c)+b:b}
+function rowTag(x,br){const b=rowTag0(x,br),c=cageTag(x),u=x.o&&x.o.tier===0?(br?' [origine à confirmer]':' · origine à confirmer'):'';return(c?(br?' ['+c+']':' · '+c)+b:b)+u}
 function rowTag0(x,br){if(rmode==='rent'){if(x.svc)return'';const t='location '+rdays+' j'+(x.site?'':', tarif estimé');return br?' ['+t+']':' · '+t}
   const a=x.o&&inStock(x.o)?'en stock':x.o&&x.o.us!=null?'sur commande':'';return a?(br?' ['+a+']':' · '+a):''}
 const rentNote=()=>'Location '+rperiod()+'. Matériel du stock Pyramide Record, sans transport d\'importation ni taxes, sous réserve de disponibilité aux dates demandées. Une caution remboursable et un acompte sont demandés. Les tarifs marqués « estimé » sont confirmés dans le devis final.';
@@ -2055,8 +2062,8 @@ const lb=$('lvlbox');if(lb)lb.after(cb);else BD.appendChild(cb);
 const NAMES={1:[L('1re qualité','1st quality'),L('Marques des États-Unis, du Royaume-Uni, d\'Europe','Brands from the US, UK and Europe')],2:[L('2e qualité','2nd quality'),L('+ marques au bon rapport qualité-prix, Japon','+ good-value brands, Japan')],3:[L('3e qualité','3rd quality'),L('+ Chine et matériel vendu à Kinshasa','+ China and equipment sold in Kinshasa')]};
 function plan(k){ // pour chaque article choisi : l'option la moins chère disponible à ce niveau
   const out={};for(const id in sel){const s=SLOTS.find(z=>z.id===id);if(!s)continue;
-    let best=null;s.o.forEach((o,i)=>{if((o.tier||1)>k)return;const p=price(o);if(p==null)return;if(!best||p<best[0])best=[p,i]});
-    const cur0=s.o[sel[id]];out[id]=best?best[1]:((cur0&&(cur0.tier||1)<=k)?sel[id]:null)}
+    let best=null;s.o.forEach((o,i)=>{if(tierOf(o)>k)return;const p=price(o);if(p==null)return;if(!best||p<best[0])best=[p,i]});
+    const cur0=s.o[sel[id]];out[id]=best?best[1]:((cur0&&tierOf(cur0)<=k)?sel[id]:null)}
   return out}
 function totalFor(k){const bs=Object.assign({},sel),bl=lvl;let r=null;
   try{lvl=k;const pl=plan(k);for(const id in sel)delete sel[id];for(const id in pl)if(pl[id]!=null)sel[id]=pl[id];r=totals()}catch(e){r=null}
@@ -2110,7 +2117,7 @@ loadCatalog();
 <script>
 /* ===== Constructeur de devis (admin) ===== */
 (function(){
-const $=id=>document.getElementById(id),LSD='pr_docs',LSC='pr_cnt',LSH='pr_qb_hash',TL={1:'1re qualité',2:'2e qualité',3:'3e qualité'},CAP=30;
+const $=id=>document.getElementById(id),LSD='pr_docs',LSC='pr_cnt',LSH='pr_qb_hash',TL={0:'Non classé',1:'1re qualité',2:'2e qualité',3:'3e qualité'},CAP=30;
 const imgFor=n=>{const s=STOCK[n];return s&&s.img||''};
 const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const r2=v=>Math.round(v*100)/100,pn=v=>{const n=parseFloat(String(v).replace(',','.'));return isFinite(n)?n:null};
@@ -2134,7 +2141,7 @@ function unlock(){try{sessionStorage.setItem('pr_qb_ok','1')}catch(e){}$('qbgate
 function open(){$('qb').style.display='flex';let ok=0;try{ok=sessionStorage.getItem('pr_qb_ok')}catch(e){}if(ok&&TEAM.includes(localStorage.getItem(LSH))){$('qbgate').style.display='none';$('qbapp').style.display='flex';start()}else gate()}
 function close(){$('qb').style.display='none'}$('qcl').onclick=close;
 /* catalogue */
-function buildCat(){const seen=new Set();cat=[];Object.keys(ROOMS).forEach(k=>{const R=ROOMS[k];(R.slots||[]).forEach(s=>s.o.forEach(o=>{if(seen.has(o.n))return;seen.add(o.n);cat.push({o,n:o.n,d:o.d||'',t:o.tier||1,z:(R.n||k)+' · '+s.l})}))})}
+function buildCat(){const seen=new Set();cat=[];Object.keys(ROOMS).forEach(k=>{const R=ROOMS[k];(R.slots||[]).forEach(s=>s.o.forEach(o=>{if(seen.has(o.n))return;seen.add(o.n);cat.push({o,n:o.n,d:o.d||'',t:tierOf(o),z:(R.n||k)+' · '+s.l})}))})}
 function renderCat(){const q=nzc($('qsr').value),L=cat.filter(x=>x.t<=tier&&(!q||nzc(x.n+x.z).includes(q)));
  const ni=Object.values(STOCK).filter(x=>x.img).length,nc=(window.__catalog&&window.__catalog.CATALOG||[]).length;$('qcn').textContent=L.length+' produit'+(L.length>1?'s':'')+' (qualité jusqu\'à '+TL[tier]+')'+(nc?(ni?' · photos : '+ni+' produit(s)':' · aucune photo dans le catalogue de la boutique'):'');
  $('qbcat').innerHTML=L.slice(0,150).map(x=>{const i=cat.indexOf(x),p=price(x.o),st=optState(x.o);const im=imgFor(x.n);return`<div class="qbi" draggable="true" data-i="${i}">${im?`<img class="qbimg" loading="lazy" alt="" src="${esc(im)}">`:''}<div class="tx"><b>${esc(x.n)}</b><small>${esc(x.z)} · ${TL[x.t]}${st==='stock'?' · en stock':''}</small></div><div class="qbp">${fm(p)}</div><button data-add="${i}" aria-label="Ajouter">+</button></div>`}).join('')||'<div class="mini">Aucun produit.</div>';
@@ -2255,7 +2262,7 @@ $('qfi').onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileRea
 $('qimp').onclick=()=>{$('qic').value='';$('qie').textContent='';$('qim').style.display='flex'};$('qix').onclick=()=>$('qim').style.display='none';
 $('qiok').onclick=()=>{try{let c=$('qic').value.trim();const m=c.match(/[A-Za-z0-9+\/=]{40,}/);if(m)c=m[0];const o=JSON.parse(decodeURIComponent(escape(atob(c)))),R=ROOMS[o.rm];if(!R)throw 0;let n=0;
   (R.slots||[]).forEach(s=>{const ix=(o.sel||{})[s.id];if(ix==null||!s.o[ix]||HID.has(s.id))return;const p=s.o[ix],q=(o.qov||{})[o.rm+s.id]!=null?o.qov[o.rm+s.id]:s.q[o.size];if(!(q>0))return;
-   const l=mkLine({o:p,n:p.n,d:p.d||'',t:p.tier||1});l.q=q;cur.lines.push(l);n++});
+   const l=mkLine({o:p,n:p.n,d:p.d||'',t:tierOf(p)});l.q=q;cur.lines.push(l);n++});
   if([1,2,3].includes(o.lvl))cur.quality=o.lvl;dirty();$('qim').style.display='none';renderDoc();toast(n+' produit(s) importé(s) depuis la salle « '+(R.n||o.rm)+' »')}catch(e){$('qie').textContent='Code non reconnu. Collez le code de la salle tel qu\'il est dans le message.'}};
 $('qtog').onclick=()=>$('qbmain').classList.toggle('hc');
 function start(){ld();buildCat();$('qtier').value=tier;renderCat();if(!cur)setDoc(newDoc());if(window.innerWidth<=820)$('qbmain').classList.add('hc')}

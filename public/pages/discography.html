@@ -590,7 +590,7 @@
         Array.prototype.forEach.call(dots.children, function(b, k){ b.classList.toggle('is-active', k === cur); });
         if (user) restart();
       }
-      function restart(){ clearInterval(timer); if (!reduce) timer = setInterval(function(){ if (!paused && !document.hidden) show(cur + 1); }, 7000); }
+      function restart(){ clearInterval(timer); if (!reduce) timer = setInterval(function(){ if (!paused && !document.hidden) show(cur + 1); }, 10000); }
       head.addEventListener('click', function(e){
         var b = e.target.closest('[data-f]'); if (!b) return;
         show(cur + (b.getAttribute('data-f') === 'next' ? 1 : -1), true);

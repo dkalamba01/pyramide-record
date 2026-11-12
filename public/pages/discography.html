@@ -599,7 +599,10 @@
       box.addEventListener('mouseleave', function(){ paused = false; });
       box.addEventListener('focusin', function(){ paused = true; });
       box.addEventListener('focusout', function(){ paused = false; });
-      box.addEventListener('touchstart', function(){ paused = true; }, { passive: true });
+      var tResume = null;
+      box.addEventListener('touchstart', function(){ paused = true; clearTimeout(tResume); }, { passive: true });
+      box.addEventListener('touchend', function(){ clearTimeout(tResume); tResume = setTimeout(function(){ paused = false; }, 6000); }, { passive: true });
+      box.addEventListener('touchcancel', function(){ clearTimeout(tResume); tResume = setTimeout(function(){ paused = false; }, 6000); }, { passive: true });
       var x0 = null;
       stage.addEventListener('touchstart', function(e){ x0 = e.touches[0].clientX; }, { passive: true });
       stage.addEventListener('touchend', function(e){

@@ -56,6 +56,9 @@
   .featured__dots { display:flex; flex-wrap:wrap; justify-content:center; gap:8px; margin-top:var(--sp-3); }
   .featured__dot { width:9px; height:9px; border-radius:50%; border:0; padding:0; background:var(--hair-2); cursor:pointer; }
   .featured__dot.is-active { background:var(--gold-bright); }
+  .featured__listen { display:inline-flex; align-items:center; gap:8px; margin:var(--sp-3) 0 var(--sp-2); padding:10px 22px; border-radius:999px; background:var(--gold-bright); color:#14110a; font-weight:600; cursor:pointer; }
+  .featured__listen svg { width:16px; height:16px; fill:currentColor; }
+  .featured__more { margin-top:var(--sp-3); }
   @keyframes featfade { from{opacity:0} to{opacity:1} }
   @media (prefers-reduced-motion: reduce){ .featured .featured__slide.is-active { animation:none; } }
   /* Album group (several tracks under one cover) */
@@ -473,43 +476,90 @@
       var box = document.getElementById('featured');
       var list = data.featured || [];
       if (!box || !list.length) return;
-      var slides = [];
-      list.forEach(function(f){
-        var el = null;
-        var al = f.album && (data.albums || []).filter(function(a){ return a.id === f.album; })[0];
-        if (al) {
-          el = renderAlbum(al);
-          el.classList.remove('is-hidden');
-          var eb = el.querySelector('.album__eyebrow');
-          if (eb) eb.innerHTML = 'Artiste à l\'honneur · ' + eb.innerHTML;
-        } else {
-          var mine = data.releases.filter(function(r){
-            return r.link && r.artist.split(/\s+feat\.?\s+|\s+&\s+/i)[0].trim() && f.match.indexOf(r.artist.split(/\s+feat\.?\s+|\s+&\s+/i)[0].trim()) !== -1;
-          });
-          if (f.tracks && f.tracks.length) mine = f.tracks.map(function(t){ return mine.filter(function(r){ return r.title === t; })[0]; }).filter(Boolean);
-          mine.sort(function(a, b){ return (a.type === 'live') - (b.type === 'live'); });
-          mine = mine.slice(0, 3);
-          if (!mine.length) return;
-          var first = mine.filter(function(r){ return r.image; })[0] || mine[0];
-          var rows = mine.map(function(r, i){
-            var idx = data.releases.indexOf(r);
-            return '<li class="album__track is-out"><span class="album__n">' + (i + 1) + '</span>' +
-              '<span class="album__tt"><span class="album__name">' + r.title + '</span>' +
-              '<span class="album__ft">' + r.role + (r.type === 'live' ? ' · Live' : '') + '</span></span>' +
-              '<span class="album__play" data-play-index="' + idx + '" role="button" tabindex="0">' + PLAY_ICON + ' Écouter</span></li>';
-          }).join('');
-          el = document.createElement('div');
-          el.className = 'release album';
-          el.innerHTML =
-            '<div class="album__cover"><img src="../assets/images/discography/' + first.image + '" alt="' + f.name + '" decoding="async" style="object-position:' + ((first.imagePosition && first.imagePosition.trim()) || 'center') + '"></div>' +
-            '<div><div class="album__eyebrow">Artiste à l\'honneur</div>' +
-            '<h3 class="album__title">' + f.name + '</h3>' +
-            '<div class="album__by"><a href="artists/' + f.slug + '.html">Bio artiste →</a></div>' +
-            '<ol class="album__tracks open">' + rows + '</ol></div>';
+      // ---- Chanson du jour : un morceau par jour, tiré de tout le catalogue ----
+      var KEY = /\s+feat\.?\s+|\s+&\s+/i;
+      function akey(r){ return r.artist.split(KEY)[0].trim(); }
+      var slugs = data.artistSlugs || {};
+      var prio = {};
+      list.forEach(function(f){ (f.match || []).forEach(function(m){ prio[m] = f; }); });
+      var byArtist = {}, order = [];
+      data.releases.forEach(function(r){
+        if (!r.link || !r.image) return;
+        var k = akey(r);
+        if (!byArtist[k]) { byArtist[k] = []; order.push(k); }
+        byArtist[k].push(r);
+      });
+      // mélange stable (même ordre pour tout le monde), artistes à l'honneur en double
+      var seed = 20260101;
+      function rnd(){ seed = (seed * 1664525 + 1013904223) % 4294967296; return seed / 4294967296; }
+      order.sort(); 
+      for (var i = order.length - 1; i > 0; i--) { var j = Math.floor(rnd() * (i + 1)); var t = order[i]; order[i] = order[j]; order[j] = t; }
+      var used = {}, seq = [], pass = order.slice();
+      var maxLen = 0; order.forEach(function(k){ maxLen = Math.max(maxLen, byArtist[k].length); });
+      function take(k){
+        var n = used[k] || 0;
+        if (n >= byArtist[k].length) return;
+        used[k] = n + 1; seq.push(byArtist[k][n]);
+      }
+      for (var round = 0; round < maxLen; round++) {
+        pass.forEach(function(k){ take(k); });
+        // 2e passage de la même ronde pour les artistes à l'honneur, dans l'ordre inverse (espacés)
+        pass.slice().reverse().forEach(function(k){ if (prio[k]) take(k); });
+      }
+      // jamais le même artiste deux fois de suite
+      for (var q = 1; q < seq.length; q++) {
+        if (akey(seq[q]) === akey(seq[q - 1])) {
+          for (var w = q + 1; w < seq.length; w++) {
+            if (akey(seq[w]) !== akey(seq[q - 1]) && (w + 1 >= seq.length || akey(seq[w + 1]) !== akey(seq[q]))) { var tmp = seq[q]; seq[q] = seq[w]; seq[w] = tmp; break; }
+          }
         }
-        el.classList.add('featured__slide');
-        if (f.from) el.dataset.from = f.from;
-        if (f.to) el.dataset.to = f.to;
+      }
+      if (!seq.length) return;
+      var nw = new Date(), pad = function(x){ return (x < 10 ? '0' : '') + x; };
+      var todayStr = nw.getFullYear() + '-' + pad(nw.getMonth() + 1) + '-' + pad(nw.getDate());
+      var day = Math.floor(Date.UTC(nw.getFullYear(), nw.getMonth(), nw.getDate()) / 86400000);
+      var todays = [];
+      var seenA = {};
+      for (var d = 0; d < seq.length && todays.length < 12; d++) {
+        var cand = seq[(day + d) % seq.length], ck = akey(cand);
+        if (seenA[ck]) continue;
+        seenA[ck] = 1; todays.push(cand);
+      }
+      // artiste avec dates (from/to) : son morceau passe en premier pendant la période
+      list.forEach(function(f){
+        if (!f.from) return;
+        var to = f.to || f.from;
+        if (todayStr < f.from || todayStr > to) return;
+        var pool = [];
+        (f.match || []).forEach(function(m){ if (byArtist[m]) pool = pool.concat(byArtist[m]); });
+        if (f.tracks && f.tracks.length) { var tt = pool.filter(function(r){ return f.tracks.indexOf(r.title) !== -1; }); if (tt.length) pool = tt; }
+        if (!pool.length) return;
+        var pick = pool[day % pool.length];
+        todays = todays.filter(function(r){ return r !== pick && akey(r) !== akey(pick); });
+        todays.unshift(pick);
+        todays = todays.slice(0, 12);
+      });
+      var slides = [];
+      todays.forEach(function(r, si){
+        var k = akey(r);
+        var idx = data.releases.indexOf(r);
+        var others = (byArtist[k] || []).filter(function(x){ return x !== r; }).slice(0, 3);
+        var slug = slugs[k] || (prio[k] && prio[k].slug) || '';
+        var by = slug ? '<a href="artists/' + slug + '.html">' + r.artist + '</a>' : r.artist;
+        var more = others.length ? '<div class="featured__more"><div class="album__meta">Du même artiste</div><ol class="album__tracks open">' + others.map(function(o, i){
+          return '<li class="album__track is-out"><span class="album__n">' + (i + 1) + '</span><span class="album__tt"><span class="album__name">' + o.title + '</span></span>' +
+            '<span class="album__play" data-play-index="' + data.releases.indexOf(o) + '" role="button" tabindex="0">' + PLAY_ICON + ' Écouter</span></li>';
+        }).join('') + '</ol></div>' : '';
+        var el = document.createElement('div');
+        el.className = 'release album featured__slide';
+        el.innerHTML =
+          '<div class="album__cover"><img src="../assets/images/discography/' + r.image + '" alt="' + r.title + ' — ' + r.artist + '" decoding="async" style="object-position:' + ((r.imagePosition && r.imagePosition.trim()) || 'center') + '"></div>' +
+          '<div><div class="album__eyebrow">' + (si === 0 ? 'Chanson du jour' : 'À l\'honneur') + '</div>' +
+          '<h3 class="album__title">' + r.title + '</h3>' +
+          '<div class="album__by">' + by + '</div>' +
+          '<div class="album__meta">' + r.role + '</div>' +
+          '<span class="featured__listen" data-play-index="' + idx + '" role="button" tabindex="0">' + PLAY_ICON + ' Écouter</span>' +
+          more + '</div>';
         el.querySelectorAll('.album__cover img').forEach(function(im){
           im.removeAttribute('loading'); im.loading = 'eager';
           im.addEventListener('error', function(){ var c = im.parentNode; if (c) c.style.display = 'none'; });
@@ -517,17 +567,6 @@
         slides.push(el);
       });
       if (!slides.length) return;
-      // Artiste du jour : un artiste avec dates (from/to) a priorité ; sinon rotation par jour du calendrier
-      function startIndex(list){
-        var n = new Date(), pad = function(x){ return (x < 10 ? '0' : '') + x; };
-        var today = n.getFullYear() + '-' + pad(n.getMonth() + 1) + '-' + pad(n.getDate());
-        for (var i = 0; i < list.length; i++) {
-          var a = list[i].dataset.from, b = list[i].dataset.to || a;
-          if (a && today >= a && today <= b) return i;
-        }
-        var days = Math.floor(Date.UTC(n.getFullYear(), n.getMonth(), n.getDate()) / 86400000);
-        return days % list.length;
-      }
       var head = document.createElement('div');
       head.className = 'featured__head';
       head.innerHTML = '<h2>À l\'honneur</h2><div class="featured__nav"><button type="button" class="featured__btn" data-f="prev" aria-label="Précédent">‹</button><button type="button" class="featured__btn" data-f="next" aria-label="Suivant">›</button></div>';
@@ -543,7 +582,7 @@
       });
       box.innerHTML = ''; box.appendChild(head); box.appendChild(stage); box.appendChild(dots);
       box.hidden = false;
-      var cur = startIndex(slides), timer = null, paused = false;
+      var cur = 0, timer = null, paused = false;
       var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
       function show(i, user){
         cur = (i + slides.length) % slides.length;

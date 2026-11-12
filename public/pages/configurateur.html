@@ -490,7 +490,7 @@ const VOCS={church:{},
 function V(t){const m=VOCS[evt]||{};if(typeof t!=='string')return t;Object.keys(m).sort((a,b)=>b.length-a.length).forEach(k=>{t=t.split(k).join(m[k])});return t}
 const VORIG=new Map();
 function applyVoc(){const seen=new Set();Object.values(ROOMS).forEach(r=>r.slots.forEach(sl=>{if(seen.has(sl))return;seen.add(sl);if(!VORIG.has(sl))VORIG.set(sl,{l:sl.l,d:sl.o.map(o=>o.d)});const q=VORIG.get(sl);sl.l=V(q.l);sl.o.forEach((o,i)=>{o.d=V(q.d[i])})}))}
-function setEvt(k){evt=k;tgt=EVT[k];rmode=(k==='conf'||k==='concert')?'rent':'buy';applyVoc();switchRoom('church')}
+function setEvt(k){evt=k;tgt=EVT[k];rmode=(k==='conf'||k==='concert')?'rent':'buy';applyVoc();switchRoom(rm==='church'||ROOMS[rm].venue?rm:'church')}
 ROOMS.rec.presets=[
  {n:'Deux salles (régie + cabine)',size:'m',kit:'full',two:true,guest:{n:2,style:'chair',layout:'row'},scr:{layout:'center',size:'m'}},
  {n:'Voix et beats (solo)',size:'s',kit:'budget',guest:{n:0},scr:{layout:'center',size:'s'}},
@@ -662,7 +662,7 @@ const escR=t=>String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;');
 const rentTermsHtml=()=>'<h2>Conditions de location</h2><ul>'+RTERMS.map(x=>'<li>'+escR(x)+'</li>').join('')+'</ul>';
 function rentPdf(r){return '<div class="sm"><b>Location '+escR(rperiod())+'.</b> Acompte à la réservation (50 %) : <b>'+money(r.rent.acompte)+'</b>. Caution remboursable : <b>'+money(r.rent.caution)+'</b> (non incluse dans le total). Prix de location sans transport d\'importation ni taxes. '}
 function rentUI(){const B=document.getElementById('rentbox');if(!B)return;const inp='font-size:14px;padding:6px;border-radius:8px;border:1px solid var(--hair-2);background:var(--obsidian);color:var(--bone)';
-  B.innerHTML='<div class="mini" style="margin:6px 0 4px">Achat ou location</div><div style="display:flex;gap:6px"><button class="pill '+(rmode==='buy'?'on':'')+'" data-m="buy">Acheter</button><button class="pill '+(rmode==='rent'?'on':'')+'" data-m="rent">Louer</button></div>'
+  B.innerHTML='<div class="mini" style="margin:8px 0 4px">'+LL('Achat ou location ?','Buy or rent?')+'</div><div style="display:flex;gap:6px"><button class="pill '+(rmode==='buy'?'on':'')+'" data-m="buy">Acheter</button><button class="pill '+(rmode==='rent'?'on':'')+'" data-m="rent">Louer</button></div><div class="mini" style="margin-top:4px">'+(rmode==='rent'?LL('Location : tarif pour la durée choisie, acompte de 50 % à la réservation et caution remboursable.','Rental: price for the chosen period, 50% deposit at booking and a refundable security deposit.'):LL('Achat : matériel livré à Kinshasa, droits de douane et dédouanement à confirmer.','Purchase: equipment delivered to Kinshasa; customs duties and clearance to be confirmed.'))+'</div>'
    +(rmode==='rent'?`<div class="mini" style="margin-top:6px">Dates de location</div><div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center"><input type="date" id="rfrom" value="${rfrom}" style="${inp}"><label style="font-size:13px">Durée <input type="number" id="rdays" min="1" max="60" value="${rdays}" style="${inp};width:64px"> jour(s)</label></div><label style="display:flex;gap:8px;align-items:center;font-size:13px;margin-top:6px"><input type="checkbox" id="rlog" ${rlog?'checked':''}> Livraison, installation et reprise</label><label style="display:flex;gap:8px;align-items:center;font-size:13px"><input type="checkbox" id="rtech" ${rtech?'checked':''}> Technicien son sur place (80 $/jour)</label><div class="mini">Tarifs de location sans transport d'importation ni taxes. Caution remboursable et acompte de 50 % demandés (voir le devis).</div>`:'');
   const up=()=>{renderList();updTotal()};
   B.querySelectorAll('[data-m]').forEach(b=>b.onclick=()=>{rmode=b.dataset.m;rentUI();up()});
@@ -1335,8 +1335,8 @@ cv.addEventListener('wheel',e=>{e.preventDefault();rad=Math.max(6,Math.min(ROOMS
 
 // ===== Actions =====
 function pick(id,go){cur=id;renderList();if(go){const r=document.querySelector('.slot.sel'),el=document.querySelector('#opts');if(r&&r.scrollIntoView)r.scrollIntoView({block:'center',behavior:'smooth'});else if(el&&el.scrollIntoView)el.scrollIntoView({block:'nearest',behavior:'smooth'});if(r){r.classList.remove('flash');void r.offsetWidth;r.classList.add('flash')}}}
-function refresh(){buildRoom();renderList()}
-function setSize(k){if(placeK)placeSet(placeK);uf=null;resetDims();att=0;dimInfo.note='';size=k;fx={};ven={};fsel=null;qov={};applyScr();seat.rows=null;dummies=[];dsel=null;document.querySelectorAll('#sz .pill').forEach(b=>b.classList.toggle('on',b.dataset.k===k));
+function refresh(){buildRoom();renderList();try{packsUI()}catch(e){}}
+function setSize(k){if(placeK)placeSet(placeK);uf=null;resetDims();att=0;dimInfo.note='';size=k;fx={};ven={};fsel=null;qov={};try{szHint()}catch(e){}applyScr();seat.rows=null;dummies=[];dsel=null;document.querySelectorAll('#sz .pill').forEach(b=>b.classList.toggle('on',b.dataset.k===k));
   if(cur&&!active().some(s=>s.id===cur))cur=null;refresh();seatUI();dimUI()}
 const PACKS=[
  {n:'Petite église',d:'jusqu\'à ~100 personnes',ev:'church',sz:'s',s:{pmic:0,cmic:0,stand:0,spk:0,mix:0}},
@@ -1348,11 +1348,40 @@ const PACKS=[
  {n:'Studio vidéo',d:'tournage et montage',rm:'vid',sz:'s',kit:'budget'}];
 function applyPack(i){const P=PACKS[i];if(P.ev)setEvt(P.ev);else{setEvt('church');switchRoom(P.rm)}if(ROOMS[rm].sizes[P.sz])setSize(P.sz);
   const ks=P.s||(KITS[P.kit]&&KITS[P.kit].s)||{};sel={};qov={};for(const id in ks){const sl=SLOTS.find(z=>z.id===id),o=sl&&sl.o[ks[id]];if(o&&vis(o)&&(optState(o)!=='soon'||ADMIN))sel[id]=ks[id]}
-  applyScr();refresh();setTab('mat')}
-function packsUI(){const B=document.getElementById('packs');if(!B)return;B.innerHTML='<div class="zone">Démarrer avec un pack</div><div class="mini" style="margin:2px 0 8px">Un point de départ complet : vous pourrez tout modifier ensuite.</div><div style="display:flex;gap:6px;flex-wrap:wrap">'+PACKS.map((x,i)=>`<button class="pill" data-pk="${i}">${x.n}<small style="display:block;font-weight:400;opacity:.7">${x.d}</small></button>`).join('')+'</div>';B.querySelectorAll('[data-pk]').forEach(b=>b.onclick=()=>applyPack(+b.dataset.pk))}
+  applyScr();_pk={i,snap:JSON.stringify(sel)};refresh();setTab('mat')}
+const LL=(fr,en)=>(window.PRI18N&&PRI18N.lang==='en')?en:fr;
+let packAll=false,packAsk=null,_pk=null;
+const packFits=P=>P.ev?(rm==='church'&&evt===P.ev):rm===P.rm;
+function packCalc(P){ // contenu et prix du pack, sans toucher à la salle affichée
+  const rk=P.rm||'church',R=ROOMS[rk],bk=[rm,SLOTS,KITS,SIZES,size,qov],out={items:[],total:0,open:0};
+  try{rm=rk;SLOTS=R.slots;KITS=R.kits;SIZES=R.sizes;size=P.sz;qov={};
+    const ks=P.s||(R.kits[P.kit]&&R.kits[P.kit].s)||{};
+    for(const id in ks){const sl=R.slots.find(z=>z.id===id),o=sl&&sl.o[ks[id]];if(!o||!vis(o)||(optState(o)==='soon'&&!ADMIN))continue;const q=qty(sl);if(!(q>0))continue;const pr=price(o);out.items.push(((window.PRI18N&&PRI18N.lang==='en')?PRI18N.tr(sl.l):sl.l)+(q>1?' ×'+q:''));if(pr==null)out.open++;else out.total+=pr*q}
+  }catch(e){}finally{rm=bk[0];SLOTS=bk[1];KITS=bk[2];SIZES=bk[3];size=bk[4];qov=bk[5]}
+  return out}
+function packsUI(){const B=document.getElementById('packs');if(!B)return;
+  const fit=[],oth=[];PACKS.forEach((x,i)=>(packFits(x)?fit:oth).push(i));
+  const card=i=>{const x=PACKS[i],c=packCalc(x),rent=x.ev==='conf'||x.ev==='concert',act=_pk&&_pk.i===i,mod=act&&JSON.stringify(sel)!==_pk.snap;
+    const pr=!rent&&c.total>0?'<b style="display:block;margin-top:4px;color:var(--gold)">'+LL('à partir de ','from ')+money(c.total)+(c.open?' +':'')+'</b>':(rent?'<b style="display:block;margin-top:4px;color:var(--gold)">'+LL('Location : prix après le clic','Rental: price shown after you pick it')+'</b>':'');
+    const cn=c.items.length?'<small style="display:block;font-weight:400;opacity:.75;margin-top:3px;line-height:1.35">'+c.items.slice(0,5).join(', ')+(c.items.length>5?'…':'')+'</small>':'';
+    return `<button class="pill ${act?'on':''}" data-pk="${i}" style="text-align:left;flex:1 1 230px">${act?'<span>✓</span> ':''}<span>${x.n}</span>${mod?' <span style="font-weight:400;opacity:.8">('+LL('modifié','modified')+')</span>':''}<small style="display:block;font-weight:400;opacity:.7">${x.d}</small>${pr}${cn}</button>`};
+  let h='<div class="zone">Démarrer avec un pack</div><div class="mini" style="margin:2px 0 8px">Un point de départ complet : vous pourrez tout modifier ensuite.</div>';
+  h+=fit.length?'<div style="display:flex;gap:6px;flex-wrap:wrap">'+fit.map(card).join('')+'</div>':'<div class="mini" style="margin:2px 0 8px">'+LL('Pas encore de pack pour cette combinaison de lieu et d\'événement : composez votre salle à l\'étape suivante, ou regardez les autres packs.','No pack yet for this venue and event combination: build your room in the next step, or look at the other packs.')+'</div>';
+  if(oth.length)h+='<div style="margin-top:8px"><button class="pill" data-all="1">'+(packAll?LL('Masquer les autres packs','Hide other packs'):LL('Voir tous les packs','See all packs'))+'</button></div>'+(packAll?'<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px">'+oth.map(card).join('')+'</div>':'');
+  if(packAsk!=null)h+='<div class="mini" style="margin:10px 0 0;padding:8px 10px;border:1px solid var(--gold);border-radius:8px">'+LL('Cela remplacera votre sélection actuelle par « '+PACKS[packAsk].n+' ».','This will replace your current selection with “'+PACKS[packAsk].n+'”.')+'<div style="display:flex;gap:6px;margin-top:6px"><button class="pill on" data-pky="1">'+LL('Remplacer','Replace')+'</button><button class="pill" data-pkn="1">'+LL('Annuler','Cancel')+'</button></div></div>';
+  B.innerHTML=h;
+  B.querySelectorAll('[data-pk]').forEach(b=>b.onclick=()=>{const i=+b.dataset.pk;if(Object.keys(sel).length&&!(_pk&&_pk.i===i&&JSON.stringify(sel)===_pk.snap)){packAsk=i;packsUI()}else{packAsk=null;applyPack(i)}});
+  const all=B.querySelector('[data-all]');if(all)all.onclick=()=>{packAll=!packAll;packsUI()};
+  const y=B.querySelector('[data-pky]');if(y)y.onclick=()=>{const i=packAsk;packAsk=null;applyPack(i)};
+  const n=B.querySelector('[data-pkn]');if(n)n.onclick=()=>{packAsk=null;packsUI()}}
+function szHint(){const h=document.getElementById('szhint');if(!h)return;const z=SIZES[size];if(!z){h.textContent='';return}
+  const cap=rm==='church'?{s:LL('jusqu\'à ~100 personnes','up to ~100 people'),m:LL('~150 à 250 personnes','~150 to 250 people'),l:LL('250+ personnes','250+ people')}[size]:'';
+  h.textContent=z.n+(z.W&&z.D?' : '+z.W+' × '+z.D+' m (≈ '+Math.round(z.W*z.D)+' m²)':'')+(cap?' · '+cap:'')}
 function chrome(){
- document.getElementById('size').innerHTML='<button id="szt" type="button"></button><div class="mini" style="margin:0 0 4px">Type d\'événement</div><div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:6px">'+Object.entries(EVN).map(([k,l])=>`<button class="pill ${rm==="church"&&evt===k?"on":""}" data-e="${k}">${l}</button>`).join('')+'</div><div style="display:flex;gap:6px;flex-wrap:wrap">'+Object.entries(ROOMS).filter(([k])=>!HIDR.includes(k)).map(([k,v])=>`<button class="pill ${k===rm?'on':''}" data-r="${k}">${v.n}</button>`).join('')+'</div>'
-  +'<div id="rentbox"></div><div id="sz" style="display:flex;gap:6px;flex-wrap:wrap;margin-top:6px">'+Object.entries(SIZES).map(([k,v])=>`<button class="pill" data-k="${k}">${v.n}</button>`).join('')+'</div>';
+ const evOk=rm==='church'||!!ROOMS[rm].venue;
+ document.getElementById('size').innerHTML='<button id="szt" type="button"></button><div class="mini" style="margin:0 0 4px">'+LL('Quel lieu ?','Which venue?')+'</div><div style="display:flex;gap:6px;flex-wrap:wrap">'+Object.entries(ROOMS).filter(([k])=>!HIDR.includes(k)).map(([k,v])=>`<button class="pill ${k===rm?'on':''}" data-r="${k}">${v.n}</button>`).join('')+'</div>'
+  +'<div id="evbox" style="'+(evOk?'':'display:none')+'"><div class="mini" style="margin:8px 0 4px">'+LL('Quel événement ?','Which event?')+'</div><div style="display:flex;gap:6px;flex-wrap:wrap">'+Object.entries(EVN).map(([k,l])=>`<button class="pill ${evOk&&evt===k?"on":""}" data-e="${k}">${l}</button>`).join('')+'</div></div>'
+  +'<div class="mini" style="margin:8px 0 4px">'+LL('Quelle taille ?','Which size?')+'</div><div id="sz" style="display:flex;gap:6px;flex-wrap:wrap">'+Object.entries(SIZES).map(([k,v])=>`<button class="pill" data-k="${k}">${v.n}</button>`).join('')+'</div><div id="szhint" class="mini" style="margin-top:4px"></div><div id="rentbox"></div>';
  document.getElementById('size').style.flexDirection='column';
  {const z=document.getElementById('size'),t=document.getElementById('szt');
   const sum=()=>{t.textContent=(z.classList.contains('open')?'✕ Fermer':'⚙ '+[...z.querySelectorAll('.pill.on')].map(b=>b.textContent.trim()).join(' · ')+' ▾')};
@@ -1366,7 +1395,7 @@ function chrome(){
  document.getElementById('kits').innerHTML=Object.entries(KITS).map(([k,v])=>`<button class="pill" data-k="${k}">${v.n}</button>`).join('')+'<button class="pill" id="clr">Tout vider</button>';
  document.querySelectorAll('#kits [data-k]').forEach(b=>b.onclick=()=>{sel={};const ks=KITS[b.dataset.k].s;for(const id in ks){const sl=SLOTS.find(z=>z.id===id),o=sl&&sl.o[ks[id]];if(o&&vis(o)&&(optState(o)!=='soon'||ADMIN))sel[id]=ks[id]}qov={};applyScr();refresh()});
  document.getElementById('clr').onclick=()=>{sel={};refresh()};
- document.querySelector('#head h1').textContent=ROOMS[rm].h;packsUI();seatUI();scrUI();presetUI();lvlUI();dimUI();acUI();covUI();rentUI()}
+ document.querySelector('#head h1').textContent=ROOMS[rm].h;packsUI();szHint();seatUI();scrUI();presetUI();lvlUI();dimUI();acUI();covUI();rentUI()}
 // ===== Dimensions, personnes, conseils =====
 let att=0,pdfColor=false,client={n:'',t:''};const ORG={};
 try{client=Object.assign(client,JSON.parse(localStorage.getItem('pr_client')||'{}'))}catch(e){}
@@ -1672,7 +1701,7 @@ function shopCartBtn(){if(rmode==='rent')return;const r=totals(),L=[];let tot=0;
   const box=document.getElementById('mbody');if(!box||!L.length)return;
   box.insertAdjacentHTML('beforeend','<div class="mini" style="margin-top:10px">'+L.length+' produit(s) en stock : commandez-les directement.</div><a class="cta" target="_blank" rel="noopener" href="'+SHOP_URL+'?cart='+L.join(',')+'">Commander dans la boutique ('+money(tot)+')</a>')}
 let quoteCode='',quoteBase='',quoteNo='';
-function buildQuote(r){const rent=rmode==='rent',z=SIZES[size],L=[],ev=rm==='church'?EVN[evt]:ROOMS[rm].n,hr='— — — — — — — — —',
+function buildQuote(r){const rent=rmode==='rent',z=SIZES[size],L=[],ev=rm==='church'?EVN[evt]:ROOMS[rm].venue?ROOMS[rm].n+' · '+EVN[evt]:ROOMS[rm].n,hr='— — — — — — — — —',
     dl=String(LV[lvl].dl||'').replace(/^Délai ?: ?/i,'');
   L.push('*PYRAMIDE RECORD*','_Demande de devis · '+(rent?'Location':'Vente')+' · n° '+quoteNo_()+'_','');
   if(client.n||client.t)L.push('*Client* : '+[client.n,client.t].filter(Boolean).join(' · '));
@@ -1708,7 +1737,7 @@ function qValid(){const d=new Date();d.setDate(d.getDate()+QTERMS.days);return d
 function qTerms(rent){return ['Offre valable '+QTERMS.days+' jours, jusqu\'au '+qValid()+'. Les prix du matériel importé peuvent évoluer.'].concat(rent?[]:[QTERMS.pay])}
 function quoteNo_(){if(!quoteNo){const d=new Date(),p=n=>String(n).padStart(2,'0');quoteNo='DEV-'+d.getFullYear()+p(d.getMonth()+1)+p(d.getDate())+'-'+p(d.getHours())+p(d.getMinutes())}return quoteNo}
 function pdfName(){const sl=String(client.n||'').normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^A-Za-z0-9]+/g,'-').replace(/^-+|-+$/g,'').slice(0,24);return 'Devis-Pyramide-Record_'+quoteNo_()+(sl?'_'+sl:'')+'.pdf'}
-function quoteData(r){const rent=rmode==='rent',z=SIZES[size],ev=rm==='church'?EVN[evt]:ROOMS[rm].n,dl=String(LV[lvl].dl||'').replace(/^Délai ?: ?/i,''),gs=[],gm={};
+function quoteData(r){const rent=rmode==='rent',z=SIZES[size],ev=rm==='church'?EVN[evt]:ROOMS[rm].venue?ROOMS[rm].n+' · '+EVN[evt]:ROOMS[rm].n,dl=String(LV[lvl].dl||'').replace(/^Délai ?: ?/i,''),gs=[],gm={};
   r.rows.forEach(x=>{const k=x.s.z||'Matériel';if(!gm[k]){gm[k]=[];gs.push(k)}gm[k].push({l:x.s.l,q:x.q,o:x.o.n+rowTag(x),pr:x.pr})});
   const sr=r.req.filter(x=>x.startsWith('Sièges'));
   return{no:quoteNo_(),date:new Date().toLocaleDateString(PRI18N.loc()),rent,mode:rent?'Location':'Vente',client:[client.n,client.t].filter(Boolean),

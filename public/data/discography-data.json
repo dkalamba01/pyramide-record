@@ -826,5 +826,94 @@
         }
       ]
     }
+  ],
+  "_featured_help": "Artistes à l'honneur (carrousel en haut de la page). Pour ajouter/retirer un artiste : ajoutez/supprimez son bloc dans 'featured'. L'ordre ci-dessous est l'ordre de défilement (le premier affiché est tiré au hasard à chaque visite). Optionnel : 'tracks': ['Titre 1','Titre 2'] pour choisir les titres (3 max), 'album': 'id-album' pour afficher un album complet.",
+  "featured": [
+    {
+      "slug": "thethe-makabi-m",
+      "name": "Thethe Makabi M.",
+      "match": [
+        "Thethe Makabi M."
+      ]
+    },
+    {
+      "slug": "sharon-mbungu-akinseye",
+      "name": "Sharon Mbungu Akinseye",
+      "match": [
+        "Sharon Mbungu Akinseye"
+      ],
+      "album": "na-ndimi"
+    },
+    {
+      "slug": "pasteur-lifoko-du-ciel",
+      "name": "Pasteur Lifoko du Ciel",
+      "match": [
+        "Pasteur Lifoko du Ciel"
+      ]
+    },
+    {
+      "slug": "enoch-mulopo",
+      "name": "Enoch Mulopo",
+      "match": [
+        "Enoch Mulopo"
+      ]
+    },
+    {
+      "slug": "hatthie-kashoba",
+      "name": "Hatthie Kashoba",
+      "match": [
+        "Hatthie Kashoba"
+      ]
+    },
+    {
+      "slug": "acsa-olangi-kaseya",
+      "name": "Acsa Olangi Kaseya",
+      "match": [
+        "Acsa Olangi Kaseya"
+      ]
+    },
+    {
+      "slug": "isaac-bukasa",
+      "name": "Isaac Bukasa",
+      "match": [
+        "Isaac Bukasa"
+      ]
+    },
+    {
+      "slug": "pasteur-moise-mbiye",
+      "name": "Pasteur Moïse Mbiye",
+      "match": [
+        "Pasteur Moïse Mbiye"
+      ]
+    },
+    {
+      "slug": "deborah-situ-pm",
+      "name": "Deborah Situ PM",
+      "match": [
+        "Deborah Situ PM"
+      ]
+    },
+    {
+      "slug": "onesime-kalala",
+      "name": "Onesime Kalala",
+      "match": [
+        "Onesime Kalala",
+        "Onésime Kalala"
+      ]
+    },
+    {
+      "slug": "elvie-pambu",
+      "name": "Elvie Pambu",
+      "match": [
+        "Elvie Pambu"
+      ]
+    },
+    {
+      "slug": "mike-flor-mulumba",
+      "name": "Mike Flor Mulumba",
+      "match": [
+        "Mike Flor Mulumba"
+      ]
+    }
   ]
 }

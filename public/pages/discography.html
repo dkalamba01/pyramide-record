@@ -43,6 +43,21 @@
   .catalog-section-header:first-child { padding-top: 0; border-top: 0; margin-top: 0; }
   .catalog-section-header h2 { font-family: var(--font-display); font-weight: 400; font-size: var(--fs-h3); color: var(--bone); }
   .catalog-section-header.is-hidden { display: none; }
+  /* Featured artists carousel */
+  .featured { margin:0 0 var(--sp-6); }
+  .featured[hidden], .featured.is-hidden { display:none; }
+  .featured__head { display:flex; align-items:center; justify-content:space-between; gap:var(--sp-3); margin-bottom:var(--sp-3); }
+  .featured__head h2 { font-family:var(--font-display); font-weight:400; font-size:var(--fs-h3); color:var(--bone); }
+  .featured__nav { display:flex; align-items:center; gap:var(--sp-2); }
+  .featured__btn { width:36px; height:36px; border-radius:50%; border:1px solid var(--hair-2); background:var(--panel); color:var(--bone); cursor:pointer; font-size:16px; line-height:1; }
+  .featured__btn:hover { border-color:var(--gold-bright); color:var(--gold-bright); }
+  .featured .featured__slide:not(.is-active) { display:none; }
+  .featured .featured__slide.is-active { animation:featfade .5s ease; }
+  .featured__dots { display:flex; flex-wrap:wrap; justify-content:center; gap:8px; margin-top:var(--sp-3); }
+  .featured__dot { width:9px; height:9px; border-radius:50%; border:0; padding:0; background:var(--hair-2); cursor:pointer; }
+  .featured__dot.is-active { background:var(--gold-bright); }
+  @keyframes featfade { from{opacity:0} to{opacity:1} }
+  @media (prefers-reduced-motion: reduce){ .featured .featured__slide.is-active { animation:none; } }
   /* Album group (several tracks under one cover) */
   .release.album { grid-column:1 / -1; display:grid; grid-template-columns:minmax(160px,210px) 1fr; gap:var(--sp-5); background:var(--panel); border:1px solid var(--hair-2); border-radius:var(--r-lg); padding:var(--sp-5); }
   .album__cover { position:relative; aspect-ratio:1; border-radius:var(--r-md); overflow:hidden; align-self:start; }
@@ -225,6 +240,7 @@
     </div>
 
     <!-- UNIFIED CATALOG — populated from ../data/discography-data.json by the script below -->
+    <section class="featured" id="featured" aria-label="Artistes à l'honneur" hidden></section>
     <div class="catalog" id="catalog">
       <p data-i18n="01cba1df" class="empty-note">Chargement…</p>
     </div>
@@ -451,6 +467,102 @@
     }
 
 
+
+    // ---- Featured artists carousel (data.featured) ----
+    function buildFeatured(data){
+      var box = document.getElementById('featured');
+      var list = data.featured || [];
+      if (!box || !list.length) return;
+      var slides = [];
+      list.forEach(function(f){
+        var el = null;
+        var al = f.album && (data.albums || []).filter(function(a){ return a.id === f.album; })[0];
+        if (al) {
+          el = renderAlbum(al);
+          el.classList.remove('is-hidden');
+          var eb = el.querySelector('.album__eyebrow');
+          if (eb) eb.innerHTML = 'Artiste à l\'honneur · ' + eb.innerHTML;
+        } else {
+          var mine = data.releases.filter(function(r){
+            return r.link && r.artist.split(/\s+feat\.?\s+|\s+&\s+/i)[0].trim() && f.match.indexOf(r.artist.split(/\s+feat\.?\s+|\s+&\s+/i)[0].trim()) !== -1;
+          });
+          if (f.tracks && f.tracks.length) mine = f.tracks.map(function(t){ return mine.filter(function(r){ return r.title === t; })[0]; }).filter(Boolean);
+          mine.sort(function(a, b){ return (a.type === 'live') - (b.type === 'live'); });
+          mine = mine.slice(0, 3);
+          if (!mine.length) return;
+          var first = mine.filter(function(r){ return r.image; })[0] || mine[0];
+          var rows = mine.map(function(r, i){
+            var idx = data.releases.indexOf(r);
+            return '<li class="album__track is-out"><span class="album__n">' + (i + 1) + '</span>' +
+              '<span class="album__tt"><span class="album__name">' + r.title + '</span>' +
+              '<span class="album__ft">' + r.role + (r.type === 'live' ? ' · Live' : '') + '</span></span>' +
+              '<span class="album__play" data-play-index="' + idx + '" role="button" tabindex="0">' + PLAY_ICON + ' Écouter</span></li>';
+          }).join('');
+          el = document.createElement('div');
+          el.className = 'release album';
+          el.innerHTML =
+            '<div class="album__cover"><img src="../assets/images/discography/' + first.image + '" alt="' + f.name + '" loading="lazy" decoding="async" style="object-position:' + ((first.imagePosition && first.imagePosition.trim()) || 'center') + '"></div>' +
+            '<div><div class="album__eyebrow">Artiste à l\'honneur</div>' +
+            '<h3 class="album__title">' + f.name + '</h3>' +
+            '<div class="album__by"><a href="artists/' + f.slug + '.html">Bio artiste →</a></div>' +
+            '<ol class="album__tracks open">' + rows + '</ol></div>';
+        }
+        el.classList.add('featured__slide');
+        slides.push(el);
+      });
+      if (!slides.length) return;
+      var head = document.createElement('div');
+      head.className = 'featured__head';
+      head.innerHTML = '<h2>À l\'honneur</h2><div class="featured__nav"><button type="button" class="featured__btn" data-f="prev" aria-label="Précédent">‹</button><button type="button" class="featured__btn" data-f="next" aria-label="Suivant">›</button></div>';
+      var stage = document.createElement('div');
+      slides.forEach(function(el){ stage.appendChild(el); });
+      var dots = document.createElement('div');
+      dots.className = 'featured__dots';
+      slides.forEach(function(el, i){
+        var b = document.createElement('button');
+        b.type = 'button'; b.className = 'featured__dot'; b.setAttribute('aria-label', (i + 1) + ' / ' + slides.length);
+        b.addEventListener('click', function(){ show(i, true); });
+        dots.appendChild(b);
+      });
+      box.innerHTML = ''; box.appendChild(head); box.appendChild(stage); box.appendChild(dots);
+      box.hidden = false;
+      var cur = Math.floor(Math.random() * slides.length), timer = null, paused = false;
+      var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+      function show(i, user){
+        cur = (i + slides.length) % slides.length;
+        slides.forEach(function(el, k){ el.classList.toggle('is-active', k === cur); });
+        Array.prototype.forEach.call(dots.children, function(b, k){ b.classList.toggle('is-active', k === cur); });
+        if (user) restart();
+      }
+      function restart(){ clearInterval(timer); if (!reduce) timer = setInterval(function(){ if (!paused && !document.hidden) show(cur + 1); }, 7000); }
+      head.addEventListener('click', function(e){
+        var b = e.target.closest('[data-f]'); if (!b) return;
+        show(cur + (b.getAttribute('data-f') === 'next' ? 1 : -1), true);
+      });
+      box.addEventListener('mouseenter', function(){ paused = true; });
+      box.addEventListener('mouseleave', function(){ paused = false; });
+      box.addEventListener('focusin', function(){ paused = true; });
+      box.addEventListener('focusout', function(){ paused = false; });
+      box.addEventListener('touchstart', function(){ paused = true; }, { passive: true });
+      var x0 = null;
+      stage.addEventListener('touchstart', function(e){ x0 = e.touches[0].clientX; }, { passive: true });
+      stage.addEventListener('touchend', function(e){
+        if (x0 === null) return;
+        var dx = e.changedTouches[0].clientX - x0; x0 = null;
+        if (Math.abs(dx) > 50) show(cur + (dx < 0 ? 1 : -1), true);
+      });
+      box.addEventListener('click', function(e){
+        var playEl = e.target.closest('[data-play-index]');
+        if (playEl) {
+          var r = allReleases[parseInt(playEl.getAttribute('data-play-index'), 10)];
+          if (r && r.link) openMediaOverlay(r);
+        }
+      });
+      show(cur);
+      restart();
+      window.__featuredBox = box;
+    }
+
     fetch('../data/discography-data.json')
       .then(function(r){ return r.json(); })
       .then(function(data){
@@ -460,9 +572,9 @@
 
         // Group by genre rather than showing raw JSON order — keeps Gospel,
         // Non Gospel, and Divers visually separated even in the "Tout" view.
-        var gospelItems = data.releases.filter(function(r){ return r.genre === 'gospel' && !r.album; });
-        var nonGospelItems = data.releases.filter(function(r){ return r.genre === 'non-gospel' && !r.album; });
-        var diversItems = data.releases.filter(function(r){ return r.genre === 'divers' && !r.album; });
+        var gospelItems = data.releases.filter(function(r){ return r.genre === 'gospel' ; });
+        var nonGospelItems = data.releases.filter(function(r){ return r.genre === 'non-gospel' ; });
+        var diversItems = data.releases.filter(function(r){ return r.genre === 'divers' ; });
         var albumsFor = function(g){ return (data.albums || []).filter(function(a){ return a.genre === g; }); };
 
         function appendSectionHeader(label, genreKey){
@@ -473,9 +585,8 @@
           catalog.appendChild(header);
         }
 
-        if (gospelItems.length || albumsFor('gospel').length) {
+        if (gospelItems.length) {
           appendSectionHeader('Gospel', 'gospel');
-          albumsFor('gospel').forEach(function(al){ catalog.appendChild(renderAlbum(al)); });
           gospelItems.forEach(function(item){
             var i = data.releases.indexOf(item);
             catalog.appendChild(renderCard(item, i));
@@ -506,6 +617,7 @@
           }
         });
 
+        buildFeatured(data);
         setupFilters();
       })
       .catch(function(err){
@@ -560,6 +672,8 @@
           var showHeader = activeGenre === 'all' || activeGenre === section;
           header.classList.toggle('is-hidden', !showHeader);
         });
+        var fb = document.getElementById('featured');
+        if (fb) fb.classList.toggle('is-hidden', activeType !== 'all' || activeGenre !== 'all' || activeArtist !== 'all');
         emptyNote.style.display = visibleCount === 0 ? 'block' : 'none';
       }
 

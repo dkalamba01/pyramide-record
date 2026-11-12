@@ -827,7 +827,7 @@
       ]
     }
   ],
-  "_featured_help": "Artistes à l'honneur (carrousel en haut de la page). Pour ajouter/retirer un artiste : ajoutez/supprimez son bloc dans 'featured'. L'ordre ci-dessous est l'ordre de défilement (le premier affiché est tiré au hasard à chaque visite). Optionnel : 'tracks': ['Titre 1','Titre 2'] pour choisir les titres (3 max), 'album': 'id-album' pour afficher un album complet.",
+  "_featured_help": "Artistes à l'honneur (carrousel en haut de la page). Pour ajouter/retirer un artiste : ajoutez/supprimez son bloc dans 'featured'. L'ordre ci-dessous est l'ordre de défilement (le carrousel s'ouvre sur l'artiste du jour : rotation automatique d'un artiste par jour dans cet ordre). Optionnel : 'from' et 'to' (AAAA-MM-JJ) pour imposer un artiste pendant une période (ex. sortie d'album) ; il passe alors avant la rotation. Optionnel : 'tracks': ['Titre 1','Titre 2'] pour choisir les titres (3 max), 'album': 'id-album' pour afficher un album complet.",
   "featured": [
     {
       "slug": "thethe-makabi-m",

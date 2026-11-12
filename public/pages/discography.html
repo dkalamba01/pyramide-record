@@ -501,13 +501,17 @@
           el = document.createElement('div');
           el.className = 'release album';
           el.innerHTML =
-            '<div class="album__cover"><img src="../assets/images/discography/' + first.image + '" alt="' + f.name + '" loading="lazy" decoding="async" style="object-position:' + ((first.imagePosition && first.imagePosition.trim()) || 'center') + '"></div>' +
+            '<div class="album__cover"><img src="../assets/images/discography/' + first.image + '" alt="' + f.name + '" decoding="async" style="object-position:' + ((first.imagePosition && first.imagePosition.trim()) || 'center') + '"></div>' +
             '<div><div class="album__eyebrow">Artiste à l\'honneur</div>' +
             '<h3 class="album__title">' + f.name + '</h3>' +
             '<div class="album__by"><a href="artists/' + f.slug + '.html">Bio artiste →</a></div>' +
             '<ol class="album__tracks open">' + rows + '</ol></div>';
         }
         el.classList.add('featured__slide');
+        el.querySelectorAll('.album__cover img').forEach(function(im){
+          im.removeAttribute('loading'); im.loading = 'eager';
+          im.addEventListener('error', function(){ var c = im.parentNode; if (c) c.style.display = 'none'; });
+        });
         slides.push(el);
       });
       if (!slides.length) return;

@@ -1979,6 +1979,122 @@ if(!done&&!ADM&&!/[?&](pack=|notour)/.test(location.search))setTimeout(()=>{if(!
 window.__cfgGuide={camTo,setMode,startTour};
 })();
 </script>
+<form name="quote-request" method="POST" data-netlify="true" netlify-honeypot="bot-field" hidden aria-hidden="true"><input type="hidden" name="form-name" value="quote-request"><input name="bot-field"><input name="name"><input name="phone"><input name="mode"><input name="lang"><input name="quote_no"><input name="total"><textarea name="quote"></textarea><textarea name="room_code"></textarea></form>
+<script>
+// ===== Salle enregistrée, envoi à Pyramide Record, comparaison des niveaux, « pourquoi cet article » =====
+(function(){
+const $=id=>document.getElementById(id),BD=$('body');if(!BD)return;
+const L=(fr,en)=>(window.PRI18N&&PRI18N.lang==='en')?en:fr;
+const st=document.createElement('style');
+st.textContent=`
+#resume{margin:8px 0 10px;padding:10px 12px;border:1px solid var(--gold);border-radius:10px;background:var(--panel-2);font-size:13px;line-height:1.4}
+#resume small{display:block;color:var(--sand);margin-top:2px}
+#resume .rr2{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap}
+#resume button{border-radius:16px;border:1px solid var(--hair-2);background:var(--panel);color:var(--bone);padding:7px 14px;font-size:13px;cursor:pointer}
+#resume button.go{background:var(--gold);border-color:var(--gold);color:#fff;font-weight:600}
+#cmpbox .cmp{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:6px}
+#cmpbox .cmp>div{border:1px solid var(--hair-2);border-radius:10px;padding:8px 6px;text-align:center;background:var(--panel-2);font-size:12px}
+#cmpbox .cmp>div.on{border-color:var(--gold)}
+#cmpbox .cmp b{display:block;font-size:15px;margin:4px 0}
+#cmpbox .cmp small{display:block;color:var(--sand);font-size:11px;line-height:1.3;min-height:28px}
+#cmpbox .cmp button{margin-top:6px;width:100%;border-radius:14px;border:1px solid var(--hair-2);background:var(--panel);color:var(--bone);padding:6px 4px;font-size:12px;cursor:pointer}
+#cmpbox .cmp .on button{background:var(--gold);color:#fff;border-color:var(--gold)}
+#opts .why{margin:0 4px 8px;padding:6px 9px;border-left:3px solid var(--gold);background:var(--panel-2);border-radius:6px;font-size:12px;line-height:1.4;color:var(--sand)}
+#qsendpr{margin-top:8px}#qsnotepr{font-size:12px;margin-top:6px;line-height:1.4}
+`;
+document.head.appendChild(st);
+
+// --- 1. Salle enregistrée sur l'appareil ---
+const KEY='pr-cfg-room';
+const get=()=>{try{return JSON.parse(localStorage.getItem(KEY)||'null')}catch(e){return null}};
+const put=v=>{try{localStorage.setItem(KEY,JSON.stringify(v))}catch(e){}};
+let base='',last='',hold=false;
+function autosave(){if(hold)return;let c;try{c=encodeState()}catch(e){return}if(c===last||c===base)return;last=c;
+  let t=0;try{t=totals().t||0}catch(e){}put({code:c,ts:Date.now(),total:t})}
+function showBanner(sv){
+  hold=true;const d=document.createElement('div');d.id='resume';
+  const when=new Date(sv.ts).toLocaleDateString(PRI18N.lang==='en'?'en-US':'fr-FR',{day:'numeric',month:'short'});
+  d.innerHTML='<b></b><small></small><div class="rr2"><button type="button" class="go" data-a="go"></button><button type="button" data-a="new"></button></div>';
+  d.querySelector('b').textContent=L('Votre dernière salle est enregistrée sur cet appareil.','Your last room is saved on this device.');
+  d.querySelector('small').textContent=L('Modifiée le ','Last edited ')+when+(sv.total>0?' · '+money(sv.total):'');
+  d.querySelector('.go').textContent=L('Reprendre ma salle','Resume my room');
+  d.querySelector('[data-a=new]').textContent=L('Recommencer','Start over');
+  BD.insertBefore(d,BD.firstChild);
+  d.onclick=e=>{const b=e.target.closest('[data-a]');if(!b)return;
+    if(b.dataset.a==='go'){try{loadState(JSON.parse(decodeURIComponent(escape(atob(sv.code)))));last=sv.code}catch(x){try{localStorage.removeItem(KEY)}catch(_){}}}
+    else{try{localStorage.removeItem(KEY)}catch(_){}}
+    d.remove();hold=false};
+  // si la personne commence à modifier sans choisir : on garde l'ancienne salle en attente
+  const w=setInterval(()=>{if(!$('resume')){clearInterval(w);return}let c;try{c=encodeState()}catch(e){return}if(c!==base){d.remove();hold=false;clearInterval(w)}},1500)}
+setTimeout(()=>{try{base=encodeState()}catch(e){return}
+  const sv=get(),pk=/[?&]pack=/.test(location.search);
+  if(sv&&sv.code&&sv.code!==base&&!pk)showBanner(sv);
+  setInterval(autosave,2500)},1800);
+
+// --- 2. Envoyer à Pyramide Record (Netlify Forms) ---
+const _qe=window.quoteExtras;
+window.quoteExtras=function(){_qe.apply(this,arguments);
+  const M=document.getElementById('modal'),wa=M&&M.querySelector('#qwa');if(!wa||M.querySelector('#qsendpr'))return;
+  const b=document.createElement('button');b.type='button';b.className='cta';b.id='qsendpr';b.textContent=L('Envoyer ma demande à Pyramide Record','Send my request to Pyramide Record');
+  const n=document.createElement('div');n.id='qsnotepr';n.className='mini';
+  wa.before(b);wa.before(n);
+  const say=(m,ok)=>{n.textContent=m;n.style.color=ok?'#25a85a':'var(--ember)'};
+  b.onclick=async()=>{
+    const nm=((M.querySelector('#cn')||{}).value||''),ph=((M.querySelector('#ct')||{}).value||'');
+    if(ph.replace(/\D/g,'').length<6){say(L('Ajoutez votre téléphone ou WhatsApp ci-dessus pour que nous puissions vous répondre.','Add your phone or WhatsApp number above so we can reply.'));const ct=M.querySelector('#ct');if(ct)ct.focus();return}
+    b.disabled=true;say(L('Envoi en cours…','Sending…'),true);
+    let code='';try{code=encodeState()}catch(e){}
+    const body=new URLSearchParams({'form-name':'quote-request','bot-field':'',name:nm,phone:ph,mode:rmode==='rent'?'location':'vente',lang:PRI18N.lang,quote_no:quoteNo_(),total:(()=>{try{return money(totals().t)}catch(e){return ''}})(),quote:quoteText||'',room_code:code});
+    try{const r=await fetch('/',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:body.toString()});
+      if(!r.ok)throw 0;b.textContent=L('Demande envoyée ✓','Request sent ✓');say(L('Merci ! Nous avons bien reçu votre demande et nous vous contacterons.','Thank you! We received your request and will contact you.'),true)}
+    catch(e){b.disabled=false;say(L('L\'envoi n\'a pas abouti. Utilisez WhatsApp ou l\'email ci-dessous.','Sending failed. Please use WhatsApp or the email below.'))}}};
+
+// --- 3. Comparaison des 3 niveaux de qualité ---
+const cb=document.createElement('div');cb.id='cmpbox';cb.setAttribute('data-tab','mat');cb.style.display='none';
+const lb=$('lvlbox');if(lb)lb.after(cb);else BD.appendChild(cb);
+const NAMES={1:[L('1re qualité','1st quality'),L('Marques des États-Unis, du Royaume-Uni, d\'Europe','Brands from the US, UK and Europe')],2:[L('2e qualité','2nd quality'),L('+ marques au bon rapport qualité-prix, Japon','+ good-value brands, Japan')],3:[L('3e qualité','3rd quality'),L('+ Chine et matériel vendu à Kinshasa','+ China and equipment sold in Kinshasa')]};
+function plan(k){ // pour chaque article choisi : l'option la moins chère disponible à ce niveau
+  const out={};for(const id in sel){const s=SLOTS.find(z=>z.id===id);if(!s)continue;
+    let best=null;s.o.forEach((o,i)=>{if((o.tier||1)>k)return;const p=price(o);if(p==null)return;if(!best||p<best[0])best=[p,i]});
+    const cur0=s.o[sel[id]];out[id]=best?best[1]:((cur0&&(cur0.tier||1)<=k)?sel[id]:null)}
+  return out}
+function totalFor(k){const bs=Object.assign({},sel),bl=lvl;let r=null;
+  try{lvl=k;const pl=plan(k);for(const id in sel)delete sel[id];for(const id in pl)if(pl[id]!=null)sel[id]=pl[id];r=totals()}catch(e){r=null}
+  finally{for(const id in sel)delete sel[id];Object.assign(sel,bs);lvl=bl}
+  return r}
+let lastKey='';
+function cmp(){
+  const tab=($('panel')||{getAttribute(){}}).getAttribute('data-t');if(tab!=='mat'){return}
+  if(rmode!=='buy'||!Object.keys(sel).length){cb.style.display='none';return}
+  const R=[1,2,3].map(totalFor);if(R.some(r=>!r)){cb.style.display='none';return}
+  const T=R.map(r=>r.t),inc=R.map(r=>r.req.length>0);
+  if(Math.max(...T)-Math.min(...T)<1){cb.style.display='none';return} // niveaux identiques : rien à comparer
+  cb.style.display='';
+  const html='<div class="zone">'+L('Comparer les 3 niveaux de qualité','Compare the 3 quality levels')+'</div><div class="sbx"><div class="mini">'+L('Votre salle avec, pour chaque article, l\'option la moins chère de ce niveau.','Your room using, for each item, the cheapest option available at that level.')+'</div><div class="cmp">'+[1,2,3].map((k,i)=>`<div class="${k===lvl?'on':''}"><b style="font-size:12px">${NAMES[k][0]}</b><small>${NAMES[k][1]}</small><b>${money(T[i])}</b>${inc[i]?'<small>'+L('total incomplet','incomplete total')+'</small>':''}<button type="button" data-k="${k}">${k===lvl?L('Niveau actuel','Current level'):L('Passer à ce niveau','Use this level')}</button></div>`).join('')+'</div></div>';
+  if(html===lastKey)return;lastKey=html;cb.innerHTML=html;
+  cb.querySelectorAll('button[data-k]').forEach(b=>b.onclick=()=>{const k=+b.dataset.k,pl=plan(k);lvl=k;for(const id in sel)delete sel[id];for(const id in pl)if(pl[id]!=null)sel[id]=pl[id];lvlUI();refresh();lastKey=''})}
+setInterval(cmp,900);
+
+// --- 4. Pourquoi cet article ---
+let actPack=null;const _ap=window.applyPack;
+if(typeof _ap==='function')window.applyPack=function(i){actPack=i;return _ap.apply(this,arguments)};
+const _ro=window.renderOpts;
+window.renderOpts=function(){_ro.apply(this,arguments);try{why()}catch(e){}};
+function why(){
+  const O=$('opts');if(!O||!cur||O.style.display==='none')return;
+  const s=SLOTS.find(x=>x.id===cur);if(!s||sel[s.id]==null||DECO.has(s.id))return;
+  const o=s.o[sel[s.id]];if(!o)return;const out=[];
+  if(actPack!=null&&PACKS[actPack]&&PACKS[actPack].s&&PACKS[actPack].s[s.id]===sel[s.id])out.push(L('Inclus dans le pack « '+PACKS[actPack].n+' ».','Included in the “'+PACKS[actPack].n+'” pack.'));
+  const ps=s.o.filter(x=>vis(x)&&price(x)!=null).map(price),p=price(o);
+  if(p!=null&&ps.length>1){if(p===Math.min(...ps))out.push(L('C\'est l\'option la moins chère de cette catégorie.','This is the cheapest option in this category.'));else if(p===Math.max(...ps))out.push(L('C\'est l\'option haut de gamme de cette catégorie.','This is the top-end option in this category.'))}
+  const q=qty(s);
+  if(s.id==='spk'&&q>0){const seats=ROOMS[rm].venue?(typeof venSeats!=='undefined'?venSeats:0):(rm==='church'?seat.count:0);if(seats>0)out.push(L('Environ '+Math.round(seats/q)+' places par enceinte avec '+q+' enceinte'+(q>1?'s':'')+'.','About '+Math.round(seats/q)+' seats per speaker with '+q+' speaker'+(q>1?'s':'')+'.'))}
+  else if(q>1&&SIZES[size])out.push(L('Quantité prévue pour cette taille de salle ('+SIZES[size].n+').','Quantity planned for this room size ('+SIZES[size].n+').'));
+  if(!out.length)return;
+  const h=O.querySelector('h3'),d=document.createElement('div');d.className='why';d.textContent=L('Pourquoi cet article : ','Why this item: ')+out.join(' ');
+  if(h)h.after(d)}
+})();
+</script>
 <script>
 (function(){
 const root=document.documentElement,b=document.getElementById('thm');

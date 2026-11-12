@@ -827,7 +827,7 @@
       ]
     }
   ],
-  "_featured_help": "Artistes à l'honneur (carrousel en haut de la page). Pour ajouter/retirer un artiste : ajoutez/supprimez son bloc dans 'featured'. L'ordre ci-dessous est l'ordre de défilement (le carrousel s'ouvre sur l'artiste du jour : rotation automatique d'un artiste par jour dans cet ordre). Optionnel : 'from' et 'to' (AAAA-MM-JJ) pour imposer un artiste pendant une période (ex. sortie d'album) ; il passe alors avant la rotation. Optionnel : 'tracks': ['Titre 1','Titre 2'] pour choisir les titres (3 max), 'album': 'id-album' pour afficher un album complet.",
+  "_featured_help": "Carrousel du haut de la page : « Chanson du jour ». Un morceau différent chaque jour, tiré automatiquement de tout le catalogue (morceaux avec lien et pochette), jamais le même artiste deux fois de suite ; les artistes listés dans 'featured' reviennent deux fois plus souvent. Pour imposer un artiste pendant une période (ex. sortie d'album) : ajoutez \"from\" et \"to\" (AAAA-MM-JJ) dans son bloc 'featured' ; optionnel \"tracks\": [\"Titre\"] pour imposer le morceau. 'artistSlugs' relie le nom d'artiste à sa page bio.",
   "featured": [
     {
       "slug": "thethe-makabi-m",
@@ -915,5 +915,45 @@
         "Mike Flor Mulumba"
       ]
     }
-  ]
+  ],
+  "artistSlugs": {
+    "Sharon Mbungu Akinseye": "sharon-mbungu-akinseye",
+    "Hatthie Kashoba": "hatthie-kashoba",
+    "Seth Mulumba": "seth-mulumba",
+    "Enoch Mulopo": "enoch-mulopo",
+    "Héritier Wata": "heritier-wata",
+    "Fally Ipupa": "fally-ipupa",
+    "Thethe Makabi M.": "thethe-makabi-m",
+    "Onesime Kalala": "onesime-kalala",
+    "Acsa Olangi Kaseya": "acsa-olangi-kaseya",
+    "Ruth Obweng": "ruth-obweng",
+    "Isaac Bukasa": "isaac-bukasa",
+    "Billy Bilomba": "billy-bilomba",
+    "Deborah Luvi": "deborah-luvi",
+    "Junior Kabongo": "junior-kabongo",
+    "Stevie Wonderson": "stevie-wonderson",
+    "Josue et Caleb Bitha": "josue-et-caleb-bitha",
+    "Pasteur Moïse Mbiye": "pasteur-moise-mbiye",
+    "Abigaël Bonheur Lwanzo": "abigael-bonheur-lwanzo",
+    "Deborah Situ PM": "deborah-situ-pm",
+    "Roland Muanga": "roland-muanga",
+    "Béthel Lopema M.": "bethel-lopema-m",
+    "Henoch Junior Yamba": "henoch-junior-yamba",
+    "John Lusala": "john-lusala",
+    "Elvie Pambu": "elvie-pambu",
+    "Agenors Kabongo": "agenors-kabongo",
+    "Fabrice Mulaja": "fabrice-mulaja",
+    "Salem Mosengo": "salem-mosengo",
+    "Mélodie Omas": "melodie-omas",
+    "Jérémie Dex M": "jeremie-dex-m",
+    "Jérémie Vase": "jeremie-vase",
+    "Henri Papa Mulaja": "henri-papa-mulaja",
+    "Groupe Pyramide": "groupe-pyramide",
+    "Dan Ngoy": "dan-ngoy",
+    "Pasteur Billy Tshilenge": "pasteur-billy-tshilenge",
+    "Nelson Kikem": "nelson-kikem",
+    "Mike Flor Mulumba": "mike-flor-mulumba",
+    "Pasteur Lifoko du Ciel": "pasteur-lifoko-du-ciel",
+    "Onésime Kalala": "onesime-kalala"
+  }
 }

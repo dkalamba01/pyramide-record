@@ -232,7 +232,7 @@ const CH_KITS={
  budget:{n:'Kit budget',s:{pmic:0,spk:0,mix:0,stand:0}},
  full:{n:'Kit complet + direct',s:{pmic:1,cmic:0,stand:0,kbd:0,spk:0,mix:0,eq:0,pwr:0,cam:0,tri:0,cap:0,ai:1,lap:0}}
 };
-const CH_SIZES={s:{n:'Petite salle',W:8,D:10},m:{n:'Salle moyenne',W:12,D:16},l:{n:'Grande salle / extérieur',W:18,D:24}};
+const CH_SIZES={s:{n:'Petite salle',W:8,D:10},m:{n:'Salle moyenne',W:12,D:16},l:{n:'Très grande salle',W:18,D:24}};
 const COL={pulp:0x6b4a2a,gtr:0x8a4b2a,drm:0x2b2b3a,perc:0x7a4a2a,wnd:0xc8a22a,pno:0x1a1a1a,piano:0x1a1a1a,mic:0x444a66,stand:0x333333,kbd:0x222222,mon:0x2b2b2b,spk:0x1a1a1a,mix:0x3a3f66,amp:0x555a77,pwr:0x2f7a52,cam:0x111111,tri:0x333333,box:0x50567a,lap:0x888ea8};
 const Q=(a,b)=>({s:a,m:b});
 const REC_SLOTS=[
@@ -309,7 +309,7 @@ VID_SLOTS.push({id:'bkl',z:'Éclairage',l:'Contre-jour / ambiance',t:'light',q:Q
 PHO_SLOTS.push({id:'bkl',z:'Éclairage',l:'Lumière d\'appoint',t:'light',q:Q(0,1),pos:[-.3,.2],span:.1,o:[LED,NA('Flash de studio + softbox (modèle à confirmer)')]});
 CH_SLOTS.push({id:'stl',z:'Éclairage',l:'Éclairage de scène',t:'light',q:{s:0,m:0,l:0},pos:[-.3,.45],span:.4,o:[LED,NA('Projecteurs LED de scène (modèle à confirmer)')]});
 const ROOMS={
- church:{get n(){return V('Église')},slots:CH_SLOTS,kits:CH_KITS,sizes:CH_SIZES,def:'m',place:placeCh,rad:{s:15,m:22,l:32},get h(){return V('Votre salle d\'église')}},
+ church:{get n(){return 'Église'},slots:CH_SLOTS,kits:CH_KITS,sizes:CH_SIZES,def:'m',place:placeCh,rad:{s:15,m:22,l:32},get h(){return V('Votre salle d\'église')}},
  rec:{n:'Studio d\'enregistrement',slots:REC_SLOTS,kits:REC_KITS,sizes:REC_SIZES,def:'s',place:placeRec,rad:{s:13,m:19},h:'Votre studio d\'enregistrement'}};
 let seat={layout:'rows',style:'pew',rows:null,aisle:1.6,count:0};const SDEF={s:4,m:6,l:9};
 const STN={pew:'bancs en bois',chair:'chaises en bois',plastic:'chaises plastique',padded:'fauteuils rembourrés',padpew:'bancs rembourrés'};
@@ -483,14 +483,14 @@ const PRES={
   {n:'Spectacle en demi-cercle',size:'m',kit:'full',seat:{layout:'arc',style:'padded',rows:6,aisle:1.6},scr:{layout:'three',size:'m'}},
   {n:'Petit concert',size:'s',kit:'budget',seat:{layout:'center',style:'chair',rows:4,aisle:1.2},scr:{layout:'center',size:'s'}}]};
 Object.defineProperty(ROOMS.church,'presets',{get(){return PRES[evt]||CHP}});
-let evt='church';const EVN={church:'Église / culte',conf:'Conférence',concert:'Concert / spectacle'},EVT={church:90,conf:80,concert:100};
+let evt='church';const EVN={church:'Service religieux',conf:'Conférence',concert:'Concert / spectacle'},EVT={church:90,conf:80,concert:100};
 const VOCS={church:{},
  conf:{'Chaire / pupitre du prédicateur':'Pupitre de l\'orateur','Pupitre en bois (modèle à confirmer)':'Pupitre en bois (modèle à confirmer)','Pupitre acrylique transparent (modèle à confirmer)':'Pupitre acrylique transparent (modèle à confirmer)','Chaire ou pupitre pour le prédicateur':'Pupitre pour l\'orateur','Pupitre léger pour le prédicateur':'Pupitre léger pour l\'orateur','Micro du pasteur':'Micro de l\'orateur','Micros de chorale':'Micros de panel / questions','pour la chorale':'pour les panélistes','que le pasteur et les musiciens':'que l\'orateur et les intervenants','Enceintes vers l\'assemblée':'Enceintes vers le public','pour une longue messe':'pour une longue conférence','SCÈNE / AUTEL':'SCÈNE / PODIUM','Votre salle d\'église':'Votre salle de conférence','Église':'Salle de conférence','Culte 90':'Standard 90'},
  concert:{'Chaire / pupitre du prédicateur':'Lutrin / pupitre à partitions','Chaire ou pupitre pour le prédicateur':'Lutrin pour partitions ou textes','Pupitre léger pour le prédicateur':'Pupitre léger pour partitions','Pupitre en bois (modèle à confirmer)':'Lutrin en bois (modèle à confirmer)','Pupitre acrylique transparent (modèle à confirmer)':'Lutrin transparent (modèle à confirmer)','Micro du pasteur':'Micro du chanteur principal','Micros de chorale':'Micros chœurs et instruments','pour la chorale':'pour les chœurs et instruments','que le pasteur et les musiciens':'que les artistes','Enceintes vers l\'assemblée':'Enceintes vers le public','pour une longue messe':'pour une longue prestation','SCÈNE / AUTEL':'SCÈNE','Votre salle d\'église':'Votre salle de concert','Église':'Salle de concert','Culte 90':'Standard 90'}};
 function V(t){const m=VOCS[evt]||{};if(typeof t!=='string')return t;Object.keys(m).sort((a,b)=>b.length-a.length).forEach(k=>{t=t.split(k).join(m[k])});return t}
 const VORIG=new Map();
 function applyVoc(){const seen=new Set();Object.values(ROOMS).forEach(r=>r.slots.forEach(sl=>{if(seen.has(sl))return;seen.add(sl);if(!VORIG.has(sl))VORIG.set(sl,{l:sl.l,d:sl.o.map(o=>o.d)});const q=VORIG.get(sl);sl.l=V(q.l);sl.o.forEach((o,i)=>{o.d=V(q.d[i])})}))}
-function setEvt(k){evt=k;tgt=EVT[k];rmode=(k==='conf'||k==='concert')?'rent':'buy';applyVoc();switchRoom(rm==='church'||ROOMS[rm].venue?rm:'church')}
+function setEvt(k){evt=k;tgt=EVT[k];applyVoc();switchRoom(rm==='church'||ROOMS[rm].venue?rm:'church')}
 ROOMS.rec.presets=[
  {n:'Deux salles (régie + cabine)',size:'m',kit:'full',two:true,guest:{n:2,style:'chair',layout:'row'},scr:{layout:'center',size:'m'}},
  {n:'Voix et beats (solo)',size:'s',kit:'budget',guest:{n:0},scr:{layout:'center',size:'s'}},
@@ -595,7 +595,7 @@ function renderList(){
     let right='<span class="req">Choisir</span>',sub='';
     if(DECO.has(s.id)){right='<span class="mini">Non vendu</span>';sub=o?o.n:''}else if(o){const pr=price(o);right=pr==null?'<span class="req">Sur demande</span>':'<b class="ok">'+money(pr*q)+'</b>';sub=o.n}
     h+=`<div class="slot ${cur===s.id?'sel':''}" data-id="${s.id}"><div>${s.l}${q>1?' ×'+q:''}<small>${sub}</small></div>${right}</div>`});
-  const off=SLOTS.filter(s=>qty(s)<=0&&!HID.has(s.id));if(off.length){h+='<div class="zone">Ajouter</div>'+off.map(s=>`<div class="slot" data-add="${s.id}"><div>+ ${s.l}</div><span class="req">Ajouter</span></div>`).join('')}
+  const off=SLOTS.filter(s=>qty(s)<=0&&!HID.has(s.id));if(off.length){h+='<div class="zone">Ajouter</div>'+off.map(s=>`<div class="slot" data-add="${s.id}"><div>+ <span>${s.l}</span></div><span class="req">Ajouter</span></div>`).join('')}
   L.innerHTML=h;catUI();
   L.querySelectorAll('[data-add]').forEach(e=>e.onclick=()=>{const s=SLOTS.find(x=>x.id===e.dataset.add);qov[rm+s.id]=1;cur=s.id;refresh()});
   L.querySelectorAll('.slot[data-id]').forEach(e=>e.onclick=()=>pick(e.dataset.id,true));
@@ -663,7 +663,8 @@ const rentTermsHtml=()=>'<h2>Conditions de location</h2><ul>'+RTERMS.map(x=>'<li
 function rentPdf(r){return '<div class="sm"><b>Location '+escR(rperiod())+'.</b> Acompte à la réservation (50 %) : <b>'+money(r.rent.acompte)+'</b>. Caution remboursable : <b>'+money(r.rent.caution)+'</b> (non incluse dans le total). Prix de location sans transport d\'importation ni taxes. '}
 function rentUI(){const B=document.getElementById('rentbox');if(!B)return;const inp='font-size:14px;padding:6px;border-radius:8px;border:1px solid var(--hair-2);background:var(--obsidian);color:var(--bone)';
   B.innerHTML='<div class="mini" style="margin:8px 0 4px">'+LL('Achat ou location ?','Buy or rent?')+'</div><div style="display:flex;gap:6px"><button class="pill '+(rmode==='buy'?'on':'')+'" data-m="buy">Acheter</button><button class="pill '+(rmode==='rent'?'on':'')+'" data-m="rent">Louer</button></div><div class="mini" style="margin-top:4px">'+(rmode==='rent'?LL('Location : tarif pour la durée choisie, acompte de 50 % à la réservation et caution remboursable.','Rental: price for the chosen period, 50% deposit at booking and a refundable security deposit.'):LL('Achat : matériel livré à Kinshasa, droits de douane et dédouanement à confirmer.','Purchase: equipment delivered to Kinshasa; customs duties and clearance to be confirmed.'))+'</div>'
-   +(rmode==='rent'?`<div class="mini" style="margin-top:6px">Dates de location</div><div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center"><input type="date" id="rfrom" value="${rfrom}" style="${inp}"><label style="font-size:13px">Durée <input type="number" id="rdays" min="1" max="60" value="${rdays}" style="${inp};width:64px"> jour(s)</label></div><label style="display:flex;gap:8px;align-items:center;font-size:13px;margin-top:6px"><input type="checkbox" id="rlog" ${rlog?'checked':''}> Livraison, installation et reprise</label><label style="display:flex;gap:8px;align-items:center;font-size:13px"><input type="checkbox" id="rtech" ${rtech?'checked':''}> Technicien son sur place (80 $/jour)</label><div class="mini">Tarifs de location sans transport d'importation ni taxes. Caution remboursable et acompte de 50 % demandés (voir le devis).</div>`:'');
+   +((rmode==='buy'&&(rm==='church'||ROOMS[rm].venue)&&evt!=='church')?'<div class="mini" style="margin-top:4px;color:var(--gold)">'+LL('Pour une conférence ou un concert ponctuel, la location est souvent plus avantageuse : essayez « Louer ».','For a one-off conference or concert, renting is often better value: try “Rent”.')+'</div>':'')
+   +(rmode==='rent'?`<div class="mini" style="margin-top:6px">${LL('Dates de location','Rental dates')}</div><div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center"><input type="date" id="rfrom" value="${rfrom}" style="${inp}"><label style="font-size:13px">${LL('Durée','Duration')} <input type="number" id="rdays" min="1" max="60" value="${rdays}" style="${inp};width:64px"> ${LL('jour(s)','day(s)')}</label></div><label style="display:flex;gap:8px;align-items:center;font-size:13px;margin-top:6px"><input type="checkbox" id="rlog" ${rlog?'checked':''}> ${LL('Livraison, installation et reprise','Delivery, installation and pickup')}</label><label style="display:flex;gap:8px;align-items:center;font-size:13px"><input type="checkbox" id="rtech" ${rtech?'checked':''}> ${LL('Technicien son sur place (80 $/jour)','On-site sound technician ($80/day)')}</label><div class="mini">${LL('Tarifs de location sans transport d\'importation ni taxes. Caution remboursable et acompte de 50 % demandés (voir le devis).','Rental rates exclude import freight and taxes. A refundable deposit and a 50% down payment are required (see the quote).')}</div>`:'');
   const up=()=>{renderList();updTotal()};
   B.querySelectorAll('[data-m]').forEach(b=>b.onclick=()=>{rmode=b.dataset.m;rentUI();up()});
   if(rmode==='rent'){document.getElementById('rfrom').onchange=e=>{rfrom=e.target.value;updTotal()};document.getElementById('rdays').oninput=e=>{rdays=Math.max(1,Math.min(60,Math.round(+e.target.value||1)));up()};
@@ -1339,17 +1340,18 @@ function refresh(){buildRoom();renderList();try{packsUI()}catch(e){}}
 function setSize(k){if(placeK)placeSet(placeK);uf=null;resetDims();att=0;dimInfo.note='';size=k;fx={};ven={};fsel=null;qov={};try{szHint()}catch(e){}applyScr();seat.rows=null;dummies=[];dsel=null;document.querySelectorAll('#sz .pill').forEach(b=>b.classList.toggle('on',b.dataset.k===k));
   if(cur&&!active().some(s=>s.id===cur))cur=null;refresh();seatUI();dimUI()}
 const PACKS=[
- {n:'Petite église',d:'jusqu\'à ~100 personnes',ev:'church',sz:'s',s:{pmic:0,cmic:0,stand:0,spk:0,mix:0}},
- {n:'Église moyenne',d:'~150 à 250 personnes',ev:'church',sz:'m',s:{pmic:0,cmic:0,stand:0,kbd:0,spk:0,mix:0,pwr:0}},
- {n:'Grande église + direct',d:'250+ personnes, diffusion en ligne',ev:'church',sz:'l',s:{pmic:1,cmic:0,stand:0,kbd:0,spk:0,mix:0,eq:0,pwr:0,cam:0,tri:0,cap:0,ai:1,lap:0}},
- {n:'Conférence / mariage',d:'location, quelques jours',ev:'conf',sz:'s',s:{pmic:0,stand:0,spk:0,mix:0}},
+ {n:'Petite église',d:'Petite salle, 8 × 10 m',de:'Small room, 8 × 10 m',ev:'church',sz:'s',s:{pmic:0,cmic:0,stand:0,spk:0,mix:0}},
+ {n:'Église moyenne',d:'Salle moyenne, 12 × 16 m',de:'Medium room, 12 × 16 m',ev:'church',sz:'m',s:{pmic:0,cmic:0,stand:0,kbd:0,spk:0,mix:0,pwr:0}},
+ {n:'Grande église + direct',d:'Grande salle, 18 × 24 m, diffusion en ligne',de:'Large room, 18 × 24 m, online streaming',ev:'church',sz:'l',s:{pmic:1,cmic:0,stand:0,kbd:0,spk:0,mix:0,eq:0,pwr:0,cam:0,tri:0,cap:0,ai:1,lap:0}},
+ {n:'Conférence / mariage',d:'location, quelques jours',de:'rental, a few days',rent:true,ev:'conf',sz:'s',s:{pmic:0,stand:0,spk:0,mix:0}},
  {n:'Studio podcast',d:'2 personnes',rm:'pod',sz:'s',kit:'full'},
  {n:'Studio débutant',d:'enregistrer voix et instruments',rm:'rec',sz:'s',kit:'budget'},
  {n:'Studio vidéo',d:'tournage et montage',rm:'vid',sz:'s',kit:'budget'}];
-function applyPack(i){const P=PACKS[i];if(P.ev)setEvt(P.ev);else{setEvt('church');switchRoom(P.rm)}if(ROOMS[rm].sizes[P.sz])setSize(P.sz);
+function applyPack(i){const P=PACKS[i];if(P.ev)setEvt(P.ev);else{setEvt('church');switchRoom(P.rm)}rmode=P.rent?'rent':'buy';if(ROOMS[rm].sizes[P.sz])setSize(P.sz);
   const ks=P.s||(KITS[P.kit]&&KITS[P.kit].s)||{};sel={};qov={};for(const id in ks){const sl=SLOTS.find(z=>z.id===id),o=sl&&sl.o[ks[id]];if(o&&vis(o)&&(optState(o)!=='soon'||ADMIN))sel[id]=ks[id]}
   applyScr();_pk={i,snap:JSON.stringify(sel)};refresh();setTab('mat')}
 const LL=(fr,en)=>(window.PRI18N&&PRI18N.lang==='en')?en:fr;
+const TR=t=>(window.PRI18N&&PRI18N.lang==='en'&&PRI18N.tr)?PRI18N.tr(t):t;
 let packAll=false,packAsk=null,_pk=null;
 const packFits=P=>P.ev?(rm==='church'&&evt===P.ev):rm===P.rm;
 function packCalc(P){ // contenu et prix du pack, sans toucher à la salle affichée
@@ -1357,15 +1359,16 @@ function packCalc(P){ // contenu et prix du pack, sans toucher à la salle affic
   try{rm=rk;SLOTS=R.slots;KITS=R.kits;SIZES=R.sizes;size=P.sz;qov={};
     const ks=P.s||(R.kits[P.kit]&&R.kits[P.kit].s)||{};
     for(const id in ks){const sl=R.slots.find(z=>z.id===id),o=sl&&sl.o[ks[id]];if(!o||!vis(o)||(optState(o)==='soon'&&!ADMIN))continue;const q=qty(sl);if(!(q>0))continue;const pr=price(o);out.items.push(((window.PRI18N&&PRI18N.lang==='en')?PRI18N.tr(sl.l):sl.l)+(q>1?' ×'+q:''));if(pr==null)out.open++;else out.total+=pr*q}
+    if(P.rent){const bs=sel,bm=rmode;try{sel={};for(const id in ks){const sl=R.slots.find(z=>z.id===id),o=sl&&sl.o[ks[id]];if(o&&vis(o)&&(optState(o)!=='soon'||ADMIN))sel[id]=ks[id]}rmode='rent';out.total=totals().t}catch(e){}finally{sel=bs;rmode=bm}}
   }catch(e){}finally{rm=bk[0];SLOTS=bk[1];KITS=bk[2];SIZES=bk[3];size=bk[4];qov=bk[5]}
   return out}
 function packsUI(){const B=document.getElementById('packs');if(!B)return;
   const fit=[],oth=[];PACKS.forEach((x,i)=>(packFits(x)?fit:oth).push(i));
   const card=i=>{const x=PACKS[i],c=packCalc(x),rent=x.ev==='conf'||x.ev==='concert',act=_pk&&_pk.i===i,mod=act&&JSON.stringify(sel)!==_pk.snap;
-    const pr=!rent&&c.total>0?'<b style="display:block;margin-top:4px;color:var(--gold)">'+LL('à partir de ','from ')+money(c.total)+(c.open?' +':'')+'</b>':(rent?'<b style="display:block;margin-top:4px;color:var(--gold)">'+LL('Location : prix après le clic','Rental: price shown after you pick it')+'</b>':'');
+    const pr=rent&&c.total>0?'<b style="display:block;margin-top:4px;color:var(--gold)">'+LL('Location 1 jour : environ ','Rental, 1 day: about ')+money(c.total)+'</b>':!rent&&c.total>0?'<b style="display:block;margin-top:4px;color:var(--gold)">'+LL('à partir de ','from ')+money(c.total)+(c.open?' +':'')+'</b>':'';
     const cn=c.items.length?'<small style="display:block;font-weight:400;opacity:.75;margin-top:3px;line-height:1.35">'+c.items.slice(0,5).join(', ')+(c.items.length>5?'…':'')+'</small>':'';
-    return `<button class="pill ${act?'on':''}" data-pk="${i}" style="text-align:left;flex:1 1 230px">${act?'<span>✓</span> ':''}<span>${x.n}</span>${mod?' <span style="font-weight:400;opacity:.8">('+LL('modifié','modified')+')</span>':''}<small style="display:block;font-weight:400;opacity:.7">${x.d}</small>${pr}${cn}</button>`};
-  let h='<div class="zone">Démarrer avec un pack</div><div class="mini" style="margin:2px 0 8px">Un point de départ complet : vous pourrez tout modifier ensuite.</div>';
+    return `<button class="pill ${act?'on':''}" data-pk="${i}" style="text-align:left;flex:1 1 230px">${act?'<span>✓</span> ':''}<span>${x.n}</span>${mod?' <span style="font-weight:400;opacity:.8">('+LL('modifié','modified')+')</span>':''}<small style="display:block;font-weight:400;opacity:.7">${LL(x.d,x.de||x.d)}</small>${pr}${cn}</button>`};
+  let h='<div class="zone">Démarrer avec un pack</div><div class="mini" style="margin:2px 0 8px">'+LL('Un point de départ complet : vous pourrez tout modifier ensuite. Prix indicatifs au niveau de qualité « '+LV[lvl].n+' » ; vous pouvez le changer plus loin.','A complete starting point: you can change everything afterwards. Indicative prices at the “'+TR(LV[lvl].n)+'” quality level; you can change it later.')+'</div>';
   h+=fit.length?'<div style="display:flex;gap:6px;flex-wrap:wrap">'+fit.map(card).join('')+'</div>':'<div class="mini" style="margin:2px 0 8px">'+LL('Pas encore de pack pour cette combinaison de lieu et d\'événement : composez votre salle à l\'étape suivante, ou regardez les autres packs.','No pack yet for this venue and event combination: build your room in the next step, or look at the other packs.')+'</div>';
   if(oth.length)h+='<div style="margin-top:8px"><button class="pill" data-all="1">'+(packAll?LL('Masquer les autres packs','Hide other packs'):LL('Voir tous les packs','See all packs'))+'</button></div>'+(packAll?'<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px">'+oth.map(card).join('')+'</div>':'');
   if(packAsk!=null)h+='<div class="mini" style="margin:10px 0 0;padding:8px 10px;border:1px solid var(--gold);border-radius:8px">'+LL('Cela remplacera votre sélection actuelle par « '+PACKS[packAsk].n+' ».','This will replace your current selection with “'+PACKS[packAsk].n+'”.')+'<div style="display:flex;gap:6px;margin-top:6px"><button class="pill on" data-pky="1">'+LL('Remplacer','Replace')+'</button><button class="pill" data-pkn="1">'+LL('Annuler','Cancel')+'</button></div></div>';
@@ -1375,7 +1378,7 @@ function packsUI(){const B=document.getElementById('packs');if(!B)return;
   const y=B.querySelector('[data-pky]');if(y)y.onclick=()=>{const i=packAsk;packAsk=null;applyPack(i)};
   const n=B.querySelector('[data-pkn]');if(n)n.onclick=()=>{packAsk=null;packsUI()}}
 function szHint(){const h=document.getElementById('szhint');if(!h)return;const z=SIZES[size];if(!z){h.textContent='';return}
-  const cap=rm==='church'?{s:LL('jusqu\'à ~100 personnes','up to ~100 people'),m:LL('~150 à 250 personnes','~150 to 250 people'),l:LL('250+ personnes','250+ people')}[size]:'';
+  let cap='';try{const c=capNow();if(c>0)cap=LL('≈ '+c+' places','≈ '+c+' seats')}catch(e){}
   h.textContent=z.n+(z.W&&z.D?' : '+z.W+' × '+z.D+' m (≈ '+Math.round(z.W*z.D)+' m²)':'')+(cap?' · '+cap:'')}
 function chrome(){
  const evOk=rm==='church'||!!ROOMS[rm].venue;
@@ -1384,7 +1387,7 @@ function chrome(){
   +'<div class="mini" style="margin:8px 0 4px">'+LL('Quelle taille ?','Which size?')+'</div><div id="sz" style="display:flex;gap:6px;flex-wrap:wrap">'+Object.entries(SIZES).map(([k,v])=>`<button class="pill" data-k="${k}">${v.n}</button>`).join('')+'</div><div id="szhint" class="mini" style="margin-top:4px"></div><div id="rentbox"></div>';
  document.getElementById('size').style.flexDirection='column';
  {const z=document.getElementById('size'),t=document.getElementById('szt');
-  const sum=()=>{t.textContent=(z.classList.contains('open')?'✕ Fermer':'⚙ '+[...z.querySelectorAll('.pill.on')].map(b=>b.textContent.trim()).join(' · ')+' ▾')};
+  const sum=()=>{t.textContent=(z.classList.contains('open')?LL('✕ Fermer','✕ Close'):'⚙ '+[...z.querySelectorAll('.pill.on')].map(b=>TR(b.dataset.fr||(b.dataset.fr=b.textContent.trim()))).join(' · ')+' ▾')};
   t.onclick=()=>{z.classList.toggle('open');sum()};
   z.addEventListener('click',e=>{if(e.target.closest('.pill'))setTimeout(sum,50)});
   if(!window._szo){window._szo=new MutationObserver(()=>{const t2=document.getElementById('szt');if(t2)sum()});window._szo.observe(z,{subtree:true,attributes:true,attributeFilter:['class']})}
@@ -1692,7 +1695,7 @@ function loadState(o){hang=o.hang===true?'hung':['hung','mix'].includes(o.hang)?
   for(const k in offs)delete offs[k];Object.assign(offs,o.offs||{});dummies=o.dummies||[];dn=dummies.reduce((m,d)=>Math.max(m,d.id),0);
   Object.assign(seat,o.seat||{});Object.assign(scr,o.scr||{});Object.assign(guest,o.guest||{});if(o.fwd){fwd=o.fwd;document.getElementById('fwd').value=fwd}
   dsel=null;cur=null;chrome();document.querySelectorAll('#sz .pill').forEach(b=>b.classList.toggle('on',b.dataset.k===size));buildRoom();renderList()}
-function switchRoom(k){uf=null;two=false;fx={};ven={};fsel=null;qov={};scr.layout='center';dummies=[];dsel=null;rm=k;SLOTS=ROOMS[k].slots;KITS=ROOMS[k].kits;SIZES=ROOMS[k].sizes;size=ROOMS[k].def;sel={};cur=null;chrome();setSize(ROOMS[k].def)}
+function switchRoom(k){uf=null;two=false;fx={};ven={};fsel=null;qov={};scr.layout='center';dummies=[];dsel=null;rm=k;SLOTS=ROOMS[k].slots;KITS=ROOMS[k].kits;SIZES=ROOMS[k].sizes;size=ROOMS[k].def;sel={};cur=null;if(!(k==='church'||ROOMS[k].venue))rmode='buy';chrome();setSize(ROOMS[k].def)}
 const setP=()=>{fwd=document.getElementById('fwd').value;mar=+document.getElementById('mar').value||0;fee=+document.getElementById('fee').value||0;renderList()};
 ['fwd','mar','fee'].forEach(i=>document.getElementById(i).onchange=setP);
 let quoteText='',inst=false;
@@ -1897,7 +1900,7 @@ const V=document.getElementById('view'),M=document.createElement('div');M.id='ma
 M.innerHTML='<button data-m="">Sans carte</button><button data-m="cvb">Couverture</button><button data-m="clb">Clarté</button><button data-m="qlb">Qualité</button>';V.appendChild(M);
 M.querySelectorAll('button').forEach(b=>b.onclick=()=>{const m=b.dataset.m;if(!m){const act=['cvb','clb','qlb'].find(i=>{const e=document.getElementById(i);return e&&e.classList.contains('on')});if(act)document.getElementById(act).click()}else{const e=document.getElementById(m);if(e&&!e.classList.contains('on'))e.click()}});
 setInterval(()=>{const ven=document.getElementById('cvb')&&document.getElementById('cvb').style.display!=='none';M.style.display=ven?'flex':'none';const act=['cvb','clb','qlb'].find(i=>{const e=document.getElementById(i);return e&&e.classList.contains('on')})||'';M.querySelectorAll('button').forEach(b=>b.classList.toggle('on',b.dataset.m===act));
-  const w=document.querySelectorAll('#chk .chk.w').length,d=bar.querySelector('[data-k=devis]');if(d){const t=w?'5 · Devis ('+w+')':'5 · Devis';if(d.dataset.frt!==t){d.dataset.frt=t;d.textContent=t}}},400);
+  const w=document.querySelectorAll('#chk .chk.w').length,d=bar.querySelector('[data-k=devis]');if(d){const t=TR(w?'5 · Devis ('+w+')':'5 · Devis');if(d.dataset.frt!==t){d.dataset.frt=t;d.textContent=t}}},400);
 })();
 </script>
 <script>

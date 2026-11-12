@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
-<script src="../js/i18n.js"></script>
+<script>window.PR_I18N_RELOAD=1</script><script src="../js/i18n.js"></script>
 <title data-i18n="4bdd55a5">Configurateur de studio 3D – Pyramide Record</title>
 <meta data-i18n-attr="content:9b914088" name="description" content="Composez votre studio ou votre salle d'église en 3D, choisissez le matériel et obtenez un devis livré à Kinshasa.">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -558,7 +558,7 @@ function loadCatalog(){if(!/^https?:/.test(location.protocol))return;
 const inStock=p=>!!(STOCK[p.n]&&STOCK[p.n].qty>0&&STOCK[p.n].price>0);
 function optState(p){return inStock(p)?'stock':(price(p)==null?'soon':'order')}
 function price(p){if(inStock(p))return STOCK[p.n].price;if(p.us==null){const v=local[p.n];return v>0?v:null}return Math.round(landed(p)*(1+mar/100)*(1+fee/100))}
-const money=v=>v.toLocaleString('fr-FR')+' $';
+const money=v=>PRI18N.loc()==='en-US'?'$'+v.toLocaleString('en-US'):v.toLocaleString('fr-FR')+' $';
 let qov={};
 // Niveaux de qualité (selon l'origine du matériel)
 let lvl=1;
@@ -634,7 +634,7 @@ function RSITE(sl,o){const n=o.n||'',t=sl.t,id=sl.id;
   if(t==='mix')return 200;if(id==='ai')return 100;if(t==='drm')return 150;if(t==='gtr')return 30;if(t==='piano'||t==='pno')return 150;return null}
 function rentDay(sl,o){const r=RSITE(sl,o);if(r!=null)return{p:r,site:true};const b=price(o);if(b==null)return null;return{p:Math.max(3,Math.round(b*.04)),site:false}}
 const rfac=d=>d<=1?1:d===2?1.9:d===3?2.7:d<7?d*.85:d===7?5:5+.55*(d-7);
-const fdate=d=>d.toLocaleDateString('fr-FR',{day:'numeric',month:'long',year:'numeric'});
+const fdate=d=>d.toLocaleDateString(PRI18N.loc(),{day:'numeric',month:'long',year:'numeric'});
 function rperiod(){if(!rfrom)return'dates à préciser ('+rdays+' jour'+(rdays>1?'s':'')+')';const a=new Date(rfrom+'T12:00:00'),b=new Date(a.getTime()+(rdays-1)*864e5);return rdays>1?'du '+fdate(a)+' au '+fdate(b)+' ('+rdays+' jours)':'le '+fdate(a)+' (1 jour)'}
 function totalsRent(){let t=0,req=[],rows=[],val=0,units=0;
   active().forEach(sl=>{if(sel[sl.id]==null||DECO.has(sl.id))return;const o=sl.o[sel[sl.id]],q=qty(sl),rd=rentDay(sl,o);
@@ -1046,7 +1046,7 @@ function plotOpen(full,SH){full=full===true;const K=c=>pdfColor?c:'#fff',{W,D}=S
       a2=inc.clr&&SH.clr?box('Clarté de la parole',SH.clr,L2,cl!=null?cl+' % de la salle est claire ou correcte ('+(ac.out?'retard du son et bruit ambiant':'écho '+fs(ac.rt))+').'+(cl<40?' Pour améliorer : traitement acoustique ou enceintes plus proches du public.':''):''):'',
       a3=inc.qual&&SH.qual?box('Qualité d\'écoute (niveau et clarté ensemble)',SH.qual,L3,ql!=null?ql+' % de la salle a à la fois un bon niveau et une parole claire.':''):'';
     if(a1||a2||a3)sound='<h2>Sonorisation : couverture et clarté</h2><p class="sm">Les deux cartes sont cadrées de la même façon pour être comparées. La carte « qualité d\'écoute » les combine : une zone n\'est idéale que si le volume est bon et si la parole reste claire.</p>'+(a1&&a2?'<table style="width:100%;border-collapse:collapse"><tr><td style="width:50%;vertical-align:top;padding-right:6px;border:0">'+a1+'</td><td style="width:50%;vertical-align:top;padding-left:6px;border:0">'+a2+'</td></tr></table>':a1+a2)+a3}
-  const html=(()=>{const hs=t=>{let h=0;for(let i=0;i<t.length;i++)h=(h*31+t.charCodeAt(i))|0;return Math.abs(h)},now=new Date(),ds=now.toLocaleDateString('fr-FR',{day:'numeric',month:'long',year:'numeric'})+', '+now.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'}).replace(':',' h '),ref='PR-'+(rmode==='rent'?'L-':'V-')+now.getFullYear()+String(now.getMonth()+1).padStart(2,'0')+String(now.getDate()).padStart(2,'0')+'-'+(1000+hs(encodeState())%9000),rr=totals(),nf=x=>x.toLocaleString('fr-FR'),A=Math.round(W*D),
+  const html=(()=>{const hs=t=>{let h=0;for(let i=0;i<t.length;i++)h=(h*31+t.charCodeAt(i))|0;return Math.abs(h)},now=new Date(),ds=now.toLocaleDateString(PRI18N.loc(),{day:'numeric',month:'long',year:'numeric'})+', '+now.toLocaleTimeString(PRI18N.loc(),{hour:'2-digit',minute:'2-digit'}).replace(':',' h '),ref='PR-'+(rmode==='rent'?'L-':'V-')+now.getFullYear()+String(now.getMonth()+1).padStart(2,'0')+String(now.getDate()).padStart(2,'0')+'-'+(1000+hs(encodeState())%9000),rr=totals(),nf=x=>x.toLocaleString(PRI18N.loc()),A=Math.round(W*D),
  css='@font-face{font-family:PRA;font-weight:400;src:url(data:font/ttf;base64,'+PRF.a4.d+') format("truetype")}@font-face{font-family:PRA;font-weight:600 700;src:url(data:font/ttf;base64,'+PRF.a6.d+') format("truetype")}@font-face{font-family:PRF;font-weight:500;src:url(data:font/ttf;base64,'+PRF.f5.d+') format("truetype")}@page{size:A4;margin:0}*{box-sizing:border-box;-webkit-print-color-adjust:exact;print-color-adjust:exact}body{font-family:PRA,Arial,sans-serif;color:#1C232E;font-size:12px;line-height:1.45;margin:0}'
  +'table.wrap{width:100%;border-collapse:collapse;margin:0}table.wrap>thead>tr>td,table.wrap>tfoot>tr>td,table.wrap>tbody>tr>td{border:0;padding:0;background:none}table.wrap>tbody>tr{page-break-inside:auto}.sp{height:11mm}table.wrap>tbody>tr>td.pg{padding:0 14mm}'
  +'.band{background:#0D131C;color:#fff;padding:18px 14mm 16px;display:flex;justify-content:space-between;align-items:flex-start;gap:16px}.bn{display:flex;align-items:center}.bn img{height:44px;display:block}.tri{width:0;height:0;border-left:8px solid transparent;border-right:8px solid transparent;border-bottom:15px solid #E8A552}.sub{color:#E8A552;font-size:9.5px;margin:6px 0 0 0}.dt{text-align:right;font-size:9.5px;line-height:1.55}.dt b{font-family:PRF,Georgia,serif;font-weight:500;display:block;color:#E8A552;font-size:17px;letter-spacing:.01em;margin-bottom:2px}'
@@ -1077,7 +1077,7 @@ function plotOpen(full,SH){full=full===true;const K=c=>pdfColor?c:'#fff',{W,D}=S
  +(mics.length?'<h2>Liste des entrées (canaux)</h2><table><tr><th>Canal</th><th>Source</th><th>Micro</th></tr>'+mics.map((m,i)=>`<tr><td>CH${i+1}</td><td>${esc(m[0])}</td><td>${esc(m[1])}</td></tr>`).join('')+'</table>':'')
  +(full?'<h2>Conditions</h2><ul><li>'+(rmode==='rent'?'Prix de location en dollars américains, sans transport d\'importation ni taxes (estimation).':'Prix estimatifs en dollars américains, livraison à Kinshasa estimée ; droits de douane et dédouanement à confirmer.')+'</li>'+(rmode==='rent'?'':'<li>'+esc(LVNOTE)+'</li>')+'<li>Les sièges, écrans, fonds, gradins et le mobilier sont affichés pour visualiser la salle ; ils ne sont pas vendus.</li><li>Les prix sur demande et la disponibilité sont confirmés avant toute commande. Ce document est une estimation, non contractuelle ; il devient ferme après confirmation écrite de Pyramide Record.</li></ul>':'')
  +'</td></tr></tbody></table><div class="ft"><span>Pyramide Record · Kinshasa'+(tel?' · WhatsApp '+tel:'')+' · pyramidrecord.com</span><span>'+ref+'</span></div><script>setTimeout(function(){print()},500)<\/script></body></html>'})();
-  const w=window.open('','_blank');if(!w)return;w.document.write(html);w.document.close()}
+  const w=window.open('','_blank');if(!w)return;w.document.write(PRI18N.html(html));w.document.close()}
 function buildVenue(W,D,fl){const vn=ven,v=ROOMS[rm].venue,big=v==='stad'?4:v==='amph'&&size==='l'?1.6:1,sw=Math.min(W*.8,v==='stad'?30:26);venSeats=0;
   {const sc=stageC(),sz=stageSz(W,D),stage=sc?box(sz[0],.35,sz[1],mat(0x4a3f2c)):box(sw,.35,3.2,mat(0x4a3f2c));stage.position.set(0,.17,sc?0:-D/2+1.7);room.add(stage)}
   const fz=v==='stad'?D*.1+.8:D/2-.7;
@@ -1399,7 +1399,7 @@ function fitPeople(){const n=att;dimInfo.note='';if(!(n>0)){dimUI();return}
     if(n>24)dimInfo.note='Les studios affichent au plus 24 personnes dans la vue 3D ; la surface est ajustée pour '+n+' personnes.'}
   buildRoom();renderList();seatUI();dimUI();const S2=SIZES[size];
   if(S2.W!==W0||S2.D!==D0){dimInfo.note=(dimInfo.note?dimInfo.note+'<br>':'')+'Salle ajustée à '+S2.W+' × '+S2.D+' m pour '+n+' personnes.';dimInfo()}}
-function advice(){const {W,D}=SIZES[size],A=Math.round(W*D),v=ROOMS[rm].venue,big=!!v||rm==='church',n=att>0?att:capNow(),o=[],act=id=>{const sl=SLOTS.find(x=>x.id===id);return sl&&qty(sl)>0&&sel[id]!=null},nf=x=>x.toLocaleString('fr-FR');
+function advice(){const {W,D}=SIZES[size],A=Math.round(W*D),v=ROOMS[rm].venue,big=!!v||rm==='church',n=att>0?att:capNow(),o=[],act=id=>{const sl=SLOTS.find(x=>x.id===id);return sl&&qty(sl)>0&&sel[id]!=null},nf=x=>x.toLocaleString(PRI18N.loc());
   const q=id=>{const sl=SLOTS.find(x=>x.id===id);return sl?qty(sl):0};
   if(n>0){const m=A/n;o.push(['Salle',`${W} × ${D} m, soit environ ${nf(A)} m² pour ${nf(n)} personne${n>1?'s':''} (${m.toFixed(1).replace('.',',')} m² par personne). `+(big?(m<.6?'La salle est très dense : prévoir des allées et sorties de secours dégagées.':m>4?'La salle est spacieuse : le son devra couvrir une grande surface, prévoir des enceintes supplémentaires.':'Densité confortable pour une salle de rassemblement.'):(m<1.5?'Espace réduit : prévoir un traitement acoustique soigné.':'Espace suffisant.'))])}
   if(big&&n>0){const need=Math.max(2,Math.ceil(n/150)),cur=q('spk');o.push(['Sonorisation',`Pour ${nf(n)} personnes, nous recommandons au moins ${need} enceintes de diffusion${cur?` (vous en avez choisi ${cur})`:''}, réparties pour couvrir toute la salle.`]);
@@ -1436,14 +1436,14 @@ function acPdf(){const r=acoustics(fillPct);if(r.out)return'<h2>Acoustique de la
   const {W,D}=SIZES[size],a=acv(),q=rateRt(r.rt),sc=[['Votre salle actuelle',{}],['Murs : panneaux acoustiques',{wall:'pan'}],['Murs : rideaux lourds',{wall:'rid'}],['Plafond : faux plafond acoustique',{roof:'fau'}],['Panneaux + faux plafond + moquette',{wall:'pan',roof:'fau',floor:'moq'}]].filter((x,i)=>i===0||Object.keys(x[1]).some(k=>a[k]!==x[1][k])),
   rows=sc.map(([n,ov])=>{const p=acoustics(fillPct,ov),p0=acoustics(0,ov),p1=acoustics(100,ov),qq=rateRt(p.rt);return`<tr><td>${n}</td><td>${fs(p0.rt)} → ${fs(p1.rt)}</td><td>${fs(p.rt)}</td><td>${qq.t}</td><td>${(Math.round(p.dc*10)/10).toString().replace('.',',')} m</td></tr>`}).join('');
   return'<h2>Acoustique de la salle</h2><p class="sm">L\'écho (RT60) est le temps que le son met à s\'éteindre dans la salle. Pour la parole, visez environ '+(['rec','pod','vid','pho'].includes(rm)?'0,5 s':'1 s')+' ou moins. Plus l\'écho est long, plus les mots se mélangent : monter le volume ne l\'améliore pas et l\'aggrave. La distance critique est la distance à l\'enceinte au-delà de laquelle l\'écho de la salle couvre le son direct.</p>'
-  +'<p class="sm">Calcul (formule de Sabine) à partir de vos dimensions : '+Math.round(W*10)/10+' × '+Math.round(D*10)/10+' × '+a.h+' m, soit '+Math.round(r.V).toLocaleString('fr-FR')+' m³, de vos matériaux ('+mget('wall',a.wall)[1]+', '+mget('roof',a.roof)[1]+', '+mget('floor',a.floor)[1]+') et du remplissage ('+(r.occ?r.occ+' personnes':'salle vide')+'). Résultat actuel : écho '+fs(r.rt)+', compréhension de la parole « '+q.t.toLowerCase()+' ».</p>'
+  +'<p class="sm">Calcul (formule de Sabine) à partir de vos dimensions : '+Math.round(W*10)/10+' × '+Math.round(D*10)/10+' × '+a.h+' m, soit '+Math.round(r.V).toLocaleString(PRI18N.loc())+' m³, de vos matériaux ('+mget('wall',a.wall)[1]+', '+mget('roof',a.roof)[1]+', '+mget('floor',a.floor)[1]+') et du remplissage ('+(r.occ?r.occ+' personnes':'salle vide')+'). Résultat actuel : écho '+fs(r.rt)+', compréhension de la parole « '+q.t.toLowerCase()+' ».</p>'
   +'<table><tr><th style="width:34%">Scénario</th><th>Vide → pleine</th><th>Écho actuel</th><th>Parole</th><th>Dist. critique</th></tr>'+rows+'</table><p class="sm">Estimation indicative, à confirmer par une mesure sur place. '+(acBuy().length?'Les traitements choisis sont chiffrés dans le devis (prix estimés, à confirmer).':'Les traitements acoustiques ne sont pas inclus dans le prix.')+'</p>'}
 function rateRt(rt){const st=rm==='rec'||rm==='pod'||rm==='vid'||rm==='pho',T=st?[.35,.5,.8]:[.8,1.2,1.8,2.5],L=['Excellente','Bonne','Moyenne','Difficile','Très difficile'],C=['#3cc878','#8fd13c','#ebd23c','#f08c32','#dc3c3c'];let i=0;while(i<T.length&&rt>T[i])i++;return{t:L[i],c:C[i],i}}
-const fs=x=>x.toFixed(1).replace('.',',')+' s';
+const fs=x=>(PRI18N.loc()==='en-US'?x.toFixed(1):x.toFixed(1).replace('.',','))+' s';
 function acRes(){const e=document.getElementById('acres');if(!e)return;const a=acv(),r=acoustics(fillPct);
   if(r.out){e.innerHTML='<b>Plein air</b> : pas d\'écho de salle. Le son se perd avec la distance (et le vent) : prévoyez plus d\'enceintes et des enceintes de renfort.';return}
   const r0=acoustics(0),r1=acoustics(100),q=rateRt(r.rt),pos=Math.min(100,r.rt/3*100);
-  e.innerHTML=`Volume : ${Math.round(r.V).toLocaleString('fr-FR')} m³ · Écho (RT60) : <b>${fs(r.rt)}</b> · Compréhension de la parole : <b style="color:${q.c}">${q.t}</b>
+  e.innerHTML=`Volume : ${Math.round(r.V).toLocaleString(PRI18N.loc())} m³ · Écho (RT60) : <b>${fs(r.rt)}</b> · Compréhension de la parole : <b style="color:${q.c}">${q.t}</b>
   <div style="height:8px;border-radius:4px;margin:6px 0;position:relative;background:linear-gradient(90deg,#3cc878,#ebd23c 45%,#f08c32 70%,#dc3c3c)"><div style="position:absolute;left:${pos}%;top:-3px;width:3px;height:14px;background:#fff;border-radius:2px"></div></div>
   Salle vide ${fs(r0.rt)} → pleine ${fs(r1.rt)}${r.N?'':' (aucune place)'} · au-delà de ${fs(1).replace(' s','')} m... `.replace(/ · au-delà.*$/,'')+` · distance critique ≈ ${(Math.round(r.dc*10)/10).toString().replace('.',',')} m (au-delà, l'écho domine la voix).`}
 function fillUI(){const B=document.getElementById('fillbox');if(!B)return;const N=crowdPts.length;
@@ -1453,7 +1453,7 @@ function fillUI(){const B=document.getElementById('fillbox');if(!B)return;const 
   const ap=()=>{document.getElementById('fp').textContent=fillPct+'%';document.getElementById('fr').value=fillPct;buildCrowd();acRes();fillCnt()};
   f1.onclick=()=>{fillMode='sit';fillPct=100;ap()};f2.onclick=()=>{fillMode='stand';fillPct=100;ap()};f0.onclick=()=>{fillPct=0;ap()};
   fr.oninput=()=>{fillPct=+fr.value;ap()};fillCnt()}
-function fillCnt(){const e=document.getElementById('fcnt');if(e){const N=crowdPts.length;e.textContent=Math.round(N*fillPct/100).toLocaleString('fr-FR')+' personnes sur '+N.toLocaleString('fr-FR')+' places (absorbent le son : l\'écho baisse quand la salle se remplit).'}}
+function fillCnt(){const e=document.getElementById('fcnt');if(e){const N=crowdPts.length;e.textContent=Math.round(N*fillPct/100).toLocaleString(PRI18N.loc())+' personnes sur '+N.toLocaleString(PRI18N.loc())+' places (absorbent le son : l\'écho baisse quand la salle se remplit).'}}
 function buildCrowd(){buildCrowd0();crowdVis()}
 function crowdVis(){const h=covOn&&isVen()&&seatSet(1).length>0;room.children.forEach(g=>{if(g.userData&&g.userData.crowd)g.visible=!h})}
 function buildCrowd0(){room.children.filter(g=>g.userData&&g.userData.crowd).forEach(g=>room.remove(g));const N=crowdPts.length;if(!N||fillPct<=0)return;
@@ -1593,7 +1593,7 @@ function covUI(){const B=document.getElementById('covbox');if(!B)return;if(!isVe
   <button class="cta" id="zo" style="margin-top:8px">① Couverture maximale : toute la salle</button><button class="cta" id="zp" style="margin-top:6px;background:var(--gold);color:#fff">② Placer les enceintes sur ma zone dessinée</button>
   <div class="mini" id="covres" style="margin-top:8px"></div><div class="mini">① couvre toute la salle. ② : dessinez d\'abord la zone du public, puis touchez ②. Le calcul place les enceintes de façon réaliste : façade près de la scène, rappels sur les côtés, retards en profondeur (retard à régler sur la table ou le processeur), et enceintes autour de la zone dessinée. Estimation indicative.</div></details></div>`;
   const volRec=()=>{const t0=trim;trim=0;const a=covStats();trim=t0;if(!a)return null;return{r:Math.max(-20,Math.min(0,Math.round(tgt-2-a.p10))),a}};
-  const vr=()=>{const e=document.getElementById('vrec'),v=volRec();if(!e)return;if(!v){e.textContent='Choisissez des enceintes pour obtenir le volume conseillé.';return}const {W,D}=SIZES[size],mx=v.a.max+v.r;e.innerHTML=`Volume conseillé pour ${Math.round(W*D)} m²${crowdPts.length?' et '+crowdPts.length.toLocaleString('fr-FR')+' places':''} : <b>${v.r} dB</b> (≈ ${Math.round(100*Math.pow(10,v.r/20))} % du maximum). Avec ce réglage : environ ${v.a.med+v.r} dB dans la salle, jusqu'à ${mx} dB au plus près des enceintes${mx>105?' ⚠ risque pour l\'audition près des enceintes':''}. Réglage actuel : ${trim} dB.`};
+  const vr=()=>{const e=document.getElementById('vrec'),v=volRec();if(!e)return;if(!v){e.textContent='Choisissez des enceintes pour obtenir le volume conseillé.';return}const {W,D}=SIZES[size],mx=v.a.max+v.r;e.innerHTML=`Volume conseillé pour ${Math.round(W*D)} m²${crowdPts.length?' et '+crowdPts.length.toLocaleString(PRI18N.loc())+' places':''} : <b>${v.r} dB</b> (≈ ${Math.round(100*Math.pow(10,v.r/20))} % du maximum). Avec ce réglage : environ ${v.a.med+v.r} dB dans la salle, jusqu'à ${mx} dB au plus près des enceintes${mx>105?' ⚠ risque pour l\'audition près des enceintes':''}. Réglage actuel : ${trim} dB.`};
   const ec=()=>{const e=document.getElementById('cecho');if(!e)return;const r=acoustics(fillPct);if(r.out){e.textContent='Plein air : pas d\'écho de salle.';return}const q=rateRt(r.rt),c=clrPct();e.innerHTML=`Écho (RT60) : <b>${fs(r.rt)}</b> · parole : <b style="color:${q.c}">${q.t}</b>${c!=null?' · '+c+' % de la salle claire ou correcte':''}`};
   const rf=()=>{document.getElementById('ctgv').textContent=tgt+' dB';document.getElementById('ctrimv').textContent=trim+' dB';covBuild();covRes();vr();ec()};
   vapp.onclick=()=>{const v=volRec();if(!v)return;trim=v.r;ctrim.value=trim;rf()};
@@ -1685,11 +1685,11 @@ function buildQuote(r){const rent=rmode==='rent',z=SIZES[size],L=[],ev=rm==='chu
   if(rent)L.push('',rentText(r));else L.push('_Livraison à Kinshasa estimée. Droits de douane et dédouanement à confirmer._','','_'+LVNOTE+'_');
   qTerms(rent).forEach(t=>L.push('_'+t+'_'));
   L.push('','_Prix estimatifs, confirmés par notre équipe. Merci de votre confiance !_');
-  return L.join('\n')}
+  return PRI18N.text(L.join('\n'))}
 function quoteSet(){quoteBase=buildQuote(totals());quoteText=quoteBase+(quoteCode?'\n\n🔗 _Code de la salle (pour la retrouver)_ :\n'+quoteCode:'');
   const t=document.getElementById('qt');if(t)t.value=quoteText;
   const w=document.getElementById('qwa');if(w)w.href='https://wa.me/'+(contact.wa||'').replace(/\D/g,'')+'?text='+encodeURIComponent(quoteBase);
-  const m=document.getElementById('qem');if(m&&contact.em)m.href='mailto:'+contact.em+'?subject='+encodeURIComponent('Demande de devis ('+(rmode==='rent'?'LOCATION':'VENTE')+') – Pyramide Record')+'&body='+encodeURIComponent(quoteText)}
+  const m=document.getElementById('qem');if(m&&contact.em)m.href='mailto:'+contact.em+'?subject='+encodeURIComponent(PRI18N.lang==='en'?'Quote request ('+(rmode==='rent'?'RENTAL':'SALE')+') – Pyramide Record':'Demande de devis ('+(rmode==='rent'?'LOCATION':'VENTE')+') – Pyramide Record')+'&body='+encodeURIComponent(quoteText)}
 const HWR=[278,278,355,556,556,889,667,191,333,333,389,584,278,333,278,278,556,556,556,556,556,556,556,556,556,556,278,278,584,584,584,556,1015,667,667,722,722,667,611,778,722,278,500,667,556,833,722,778,667,778,722,667,611,722,667,944,667,667,611,278,278,278,469,556,333,556,556,500,556,556,278,556,556,222,222,500,222,833,556,556,556,556,333,500,278,556,500,722,500,500,500,334,260,334,584],
   HWB=[278,333,474,556,556,889,722,238,333,333,389,584,278,333,278,278,556,556,556,556,556,556,556,556,556,556,333,333,584,584,584,611,975,722,722,722,722,667,611,778,722,278,556,722,611,833,722,778,667,778,722,667,611,722,667,944,667,667,611,333,278,333,584,556,333,556,611,556,611,556,333,611,611,278,278,556,278,889,611,611,611,611,389,556,333,611,556,778,556,556,500,389,280,389,584];
 function pdfLat(s){const M={0x153:'\x9c',0x152:'\x8c',0x20AC:'\x80',0x2018:'\x91',0x2019:'\x92',0x201C:'\x93',0x201D:'\x94',0x2013:'\x96',0x2014:'\x97',0x2022:'\x95'};let o='';s=String(s).replace(/[\u00a0\u202f\u2009]/g,' ').replace(/\u2026/g,'...');for(const ch of s){const c=ch.codePointAt(0);o+=c<256?ch:(M[c]||'')}return o}
@@ -1697,18 +1697,18 @@ function pdfW(s,b,sz){const T=PRF[b===2?'f5':b?'a6':'a4'].w;let w=0;for(const ch
 function b64u(x){const r=atob(x),u=new Uint8Array(r.length);for(let i=0;i<r.length;i++)u[i]=r.charCodeAt(i);return u}
 function pngRaw(uri){const u=b64u(uri.split(',')[1]),n4=i=>((u[i]<<24)|(u[i+1]<<16)|(u[i+2]<<8)|u[i+3])>>>0;let p=8,W=0,H=0;const id=[];while(p<u.length){const n=n4(p),t=String.fromCharCode(u[p+4],u[p+5],u[p+6],u[p+7]);if(t==='IHDR'){W=n4(p+8);H=n4(p+12)}if(t==='IDAT')id.push(u.subarray(p+8,p+8+n));p+=12+n}const o=new Uint8Array(id.reduce((a,x)=>a+x.length,0));let q=0;id.forEach(x=>{o.set(x,q);q+=x.length});return{W,H,d:o}}
 const QTERMS={days:15,pay:'Paiement : 50 % à la commande, solde à la livraison.'};
-function qValid(){const d=new Date();d.setDate(d.getDate()+QTERMS.days);return d.toLocaleDateString('fr-FR')}
+function qValid(){const d=new Date();d.setDate(d.getDate()+QTERMS.days);return d.toLocaleDateString(PRI18N.loc())}
 function qTerms(rent){return ['Offre valable '+QTERMS.days+' jours, jusqu\'au '+qValid()+'. Les prix du matériel importé peuvent évoluer.'].concat(rent?[]:[QTERMS.pay])}
 function quoteNo_(){if(!quoteNo){const d=new Date(),p=n=>String(n).padStart(2,'0');quoteNo='DEV-'+d.getFullYear()+p(d.getMonth()+1)+p(d.getDate())+'-'+p(d.getHours())+p(d.getMinutes())}return quoteNo}
 function pdfName(){const sl=String(client.n||'').normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^A-Za-z0-9]+/g,'-').replace(/^-+|-+$/g,'').slice(0,24);return 'Devis-Pyramide-Record_'+quoteNo_()+(sl?'_'+sl:'')+'.pdf'}
 function quoteData(r){const rent=rmode==='rent',z=SIZES[size],ev=rm==='church'?EVN[evt]:ROOMS[rm].n,dl=String(LV[lvl].dl||'').replace(/^Délai ?: ?/i,''),gs=[],gm={};
   r.rows.forEach(x=>{const k=x.s.z||'Matériel';if(!gm[k]){gm[k]=[];gs.push(k)}gm[k].push({l:x.s.l,q:x.q,o:x.o.n+rowTag(x),pr:x.pr})});
   const sr=r.req.filter(x=>x.startsWith('Sièges'));
-  return{no:quoteNo_(),date:new Date().toLocaleDateString('fr-FR'),rent,mode:rent?'Location':'Vente',client:[client.n,client.t].filter(Boolean),
+  return{no:quoteNo_(),date:new Date().toLocaleDateString(PRI18N.loc()),rent,mode:rent?'Location':'Vente',client:[client.n,client.t].filter(Boolean),
     salle:z.n+(z.W&&z.D?' ('+z.W+' × '+z.D+' m)':''),ev,qual:LV[lvl].n,dl,duree:rent?rdays+' jour'+(rdays>1?'s':'')+(rfrom?' à partir du '+rfrom:''):'',
     groups:gs.map(k=>({z:k,items:gm[k]})),seats:sr,total:money(r.t),totLabel:rent?'TOTAL LOCATION ('+rdays+' j)':'TOTAL ESTIMÉ',inst,
     notes:(rent?[rentText(r)]:['Livraison à Kinshasa estimée. Droits de douane et dédouanement à confirmer.',LVNOTE]).concat(qTerms(rent)),unitLabel:rent?'Prix ('+rdays+' j)':'Prix unitaire'}}
-function miniPdf(d,imgUrl,iw,ih){
+function miniPdf(d,imgUrl,iw,ih){d=PRI18N.deep(d);
   const esc=s=>s.replace(/\\/g,'\\\\').replace(/\(/g,'\\(').replace(/\)/g,'\\)'),bin=s=>{const u=new Uint8Array(s.length);for(let i=0;i<s.length;i++)u[i]=s.charCodeAt(i)&255;return u};
   const NAVY=[.051,.075,.11],PAN=[.078,.114,.157],EMB=[.91,.647,.322],GRY=[.341,.384,.431],INK=[.11,.137,.18],LT=[.945,.929,.894],TINT=[.89,.867,.816],H2=[.847,.82,.757],SND=[.604,.655,.714],WH=[1,1,1];
   const pages=[[]];let pi=0,y=0;const op=o=>pages[pi].push(o),cl=c=>c.map(v=>v.toFixed(3)).join(' ');
@@ -1804,7 +1804,7 @@ function waSend(att,ok){if(att&&!ok){leadAsk(()=>waSend(att,1));return}try{local
 function quoteExtras(){const code=encodeState();quoteCode=code.length<1200?code:'';quoteSet();
   let img='';try{R.render(scene,cam);img=`<img src="${cv.toDataURL('image/jpeg',.8)}" style="width:100%;border-radius:8px;margin-top:8px" alt="Aperçu de ma salle">`}catch(e){}
   const num=(contact.wa||'').replace(/\D/g,''),wa='https://wa.me/'+num+'?text='+encodeURIComponent(quoteBase),
-    em=contact.em?'mailto:'+contact.em+'?subject='+encodeURIComponent('Demande de devis ('+(rmode==='rent'?'LOCATION':'VENTE')+') – Pyramide Record')+'&body='+encodeURIComponent(quoteText):'';
+    em=contact.em?'mailto:'+contact.em+'?subject='+encodeURIComponent(PRI18N.lang==='en'?'Quote request ('+(rmode==='rent'?'RENTAL':'SALE')+') – Pyramide Record':'Demande de devis ('+(rmode==='rent'?'LOCATION':'VENTE')+') – Pyramide Record')+'&body='+encodeURIComponent(quoteText):'';
   document.getElementById('mbody').insertAdjacentHTML('beforeend',img+`<a class="cta" id="qwa" target="_blank" rel="noopener" href="${wa}">Envoyer sur WhatsApp</a><label style="display:flex;gap:8px;align-items:center;font-size:13px;margin-top:8px"><input type="checkbox" id="qatt"> Joindre le devis en PDF au message (facultatif)</label><div id="qnote" class="mini" style="color:var(--ember);display:none"></div>`+(em?`<a class="cta em" id="qem" href="${em}">Envoyer par email</a>`:'')+`<label style="display:flex;gap:8px;align-items:center;font-size:13px;margin-top:8px"><input type="checkbox" id="pcol" ${pdfColor?'checked':''}> PDF en couleurs (par défaut : économe en encre)</label><button class="cta em" id="prt" style="margin-top:8px">Enregistrer le devis en PDF</button><div class="mini">Code de ma salle (pour la retrouver plus tard) :</div><textarea readonly>${code}</textarea>`);shopCartBtn();document.getElementById('prt').onclick=()=>leadAsk(()=>pvOpen(true));{const at=document.getElementById('qatt');try{at.checked=localStorage.getItem('pr_att')==='1'}catch(e){}document.getElementById('qwa').onclick=e=>{e.preventDefault();waSend(at.checked)}}document.getElementById('pcol').onchange=e=>{pdfColor=e.target.checked}}
 document.getElementById('quote').onclick=()=>{const r=totals();if(!document.getElementById('modal').style.display||document.getElementById('modal').style.display==='none')quoteNo='';
   let rows=r.rows.map(x=>`<tr><td>${x.s.l}${x.q>1?' ×'+x.q:''}<br><small style="color:var(--sand)">${x.o.n}${rowTag(x)}</small></td><td>${x.pr==null?'Sur demande':money(x.pr*x.q)}</td></tr>`).join('');
@@ -1861,7 +1861,7 @@ const V=document.getElementById('view'),M=document.createElement('div');M.id='ma
 M.innerHTML='<button data-m="">Sans carte</button><button data-m="cvb">Couverture</button><button data-m="clb">Clarté</button><button data-m="qlb">Qualité</button>';V.appendChild(M);
 M.querySelectorAll('button').forEach(b=>b.onclick=()=>{const m=b.dataset.m;if(!m){const act=['cvb','clb','qlb'].find(i=>{const e=document.getElementById(i);return e&&e.classList.contains('on')});if(act)document.getElementById(act).click()}else{const e=document.getElementById(m);if(e&&!e.classList.contains('on'))e.click()}});
 setInterval(()=>{const ven=document.getElementById('cvb')&&document.getElementById('cvb').style.display!=='none';M.style.display=ven?'flex':'none';const act=['cvb','clb','qlb'].find(i=>{const e=document.getElementById(i);return e&&e.classList.contains('on')})||'';M.querySelectorAll('button').forEach(b=>b.classList.toggle('on',b.dataset.m===act));
-  const w=document.querySelectorAll('#chk .chk.w').length,d=bar.querySelector('[data-k=devis]');if(d){const t=w?'5 · Devis ('+w+')':'5 · Devis';if(d.textContent!==t)d.textContent=t}},400);
+  const w=document.querySelectorAll('#chk .chk.w').length,d=bar.querySelector('[data-k=devis]');if(d){const t=w?'5 · Devis ('+w+')':'5 · Devis';if(d.dataset.frt!==t){d.dataset.frt=t;d.textContent=t}}},400);
 })();
 </script>
 <script>
@@ -1883,14 +1883,14 @@ const $=id=>document.getElementById(id),LSD='pr_docs',LSC='pr_cnt',LSH='pr_qb_ha
 const imgFor=n=>{const s=STOCK[n];return s&&s.img||''};
 const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const r2=v=>Math.round(v*100)/100,pn=v=>{const n=parseFloat(String(v).replace(',','.'));return isFinite(n)?n:null};
-const fm=v=>v==null?'Sur demande':r2(v).toLocaleString('fr-FR',{maximumFractionDigits:2})+' $';
+const fm=v=>v==null?'Sur demande':PRI18N.loc()==='en-US'?'$'+r2(v).toLocaleString('en-US',{maximumFractionDigits:2}):r2(v).toLocaleString('fr-FR',{maximumFractionDigits:2})+' $';
 let docs=[],cur=null,snap=null,cat=[],tier=1;
 function ld(){try{docs=JSON.parse(localStorage.getItem(LSD)||'[]')}catch(e){docs=[]}}
 function sv(){try{localStorage.setItem(LSD,JSON.stringify(docs));return true}catch(e){toast('Enregistrement impossible : stockage plein ou bloqué.');return false}}
 function toast(m){const t=$('qbtoast');t.textContent=m;t.style.display='block';clearTimeout(toast.t);toast.t=setTimeout(()=>t.style.display='none',3500)}
 function nextNo(type){let c={};try{c=JSON.parse(localStorage.getItem(LSC)||'{}')}catch(e){}const y=new Date().getFullYear(),k=type+y;c[k]=(c[k]||0)+1;try{localStorage.setItem(LSC,JSON.stringify(c))}catch(e){}return(type==='facture'?'FAC-':'DEV-')+y+'-'+String(c[k]).padStart(3,'0')}
 const uid=p=>p+Date.now().toString(36)+Math.random().toString(36).slice(2,5);
-function newDoc(){return{id:uid('d'),type:'devis',status:'brouillon',no:'',ref:'',client:{n:'',t:'',e:''},subject:'',quality:1,lines:[],reb:0,days:QTERMS.days,pay:QTERMS.pay,note:'',created:Date.now(),updated:Date.now(),hist:[]}}
+function newDoc(){return{id:uid('d'),type:'devis',status:'brouillon',no:'',ref:'',client:{n:'',t:'',e:''},subject:'',quality:1,lines:[],reb:0,days:QTERMS.days,pay:QTERMS.pay,note:'',lang:'fr',created:Date.now(),updated:Date.now(),hist:[]}}
 const net=l=>l.u==null?null:r2(l.u*(1-(l.reb||0)/100)),lt=l=>l.u==null?0:r2(net(l)*l.q);
 function tot(d){const sub=r2(d.lines.reduce((a,l)=>a+lt(l),0)),gr=r2(sub*(d.reb||0)/100);return{sub,gr,total:r2(sub-gr),req:d.lines.filter(l=>l.u==null).length}}
 /* code d'accès */
@@ -1918,9 +1918,9 @@ function dirty(){cur.dirty=1}
 function rHead(){const d=cur,ro=d.type==='facture';
  const sts=ro?['à payer','partiellement payée','payée','annulée']:['brouillon','envoyé','accepté','refusé'];
  $('qbh').textContent=(ro?'Facture ':'Devis ')+(d.no||'(non enregistré)');
- $('qhead').innerHTML=`<label>Client<input data-f="cn" value="${esc(d.client.n)}"></label><label>WhatsApp du client<input data-f="ct" inputmode="tel" placeholder="+243…" value="${esc(d.client.t)}"></label><label>Email (facultatif)<input data-f="ce" value="${esc(d.client.e)}"></label><label class="w2">Objet / projet<input data-f="sj" placeholder="Ex. Sonorisation église, Lingwala" value="${esc(d.subject)}"></label><label>Qualité du devis<select data-f="ql">${[1,2,3].map(i=>`<option value="${i}"${d.quality===i?' selected':''}>${LV[i].n}</option>`).join('')}</select></label><label>Remise globale % (max ${CAP})<input data-f="rb" inputmode="decimal" value="${d.reb||''}" placeholder="0"></label><label>Statut<select data-f="st">${sts.map(s=>`<option${d.status===s?' selected':''}>${s}</option>`).join('')}</select></label>${ro?'':`<label>Validité (jours)<input data-f="dy" inputmode="numeric" value="${d.days}"></label>`}<label class="w2">Conditions de paiement<input data-f="py" value="${esc(d.pay)}"></label>`+(d.ref?`<label>Issue du devis<input value="${esc(d.ref)}" disabled></label>`:'');
+ $('qhead').innerHTML=`<label>Client<input data-f="cn" value="${esc(d.client.n)}"></label><label>WhatsApp du client<input data-f="ct" inputmode="tel" placeholder="+243…" value="${esc(d.client.t)}"></label><label>Email (facultatif)<input data-f="ce" value="${esc(d.client.e)}"></label><label class="w2">Objet / projet<input data-f="sj" placeholder="Ex. Sonorisation église, Lingwala" value="${esc(d.subject)}"></label><label>Qualité du devis<select data-f="ql">${[1,2,3].map(i=>`<option value="${i}"${d.quality===i?' selected':''}>${LV[i].n}</option>`).join('')}</select></label><label>Remise globale % (max ${CAP})<input data-f="rb" inputmode="decimal" value="${d.reb||''}" placeholder="0"></label><label>Langue du document<select data-f="lg"><option value="fr"${(d.lang||'fr')==='fr'?' selected':''}>Français</option><option value="en"${d.lang==='en'?' selected':''}>English</option></select></label><label>Statut<select data-f="st">${sts.map(s=>`<option${d.status===s?' selected':''}>${s}</option>`).join('')}</select></label>${ro?'':`<label>Validité (jours)<input data-f="dy" inputmode="numeric" value="${d.days}"></label>`}<label class="w2">Conditions de paiement<input data-f="py" value="${esc(d.pay)}"></label>`+(d.ref?`<label>Issue du devis<input value="${esc(d.ref)}" disabled></label>`:'');
  $('qnote').value=d.note||'';$('qinv').style.display=ro?'none':'';
- $('qhead').querySelectorAll('[data-f]').forEach(e=>e.oninput=e.onchange=()=>{const f=e.dataset.f,v=e.value;if(f==='cn')d.client.n=v;else if(f==='ct')d.client.t=v;else if(f==='ce')d.client.e=v;else if(f==='sj')d.subject=v;else if(f==='ql'){d.quality=+v;tier=Math.max(tier,+v);$('qtier').value=tier;renderCat()}else if(f==='rb'){let n=pn(v)||0;if(n>CAP){n=CAP;e.value=CAP;toast('Remise limitée à '+CAP+' %')}d.reb=Math.max(0,n);rTot()}else if(f==='st')d.status=v;else if(f==='dy')d.days=Math.max(1,parseInt(v)||QTERMS.days);else if(f==='py')d.pay=v;dirty()})}
+ $('qhead').querySelectorAll('[data-f]').forEach(e=>e.oninput=e.onchange=()=>{const f=e.dataset.f,v=e.value;if(f==='cn')d.client.n=v;else if(f==='ct')d.client.t=v;else if(f==='ce')d.client.e=v;else if(f==='sj')d.subject=v;else if(f==='ql'){d.quality=+v;tier=Math.max(tier,+v);$('qtier').value=tier;renderCat()}else if(f==='rb'){let n=pn(v)||0;if(n>CAP){n=CAP;e.value=CAP;toast('Remise limitée à '+CAP+' %')}d.reb=Math.max(0,n);rTot()}else if(f==='lg')d.lang=v;else if(f==='st')d.status=v;else if(f==='dy')d.days=Math.max(1,parseInt(v)||QTERMS.days);else if(f==='py')d.pay=v;dirty()})}
 $('qnote').oninput=()=>{cur.note=$('qnote').value;dirty()};
 const chg=l=>l.free||l.u!==l.u0||(l.n0!=null&&l.n!==l.n0);
 function lineHtml(l){return`<div class="qbl" draggable="true" data-id="${l.id}"><span class="h">⋮⋮</span>${l.img?`<img class="qbimg" loading="lazy" alt="" src="${esc(l.img)}">`:'<span></span>'}<input class="n" data-k="n" placeholder="Désignation" value="${esc(l.n)}"><button class="x" data-k="x" aria-label="Retirer">×</button><div class="r2"><label class="dd">Description<input data-k="d" value="${esc(l.d)}"></label><label>Qté<input data-k="q" inputmode="numeric" value="${l.q}"></label><label>Prix unitaire $<input data-k="u" inputmode="decimal" placeholder="Sur demande" value="${l.u==null?'':l.u}"></label><label>Remise %<input data-k="r" inputmode="decimal" value="${l.reb||''}"></label><label>Qualité<select data-k="t">${[1,2,3].map(t=>`<option value="${t}"${l.t===t?' selected':''}>${TL[t]}</option>`).join('')}</select></label><span class="lt"></span><button class="b" data-k="up" aria-label="Monter">▲</button><button class="b" data-k="dn" aria-label="Descendre">▼</button>${chg(l)?'<span class="mk" title="Modifié à la main (invisible pour le client)">✎</span>':''}</div></div>`}
@@ -1935,7 +1935,7 @@ function rLines(){const B=$('qblines');B.innerHTML=cur.lines.map(lineHtml).join(
     dirty();lineTot(e,l);rTot();const m=e.querySelector('.mk');if(chg(l)&&!m){const s=document.createElement('span');s.className='mk';s.textContent='✎';s.title='Modifié à la main (invisible pour le client)';e.querySelector('.r2').appendChild(s)}}})});
  rTot()}
 function rTot(){const T=tot(cur);$('qbt').innerHTML=`<div><span>Sous-total</span><span>${fm(T.sub)}</span></div>`+(cur.reb>0?`<div><span>Remise ${cur.reb} %</span><span>− ${fm(T.gr)}</span></div>`:'')+`<div class="g"><span>${cur.type==='facture'?'Total à facturer':'Total'}</span><span>${fm(T.total)}</span></div>`+(T.req?`<div class="mini"><span>${T.req} ligne${T.req>1?'s':''} sur demande (non comptée${T.req>1?'s':''})</span></div>`:'')}
-function rHist(){$('qhist').innerHTML=cur.hist&&cur.hist.length?'<b>Historique</b><br>'+cur.hist.slice().reverse().slice(0,30).map(h=>new Date(h.t).toLocaleString('fr-FR',{dateStyle:'short',timeStyle:'short'})+' · '+esc(h.m)).join('<br>'):''}
+function rHist(){$('qhist').innerHTML=cur.hist&&cur.hist.length?'<b>Historique</b><br>'+cur.hist.slice().reverse().slice(0,30).map(h=>new Date(h.t).toLocaleString(PRI18N.loc(),{dateStyle:'short',timeStyle:'short'})+' · '+esc(h.m)).join('<br>'):''}
 function renderDoc(){rHead();rLines();rHist()}
 /* glisser-déposer */
 (function(){const B=$('qblines');const idx=ev=>{const k=[...B.querySelectorAll('.qbl')];for(let i=0;i<k.length;i++){const r=k[i].getBoundingClientRect();if(ev.clientY<r.top+r.height/2)return i}return k.length};
@@ -1964,10 +1964,10 @@ function drvSig(d){return JSON.stringify([d.lines,d.client,d.reb,d.note,d.status
 function drvSigs(){try{return JSON.parse(localStorage.getItem('pr_drv_sig')||'{}')}catch(e){return{}}}
 async function driveSync(d){const c=drvCfg();if(!c||!d.lines.length||!d.no)return;
  const sg=drvSig(d),S=drvSigs();if(S[d.id]===sg)return;
- try{const T=tot(d),blob=miniPdf(pdfData(d),null,0,0),pdf=await drvB64(blob),n=new Date(),z=x=>String(x).padStart(2,'0'),
+ try{const T=tot(d),blob=PRI18N.withLang(d.lang||'fr',()=>miniPdf(pdfData(d),null,0,0)),pdf=await drvB64(blob),n=new Date(),z=x=>String(x).padStart(2,'0'),
    slug=String(d.client.n||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^A-Za-z0-9]+/g,'-').replace(/^-+|-+$/g,'').slice(0,24),
    stamp=n.getFullYear()+'-'+z(n.getMonth()+1)+'-'+z(n.getDate())+'_'+z(n.getHours())+'h'+z(n.getMinutes());
-  const res=await fetch(c.u,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({key:c.k,no:d.no,type:d.type,year:new Date(d.created).getFullYear(),slug,stamp,date:new Date(d.created).toLocaleDateString('fr-FR'),client:d.client.n||'',phone:d.client.t||'',subject:d.subject||'',status:d.status||'',total:T.total,pdf})});
+  const res=await fetch(c.u,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({key:c.k,no:d.no,type:d.type,year:new Date(d.created).getFullYear(),slug,stamp,date:new Date(d.created).toLocaleDateString(PRI18N.loc()),client:d.client.n||'',phone:d.client.t||'',subject:d.subject||'',status:d.status||'',total:T.total,pdf})});
   const j=await res.json();if(j.ok){const S2=drvSigs();S2[d.id]=sg;try{localStorage.setItem('pr_drv_sig',JSON.stringify(S2))}catch(e){}toast('Enregistré dans Drive ✓ '+d.no)}else toast('Drive : '+(j.error||'échec')+' (réessayez en enregistrant)')}
  catch(e){toast('Drive injoignable : le document reste enregistré ici. Réessayez en enregistrant.')}}
 /* devis : à chaque enregistrement ; factures : seulement à la création, au PDF et à l'envoi WhatsApp (une version datée à chaque fois) */
@@ -1987,22 +1987,24 @@ $('qinv').onclick=()=>{if(!cur.lines.length){toast('Ajoutez d\'abord des lignes.
  const f=JSON.parse(JSON.stringify(cur));f.id=uid('d');f.type='facture';f.ref=cur.no;f.no=nextNo('facture');f.status='à payer';f.created=Date.now();f.updated=Date.now();f.hist=[{t:Date.now(),m:'Créée depuis le devis '+cur.no}];f.lines.forEach(l=>l.id=uid('l'));delete f.dirty;docs.unshift(f);sv();setDoc(docs[0]);driveQueue(docs[0],true);toast('Facture '+f.no+' créée')};
 /* sorties : texte WhatsApp et PDF */
 function notes(d){const fac=d.type==='facture',v=new Date(d.created);v.setDate(v.getDate()+(d.days||QTERMS.days));const o=[];
- if(!fac)o.push('Livraison à Kinshasa estimée. Droits de douane et dédouanement à confirmer.',LVNOTE,'Offre valable '+d.days+' jours, jusqu\'au '+v.toLocaleDateString('fr-FR')+'.');
+ if(!fac)o.push('Livraison à Kinshasa estimée. Droits de douane et dédouanement à confirmer.',LVNOTE,'Offre valable '+d.days+' jours, jusqu\'au '+v.toLocaleDateString(PRI18N.loc())+'.');
  else if(d.ref)o.push('Facture établie suite au devis '+d.ref+'.');if(d.pay)o.push(d.pay);if(fac&&d.status==='payée')o.push('Facture acquittée. Merci.');return o}
-function docText(d){const T=tot(d),L=[],fac=d.type==='facture',hr='— — — — — — — — —';
+function docText(d){return PRI18N.withLang(d.lang||'fr',()=>docText0(d))}
+function docText0(d){const T=tot(d),L=[],fac=d.type==='facture',hr='— — — — — — — — —';
  L.push('*PYRAMIDE RECORD*','_'+(fac?'Facture':'Devis')+' n° '+d.no+'_','');
  if(d.client.n||d.client.t)L.push('*Client* : '+[d.client.n,d.client.t].filter(Boolean).join(' · '));
  if(d.subject)L.push('*Objet* : '+d.subject);L.push('*Qualité* : '+LV[d.quality].n,'',hr,'');
  d.lines.forEach(l=>{L.push('• '+(l.n||'Article')+(l.q>1?' ×'+l.q:''));const p=l.u==null?'prix sur demande':(l.reb?'~'+fm(l.u*l.q)+'~ ':'')+fm(lt(l));L.push('   _'+(l.d?l.d+' · ':'')+TL[l.t]+'_ — *'+p+'*')});
  L.push('',hr);if(d.reb>0)L.push('Sous-total : '+fm(T.sub),'Remise '+d.reb+' % : − '+fm(T.gr));L.push('*'+(fac?'TOTAL À PAYER':'TOTAL')+' : '+fm(T.total)+'*');
  if(T.req)L.push('_'+T.req+' article(s) sur demande, non inclus._');
- notes(d).forEach(n=>L.push('_'+n+'_'));if(d.note)L.push('',d.note);L.push('','_Merci de votre confiance !_');return L.join('\n')}
-function pdfData(d){const T=tot(d),fac=d.type==='facture';
- return{no:d.no,date:new Date(d.created).toLocaleDateString('fr-FR'),rent:false,mode:'Vente',title:fac?'FACTURE':'DEVIS',client:[d.client.n,d.client.t].filter(Boolean),salle:d.subject||'Matériel audio',ev:fac&&d.ref?'Réf. devis '+d.ref:'Vente',qual:LV[d.quality].n,dl:fac?'':'à confirmer (commande à l\'étranger)',duree:'',
+ notes(d).forEach(n=>L.push('_'+n+'_'));if(d.note)L.push('',d.note);L.push('','_Merci de votre confiance !_');return PRI18N.text(L.join('\n'))}
+function pdfData(d){return PRI18N.withLang(d.lang||'fr',()=>pdfData0(d))}
+function pdfData0(d){const T=tot(d),fac=d.type==='facture';
+ return{no:d.no,date:new Date(d.created).toLocaleDateString(PRI18N.loc()),rent:false,mode:'Vente',title:fac?'FACTURE':'DEVIS',client:[d.client.n,d.client.t].filter(Boolean),salle:d.subject||'Matériel audio',ev:fac&&d.ref?'Réf. devis '+d.ref:'Vente',qual:LV[d.quality].n,dl:fac?'':'à confirmer (commande à l\'étranger)',duree:'',
   groups:[{z:'Matériel',items:d.lines.map(l=>({l:l.n||'Article',q:l.q,o:(l.d?l.d+' · ':'')+TL[l.t]+(l.reb?' · remise '+l.reb+' % sur '+fm(l.u):''),pr:l.u==null?null:net(l)}))}],seats:[],
   rebRows:d.reb>0?[['Sous-total',fm(T.sub)],['Remise '+d.reb+' %','- '+fm(T.gr),0]]:null,total:fm(T.total),totLabel:fac?(d.status==='payée'?'TOTAL PAYÉ':'TOTAL À PAYER'):'TOTAL',inst:false,fin:fac?'Merci de votre confiance !':'',notes:notes(d).concat(d.note?[d.note]:[]),unitLabel:'Prix unitaire'}}
 function fname(d){const sl=String(d.client.n||'').normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^A-Za-z0-9]+/g,'-').replace(/^-+|-+$/g,'').slice(0,24);return(d.type==='facture'?'Facture':'Devis')+'-Pyramide-Record_'+d.no+(sl?'_'+sl:'')+'.pdf'}
-function mkPdf(){if(!cur.lines.length){toast('Ajoutez d\'abord des lignes.');return null}if(!save(true))return null;try{return new File([miniPdf(pdfData(cur),null,0,0)],fname(cur),{type:'application/pdf'})}catch(e){toast('Erreur PDF : '+e.message);return null}}
+function mkPdf(){if(!cur.lines.length){toast('Ajoutez d\'abord des lignes.');return null}if(!save(true))return null;try{return new File([PRI18N.withLang(cur.lang||'fr',()=>miniPdf(pdfData(cur),null,0,0))],fname(cur),{type:'application/pdf'})}catch(e){toast('Erreur PDF : '+e.message);return null}}
 function dl(f){const a=document.createElement('a');a.href=URL.createObjectURL(f);a.download=f.name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},4000)}
 $('qpdf').onclick=()=>{const f=mkPdf();if(f){driveQueue(cur,true);dl(f);toast('PDF créé : '+f.name)}};
 $('qcp').onclick=()=>{if(!save(true))return;try{navigator.clipboard.writeText(docText(cur)).then(()=>toast('Texte copié'))}catch(e){toast('Copie impossible ici')}};
@@ -2012,7 +2014,7 @@ $('qwa').onclick=()=>{if(!cur.lines.length){toast('Ajoutez d\'abord des lignes.'
  const w=window.open(url,'_blank');if(!w)toast('WhatsApp ne s\'est pas ouvert : le message est copié, collez-le dans WhatsApp.');else if(!n)toast('Pas de numéro : choisissez le contact dans WhatsApp.')};
 /* documents enregistrés */
 function rList(){const q=nzc($('qls').value),L=docs.filter(d=>!q||nzc(d.no+d.client.n+d.subject).includes(q));
- $('qll').innerHTML=L.map(d=>{const T=tot(d);return`<div class="qdr" data-id="${d.id}"><div><b>${d.type==='facture'?'Facture':'Devis'} ${esc(d.no)}</b> · ${esc(d.client.n||'sans nom')}<small>${new Date(d.updated).toLocaleDateString('fr-FR')} · ${fm(T.total)}${d.ref?' · depuis '+esc(d.ref):''}</small></div><div style="display:flex;gap:6px;align-items:center"><span class="qst">${esc(d.status)}</span><button class="b" data-del="${d.id}" aria-label="Supprimer">🗑</button></div></div>`}).join('')||'<div class="mini">Aucun document enregistré.</div>';
+ $('qll').innerHTML=L.map(d=>{const T=tot(d);return`<div class="qdr" data-id="${d.id}"><div><b>${d.type==='facture'?'Facture':'Devis'} ${esc(d.no)}</b> · ${esc(d.client.n||'sans nom')}<small>${new Date(d.updated).toLocaleDateString(PRI18N.loc())} · ${fm(T.total)}${d.ref?' · depuis '+esc(d.ref):''}</small></div><div style="display:flex;gap:6px;align-items:center"><span class="qst">${esc(d.status)}</span><button class="b" data-del="${d.id}" aria-label="Supprimer">🗑</button></div></div>`}).join('')||'<div class="mini">Aucun document enregistré.</div>';
  $('qll').querySelectorAll('.qdr').forEach(e=>e.onclick=ev=>{if(ev.target.closest('[data-del]'))return;const d=docs.find(x=>x.id===e.dataset.id);if(cur&&cur.dirty&&!confirm('Quitter sans enregistrer les changements ?'))return;$('qlm').style.display='none';setDoc(d)});
  $('qll').querySelectorAll('[data-del]').forEach(b=>b.onclick=()=>{const d=docs.find(x=>x.id===b.dataset.del);if(!confirm('Supprimer '+d.no+' ? Cette action est définitive.'))return;docs=docs.filter(x=>x!==d);sv();if(cur&&cur.id===d.id)setDoc(newDoc());rList()})}
 $('qlist').onclick=()=>{ld();$('qls').value='';rList();$('qlm').style.display='flex'};$('qlx').onclick=()=>$('qlm').style.display='none';$('qls').oninput=rList;

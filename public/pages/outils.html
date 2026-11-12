@@ -4,7 +4,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<script src="../js/i18n.js"></script>
+<script>window.PR_I18N_RELOAD=1</script><script src="../js/i18n.js"></script>
 <title data-i18n="841bcc74">Outils audio gratuits — Pyramide Record · Kinshasa</title>
 <meta data-i18n-attr="content:8a3ee2f9" name="description" content="Outils audio gratuits : générateur de fréquences, métronome, fréquences des notes, détecteur de larsen et calculateur de retard pour sonorisateurs et musiciens.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -431,7 +431,7 @@ function lrg(){var d0=+$('g0').value||.1,d1=+$('g1').value||1,d2=+$('g2').value|
 var PK={ch:[[100,0,'Petite église',2300],[250,1,'Église moyenne',3200],[1e9,2,'Grande église + direct',6600]],cf:[[1e9,3,'Conférence / mariage (location)',340]],pd:[[1e9,4,'Studio podcast',2000]],rc:[[1e9,5,'Studio débutant',1300]],vd:[[1e9,6,'Studio vidéo',1100]]};
 function bud(){var t=$('bt').value,n=+$('bp').value||1,B=+$('bb').value||0,L=PK[t],P=L.filter(function(x){return n<=x[0]})[0]||L[L.length-1];
  $('bpl').style.display=(t==='ch'||t==='cf')?'':'none';var e=$('bv'),pr=P[3],loc=t==='cf';
- var h='Pack conseillé : <b>'+P[2]+'</b>, environ <b>'+pr.toLocaleString('fr-FR')+' $</b>'+(loc?' par jour de location':'')+' (estimation).';
+ var h='Pack conseillé : <b>'+P[2]+'</b>, environ <b>'+pr.toLocaleString(PRI18N.loc())+' $</b>'+(loc?' par jour de location':'')+' (estimation).';
  if(B>=pr){e.className='res ok';h+='<br>Votre budget couvre ce pack'+(B>pr*1.5?' avec de la marge : vous pouvez ajouter des options.':'.')}
  else if(!loc){e.className='res bad';h+='<br>Le budget est un peu juste. Choisissez le kit budget, ou louez le matériel pour un événement ponctuel.'}
  else{e.className='res';h+='<br>Vérifiez la durée de location dans le configurateur.'}

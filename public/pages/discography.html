@@ -508,6 +508,8 @@
             '<ol class="album__tracks open">' + rows + '</ol></div>';
         }
         el.classList.add('featured__slide');
+        if (f.from) el.dataset.from = f.from;
+        if (f.to) el.dataset.to = f.to;
         el.querySelectorAll('.album__cover img').forEach(function(im){
           im.removeAttribute('loading'); im.loading = 'eager';
           im.addEventListener('error', function(){ var c = im.parentNode; if (c) c.style.display = 'none'; });
@@ -515,6 +517,17 @@
         slides.push(el);
       });
       if (!slides.length) return;
+      // Artiste du jour : un artiste avec dates (from/to) a priorité ; sinon rotation par jour du calendrier
+      function startIndex(list){
+        var n = new Date(), pad = function(x){ return (x < 10 ? '0' : '') + x; };
+        var today = n.getFullYear() + '-' + pad(n.getMonth() + 1) + '-' + pad(n.getDate());
+        for (var i = 0; i < list.length; i++) {
+          var a = list[i].dataset.from, b = list[i].dataset.to || a;
+          if (a && today >= a && today <= b) return i;
+        }
+        var days = Math.floor(Date.UTC(n.getFullYear(), n.getMonth(), n.getDate()) / 86400000);
+        return days % list.length;
+      }
       var head = document.createElement('div');
       head.className = 'featured__head';
       head.innerHTML = '<h2>À l\'honneur</h2><div class="featured__nav"><button type="button" class="featured__btn" data-f="prev" aria-label="Précédent">‹</button><button type="button" class="featured__btn" data-f="next" aria-label="Suivant">›</button></div>';
@@ -530,7 +543,7 @@
       });
       box.innerHTML = ''; box.appendChild(head); box.appendChild(stage); box.appendChild(dots);
       box.hidden = false;
-      var cur = Math.floor(Math.random() * slides.length), timer = null, paused = false;
+      var cur = startIndex(slides), timer = null, paused = false;
       var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
       function show(i, user){
         cur = (i + slides.length) % slides.length;

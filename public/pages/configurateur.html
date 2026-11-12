@@ -571,7 +571,9 @@ let lvl=1;
 const LV={1:{n:'Première qualité',d:'Marques de confiance, provenant des États-Unis, du Royaume-Uni ou d\'Europe (prix américains actuels).',dl:'Délai : à confirmer (commande à l\'étranger)'},
  2:{n:'Deuxième qualité',d:'Tout ce qu\'il y a en première qualité, plus des marques connues au bon rapport qualité-prix, dont du matériel venu du Japon.',dl:'Délai : à confirmer'},
  3:{n:'Troisième qualité',d:'Tout ce qu\'il y a en deuxième qualité, plus la plupart du matériel venu de Chine et du matériel vendu à Kinshasa. Disponibilité et qualité variables.',dl:'Délai : à confirmer'}};
-const LVNOTE='Selon la qualité choisie, le pays d\'origine change : le délai de livraison et le coût du transport changent aussi, et le prix final peut être ajusté à la commande.';
+const LVNOTE_FR='Selon la qualité choisie, le pays d\'origine change : le délai de livraison et le coût du transport changent aussi, et le prix final peut être ajusté à la commande.';
+const LVNOTE_EN='Depending on the quality chosen, the country of origin changes: delivery time and shipping cost change too, and the final price may be adjusted at order.';
+Object.defineProperty(window,'LVNOTE',{get(){return (window.PRI18N&&PRI18N.lang==='en')?LVNOTE_EN:LVNOTE_FR}});
 const tierOf=o=>o.tier==null?1:o.tier;
 const vis=o=>tierOf(o)<=lvl;
 const HID=new Set(['cam','tri','amb','bkl','led','ref','stl','bg','cap','sd','bat']),DECO=new Set(['scr']),HIDR=['vid','pho'];
@@ -1704,7 +1706,7 @@ function shopCartBtn(){if(rmode==='rent')return;const r=totals(),L=[];let tot=0;
   const box=document.getElementById('mbody');if(!box||!L.length)return;
   box.insertAdjacentHTML('beforeend','<div class="mini" style="margin-top:10px">'+L.length+' produit(s) en stock : commandez-les directement.</div><a class="cta" target="_blank" rel="noopener" href="'+SHOP_URL+'?cart='+L.join(',')+'">Commander dans la boutique ('+money(tot)+')</a>')}
 let quoteCode='',quoteBase='',quoteNo='';
-function buildQuote(r){const rent=rmode==='rent',z=SIZES[size],L=[],ev=rm==='church'?EVN[evt]:ROOMS[rm].venue?ROOMS[rm].n+' · '+EVN[evt]:ROOMS[rm].n,hr='— — — — — — — — —',
+function buildQuote(r){const rent=rmode==='rent',z=SIZES[size],L=[],ev=rm==='church'?EVN[evt]:ROOMS[rm].venue?(String(SIZES[size].n).toLowerCase().includes(ROOMS[rm].n.toLowerCase())?'':ROOMS[rm].n+' · ')+EVN[evt]:ROOMS[rm].n,hr='— — — — — — — — —',
     dl=String(LV[lvl].dl||'').replace(/^Délai ?: ?/i,'');
   L.push('*PYRAMIDE RECORD*','_Demande de devis · '+(rent?'Location':'Vente')+' · n° '+quoteNo_()+'_','');
   if(client.n||client.t)L.push('*Client* : '+[client.n,client.t].filter(Boolean).join(' · '));
@@ -1714,7 +1716,7 @@ function buildQuote(r){const rent=rmode==='rent',z=SIZES[size],L=[],ev=rm==='chu
   if(rent)L.push('*Durée* : '+rdays+' jour'+(rdays>1?'s':'')+(rfrom?' à partir du '+rfrom:''));
   L.push('',hr,'');
   const gs=[],gm={};r.rows.forEach(x=>{const k=x.s.z||'Matériel';if(!gm[k]){gm[k]=[];gs.push(k)}gm[k].push(x)});
-  gs.forEach(k=>{L.push('*'+k.toUpperCase()+'*');gm[k].forEach(x=>{
+  gs.forEach(k=>{L.push('*'+TR(k).toUpperCase()+'*');gm[k].forEach(x=>{
     L.push('• '+x.s.l+(x.q>1?' ×'+x.q:''));
     L.push('   _'+x.o.n+'_'+rowTag(x)+' — *'+(x.pr==null?'prix sur demande':money(x.pr*x.q))+'*')});L.push('')});
   const sr=r.req.filter(x=>x.startsWith('Sièges'));if(sr.length){L.push('*SIÈGES*');sr.forEach(x=>L.push('• '+x+' — *prix sur demande*'));L.push('')}
@@ -1725,7 +1727,7 @@ function buildQuote(r){const rent=rmode==='rent',z=SIZES[size],L=[],ev=rm==='chu
   qTerms(rent).forEach(t=>L.push('_'+t+'_'));
   L.push('','_Prix estimatifs, confirmés par notre équipe. Merci de votre confiance !_');
   return PRI18N.text(L.join('\n'))}
-function quoteSet(){quoteBase=buildQuote(totals());quoteText=quoteBase+(quoteCode?'\n\n🔗 _Code de la salle (pour la retrouver)_ :\n'+quoteCode:'');
+function quoteSet(){quoteBase=buildQuote(totals());quoteText=quoteBase+(quoteCode?'\n\n🔗 _'+LL('Code de la salle (pour la retrouver)','Room code (to find it again)')+'_ :\n'+quoteCode:'');
   const t=document.getElementById('qt');if(t)t.value=quoteText;
   const w=document.getElementById('qwa');if(w)w.href='https://wa.me/'+(contact.wa||'').replace(/\D/g,'')+'?text='+encodeURIComponent(quoteBase);
   const m=document.getElementById('qem');if(m&&contact.em)m.href='mailto:'+contact.em+'?subject='+encodeURIComponent(PRI18N.lang==='en'?'Quote request ('+(rmode==='rent'?'RENTAL':'SALE')+') – Pyramide Record':'Demande de devis ('+(rmode==='rent'?'LOCATION':'VENTE')+') – Pyramide Record')+'&body='+encodeURIComponent(quoteText)}
@@ -1737,10 +1739,10 @@ function b64u(x){const r=atob(x),u=new Uint8Array(r.length);for(let i=0;i<r.leng
 function pngRaw(uri){const u=b64u(uri.split(',')[1]),n4=i=>((u[i]<<24)|(u[i+1]<<16)|(u[i+2]<<8)|u[i+3])>>>0;let p=8,W=0,H=0;const id=[];while(p<u.length){const n=n4(p),t=String.fromCharCode(u[p+4],u[p+5],u[p+6],u[p+7]);if(t==='IHDR'){W=n4(p+8);H=n4(p+12)}if(t==='IDAT')id.push(u.subarray(p+8,p+8+n));p+=12+n}const o=new Uint8Array(id.reduce((a,x)=>a+x.length,0));let q=0;id.forEach(x=>{o.set(x,q);q+=x.length});return{W,H,d:o}}
 const QTERMS={days:15,pay:'Paiement : 50 % à la commande, solde à la livraison.'};
 function qValid(){const d=new Date();d.setDate(d.getDate()+QTERMS.days);return d.toLocaleDateString(PRI18N.loc())}
-function qTerms(rent){return ['Offre valable '+QTERMS.days+' jours, jusqu\'au '+qValid()+'. Les prix du matériel importé peuvent évoluer.'].concat(rent?[]:[QTERMS.pay])}
+function qTerms(rent){return [LL('Offre valable '+QTERMS.days+' jours, jusqu\'au '+qValid()+'. Les prix du matériel importé peuvent évoluer.','Offer valid for '+QTERMS.days+' days, until '+qValid()+'. Prices of imported equipment may change.')].concat(rent?[]:[LL(QTERMS.pay,'Payment: 50% at order, balance on delivery.')])}
 function quoteNo_(){if(!quoteNo){const d=new Date(),p=n=>String(n).padStart(2,'0');quoteNo='DEV-'+d.getFullYear()+p(d.getMonth()+1)+p(d.getDate())+'-'+p(d.getHours())+p(d.getMinutes())}return quoteNo}
 function pdfName(){const sl=String(client.n||'').normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^A-Za-z0-9]+/g,'-').replace(/^-+|-+$/g,'').slice(0,24);return 'Devis-Pyramide-Record_'+quoteNo_()+(sl?'_'+sl:'')+'.pdf'}
-function quoteData(r){const rent=rmode==='rent',z=SIZES[size],ev=rm==='church'?EVN[evt]:ROOMS[rm].venue?ROOMS[rm].n+' · '+EVN[evt]:ROOMS[rm].n,dl=String(LV[lvl].dl||'').replace(/^Délai ?: ?/i,''),gs=[],gm={};
+function quoteData(r){const rent=rmode==='rent',z=SIZES[size],ev=rm==='church'?EVN[evt]:ROOMS[rm].venue?(String(SIZES[size].n).toLowerCase().includes(ROOMS[rm].n.toLowerCase())?'':ROOMS[rm].n+' · ')+EVN[evt]:ROOMS[rm].n,dl=String(LV[lvl].dl||'').replace(/^Délai ?: ?/i,''),gs=[],gm={};
   r.rows.forEach(x=>{const k=x.s.z||'Matériel';if(!gm[k]){gm[k]=[];gs.push(k)}gm[k].push({l:x.s.l,q:x.q,o:x.o.n+rowTag(x),pr:x.pr})});
   const sr=r.req.filter(x=>x.startsWith('Sièges'));
   return{no:quoteNo_(),date:new Date().toLocaleDateString(PRI18N.loc()),rent,mode:rent?'Location':'Vente',client:[client.n,client.t].filter(Boolean),
@@ -2018,7 +2020,7 @@ if(!done&&!ADM&&!/[?&](pack=|notour)/.test(location.search))setTimeout(()=>{if(!
 window.__cfgGuide={camTo,setMode,startTour};
 })();
 </script>
-<form name="quote-request" method="POST" data-netlify="true" netlify-honeypot="bot-field" hidden aria-hidden="true"><input type="hidden" name="form-name" value="quote-request"><input name="bot-field"><input name="name"><input name="phone"><input name="mode"><input name="lang"><input name="quote_no"><input name="total"><textarea name="quote"></textarea><textarea name="room_code"></textarea></form>
+<form name="quote-request" method="POST" data-netlify="true" netlify-honeypot="bot-field" hidden aria-hidden="true"><input type="hidden" name="form-name" value="quote-request"><input name="bot-field"><input name="name"><input name="phone"><input name="mode"><input name="lang"><input name="subject"><input name="quote_no"><input name="total"><textarea name="quote"></textarea><textarea name="room_code"></textarea></form>
 <script>
 // ===== Salle enregistrée, envoi à Pyramide Record, comparaison des niveaux, « pourquoi cet article » =====
 (function(){
@@ -2083,7 +2085,7 @@ window.quoteExtras=function(){_qe.apply(this,arguments);
     if(ph.replace(/\D/g,'').length<6){say(L('Ajoutez votre téléphone ou WhatsApp ci-dessus pour que nous puissions vous répondre.','Add your phone or WhatsApp number above so we can reply.'));const ct=M.querySelector('#ct');if(ct)ct.focus();return}
     b.disabled=true;say(L('Envoi en cours…','Sending…'),true);
     let code='';try{code=encodeState()}catch(e){}
-    const body=new URLSearchParams({'form-name':'quote-request','bot-field':'',name:nm,phone:ph,mode:rmode==='rent'?'location':'vente',lang:PRI18N.lang,quote_no:quoteNo_(),total:(()=>{try{return money(totals().t)}catch(e){return ''}})(),quote:quoteText||'',room_code:code});
+    const body=new URLSearchParams({'form-name':'quote-request','bot-field':'',name:nm,phone:ph,mode:rmode==='rent'?'location':'vente',lang:PRI18N.lang,quote_no:quoteNo_(),total:(()=>{try{return money(totals().t)}catch(e){return ''}})(),subject:'Devis '+quoteNo_()+' · '+nm+' · '+(()=>{try{return money(totals().t)}catch(e){return ''}})(),quote:quoteBase||quoteText||'',room_code:code});
     try{const r=await fetch('/',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:body.toString()});
       if(!r.ok)throw 0;b.textContent=L('Demande envoyée ✓','Request sent ✓');say(L('Merci ! Nous avons bien reçu votre demande et nous vous contacterons.','Thank you! We received your request and will contact you.'),true)}
     catch(e){b.disabled=false;say(L('L\'envoi n\'a pas abouti. Utilisez WhatsApp ou l\'email ci-dessous.','Sending failed. Please use WhatsApp or the email below.'))}}};
@@ -2257,7 +2259,7 @@ $('qinv').onclick=()=>{if(!cur.lines.length){toast('Ajoutez d\'abord des lignes.
  const f=JSON.parse(JSON.stringify(cur));f.id=uid('d');f.type='facture';f.ref=cur.no;f.no=nextNo('facture');f.status='à payer';f.created=Date.now();f.updated=Date.now();f.hist=[{t:Date.now(),m:'Créée depuis le devis '+cur.no}];f.lines.forEach(l=>l.id=uid('l'));delete f.dirty;docs.unshift(f);sv();setDoc(docs[0]);driveQueue(docs[0],true);toast('Facture '+f.no+' créée')};
 /* sorties : texte WhatsApp et PDF */
 function notes(d){const fac=d.type==='facture',v=new Date(d.created);v.setDate(v.getDate()+(d.days||QTERMS.days));const o=[];
- if(!fac)o.push('Livraison à Kinshasa estimée. Droits de douane et dédouanement à confirmer.',LVNOTE,'Offre valable '+d.days+' jours, jusqu\'au '+v.toLocaleDateString(PRI18N.loc())+'.');
+ if(!fac)o.push('Livraison à Kinshasa estimée. Droits de douane et dédouanement à confirmer.',LVNOTE,LL('Offre valable '+d.days+' jours, jusqu\'au '+v.toLocaleDateString(PRI18N.loc())+'.','Offer valid for '+d.days+' days, until '+v.toLocaleDateString(PRI18N.loc())+'.'));
  else if(d.ref)o.push('Facture établie suite au devis '+d.ref+'.');if(d.pay)o.push(d.pay);if(fac&&d.status==='payée')o.push('Facture acquittée. Merci.');return o}
 function docText(d){return PRI18N.withLang(d.lang||'fr',()=>docText0(d))}
 function docText0(d){const T=tot(d),L=[],fac=d.type==='facture',hr='— — — — — — — — —';

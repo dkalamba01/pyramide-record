@@ -410,7 +410,7 @@
       var idxOf = function(t){ for (var i=0;i<allReleases.length;i++){ if (allReleases[i].album===al.id && allReleases[i].title===t) return i; } return -1; };
       var d = new Date(al.date + 'T12:00:00'), out = 0, names = [];
       var released = d <= new Date();
-      var dtxt = d.toLocaleDateString('fr-FR', { day:'numeric', month:'long', year:'numeric' });
+      var dtxt = d.toLocaleDateString(PRI18N.loc(), { day:'numeric', month:'long', year:'numeric' });
       var rows = al.tracks.map(function(t){
         var idx = t.play ? idxOf(t.play) : -1;
         var ok = idx > -1 && allReleases[idx].link;

@@ -587,3 +587,7 @@
   .nav__menu > .nav__account span { display: inline; }
   .nav__menu > .nav__link::after { display: none; }
 }
+
+/* More menu: divider between "Buy & design" and "About" groups */
+.nav__dropdown-link--sep { margin-top: 6px; border-top: 1px solid var(--hair-2); border-radius: 0 0 6px 6px; padding-top: 13px; }
+@media (max-width: 900px) { .nav__dropdown-link--sep { margin-top: 4px; padding-top: 14px; } }

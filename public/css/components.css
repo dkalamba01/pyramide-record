@@ -546,3 +546,48 @@
 .release-link svg { width:18px; height:18px; fill:currentColor; }
 .release-share { display:flex; justify-content:center; gap:var(--sp-3); margin-top:var(--sp-4); }
 .release-cta { margin-top:var(--sp-6); padding-top:var(--sp-5); border-top:1px solid var(--hair); font-size:var(--fs-sm); color:var(--sand); }
+/* ============================================================
+   HEADER REFINEMENT (desktop + mobile)
+   - "Plus" matches the other nav links
+   - Espace Client stays on one line
+   - Mobile: Book first, "Plus" collapsed, utilities on one row
+   ============================================================ */
+.nav__dropdown-toggle {
+  font-family: inherit;
+  font-size: var(--fs-xs);
+  letter-spacing: var(--ls-wide);
+  text-transform: uppercase;
+  padding: 6px 2px;
+}
+.nav__dropdown-toggle svg { display: inline-block; }
+.nav__account { white-space: nowrap; flex-shrink: 0; }
+.nav__account span { white-space: nowrap; }
+
+@media (max-width: 900px) {
+  .nav__menu {
+    flex-direction: row; flex-wrap: wrap; align-items: center;
+    gap: var(--sp-3) var(--sp-3);
+    max-height: calc(100vh - 68px); overflow-y: auto;
+  }
+  .nav__menu > .nav__cta {
+    order: -1; width: 100%; text-align: center;
+    background: var(--gold); border-color: var(--gold); color: #0B1017;
+    padding: 13px 22px;
+  }
+  .nav__menu > .nav__link, .nav__menu > .nav__dropdown { width: 100%; }
+  .nav__menu > .nav__link { padding: 10px 2px; }
+  .nav__dropdown-toggle { width: 100%; justify-content: space-between; padding: 10px 2px; }
+  .nav__dropdown-toggle svg { display: inline-block; width: 14px; height: 14px; }
+  .nav__dropdown-menu { display: none; margin-top: 0; padding-left: var(--sp-3); }
+  .nav__dropdown.is-open .nav__dropdown-menu { display: flex; }
+  .nav__dropdown:hover .nav__dropdown-menu { display: none; }
+  .nav__dropdown.is-open:hover .nav__dropdown-menu { display: flex; }
+  .nav__menu > .nav__account, .nav__menu > .nav__lang, .nav__menu > .nav__theme-toggle { order: 5; margin: 0; }
+  .nav__menu > .nav__account { padding: 8px 12px; }
+  .nav__menu > .nav__account span { display: inline; }
+  .nav__menu > .nav__link::after { display: none; }
+}
+
+/* More menu: divider between "Buy & design" and "About" groups */
+.nav__dropdown-link--sep { margin-top: 6px; border-top: 1px solid var(--hair-2); border-radius: 0 0 6px 6px; padding-top: 13px; }
+@media (max-width: 900px) { .nav__dropdown-link--sep { margin-top: 4px; padding-top: 14px; } }

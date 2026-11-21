@@ -14,7 +14,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;1,9..144,400;1,9..144,500&family=Archivo:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/tokens.css?v=3">
-<link rel="stylesheet" href="css/components.css?v=5">
+<link rel="stylesheet" href="css/components.css?v=8">
 <style>
   /* Home-specific composition (built only from design-system tokens) */
   .hero { position: relative; padding: var(--sp-9) 0 0; overflow: hidden; }
@@ -119,7 +119,7 @@
   .jcard__title { font-size:15px; line-height:1.4; }
 
   .form-band { background:var(--panel); border-top:1px solid var(--hair); }
-  .form-band__inner { display:grid; grid-template-columns:1fr auto; gap:var(--sp-5); align-items:center; padding:var(--sp-6) 0; }
+  .form-band__inner { display:grid; grid-template-columns:1fr auto; gap:var(--sp-5); align-items:center; padding:var(--sp-6) var(--gutter); }
   .form-band__title { font-family:var(--font-display); font-size:var(--fs-lg); margin-bottom:var(--sp-1); }
   .form-band__sub { color:var(--sand); font-size:var(--fs-sm); }
 
@@ -361,6 +361,14 @@
     </div>
   </div>
 
+
+  <!-- PARTENAIRES -->
+  <section class="section wrap reveal">
+    <p data-i18n="e56efd6d" class="eyebrow">Partenaires</p>
+    <h2 data-i18n="1ce990b3" class="h2" style="margin:var(--sp-2) 0 0">Vous gérez un studio, un label ou une église ?</h2>
+    <p data-i18n="f6cd14c7" style="color:var(--sand);max-width:60ch;margin-top:var(--sp-3);line-height:1.7">Placez votre structure devant les artistes et le public de Pyramide Record.</p>
+    <p style="margin-top:var(--sp-4)"><a data-i18n="43655d00" class="btn" href="pages/partenaires.html">Devenir partenaire</a></p>
+  </section>
 </main>
 
 <footer class="footer">
@@ -370,12 +378,14 @@
         <div class="footer__logo"><img data-i18n-attr="alt:4e11c138" loading="lazy" decoding="async" src="assets/images/logo.png" alt="Pyramide Record"></div>
         <p data-i18n="a44cb0a6" class="footer__addr">13ème Rue Limete Industriel, Kinshasa, RD Congo<br>+243 819 797 568 · info@pyramidrecord.com</p>
       </div>
-      <div class="footer__socials">
-        <a data-i18n-attr="aria-label:82da67b2" href="#" aria-label="Facebook"><svg viewBox="0 0 24 24"><path d="M13 3h4v4h-4a1 1 0 00-1 1v3h5l-1 4h-4v8h-4v-8H8v-4h4V7a4 4 0 014-4z"/></svg></a>
-        <a data-i18n-attr="aria-label:5721bbef" href="#" aria-label="Instagram"><svg viewBox="0 0 24 24"><path d="M12 7a5 5 0 100 10 5 5 0 000-10zm0 8a3 3 0 110-6 3 3 0 010 6zm5-9a1 1 0 100 2 1 1 0 000-2zM7 2h10a5 5 0 015 5v10a5 5 0 01-5 5H7a5 5 0 01-5-5V7a5 5 0 015-5zm0 2a3 3 0 00-3 3v10a3 3 0 003 3h10a3 3 0 003-3V7a3 3 0 00-3-3z"/></svg></a>
-        <a data-i18n-attr="aria-label:6b6390a4" href="#" aria-label="LinkedIn"><svg viewBox="0 0 24 24"><path d="M6.94 5a2 2 0 11-4 0 2 2 0 014 0zM7 8.48H3V21h4zm6.32 0H9.34V21h3.94v-6.57c0-3.66 4.77-4 4.77 0V21H22v-7.93c0-6.17-7.06-5.94-8.72-2.91z"/></svg></a>
-        <a data-i18n-attr="aria-label:558865a1" href="#" aria-label="YouTube"><svg viewBox="0 0 24 24"><path d="M23 12s0-3.5-.45-5.2a2.8 2.8 0 00-2-2C18.9 4.4 12 4.4 12 4.4s-6.9 0-8.55.4a2.8 2.8 0 00-2 2C1 8.5 1 12 1 12s0 3.5.45 5.2a2.8 2.8 0 002 2c1.65.4 8.55.4 8.55.4s6.9 0 8.55-.4a2.8 2.8 0 002-2C23 15.5 23 12 23 12zm-13 3.5v-7l6 3.5z"/></svg></a>
-      </div>
+      <nav data-i18n-attr="aria-label:26c01e70" class="footer__nav" aria-label="Pied de page">
+        <a data-i18n="5cbd5840" href="pages/services.html">Services</a>
+        <a data-i18n="9c43d67d" href="pages/discography.html">Discographie</a>
+        <a data-i18n="a17a1e29" href="pages/promo.html">Nos Artistes</a>
+        <a data-i18n="e56efd6d" href="pages/partenaires.html">Partenaires</a>
+        <a data-i18n="f7622f90" href="pages/configurateur.html">Devis</a>
+        <a data-i18n="b37456c4" href="pages/contact.html">Contact</a>
+      </nav>
     </div>
     <div data-i18n="9870e046" class="footer__note">© 2025 Pyramide Record — Tous droits réservés · Kinshasa, RD Congo</div>
     <div data-i18n="d88e371b" class="footer__note footer__partner">Technologie fournie par <a href="https://irissecure.tech" target="_blank" rel="noopener">Iris Secure</a></div>

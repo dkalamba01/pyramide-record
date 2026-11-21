@@ -591,3 +591,13 @@
 /* More menu: divider between "Buy & design" and "About" groups */
 .nav__dropdown-link--sep { margin-top: 6px; border-top: 1px solid var(--hair-2); border-radius: 0 0 6px 6px; padding-top: 13px; }
 @media (max-width: 900px) { .nav__dropdown-link--sep { margin-top: 4px; padding-top: 14px; } }
+
+/* Footer navigation */
+.footer__nav { display: flex; flex-wrap: wrap; gap: 10px 22px; max-width: 460px; }
+.footer__nav a { font-size: var(--fs-xs); letter-spacing: var(--ls-wide); text-transform: uppercase; color: var(--sand); transition: color var(--dur-fast) var(--ease); }
+.footer__nav a:hover { color: var(--bone); }
+@media (max-width: 700px) { .footer__nav { max-width: none; } }
+
+/* Fix: .section / .section-sm reset horizontal padding on elements that are also .wrap,
+   leaving their content flush with the screen edge on phones and misaligned with header/footer. */
+.section.wrap, .section-sm.wrap, .page-hero.wrap { padding-left: var(--gutter); padding-right: var(--gutter); }

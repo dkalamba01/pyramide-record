@@ -735,6 +735,78 @@
       "role": "Captation · Mastering",
       "link": "https://youtu.be/lib39vLWmbc",
       "image": "pasteur-lifoko-du-ciel_celebration-toda-raba.jpg"
+    },
+    {
+      "title": "C'est Toi qu'il me faut",
+      "artist": "Matthieu Lys Mangenda",
+      "genre": "gospel",
+      "type": "studio",
+      "role": "Album Elijah",
+      "link": "https://www.youtube.com/watch?v=zfK7h4qBFTQ",
+      "image": ""
+    },
+    {
+      "title": "Fidèle",
+      "artist": "Matthieu Lys Mangenda",
+      "genre": "gospel",
+      "type": "studio",
+      "role": "Album Elijah",
+      "link": "https://www.youtube.com/watch?v=xEsKasEODU8",
+      "image": ""
+    },
+    {
+      "title": "Motema Malamu nde Nzambe",
+      "artist": "Matthieu Lys Mangenda",
+      "genre": "gospel",
+      "type": "studio",
+      "role": "Production",
+      "link": "https://www.youtube.com/watch?v=SusrVgnCq8I",
+      "image": ""
+    },
+    {
+      "title": "Lève Toi Éternel",
+      "artist": "Matthieu Lys Mangenda",
+      "genre": "gospel",
+      "type": "studio",
+      "role": "Production",
+      "link": "https://www.youtube.com/watch?v=CKA8euXoPvI",
+      "image": ""
+    },
+    {
+      "title": "Dieu Humain",
+      "artist": "Matthieu Lys Mangenda",
+      "genre": "gospel",
+      "type": "studio",
+      "role": "Production",
+      "link": "https://www.youtube.com/watch?v=Af-CIYWzVyw",
+      "image": ""
+    },
+    {
+      "title": "Parce que Dieu l'a dit",
+      "artist": "Matthieu Lys Mangenda",
+      "genre": "gospel",
+      "type": "studio",
+      "role": "Production",
+      "link": "https://www.youtube.com/watch?v=vEy67EgBHtY",
+      "image": ""
+    },
+    {
+      "title": "Epayi Nayo",
+      "artist": "Matthieu Lys Mangenda",
+      "genre": "gospel",
+      "type": "studio",
+      "role": "Production",
+      "link": "https://www.youtube.com/watch?v=KtfYb3f3daI",
+      "image": ""
+    },
+    {
+      "title": "Ami Fidèle",
+      "artist": "Matthieu Lys Mangenda",
+      "genre": "gospel",
+      "type": "studio",
+      "role": "Album Elijah",
+      "link": "https://www.youtube.com/watch?v=6AisHYJjUt4",
+      "image": ""
     }
   ],
   "albums": [
@@ -954,6 +1026,7 @@
     "Nelson Kikem": "nelson-kikem",
     "Mike Flor Mulumba": "mike-flor-mulumba",
     "Pasteur Lifoko du Ciel": "pasteur-lifoko-du-ciel",
-    "Onésime Kalala": "onesime-kalala"
+    "Onésime Kalala": "onesime-kalala",
+    "Matthieu Lys Mangenda": "matthieu-lys-mangenda"
   }
 }

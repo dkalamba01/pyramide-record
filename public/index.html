@@ -154,6 +154,21 @@
     .svc-grid > li { flex:0 0 75%; scroll-snap-align:start; }
   }
 
+  /* ARTISTE A L'HONNEUR band */
+  .feat-band { padding:0 0 var(--sp-6); }
+  .feat-card { display:grid; grid-template-columns:minmax(0,300px) 1fr; gap:var(--sp-6); align-items:center; background:var(--panel); border:1px solid var(--hair); border-radius:var(--r-lg); padding:var(--sp-5); }
+  .feat-card__img { display:block; aspect-ratio:4/5; border-radius:var(--r-lg); overflow:hidden; border:1px solid var(--hair); }
+  .feat-card__img img { width:100%; height:100%; object-fit:cover; display:block; }
+  .feat-card__name { font-family:var(--font-display); font-size:var(--fs-h3); font-weight:400; margin:var(--sp-2) 0; }
+  .feat-card__meta { color:var(--sand); font-size:var(--fs-sm); line-height:1.6; margin-bottom:var(--sp-4); }
+  .feat-card__meta b { color:var(--bone); font-weight:500; }
+  .feat-card__actions { display:flex; gap:var(--sp-3); flex-wrap:wrap; }
+  @media (max-width: 640px) {
+    .feat-card { grid-template-columns:1fr; padding:var(--sp-4); gap:var(--sp-4); }
+    .feat-card__img { max-width:340px; margin:0 auto; width:100%; }
+    .feat-card__actions .btn { flex:1 1 100%; text-align:center; justify-content:center; }
+  }
+
   .artist-scroll-wrap { position:relative; }
   .artist-scroll { display:flex; gap:var(--sp-4); overflow-x:auto; padding-bottom:var(--sp-3); scrollbar-width:none; -ms-overflow-style:none; }
   .artist-scroll::-webkit-scrollbar { display:none; }
@@ -297,6 +312,27 @@
           <span data-i18n="9edda780" class="svc-card__go">Réserver →</span>
         </a></li>
     </ul>
+  </section>
+
+  <!-- ARTISTE A L'HONNEUR : affiche du concert jusqu'au 31 janvier 2027, ensuite photo de profil (voir script en bas) -->
+  <section class="feat-band wrap reveal" aria-labelledby="feat-title">
+    <p data-i18n="b302da0e" class="eyebrow">Artiste à l'honneur</p>
+    <div class="feat-card">
+      <a class="feat-card__img" href="pages/promo/matthieu-lys-mangenda.html" id="feat-link">
+        <img data-i18n-attr="alt:c7e9d52f" id="feat-img" src="assets/images/events/elijah-experience.jpg" alt="Affiche du concert Elijah Expérience de Matthieu Lys Mangenda, 31 janvier 2027" loading="lazy" decoding="async"
+             data-photo="assets/images/discography/matthieu-lys-mangenda.jpg" data-photo-alt="Matthieu Lys Mangenda">
+      </a>
+      <div>
+        <span data-i18n="fd103975" class="promo-badge promo-badge--inhouse"><span class="dot"></span>Pyramide</span>
+        <h2 data-i18n="b0503e6f" class="feat-card__name" id="feat-title">Matthieu Lys Mangenda</h2>
+        <p data-i18n="6d0ffc64" class="feat-card__meta">Chanteur gospel congolais · Dernière sortie : <b>Elohim Le Fort</b></p>
+        <div class="feat-card__actions">
+          <a data-i18n="c5fa7a62" class="btn btn--lg" data-feat-concert href="https://wa.me/243823597385" target="_blank" rel="noopener">Réserver sur WhatsApp</a>
+          <a data-i18n="377ce85c" class="btn btn--lg" data-feat-photo hidden href="https://youtu.be/bufHRnPDv5k" target="_blank" rel="noopener">Écouter Elohim Le Fort</a>
+          <a data-i18n="0c98ec57" class="btn btn--ghost" href="pages/promo/matthieu-lys-mangenda.html">Voir sa page promo</a>
+        </div>
+      </div>
+    </div>
   </section>
 
   <!-- MASERATI CREDIT -->
@@ -584,6 +620,15 @@
     requestAnimationFrame(tick);
   }
   requestAnimationFrame(tick);
+})();
+</script>
+<script>
+(function(){
+  if (new Date() < new Date(2027, 1, 1)) return; // concert du 31 janvier 2027 passé
+  var img=document.getElementById('feat-img'); if(!img) return;
+  img.src=img.getAttribute('data-photo'); img.alt=img.getAttribute('data-photo-alt');
+  var c=document.querySelector('[data-feat-concert]'); if(c) c.hidden=true;
+  var m=document.querySelector('[data-feat-photo]'); if(m) m.hidden=false;
 })();
 </script>
 </body>

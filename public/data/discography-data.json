@@ -815,7 +815,8 @@
       "type": "studio",
       "role": "Mixage · Mastering",
       "link": "https://youtu.be/abIkVy4TxZA",
-      "image": ""
+      "image": "sharon-mbungu-akinseye_ngasa.jpg",
+      "album": "na-ndimi"
     },
     {
       "title": "Christ",
@@ -824,7 +825,8 @@
       "type": "studio",
       "role": "Mixage · Mastering",
       "link": "https://www.youtube.com/watch?v=o0qzIeR9DuY",
-      "image": ""
+      "image": "sharon-mbungu-akinseye_christ.jpg",
+      "album": "na-ndimi"
     },
     {
       "title": "Yembela Ye",
@@ -833,7 +835,8 @@
       "type": "studio",
       "role": "Mixage · Mastering",
       "link": "https://www.youtube.com/watch?v=JzmahiqzjGk",
-      "image": ""
+      "image": "sharon-mbungu-akinseye_yembela-ye.jpg",
+      "album": "na-ndimi"
     },
     {
       "title": "Parle Moi",
@@ -842,7 +845,8 @@
       "type": "studio",
       "role": "Mixage · Mastering",
       "link": "https://youtu.be/A24xmikuTM4",
-      "image": ""
+      "image": "sharon-mbungu-akinseye_parle-moi.jpg",
+      "album": "na-ndimi"
     },
     {
       "title": "Mon Adoration",
@@ -851,7 +855,18 @@
       "type": "studio",
       "role": "Mixage · Mastering",
       "link": "https://youtu.be/QOrZNz7YE58",
-      "image": ""
+      "image": "sharon-mbungu-akinseye_mon-adoration.jpg",
+      "album": "na-ndimi"
+    },
+    {
+      "title": "Shukurani",
+      "artist": "Sharon Mbungu Akinseye",
+      "genre": "gospel",
+      "type": "studio",
+      "role": "Mixage · Mastering",
+      "link": "https://youtu.be/jSNVGn-rtuo",
+      "image": "sharon-mbungu-akinseye_shukurani.jpg",
+      "album": "na-ndimi"
     }
   ],
   "albums": [
@@ -890,7 +905,10 @@
         },
         {
           "n": 3,
-          "title": "Christ"
+          "title": "Christ",
+          "play": "Christ",
+          "clip": true,
+          "image": "sharon-mbungu-akinseye_christ.jpg"
         },
         {
           "n": 4,
@@ -899,11 +917,15 @@
             {
               "name": "Deodato Bikindo"
             }
-          ]
+          ],
+          "play": "Parle Moi",
+          "clip": true,
+          "image": "sharon-mbungu-akinseye_parle-moi.jpg"
         },
         {
           "n": 5,
-          "title": "Ya nga na Yo"
+          "title": "Ya nga na Yo",
+          "image": "sharon-mbungu-akinseye_ya-nga-na-yo.jpg"
         },
         {
           "n": 6,
@@ -916,15 +938,22 @@
         },
         {
           "n": 7,
-          "title": "Mon adoration"
+          "title": "Mon adoration",
+          "play": "Mon Adoration",
+          "clip": true,
+          "image": "sharon-mbungu-akinseye_mon-adoration.jpg"
         },
         {
           "n": 8,
-          "title": "Alingi nga"
+          "title": "Alingi nga",
+          "image": "sharon-mbungu-akinseye_alingi-nga.jpg"
         },
         {
           "n": 9,
-          "title": "Shukrani"
+          "title": "Shukurani",
+          "play": "Shukurani",
+          "clip": true,
+          "image": "sharon-mbungu-akinseye_shukurani.jpg"
         },
         {
           "n": 10,
@@ -934,12 +963,18 @@
               "name": "Billy Nuée",
               "slug": "billy-nuee"
             }
-          ]
+          ],
+          "play": "NGASA",
+          "clip": true,
+          "image": "sharon-mbungu-akinseye_ngasa.jpg"
         },
         {
           "n": null,
           "bonus": true,
-          "title": "Yembela"
+          "title": "Yembela",
+          "play": "Yembela Ye",
+          "clip": true,
+          "image": "sharon-mbungu-akinseye_yembela-ye.jpg"
         }
       ]
     }

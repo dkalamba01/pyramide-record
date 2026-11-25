@@ -735,6 +735,123 @@
       "role": "Captation · Mastering",
       "link": "https://youtu.be/lib39vLWmbc",
       "image": "pasteur-lifoko-du-ciel_celebration-toda-raba.jpg"
+    },
+    {
+      "title": "C'est Toi qu'il me faut",
+      "artist": "Matthieu Lys Mangenda",
+      "genre": "gospel",
+      "type": "studio",
+      "role": "Album Elijah",
+      "link": "https://www.youtube.com/watch?v=zfK7h4qBFTQ",
+      "image": "matthieu-lys-mangenda_elijah.jpg"
+    },
+    {
+      "title": "Fidèle",
+      "artist": "Matthieu Lys Mangenda",
+      "genre": "gospel",
+      "type": "studio",
+      "role": "Album Elijah",
+      "link": "https://www.youtube.com/watch?v=xEsKasEODU8",
+      "image": "matthieu-lys-mangenda_elijah.jpg"
+    },
+    {
+      "title": "Motema Malamu nde Nzambe",
+      "artist": "Matthieu Lys Mangenda",
+      "genre": "gospel",
+      "type": "studio",
+      "role": "Production",
+      "link": "https://www.youtube.com/watch?v=SusrVgnCq8I",
+      "image": "matthieu-lys-mangenda_elijah.jpg"
+    },
+    {
+      "title": "Lève Toi Éternel",
+      "artist": "Matthieu Lys Mangenda",
+      "genre": "gospel",
+      "type": "studio",
+      "role": "Production",
+      "link": "https://www.youtube.com/watch?v=CKA8euXoPvI",
+      "image": "matthieu-lys-mangenda_elijah.jpg"
+    },
+    {
+      "title": "Dieu Humain",
+      "artist": "Matthieu Lys Mangenda",
+      "genre": "gospel",
+      "type": "studio",
+      "role": "Production",
+      "link": "https://www.youtube.com/watch?v=Af-CIYWzVyw",
+      "image": "matthieu-lys-mangenda_elijah.jpg"
+    },
+    {
+      "title": "Parce que Dieu l'a dit",
+      "artist": "Matthieu Lys Mangenda",
+      "genre": "gospel",
+      "type": "studio",
+      "role": "Production",
+      "link": "https://www.youtube.com/watch?v=vEy67EgBHtY",
+      "image": "matthieu-lys-mangenda_elijah.jpg"
+    },
+    {
+      "title": "Epayi Nayo",
+      "artist": "Matthieu Lys Mangenda",
+      "genre": "gospel",
+      "type": "studio",
+      "role": "Production",
+      "link": "https://www.youtube.com/watch?v=KtfYb3f3daI",
+      "image": "matthieu-lys-mangenda_elijah.jpg"
+    },
+    {
+      "title": "Ami Fidèle",
+      "artist": "Matthieu Lys Mangenda",
+      "genre": "gospel",
+      "type": "studio",
+      "role": "Album Elijah",
+      "link": "https://www.youtube.com/watch?v=6AisHYJjUt4",
+      "image": "matthieu-lys-mangenda_elijah.jpg"
+    },
+    {
+      "title": "NGASA",
+      "artist": "Sharon Mbungu Akinseye feat Billy Nuée",
+      "genre": "gospel",
+      "type": "studio",
+      "role": "Mixage · Mastering",
+      "link": "https://youtu.be/abIkVy4TxZA",
+      "image": ""
+    },
+    {
+      "title": "Christ",
+      "artist": "Sharon Mbungu Akinseye",
+      "genre": "gospel",
+      "type": "studio",
+      "role": "Mixage · Mastering",
+      "link": "https://www.youtube.com/watch?v=o0qzIeR9DuY",
+      "image": ""
+    },
+    {
+      "title": "Yembela Ye",
+      "artist": "Sharon Mbungu Akinseye",
+      "genre": "gospel",
+      "type": "studio",
+      "role": "Mixage · Mastering",
+      "link": "https://www.youtube.com/watch?v=JzmahiqzjGk",
+      "image": ""
+    },
+    {
+      "title": "Parle Moi",
+      "artist": "Sharon Mbungu Akinseye feat Deodato Bikindo",
+      "genre": "gospel",
+      "type": "studio",
+      "role": "Mixage · Mastering",
+      "link": "https://youtu.be/A24xmikuTM4",
+      "image": ""
+    },
+    {
+      "title": "Mon Adoration",
+      "artist": "Sharon Mbungu Akinseye",
+      "genre": "gospel",
+      "type": "studio",
+      "role": "Mixage · Mastering",
+      "link": "https://youtu.be/QOrZNz7YE58",
+      "image": ""
     }
   ],
   "albums": [
@@ -954,6 +1071,7 @@
     "Nelson Kikem": "nelson-kikem",
     "Mike Flor Mulumba": "mike-flor-mulumba",
     "Pasteur Lifoko du Ciel": "pasteur-lifoko-du-ciel",
-    "Onésime Kalala": "onesime-kalala"
+    "Onésime Kalala": "onesime-kalala",
+    "Matthieu Lys Mangenda": "matthieu-lys-mangenda"
   }
 }

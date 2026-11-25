@@ -163,6 +163,8 @@
   .feat-card__meta { color:var(--sand); font-size:var(--fs-sm); line-height:1.6; margin-bottom:var(--sp-4); }
   .feat-card__meta b { color:var(--bone); font-weight:500; }
   .feat-card__actions { display:flex; gap:var(--sp-3); flex-wrap:wrap; }
+  .feat-card__actions [hidden] { display:none !important; }
+  .feat-card__more { margin-top:var(--sp-4); color:var(--sand); font-size:var(--fs-sm); }
   @media (max-width: 640px) {
     .feat-card { grid-template-columns:1fr; padding:var(--sp-4); gap:var(--sp-4); }
     .feat-card__img { max-width:340px; margin:0 auto; width:100%; }
@@ -289,7 +291,7 @@
         </a></li>
         <li><a class="svc-card" href="pages/promo-service.html">
           <svg class="svc-card__icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z"/></svg>
-          <span data-i18n="6beeb621" class="svc-card__title">Pages promo</span>
+          <span data-i18n="6beeb621" class="svc-card__title">Pages vitrine</span>
           <span data-i18n="245a8dd1" class="svc-card__text">Une page dédiée pour les artistes : biographie, titres, liens et billets.</span>
           <span data-i18n="75a62be5" class="svc-card__go">Découvrir →</span>
         </a></li>
@@ -314,23 +316,24 @@
     </ul>
   </section>
 
-  <!-- ARTISTE A L'HONNEUR : affiche du concert jusqu'au 31 janvier 2027, ensuite photo de profil (voir script en bas) -->
+  <!-- ARTISTE EN VITRINE : affiche du concert jusqu'au 31 janvier 2027, ensuite photo de profil (voir script en bas) -->
   <section class="feat-band wrap reveal" aria-labelledby="feat-title">
-    <p data-i18n="b302da0e" class="eyebrow">Artiste à l'honneur</p>
+    <p data-i18n="b2d52620" class="eyebrow">Artiste en vitrine</p>
     <div class="feat-card">
       <a class="feat-card__img" href="pages/promo/matthieu-lys-mangenda.html" id="feat-link">
         <img data-i18n-attr="alt:c7e9d52f" id="feat-img" src="assets/images/events/elijah-experience.jpg" alt="Affiche du concert Elijah Expérience de Matthieu Lys Mangenda, 31 janvier 2027" loading="lazy" decoding="async"
              data-photo="assets/images/discography/matthieu-lys-mangenda.jpg" data-photo-alt="Matthieu Lys Mangenda">
       </a>
       <div>
-        <span data-i18n="fd103975" class="promo-badge promo-badge--inhouse"><span class="dot"></span>Pyramide</span>
+        <span data-i18n="c284f5d8" class="promo-badge promo-badge--inhouse"><span class="dot"></span>En vitrine</span>
         <h2 data-i18n="b0503e6f" class="feat-card__name" id="feat-title">Matthieu Lys Mangenda</h2>
         <p data-i18n="6d0ffc64" class="feat-card__meta">Chanteur gospel congolais · Dernière sortie : <b>Elohim Le Fort</b></p>
         <div class="feat-card__actions">
           <a data-i18n="c5fa7a62" class="btn btn--lg" data-feat-concert href="https://wa.me/243823597385" target="_blank" rel="noopener">Réserver sur WhatsApp</a>
           <a data-i18n="377ce85c" class="btn btn--lg" data-feat-photo hidden href="https://youtu.be/bufHRnPDv5k" target="_blank" rel="noopener">Écouter Elohim Le Fort</a>
-          <a data-i18n="0c98ec57" class="btn btn--ghost" href="pages/promo/matthieu-lys-mangenda.html">Voir sa page promo</a>
+          <a data-i18n="0c98ec57" class="btn btn--ghost" href="pages/promo/matthieu-lys-mangenda.html">Voir sa page vitrine</a>
         </div>
+        <p data-i18n="26b9b0cf" class="feat-card__more">Votre artiste ici ? <a class="link" href="pages/promo-service.html">Découvrir la page vitrine →</a></p>
       </div>
     </div>
   </section>
@@ -541,7 +544,8 @@
     { name:"Jérémie Dex M", img:"jeremie-dex-m.jpg", href:"pages/artists/jeremie-dex-m.html" },
     { name:"Sr Bena", img:"sr-bena.jpeg", href:"pages/artists/sr-bena.html" },
     { name:"Ruth Obweng", img:"ruth-obweng.png", href:"pages/artists/ruth-obweng.html" },
-    { name:"Sharon Mbungu Akinseye", img:"sharon-mbungu-akinseye.jpg", href:"pages/artists/sharon-mbungu-akinseye.html" }
+    { name:"Sharon Mbungu Akinseye", img:"sharon-mbungu-akinseye.jpg", href:"pages/artists/sharon-mbungu-akinseye.html" },
+    { name:"Matthieu Lys Mangenda", img:"matthieu-lys-mangenda.jpg", href:"pages/artists/matthieu-lys-mangenda.html" }
   ];
 
   // Fisher-Yates shuffle

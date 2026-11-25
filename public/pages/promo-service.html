@@ -18,7 +18,12 @@
   .page-hero .lede { color:var(--sand); font-size:var(--fs-body); max-width:56ch; line-height:1.8; }
 
   .example-strip { display:grid; grid-template-columns:1fr 1fr; gap:var(--sp-6); align-items:center; margin:var(--sp-6) 0; }
-  .example-strip .ph { aspect-ratio:9/16; max-width:260px; }
+  .example-strip { justify-items:center; }
+  .example-fig { margin:0; text-align:center; max-width:300px; }
+  .example-fig img { width:100%; height:auto; display:block; }
+  .example-fig figcaption { margin-top:var(--sp-3); color:var(--sand); font-size:var(--fs-sm); }
+  .example-fig figcaption a { display:block; margin:6px auto 0; width:max-content; }
+  @media (max-width:640px) { .example-strip { grid-template-columns:1fr; gap:var(--sp-5); } }
 
   .plans { display:grid; grid-template-columns:repeat(2,1fr); gap:var(--sp-5); align-items:stretch; }
   .plan { background:var(--panel); border:1px solid var(--hair); border-radius:var(--r-lg); padding:var(--sp-5); display:flex; flex-direction:column; }
@@ -100,8 +105,14 @@
 
   <section class="section-sm wrap reveal">
     <div class="example-strip">
-      <div class="ph"><small data-i18n="de6eb4df">Aperçu · Votre page principale</small></div>
-      <div class="ph"><small data-i18n="31ab5db4">Aperçu · Une page par chanson</small></div>
+      <figure class="example-fig">
+        <a href="promo/matthieu-lys-mangenda.html"><img data-i18n-attr="alt:18912ebb" src="../assets/images/vitrine-preview-main.webp" alt="Aperçu de la page principale de Matthieu Lys Mangenda sur un téléphone" width="612" height="1228" loading="lazy" decoding="async"></a>
+        <figcaption data-i18n="ebabfffb">Votre page principale<a class="link" href="promo/matthieu-lys-mangenda.html">Voir la vraie page →</a></figcaption>
+      </figure>
+      <figure class="example-fig">
+        <a href="promo/elohim-le-fort.html"><img data-i18n-attr="alt:cba80d78" src="../assets/images/vitrine-preview-song.webp" alt="Aperçu de la page de la chanson Elohim Le Fort sur un téléphone" width="612" height="1228" loading="lazy" decoding="async"></a>
+        <figcaption data-i18n="2f4da501">Une page par chanson<a class="link" href="promo/elohim-le-fort.html">Voir la vraie page →</a></figcaption>
+      </figure>
     </div>
     <p data-i18n="cd589efb" style="color:var(--sand);font-size:var(--fs-sm);max-width:60ch;line-height:1.7">Deux types de pages sont inclus dans chaque formule. La première est <strong>votre page principale</strong> : une adresse permanente que vous gardez toute votre carrière, avec votre photo, votre dernière sortie, et ce qui s'en vient. La seconde est <strong>une page pour chaque chanson</strong> — créée à chaque nouvelle sortie — avec des boutons pour l'écouter directement sur Spotify, Apple Music, Boomplay ou YouTube.</p>
   </section>

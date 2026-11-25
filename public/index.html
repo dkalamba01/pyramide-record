@@ -129,6 +129,31 @@
     .jgrid { grid-template-columns:1fr !important; gap:var(--sp-5) !important; }
   }
 
+
+  /* NOS SERVICES band */
+  .svc-band { padding:var(--sp-7) 0 var(--sp-6); }
+  .svc-band__head { margin-bottom:var(--sp-5); }
+  .svc-band__title { font-family:var(--font-display); font-size:var(--fs-h3); font-weight:400; margin-bottom:var(--sp-1); }
+  .svc-band__sub { color:var(--sand); font-size:var(--fs-sm); }
+  .svc-grid { display:grid; grid-template-columns:repeat(5,1fr); gap:var(--sp-4); list-style:none; margin:0; padding:0; }
+  .svc-card { display:flex; flex-direction:column; height:100%; padding:var(--sp-5) var(--sp-4); background:var(--panel); border:1px solid var(--hair); border-radius:var(--r-lg); color:inherit; text-decoration:none; transition:border-color var(--dur) var(--ease), transform var(--dur) var(--ease); }
+  .svc-card:hover, .svc-card:focus-visible { border-color:var(--gold-dim); transform:translateY(-3px); }
+  .svc-card__icon { width:26px; height:26px; fill:none; stroke:var(--gold); stroke-width:1.6; stroke-linecap:round; stroke-linejoin:round; margin-bottom:var(--sp-3); }
+  .svc-card__title { font-family:var(--font-display); font-size:var(--fs-lg); color:var(--bone); margin-bottom:var(--sp-2); }
+  .svc-card__text { color:var(--sand); font-size:var(--fs-sm); line-height:1.5; flex:1; margin-bottom:var(--sp-4); }
+  .svc-card__go { font-size:var(--fs-eyebrow); letter-spacing:var(--ls-wide); text-transform:uppercase; color:var(--ember); }
+  @media (max-width: 1024px) {
+    .svc-grid { grid-template-columns:repeat(6,1fr); }
+    .svc-grid > li { grid-column:span 2; }
+    .svc-grid > li:nth-child(4) { grid-column:2 / span 2; }
+    .svc-grid > li:nth-child(5) { grid-column:4 / span 2; }
+  }
+  @media (max-width: 640px) {
+    .svc-grid { display:flex; overflow-x:auto; scroll-snap-type:x mandatory; gap:var(--sp-3); padding-bottom:var(--sp-3); scrollbar-width:none; -webkit-overflow-scrolling:touch; }
+    .svc-grid::-webkit-scrollbar { display:none; }
+    .svc-grid > li { flex:0 0 75%; scroll-snap-align:start; }
+  }
+
   .artist-scroll-wrap { position:relative; }
   .artist-scroll { display:flex; gap:var(--sp-4); overflow-x:auto; padding-bottom:var(--sp-3); scrollbar-width:none; -ms-overflow-style:none; }
   .artist-scroll::-webkit-scrollbar { display:none; }
@@ -233,6 +258,46 @@
       <polyline points="0,7 20,0 40,14 60,0 80,14 100,0 120,14 140,0 160,14 180,0 200,14 220,0 240,14 260,0 280,14 300,0 320,14 340,0 360,14 380,0 400,7" fill="none" stroke="#2E5578" stroke-width="1"/>
     </svg>
   </div>
+
+  <!-- NOS SERVICES -->
+  <section class="svc-band wrap reveal" aria-labelledby="svc-title">
+    <div class="svc-band__head">
+      <h2 data-i18n="00d71e7c" class="svc-band__title" id="svc-title">Nos services</h2>
+      <p data-i18n="036067d9" class="svc-band__sub">Tout ce dont vous avez besoin, au même endroit.</p>
+    </div>
+    <ul data-i18n-attr="aria-label:00d71e7c" class="svc-grid" tabindex="0" aria-label="Nos services">
+        <li><a class="svc-card" href="pages/evenement.html">
+          <svg class="svc-card__icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9a2 2 0 002-2h14a2 2 0 002 2v0a2 2 0 000 6v0a2 2 0 00-2 2H5a2 2 0 00-2-2v0a2 2 0 000-6z"/><path d="M14 7v10" stroke-dasharray="2 2"/></svg>
+          <span data-i18n="e92b1534" class="svc-card__title">Billetterie</span>
+          <span data-i18n="18d921da" class="svc-card__text">Mettez votre concert ou événement en vente, billets QR et paiement mobile money.</span>
+          <span data-i18n="483bb7be" class="svc-card__go">Proposer un événement →</span>
+        </a></li>
+        <li><a class="svc-card" href="pages/promo-service.html">
+          <svg class="svc-card__icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z"/></svg>
+          <span data-i18n="6beeb621" class="svc-card__title">Pages promo</span>
+          <span data-i18n="245a8dd1" class="svc-card__text">Une page dédiée pour les artistes : biographie, titres, liens et billets.</span>
+          <span data-i18n="75a62be5" class="svc-card__go">Découvrir →</span>
+        </a></li>
+        <li><a class="svc-card" href="pages/configurateur.html">
+          <svg class="svc-card__icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l9 5v10l-9 5-9-5V7z"/><path d="M3 7l9 5 9-5M12 12v10"/></svg>
+          <span data-i18n="eaead162" class="svc-card__title">Configurateur 3D</span>
+          <span data-i18n="9613264a" class="svc-card__text">Visualisez votre studio ou votre projet en 3D avant de vous décider.</span>
+          <span data-i18n="2654399f" class="svc-card__go">Essayer →</span>
+        </a></li>
+        <li><a class="svc-card" href="pages/shop.html">
+          <svg class="svc-card__icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 8h14l-1 12H6z"/><path d="M9 8V6a3 3 0 016 0v2"/></svg>
+          <span data-i18n="05236d3a" class="svc-card__title">Boutique</span>
+          <span data-i18n="7049f22a" class="svc-card__text">Matériel et produits du studio, disponibles à l'achat ou à la location.</span>
+          <span data-i18n="9810c5e5" class="svc-card__go">Voir la boutique →</span>
+        </a></li>
+        <li><a class="svc-card" href="pages/booking.html">
+          <svg class="svc-card__icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>
+          <span data-i18n="444a88e3" class="svc-card__title">Réserver une session</span>
+          <span data-i18n="79506c57" class="svc-card__text">Réservez votre session d'enregistrement en quelques clics.</span>
+          <span data-i18n="9edda780" class="svc-card__go">Réserver →</span>
+        </a></li>
+    </ul>
+  </section>
 
   <!-- MASERATI CREDIT -->
   <div class="credit">
